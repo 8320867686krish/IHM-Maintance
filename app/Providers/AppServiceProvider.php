@@ -1,0 +1,31 @@
+<?php
+
+namespace App\Providers;
+
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\View;
+use Spatie\Permission\Models\Permission;
+
+class AppServiceProvider extends ServiceProvider
+{
+    /**
+     * Register any application services.
+     */
+    public function register(): void
+    {
+        //
+    }
+
+    /**
+     * Bootstrap any application services.
+     */
+    public function boot(): void
+    {
+        if (Schema::hasTable('permissions')) {
+            $allPermissions = Permission::select('id','group_type','name','is_show','full_name')->get()->toArray();
+            // Share permissions with all views
+            View::share('allPermissions', $allPermissions);
+        }
+    }
+}
