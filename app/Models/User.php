@@ -24,7 +24,6 @@ class User extends Authenticatable
         'email',
         'password',
         'hazmat_companies_id',
-        'user_type',
         'phone'
     ];
 
