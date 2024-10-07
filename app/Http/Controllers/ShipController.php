@@ -4,10 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\ClientCompany;
 use App\Models\Ship;
+use App\Models\ShipTeams;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Gate;
 
 class ShipController extends Controller
 {
@@ -139,4 +142,61 @@ class ShipController extends Controller
             return back()->withError($th->getMessage())->withInput();
         }
     }
+    public function shipView($ship_id){
+        $isBack = 0;
+        if (session('back') == 1) {
+            $isBack = 1;
+        }
+        Session::forget('back');
+        
+        $user =  Auth::user();
+        
+        $experts =   User::whereHas('roles', function ($query)  {
+            $query->where('level',4)->orderBy('level', 'asc');
+        })->where('hazmat_companies_id',$user->hazmat_companies_id)->get(['id','name']);
+        
+        $managers =  User::whereHas('roles', function ($query)  {
+            $query->where('level',3)->orderBy('level', 'asc');
+        })->where('hazmat_companies_id',$user->hazmat_companies_id)->get(['id','name']);
+        $ship = Ship::find($ship_id);
+        if (!Gate::allows('projects.edit')) {
+            $readonly = "readOnly";
+        } else {
+            $readonly = "";
+        }
+        return view('ships.view', compact('experts', 'managers', 'isBack','ship','readonly'));
+    }
+
+    public function assignShip(Request $request){
+        $inputData = $request->input();
+        $inputData['id'] = $inputData['ship_id'];
+
+        ShipTeams::where('ship_id', $inputData['ship_id'])->delete();
+
+        if (@$inputData['maneger_id']) {
+            foreach ($inputData['maneger_id'] as $user_id) {
+                ShipTeams::create([
+                    'user_id' => $user_id,
+                    'ship_id' => $inputData['ship_id'],
+                   'hazmat_companies_id' => $inputData['hazmat_companies_id']
+                ]);
+                
+            }
+        }
+
+        if (@$inputData['expert_id']) {
+            foreach ($inputData['expert_id'] as $user_id) {
+             
+                ShipTeams::create([
+                    'user_id' => $user_id,
+                    'ship_id' => $inputData['ship_id'],
+                   'hazmat_companies_id' => $inputData['hazmat_companies_id']
+                ]);
+                
+            }
+        }
+        return response()->json(['isStatus' => true, 'message' => 'Ship assign successfully!!']);
+
+    }
+
 }

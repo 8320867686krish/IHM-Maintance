@@ -23,7 +23,7 @@ return new class extends Migration
             $table->unsignedBigInteger('client_id')->nullable();  // Same data type as hazmat_companies.id
             $table->foreign('client_id')->references('id')->on('client_companies')->onDelete('cascade');
             $table->unsignedBigInteger('client_user_id')->nullable();  // Same data type as hazmat_companies.id
-            $table->foreign('client_user_id')->references('id')->on('client_companies')->onDelete('cascade');
+            $table->foreign('client_user_id')->references('id')->on('users')->onDelete('cascade');
           
             $table->unsignedBigInteger('user_id')->nullable();  // Same data type as hazmat_companies.id
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

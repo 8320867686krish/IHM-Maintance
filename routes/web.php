@@ -67,7 +67,9 @@ Route::middleware('auth')->group(function () {
             Route::post('ships', 'store')->name('ships.store');
             Route::get('ships/{id}/edit', 'edit')->name('ships.edit')->middleware('can:ships.edit');
             Route::get('ships/{id}/delete', 'destroy')->name('ships.delete')->middleware('can:ships.remove');
-            Route::get('ship/view/{ship_id}', 'projectView')->name('ships.view');
+            Route::get('ship/view/{ship_id}', 'shipView')->name('ships.view');
+            Route::post('ship/assignProject', 'assignShip')->name('ships.assign');
+
 
         });
     });

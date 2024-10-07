@@ -51,4 +51,5 @@ class User extends Authenticatable
         return $this->belongsTo(hazmatCompany::class,'hazmat_companies_id','id');
 
     }
+  
 }
