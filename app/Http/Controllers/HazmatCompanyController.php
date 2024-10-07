@@ -69,7 +69,7 @@ class HazmatCompanyController extends Controller
 
                 $userData['hazmat_companies_id'] = $hazmatCompany->id;
                 $user = User::create($userData);
-                $role_id = Role::where('level','IHM Company Admin')->pluck('id')->first();
+                $role_id = Role::where('level',2)->pluck('id')->first();
                 $user->assignRole([$role_id]);
             }else{
                 if(@!$userData['password']){
