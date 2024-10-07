@@ -69,13 +69,12 @@ class HazmatCompanyController extends Controller
 
                 $userData['hazmat_companies_id'] = $hazmatCompany->id;
                 $user = User::create($userData);
-                $role_id = Role::where('lavel','IHM Company Admin')->pluck('id')->first();
+                $role_id = Role::where('level','IHM Company Admin')->pluck('id')->first();
                 $user->assignRole([$role_id]);
             }else{
                 if(@!$userData['password']){
                     unset($userData['password']);
                 }
-               
                 $user = User::updateOrCreate(['id' => $request->input('user_id')],$userData);
             }
             $message = empty($request->input('id')) ? "HazmatCompany added successfully" : "HazmatCompany updated successfully";
