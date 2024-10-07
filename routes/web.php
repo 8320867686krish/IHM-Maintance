@@ -5,6 +5,7 @@ use App\Http\Controllers\HazmatCompanyController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\ShipController;
 use App\Http\Controllers\UserController;
 
 /*
@@ -60,12 +61,14 @@ Route::middleware('auth')->group(function () {
 
 
     Route::middleware('can:ships')->group(function () {
-        Route::controller(RoleController::class)->group(function () {
+        Route::controller(ShipController::class)->group(function () {
             Route::get('ships', 'index')->name('ships')->middleware('can:ships');
             Route::get('ships/add', 'create')->name('ships.add')->middleware('can:ships.add');
             Route::post('ships', 'store')->name('ships.store');
             Route::get('ships/{id}/edit', 'edit')->name('ships.edit')->middleware('can:ships.edit');
             Route::get('ships/{id}/delete', 'destroy')->name('ships.delete')->middleware('can:ships.remove');
+            Route::get('ship/view/{ship_id}', 'projectView')->name('ships.view');
+
         });
     });
 

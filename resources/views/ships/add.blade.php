@@ -1,0 +1,219 @@
+@extends('layouts.app')
+
+@section('content')
+    <div class="container-fluid dashboard-content">
+        <!-- ============================================================== -->
+        <!-- pageheader -->
+        <!-- ============================================================== -->
+        <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="page-header">
+                    <h2 class="pageheader-title">Ship Management</h2>
+                    {{-- <div class="page-breadcrumb">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="{{ route('ships') }}"
+                                        class="breadcrumb-link">Ships</a></li>
+                                <li class="breadcrumb-item active"><a href="#"
+                                        class="breadcrumb-link">{{ $head_title ?? 'Add' }}</a></li>
+                            </ol>
+                        </nav>
+                    </div> --}}
+                </div>
+            </div>
+        </div>
+        <!-- ============================================================== -->
+        <!-- end pageheader -->
+        <!-- ============================================================== -->
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                @include('layouts.message')
+                <div class="card">
+                    <h5 class="card-header">{{ $head_title ?? '' }} Projects</h5>
+                    <div class="card-body">
+                        <form method="post" action="{{ route('ships.store') }}" class="needs-validation" novalidate
+                            id="projectForm">
+                            @csrf
+                            <input type="hidden" name="id" value="{{ $ship->id ?? '' }}">
+                            <input type="hidden" name="user_id" value="{{$shipUser->id ?? ''}}">
+                            <div class="row">
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="form-group">
+                                        <label for="client_id">Client <span class="text-danger">*</span></label>
+                                        <select name="client_id" id="client_id" class="form-control @error('client_id') is-invalid @enderror" onchange="removeInvalidClass(this)">
+                                            <option value="">Select Client</option>
+                                            @if (isset($clients) && $clients->count() > 0)
+                                                @foreach ($clients as $client)
+                                                    <option value="{{ $client->id }}"
+                                                        data-identi="{{ $client->manager_initials }}"
+                                                        {{ old('client_id') == $client->id || (isset($ship) && $ship->client_id == $client->id) ? 'selected' : '' }}>
+                                                        {{ $client->name }}
+                                                    </option>
+                                                @endforeach
+                                            @endif
+                                        </select>
+                                        @error('client_id')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="form-group">
+                                        <label for="ship_name">Ship Name <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control @error('ship_name') is-invalid @enderror"
+                                            id="ship_name" value="{{ old('ship_name', $ship->ship_name ?? '') }}"
+                                            name="ship_name" placeholder="Ship Name..." autocomplete="off"
+                                            onchange="removeInvalidClass(this)">
+                                        @error('ship_name')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="form-group">
+                                        <label for="project_name">Ship Type</label>
+                                        <input type="text" class="form-control @error('ship_type') is-invalid @enderror"
+                                            id="ship_type" name="ship_type"
+                                            value="{{ old('ship_type', $ship->ship_type ?? '') }}"
+                                            placeholder="Ship Type..." autocomplete="off"
+                                            onchange="removeInvalidClass(this)">
+                                        @error('ship_type')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="form-group">
+                                        <label for="ihm_table">IHM Table</label>
+                                        <select class="form-control @error('ihm_table') is-invalid @enderror" id="ihm_table"
+                                            name="ihm_table" onchange="removeInvalidClass(this)">
+                                            <option value="">Select IHM</option>
+                                            <option value="IHM Part 1"
+                                                {{ old('ihm_table') == 'IHM Part 1' || (isset($ship) && $ship->ihm_table == 'IHM Part 1') ? 'selected' : '' }}>
+                                                IHM Part 1</option>
+                                            <option value="IHM Part 2&3"
+                                                {{ old('ihm_table') == 'IHM Part 2&3' || (isset($ship) && $ship->ihm_table == 'IHM Part 2&3') ? 'selected' : '' }}>
+                                                IHM Part 2&3</option>
+                                            <option value="IHM Gap Analysis"
+                                                {{ old('ihm_table') == 'IHM Gap Analysis' || (isset($ship) && $ship->ihm_table == 'IHM Gap Analysis') ? 'selected' : '' }}>
+                                                IHM Gap Analysis</option>
+                                            <option value="IHM Additional Sampling"
+                                                {{ old('ihm_table') == 'IHM Additional Sampling' || (isset($ship) && $ship->ihm_table == 'IHM Additional Sampling') ? 'selected' : '' }}>
+                                                IHM Additional Sampling</option>
+                                        </select>
+                                        @error('ihm_table')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="form-group">
+                                        <label for="imo_number">IMO Number <span class="text-danger">*</span></label>
+                                        <input type="number" class="form-control @error('imo_number') is-invalid @enderror"
+                                            id="imo_number" name="imo_number" placeholder="IMO Number..."
+                                            value="{{ old('imo_number', $ship->imo_number ?? '') }}" onchange="removeInvalidClass(this)">
+                                        @error('imo_number')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="form-group">
+                                        <label for="project_no">Project Number</label>
+                                        <input type="text" class="form-control @error('project_no') is-invalid @enderror"
+                                            id="project_no" name="project_no" placeholder="Ship Number..."
+                                            value="{{ old('project_no', $ship->project_no ?? '') }}" readonly>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="form-group">
+                                        <label for="project_no">Ship Initials <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control @error('ship_initials') is-invalid @enderror"
+                                            id="ship_initials" name="ship_initials" placeholder="Ship Initials..."
+                                            value="{{ old('ship_initials', $ship->ship_initials ?? '') }}"  onchange="removeInvalidClass(this)" {{ @$ship->ship_initials ? 'readonly' : '' }}>
+                                            @error('ship_initials')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-12 col-md-6 col-lg-6">
+                                    <div class="form-group mb-3">
+                                        <label for="client_email">Email<span class="text-danger">*</span></label>
+                                        <input type="email"
+                                            class="form-control @error('email') is-invalid @enderror"
+                                            id="email" name="email"
+                                            value="{{ old('email', $shipUser->email ?? '') }}"
+                                            placeholder="Ship Email..." autocomplete="off"
+                                            onchange="removeInvalidClass(this)">
+                                        <div class="invalid-feedback error" id="emailError"></div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-6 col-lg-6">
+                                    <div class="form-group mb-3">
+                                        <label for="phone">Phone<span class="text-danger">*</span></label>
+                                        <input type="number"
+                                            class="form-control @error('phone') is-invalid @enderror"
+                                            id="phone" name="phone"
+                                            value="{{ old('phone', $shipUser->phone ?? '') }}"
+                                            placeholder="Client Phone..." autocomplete="off"
+                                            onchange="removeInvalidClass(this)">
+                                        <div class="invalid-feedback error" id="phoneError"></div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-12 col-md-6 col-lg-6">
+                                    <div class="form-group mb-3">
+                                        <label for="phone">Password<span class="text-danger">*</span></label>
+                                        <input type="password"
+                                            class="form-control @error('password') is-invalid @enderror"
+                                            id="password" name="password"
+                                            placeholder="password..." autocomplete="off"
+                                            onchange="removeInvalidClass(this)">
+                                        <div class="invalid-feedback error" id="passwordError"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="form-group">
+                                        <a href="{{ route('ships') }}" class="btn pl-0" type="button"><i
+                                                class="fas fa-arrow-left"></i> <b>Back</b></a>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="form-group">
+                                        <button class="btn btn-primary float-right formSubmitBtn"
+                                            type="submit">{!! $button ?? '<i class="fas fa-plus"></i>  Add' !!}</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection
+
+@push('js')
+    <script>
+        $(document).ready(function() {
+            var ship_identi = $("#client_id").find('option:selected').data('identi');
+            var imo = $('#imo_number').val();
+
+            $('#imo_number').blur(function() {
+                imo = $(this).val();
+                $("#project_no").val("SOSI/" + ship_identi + "/" + imo);
+            });
+            $('#client_id').change(function() {
+                ship_identi = $(this).find('option:selected').data('identi');
+                $("#project_no").val("SOSI/" + ship_identi + (imo ? "/" + imo : ""));
+            })
+        });
+    </script>
+@endpush

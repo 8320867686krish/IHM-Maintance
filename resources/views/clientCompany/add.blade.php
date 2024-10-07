@@ -34,7 +34,7 @@
                             @csrf
                             <h5>Client Company  Details</h5>
                             <input type="hidden" name="id" value="{{ $clientCompany->id ?? '' }}">
-                            <input type="hidden" name="hazmat_companies_id" value="{{ $hazmat_companies_id  ?? '' }}">
+                            <input type="hidden" name="hazmat_companies_id" value="{{ $clientCompany->hazmat_companies_id ?? $hazmat_companies_id}}">
                             <input type="hidden" name="created_by" value="{{ $clientCompany->created_by ?? $created_by  }}">
                             <input type="hidden" name="user_id" value="{{ $clientCompany->user_id ?? '' }}">
 
