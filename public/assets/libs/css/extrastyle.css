@@ -8,7 +8,10 @@
     /* color: #3d405c !important; */
 
 }
-
+*{
+    margin:0px;
+    padding: 0px;
+}
 .invalid-feedback {
     font-size: 14px !important;
 }
