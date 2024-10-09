@@ -12,7 +12,6 @@ class Ship extends Model
         'ship_initials', 
         'ship_name', 
         'ship_type',
-        'ihm_table',
         'project_no',
         'imo_number',
         'client_id',
@@ -21,6 +20,12 @@ class Ship extends Model
         'hazmat_companies_id'
     ];
 
-    
+   public function shipTeams(){
+    return $this->hasMany(ShipTeams::class, 'ship_id', 'id');
 
+   }
+   public function client(){
+    return $this->belongsTo(ClientCompany::class,'client_id', 'id');
+
+   }
 }

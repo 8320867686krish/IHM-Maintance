@@ -28,17 +28,10 @@
                 <div id="showSucessMsg" style="display: none;"></div>
                 <div class="card">
                     <h5 class="card-header">
-                        <div class="row">
-                            <div class="col-6">
-                                <h3>Hazmat Company</h3>
-                            </div>
-                            @can('roles.add')
-                                <div class="col-6">
+                    
                                     <a href="{{ route('hazmatCompany.add') }}"
                                         class="btn btn-primary float-right btn-rounded addNewBtn">Add New Hazmat Company</a>
-                                </div>
-                            @endcan
-                        </div>
+                              
                     </h5>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -48,7 +41,6 @@
                                         <th width="10%">Sr.No</th>
                                         <th>Name</th>
                                         <th>Email</th>
-                                        <th>User Name</th>
                                         <th>Logo</th>
                                         <th>Action</th>
                                     </tr>
@@ -60,7 +52,6 @@
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ ucfirst($hazmatCompanyValue->name) }}</td>
                                                 <td>{{ $hazmatCompanyValue->email }}</td>
-                                                <td>{{ $hazmatCompanyValue->user_name }}</td>
                                                 <td><img src="{{ asset('uploads/hazmatCompany/' . $hazmatCompanyValue->logo) }}" height="100" width="100" alt="Company Logo"></td>
                                                 <td>
                                                     @can('hazmatCompany.edit')

@@ -25,9 +25,9 @@ class hazmatCompanyRequest extends FormRequest
         return [
             'name' => 'required|unique:hazmat_companies,name,' . $this->id,
             'email' => $this->id ? 'unique:hazmat_companies,email,' . $this->id : 'required|unique:hazmat_companies,email',
-            'user_name' => $this->id ? 'unique:hazmat_companies,user_name,' . $this->id : 'required|unique:hazmat_companies,user_name',
             'logo' => $this->id ? 'image|mimes:jpeg,png,jpg,gif|max:2048,' . $this->id : 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'password' => $this->id ? 'nullable' : 'required'
+            'password' => $this->id ? 'nullable' : 'required',
+            'phone' => 'numeric|digits:10',
 
         ];
     }
@@ -38,8 +38,6 @@ class hazmatCompanyRequest extends FormRequest
             'name.unique' => 'This hazmatCompany already exists.',
             'email.required' => 'Please enter a email.',
             'email.unique' => 'The email already exists.',
-            'user_name.required' => 'Please enter a User Name.',
-            'user_name.unique' => 'The User Name already exists.',
             'password.required' => 'Please enter a password.',
         ];
     }

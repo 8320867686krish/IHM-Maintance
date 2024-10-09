@@ -13,5 +13,5 @@ class ShipTeams extends Model
         'user_id',
         'hazmat_companies_id'
     ];
-
+ 
 }

@@ -9,5 +9,5 @@ class hazmatCompany extends Model
 {
     use HasFactory;
     protected $tabl = "hazmat_companies";
-    protected $fillable = ['name', 'user_name','email','password','first_name','last_name','phone','logo'];
+    protected $fillable = ['name','email','password','first_name','last_name','phone','logo'];
 }

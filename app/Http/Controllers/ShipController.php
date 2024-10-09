@@ -18,27 +18,37 @@ class ShipController extends Controller
     public function index($client_id = null)
     {
         $user = Auth::user();
+
         $currentUserRoleLevel = $user->roles->first()->level;
+        
         // Initialize the query for ships
-        $shipsQuery = Ship::query();
+        if($currentUserRoleLevel == 3 || $currentUserRoleLevel == 4) {
+            $ships = $user->ships->load('client');
 
-        // Apply conditions based on the role level
-        $shipsQuery->when($currentUserRoleLevel == 2, function ($query) use ($user) {
-            return $query->where('hazmat_companies_id', $user['hazmat_companies_id']);
-        });
+        } else {
+            // Otherwise, start with a query builder
+            $shipsQuery = Ship::with('client');
 
-        $shipsQuery->when($currentUserRoleLevel == 5, function ($query) use ($user) {
-            return $query->where('hazmat_companies_id', $user['hazmat_companies_id'])
-            ->where('client_user_id',$user['id']);
-        });
-
-        $shipsQuery->when($currentUserRoleLevel == 6, function ($query) use ($user) {
-            return $query->where('hazmat_companies_id', $user['hazmat_companies_id'])
-                ->where('user_id',$user['id']);
-        });
-
-        $ships = $shipsQuery->get();
+            $shipsQuery->when($currentUserRoleLevel == 2, function ($query) use ($user) {
+                return $query->where('hazmat_companies_id', $user['hazmat_companies_id']);
+            });
+        
+            $shipsQuery->when($currentUserRoleLevel == 5, function ($query) use ($user) {
+                return $query->where('hazmat_companies_id', $user['hazmat_companies_id'])
+                    ->where('client_user_id', $user['id']);
+            });
+        
+            $shipsQuery->when($currentUserRoleLevel == 6, function ($query) use ($user) {
+                return $query->where('hazmat_companies_id', $user['hazmat_companies_id'])
+                    ->where('user_id', $user['id']);
+            });
+        
+            // Execute the query and get the ships
+            $ships = $shipsQuery->get();
+        }
+        // Return the view with the ships data
         return view('ships.list', compact('ships'));
+        
     }
     public function create()
     {
@@ -48,7 +58,6 @@ class ShipController extends Controller
         $clientsQuery = ClientCompany::query();
 
         $clientsQuery->when($role_level == 2, function ($query) use ($user) {
-            // For role level 2, filter by hazmat company ID
             return $query->where('hazmat_companies_id', $user['hazmat_companies_id']);
         });
 
@@ -56,14 +65,25 @@ class ShipController extends Controller
             return $query->where('hazmat_companies_id', $user['hazmat_companies_id'])
                 ->where('client_user_id', $user->id);
         });
+        $experts =   User::whereHas('roles', function ($query) use ($user) {
+            $query->where('level',4)->orderBy('level', 'asc');
+        })->where('hazmat_companies_id',$user->hazmat_companies_id)->get(['id','name']);
+
+        $managers =  User::whereHas('roles', function ($query)use ($user)  {
+            $query->where('level',3)->orderBy('level', 'asc');
+        })->where('hazmat_companies_id',$user->hazmat_companies_id)->get(['id','name']);
 
         $clientsQuery->when($role_level == 6, function ($query) use ($user) {
             return $query->where('hazmat_companies_id', $user['hazmat_companies_id'])
                 ->where('user_id', $user->id);
         });
-
+        if (!Gate::allows('projects.edit')) {
+            $readonly = "readOnly";
+        } else {
+            $readonly = "";
+        }
         $clients = $clientsQuery->orderBy('id', 'desc')->get(['id', 'name', 'manager_initials']);
-        return view('ships.add', ['head_title' => 'Add', 'button' => 'Save', 'clients' => $clients, 'hazmat_companies_id' => $hazmat_companies_id]);
+        return view('ships.add', ['head_title' => 'Add', 'button' => 'Save', 'clients' => $clients, 'hazmat_companies_id' => $hazmat_companies_id,'managers'=>$managers,'experts'=>$experts,'readonly'=>$readonly]);
     }
     public function store(Request $request)
     {
@@ -92,7 +112,36 @@ class ShipController extends Controller
 
             $inputData['client_user_id'] = $client_user['user_id'];
             $inputData['hazmat_companies_id'] = $client_user['hazmat_companies_id'];
-            Ship::updateOrCreate(['id' => $id], $inputData);
+           $ship= Ship::updateOrCreate(['id' => $id], $inputData);
+           if($id == 0){
+            $inputData['ship_id'] = $ship->id;
+           }else{
+            $inputData['ship_id'] = $id;
+           }
+            ShipTeams::where('ship_id', $inputData['ship_id'])->delete();
+
+            if (@$inputData['maneger_id']) {
+                foreach ($inputData['maneger_id'] as $user_id) {
+                    ShipTeams::create([
+                        'user_id' => $user_id,
+                        'ship_id' => $inputData['ship_id'],
+                       'hazmat_companies_id' => $inputData['hazmat_companies_id']
+                    ]);
+                    
+                }
+            }
+    
+            if (@$inputData['expert_id']) {
+                foreach ($inputData['expert_id'] as $user_id) {
+                 
+                    ShipTeams::create([
+                        'user_id' => $user_id,
+                        'ship_id' => $inputData['ship_id'],
+                       'hazmat_companies_id' => $inputData['hazmat_companies_id']
+                    ]);
+                    
+                }
+            }
             $message = empty($id) ? "Ship added successfully" : "Ship updated successfully";
 
             return redirect('ships')->with('message', $message);
@@ -108,7 +157,6 @@ class ShipController extends Controller
             $role_level = Auth::user()->roles->first()->level;
             $user =  Auth::user();
             $clientsQuery->when($role_level == 2, function ($query) use ($user) {
-                // For role level 2, filter by hazmat company ID
                 return $query->where('hazmat_companies_id', $user['hazmat_companies_id']);
             });
     
@@ -158,16 +206,18 @@ class ShipController extends Controller
         $managers =  User::whereHas('roles', function ($query)  {
             $query->where('level',3)->orderBy('level', 'asc');
         })->where('hazmat_companies_id',$user->hazmat_companies_id)->get(['id','name']);
-        $ship = Ship::find($ship_id);
+        $ship = Ship::with('shipTeams')->find($ship_id);
+        $users = $ship->shipTeams->pluck('user_id')->toArray();
         if (!Gate::allows('projects.edit')) {
             $readonly = "readOnly";
         } else {
             $readonly = "";
         }
-        return view('ships.view', compact('experts', 'managers', 'isBack','ship','readonly'));
+        return view('ships.view', compact('experts', 'managers', 'isBack','ship','readonly','users'));
     }
 
     public function assignShip(Request $request){
+        
         $inputData = $request->input();
         $inputData['id'] = $inputData['ship_id'];
 
@@ -196,7 +246,6 @@ class ShipController extends Controller
             }
         }
         return response()->json(['isStatus' => true, 'message' => 'Ship assign successfully!!']);
-
     }
 
 }

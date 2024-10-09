@@ -30,17 +30,13 @@
                 <div class="showSucessMsg" style="display: none;"></div>
                 <div class="card">
                     <h4 class="card-header">
-                        <div class="row">
-                            <div class="col-6">
-                                <h3>App User</h3>
-                            </div>
-                            <div class="col-6">
+                         
+                        
                                 @can('users.add')
                                     <a href="{{ route('users.add') }}"
-                                        class="btn btn-primary float-right btn-rounded addNewBtn">Add New User</a>
+                                        class="btn btn-primary float-right btn-rounded addNewBtn"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="plus" class="lucide lucide-plus"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg> Add New User</a>
                                 @endcan
-                            </div>
-                        </div>
+                       
                     </h4>
                     <div class="card-body">
                         <div class="table-responsive">

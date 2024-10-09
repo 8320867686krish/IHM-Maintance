@@ -51,5 +51,9 @@ class User extends Authenticatable
         return $this->belongsTo(hazmatCompany::class,'hazmat_companies_id','id');
 
     }
-  
+    public function ships(){
+        return $this->belongsToMany(Ship::class, 'ship_teams', 'user_id', 'ship_id');
+
+    
+       }
 }

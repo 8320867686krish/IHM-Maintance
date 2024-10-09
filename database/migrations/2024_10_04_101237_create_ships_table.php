@@ -17,7 +17,6 @@ return new class extends Migration
             $table->string('ship_initials')->nullable();
             $table->string('ship_name')->nullable();
             $table->string('ship_type')->nullable();
-            $table->string('ihm_table', 50)->nullable();
             $table->string('project_no')->nullable();
             $table->string('imo_number')->nullable()->unique();
             $table->unsignedBigInteger('client_id')->nullable();  // Same data type as hazmat_companies.id

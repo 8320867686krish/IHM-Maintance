@@ -19,9 +19,8 @@ class ClientCompanyRequest extends FormRequest
         return [
             'name' => 'required|unique:client_companies,name,'.$this->id,
             'email' => 'required|email|unique:users,email,'.$this->user_id,
-            'phone' => 'required|numeric|digits:10',
-            'password' => 'required|numeric|digits:10',
-            'password' => $this->user_id ? 'nullable' : 'required|numeric|digits:10',
+            'phone' => 'numeric|digits:10',
+            'password' => $this->user_id ? 'nullable' : 'required|numeric',
             'manager_initials' => 'required|unique:client_companies,IMO_ship_owner_details,'.$this->id,
             'IMO_ship_owner_details' => 'required|unique:client_companies,IMO_ship_owner_details,'.$this->id,
         ];

@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('hazmat_companies', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
-            $table->string('user_name');
             $table->string('email');
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();

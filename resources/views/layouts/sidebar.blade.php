@@ -21,45 +21,53 @@
                             </div>
                         </div>
                     </li>
+                    @php 
+                    if (request()->routeIs('dashboard')) {
+                    $isActive = true;
+                    }
+                    @endphp
+                    <li class="nav-item">
+                        <a class="nav-link {{ @$isActive ? 'active' : '' }}" href="{{ route('dashboard') }}" ><i class="fa fa-fw fa-user-circle"></i>Dashboard</a>
+                    </li>
                     @foreach ($allPermissions as $permission)
-                        @if ($permission['group_type'] === 'main' && $permission['is_show'] == 1)
-                            @can($permission['name'])
-                                <li class="nav-item">
-                                    @php
-                                        $isActive = false;
+                    @if ($permission['group_type'] === 'main' && $permission['is_show'] == 1)
+                    @can($permission['name'])
+                    <li class="nav-item">
+                        @php
+                        $isActive = false;
 
-                                        $newPermissionName = str_replace('_', ' ', $permission['name']);
+                        $newPermissionName = str_replace('_', ' ', $permission['name']);
 
-                                        // $endsWithS = Str::endsWith(Request::segment(1), 's');
-                                        $string = Request::segment(1);
-                                        $endsWithS = substr($string, -1) === 's';
+                        // $endsWithS = Str::endsWith(Request::segment(1), 's');
+                        $string = Request::segment(1);
+                        $endsWithS = substr($string, -1) === 's';
 
-                                        if (!$endsWithS) {
-                                            if ($permission['name'] == $string) {
-                                                $string = $string;
-                                            } else {
-                                                $string = $string . 's';
-                                            }
-                                        }
+                        if (!$endsWithS) {
+                        if ($permission['name'] == $string) {
+                        $string = $string;
+                        } else {
+                        $string = $string . 's';
+                        }
+                        }
 
-                                        if (request()->routeIs($permission['name'])) {
-                                            $isActive = true;
-                                        }
+                        if (request()->routeIs($permission['name'])) {
+                        $isActive = true;
+                        }
 
-                                        if ($string == $permission['name']) {
-                                            $isActive = true;
-                                        }
+                        if ($string == $permission['name']) {
+                        $isActive = true;
+                        }
 
-                                      
 
-                                    @endphp
-                                    <a class="nav-link {{ $isActive ? 'active' : '' }} "
-                                        href="{{ route($permission['name']) }}"><i
-                                            class="fa fa-fw fa-user-circle"></i>{{ ucwords($permission['full_name']) }}<span
-                                            class="badge badge-success">6</span></a>
-                                </li>
-                            @endcan
-                        @endif
+
+                        @endphp
+                        <a class="nav-link {{ $isActive ? 'active' : '' }} "
+                            href="{{ route($permission['name']) }}"><i
+                                class="fa fa-fw fa-user-circle"></i>{{ ucwords($permission['full_name']) }}<span
+                                class="badge badge-success">6</span></a>
+                    </li>
+                    @endcan
+                    @endif
                     @endforeach
                 </ul>
             </div>

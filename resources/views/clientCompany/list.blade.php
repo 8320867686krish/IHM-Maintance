@@ -30,17 +30,14 @@
                 <div class="showSucessMsg" style="display: none;"></div>
                 <div class="card">
                     <h4 class="card-header">
-                        <div class="row">
-                            <div class="col-6">
-                                <h3>Client Company</h3>
-                            </div>
-                            <div class="col-6">
+                    
+                          
                                 @can('clientCompany.add')
                                     <a href="{{ route('clientCompany.add') }}"
                                         class="btn btn-primary float-right btn-rounded addNewBtn">Add New Client Company</a>
                                 @endcan
-                            </div>
-                        </div>
+                          
+                        
                     </h4>
                     <div class="card-body">
                         <div class="table-responsive">

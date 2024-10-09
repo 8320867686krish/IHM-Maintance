@@ -23,13 +23,18 @@
                                     <label for="project_no">Managers <span class="text-danger">*</span></label>
                                     <select class="selectpicker show-tick form-control form-control-lg" name="maneger_id[]"
                                         id="manager_id" multiple data-live-search="true" data-actions-box="true"
-                                        {{ $readonly }} onchange="removeInvalidClass(this)">
+                                        onchange="removeInvalidClass(this)">
                                         @if ($managers->count() > 0)
                                             @foreach ($managers as $manager)
-                                               
+                                            @if (in_array($manager->id, $users))
+                                            <option value="{{ $manager->id }}" selected>
+                                                        {{ $manager->name }}
+                                                    </option>
+                                                    @else
                                                     <option value="{{ $manager->id }}">
                                                         {{ $manager->name }}
                                                     </option>
+                                                @endif
                                               
                                             @endforeach
                                         @endif
@@ -43,11 +48,15 @@
                                         {{ $readonly }} onchange="removeInvalidClass(this)">
                                         @if ($experts->count() > 0)
                                             @foreach ($experts as $expert)
-                                               
+                                            @if (in_array($expert->id, $users))
+                                            <option value="{{ $expert->id }}" selected>
+                                                        {{ $expert->name }}
+                                                    </option>
+                                                    @else
                                                     <option value="{{ $expert->id }}">
                                                         {{ $expert->name }}
                                                     </option>
-                                              
+                                              @endif
                                             @endforeach
                                         @endif
                                     </select>

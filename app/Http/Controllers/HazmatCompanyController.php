@@ -33,7 +33,7 @@ class HazmatCompanyController extends Controller
                 $query->where('id', $role_id);
             })->where('hazmat_companies_id', $id)->first();
            
-            $hazmatCompany = hazmatCompany::select('id', 'name', 'user_name','email','first_name','last_name','phone','logo')->find($id);
+            $hazmatCompany = hazmatCompany::select('id', 'name','email','first_name','last_name','phone','logo')->find($id);
             return view('hazmatCompany.create', ["hazmatCompany" => $hazmatCompany, 'head_title' => 'Edit', 'button' => 'Update','user'=>$user]);
         } catch (\Throwable $e) {
             return back()->withError($e->getMessage())->withInput();

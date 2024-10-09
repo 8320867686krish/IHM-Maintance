@@ -79,7 +79,7 @@
                             <div class="row">
                                 <div class="col-sm-12 col-md-6 col-lg-4">
                                     <div class="form-group mb-3">
-                                        <label for="phone">Phone<span class="text-danger">*</span></label>
+                                        <label for="phone">Phone</label>
                                         <input type="number"
                                             class="form-control @error('phone') is-invalid @enderror"
                                             id="phone" name="phone"
@@ -126,7 +126,7 @@
                                 </div>
                             </div>
 
-                            <h5>Ship Owner Details</h5>
+                            <h5>Ship Owner / Manager Details</h5>
 
                             <div class="row">
                                 <div class="col-sm-12 col-md-6 col-lg-4">

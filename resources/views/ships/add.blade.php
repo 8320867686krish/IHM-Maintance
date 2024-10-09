@@ -1,5 +1,8 @@
 @extends('layouts.app')
-
+@section('css')
+<link rel="stylesheet" type="text/css" href="{{ asset('assets/vendor/bootstrap-select/css/bootstrap-select.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('assets/vendor/datatables/css/select.bootstrap4.css') }}">
+@endsection
 @section('content')
     <div class="container-fluid dashboard-content">
         <!-- ============================================================== -->
@@ -84,30 +87,7 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="col-sm-12 col-md-6">
-                                    <div class="form-group">
-                                        <label for="ihm_table">IHM Table</label>
-                                        <select class="form-control @error('ihm_table') is-invalid @enderror" id="ihm_table"
-                                            name="ihm_table" onchange="removeInvalidClass(this)">
-                                            <option value="">Select IHM</option>
-                                            <option value="IHM Part 1"
-                                                {{ old('ihm_table') == 'IHM Part 1' || (isset($ship) && $ship->ihm_table == 'IHM Part 1') ? 'selected' : '' }}>
-                                                IHM Part 1</option>
-                                            <option value="IHM Part 2&3"
-                                                {{ old('ihm_table') == 'IHM Part 2&3' || (isset($ship) && $ship->ihm_table == 'IHM Part 2&3') ? 'selected' : '' }}>
-                                                IHM Part 2&3</option>
-                                            <option value="IHM Gap Analysis"
-                                                {{ old('ihm_table') == 'IHM Gap Analysis' || (isset($ship) && $ship->ihm_table == 'IHM Gap Analysis') ? 'selected' : '' }}>
-                                                IHM Gap Analysis</option>
-                                            <option value="IHM Additional Sampling"
-                                                {{ old('ihm_table') == 'IHM Additional Sampling' || (isset($ship) && $ship->ihm_table == 'IHM Additional Sampling') ? 'selected' : '' }}>
-                                                IHM Additional Sampling</option>
-                                        </select>
-                                        @error('ihm_table')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                </div>
+                               
                             </div>
                             <div class="row">
                                 <div class="col-sm-12 col-md-6">
@@ -126,7 +106,7 @@
                                         <label for="project_no">Project Number</label>
                                         <input type="text" class="form-control @error('project_no') is-invalid @enderror"
                                             id="project_no" name="project_no" placeholder="Ship Number..."
-                                            value="{{ old('project_no', $ship->project_no ?? '') }}" readonly>
+                                            value="{{ old('project_no', $ship->project_no ?? '') }}" >
                                     </div>
                                 </div>
                                 <div class="col-sm-12 col-md-6">
@@ -155,7 +135,7 @@
                                 </div>
                                 <div class="col-sm-12 col-md-6 col-lg-6">
                                     <div class="form-group mb-3">
-                                        <label for="phone">Phone<span class="text-danger">*</span></label>
+                                        <label for="phone">Phon</label>
                                         <input type="number"
                                             class="form-control @error('phone') is-invalid @enderror"
                                             id="phone" name="phone"
@@ -177,6 +157,41 @@
                                         <div class="invalid-feedback error" id="passwordError"></div>
                                     </div>
                                 </div>
+                                <div class="form-group col-12 mb-3">
+                                    <label for="project_no">Managers <span class="text-danger">*</span></label>
+                                    <select class="selectpicker show-tick form-control form-control-lg" name="maneger_id[]"
+                                        id="manager_id" multiple data-live-search="true" data-actions-box="true"
+                                        {{ $readonly }} onchange="removeInvalidClass(this)">
+                                        @if ($managers->count() > 0)
+                                            @foreach ($managers as $manager)
+                                         
+                                        
+                                                    <option value="{{ $manager->id }}">
+                                                        {{ $manager->name }}
+                                                    </option>
+                                              
+                                            @endforeach
+                                        @endif
+                                    </select>
+                                    <div class="invalid-feedback error" id="user_idError"></div>
+                                </div>
+                                <div class="form-group col-12 mb-3">
+                                    <label for="project_no">Experts <span class="text-danger">*</span></label>
+                                    <select class="selectpicker show-tick form-control form-control-lg" name="expert_id[]"
+                                        id="expert_id" multiple data-live-search="true" data-actions-box="true"
+                                        {{ $readonly }} onchange="removeInvalidClass(this)">
+                                        @if ($experts->count() > 0)
+                                            @foreach ($experts as $expert)
+                                          
+                                                    <option value="{{ $expert->id }}">
+                                                        {{ $expert->name }}
+                                                    </option>
+                                            @endforeach
+                                        @endif
+                                    </select>
+                                    <div class="invalid-feedback error" id="user_idError"></div>
+                                </div>
+                             
                             </div>
                             <div class="row mt-3">
                                 <div class="col-sm-12 col-md-6">
@@ -201,19 +216,13 @@
 @endsection
 
 @push('js')
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+
+<script src="{{ asset('assets/vendor/bootstrap-select/js/bootstrap-select.js') }}"></script>
+
     <script>
         $(document).ready(function() {
-            var ship_identi = $("#client_id").find('option:selected').data('identi');
-            var imo = $('#imo_number').val();
-
-            $('#imo_number').blur(function() {
-                imo = $(this).val();
-                $("#project_no").val("SOSI/" + ship_identi + "/" + imo);
-            });
-            $('#client_id').change(function() {
-                ship_identi = $(this).find('option:selected').data('identi');
-                $("#project_no").val("SOSI/" + ship_identi + (imo ? "/" + imo : ""));
-            })
+          
         });
     </script>
 @endpush

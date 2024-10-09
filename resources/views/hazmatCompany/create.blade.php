@@ -73,7 +73,7 @@
                         <div class="row">
                             <div class="col-sm-12 col-md-6">
                                 <div class="form-group">
-                                    <label for="phone">Phone <span class="text-danger">*</span></label>
+                                    <label for="phone">Phone</label>
                                     <input type="number" class="form-control @error('phone') is-invalid @enderror"
                                         id="phone" name="phone" value="{{ old('phone', $hazmatCompany->phone ?? '') }}"
                                         placeholder="Phone..." autocomplete="off"
@@ -96,18 +96,7 @@
                         <div class="row">
                             <input type="hidden" name="user_id" value="{{ $user->id ?? null }}">
 
-                            <div class="col-sm-12 col-md-6">
-                                <div class="form-group">
-                                    <label for="user_name">User Name <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control @error('userName') is-invalid @enderror"
-                                        id="user_name" name="user_name" value="{{ old('user_name', $hazmatCompany->user_name ?? '') }}"
-                                        placeholder="User Name..." autocomplete="off"
-                                        onchange="removeInvalidClass(this)">
-
-                                    <div class="invalid-feedback error" id="user_nameError"></div>
-                                </div>
-                            </div>
-
+                          
                             <div class="col-sm-12 col-md-6">
                                 <div class="form-group">
                                     <label for="password">Password
