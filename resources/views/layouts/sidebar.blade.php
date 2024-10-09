@@ -8,7 +8,7 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav flex-column">
-                    <li class="nav-item" style="text-align:center">
+                    <li class="nav-item" style="margin-top:-10px;">
                        
                          
                                 <x-logo/>
