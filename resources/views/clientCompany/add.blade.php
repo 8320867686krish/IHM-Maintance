@@ -90,6 +90,8 @@
                                     </div>
                                 </div>
 
+                                
+
                                 <div class="col-sm-12 col-md-6 col-lg-4">
                                     <div class="form-group mb-3">
                                         <label for="phone">Password<span class="text-danger">*</span></label>
@@ -112,6 +114,16 @@
                                        
                                     </div>
                                 </div>
+
+                                <div class="col-12 col-md-6 col-lg-4">
+                                <div class="form-group">
+                                    <label for="level">Logo <span class="text-danger">*</span></label>
+                                    <input type="file" class="form-control @error('client_image') is-invalid @enderror"
+                                        id="logo" accept="image/*" name="client_image"
+                                        onchange="removeInvalidClass(this)">
+                                    <div class="invalid-feedback error" id="logoError"></div>
+                                </div>
+                            </div>
                               
                             </div>
                             

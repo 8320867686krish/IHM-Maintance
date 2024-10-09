@@ -1,0 +1,1 @@
+<a class="navbar-brand" href="{{ route('dashboard') }}"><img src="{{ asset($logo1) }}" style="width: 30px !important;"/></a>

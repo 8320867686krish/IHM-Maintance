@@ -17,7 +17,8 @@ class Ship extends Model
         'client_id',
         'client_user_id', 
         'user_id',
-        'hazmat_companies_id'
+        'hazmat_companies_id',
+        'ship_image'
     ];
 
    public function shipTeams(){

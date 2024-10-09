@@ -32,10 +32,10 @@
             <div class="col-lg-12 col-md-12 col-sm-12 col-12">
                 @include('layouts.message')
                 <div class="card">
-                    <h5 class="card-header">{{ $head_title ?? '' }} Projects</h5>
+                    <h5 class="card-header">{{ $head_title ?? '' }} Ship</h5>
                     <div class="card-body">
                         <form method="post" action="{{ route('ships.store') }}" class="needs-validation" novalidate
-                            id="projectForm">
+                            id="projectForm" enctype="multipart/form-data">
                             @csrf
                             <input type="hidden" name="id" value="{{ $ship->id ?? '' }}">
                             <input type="hidden" name="user_id" value="{{$shipUser->id ?? ''}}">
@@ -87,6 +87,19 @@
                                         @enderror
                                     </div>
                                 </div>
+
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="form-group">
+                                        <label for="project_name">Ship Image</label>
+                                        <input type="file" class="form-control @error('ship_image') is-invalid @enderror"
+                                            id="ship_image" name="ship_image" autocomplete="off"
+                                            onchange="removeInvalidClass(this)">
+                                        @error('ship_type')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                               
                                
                             </div>
                             <div class="row">

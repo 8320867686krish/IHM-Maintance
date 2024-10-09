@@ -6,7 +6,7 @@
                     <h5 class="mb-0">
                         <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#collapseSeven"
                             aria-expanded="true" aria-controls="collapseSeven">
-                            <span class="fas fa-angle-down mr-3"></span>Assign Project
+                            <span class="fas fa-angle-down mr-3"></span>Assign Team
                         </button>
                     </h5>
                 </div>

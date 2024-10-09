@@ -8,18 +8,11 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav flex-column">
-                    <li class="nav-divider">
-                        <div class="row">
-                            <div class="col-6">
-                                Menu
-                            </div>
-                            <div class="col-6 pr-0">
-                                <button class="navbar-toggler float-right" type="button" id="sidebarCollapse">
-                                    <span class="navbar-toggler-icon" width: 1em; height: 1em;></span>
-                                    {{-- style="display: block !important;" --}}
-                                </button>
-                            </div>
-                        </div>
+                    <li class="nav-item" style="text-align:center">
+                       
+                         
+                                <x-logo/>
+                            
                     </li>
                     @php 
                     if (request()->routeIs('dashboard')) {

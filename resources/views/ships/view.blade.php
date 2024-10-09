@@ -157,7 +157,7 @@
                    
                     <li>
                         <a href="#assign_project"><span class="icon"><i
-                                    class="fas fa-fw fa-briefcase"></i></span>OnBoard Survey Plan</a>
+                                    class="fas fa-fw fa-briefcase"></i></span>Assign Team</a>
                     </li>
                 
                 
@@ -400,7 +400,7 @@
     <div class="main-content container-fluid p-0" id="assign_project">
 
         <div class="email-head-subject">
-            <div class="title"><span>OnBoard Survey Plan</span>
+            <div class="title">
 
             </div>
         </div>

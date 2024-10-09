@@ -9,9 +9,12 @@ use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use App\Traits\ImageUpload;
 use Illuminate\Support\Facades\Auth;
+
 class ClientCompanyController extends Controller
 {
     //
+    use ImageUpload;
+
     public function index()
     {
         $role_level = Auth::user()->roles->first()->level;
@@ -62,6 +65,17 @@ class ClientCompanyController extends Controller
                 'password' => $inputData['password'],
                 'hazmat_companies_id' => $inputData['hazmat_companies_id']
             ];
+            if( $request->hasFile('client_image' ) ) {
+                if($inputData['id'] != 0){
+                    $clicntCompany = ClientCompany::find($inputData['id']);
+                    if ($clicntCompany && $clicntCompany->client_image) {
+                        $oldImagePath = $this->deleteImage('uploads/clientcompany/',$clicntCompany->client_image);
+                    }
+                }
+                $image = $this->upload($request,'client_image', 'uploads/clientcompany');
+                $inputData['client_image'] = $image;
+            }
+           
             if($id == 0){
               
                 $user = User::create($userdata);

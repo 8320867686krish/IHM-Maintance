@@ -24,14 +24,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $user = Auth::user();
-        if($user){
-            $currentUserRoleLevel = $user->roles->first()->level;
-            if($currentUserRoleLevel == 2 || $currentUserRoleLevel == 3 || $currentUserRoleLevel == 4){
-              //  $company = hazmatCompany::where('id')
-            }
-
-        }
+       
         if (Schema::hasTable('permissions')) {
             $allPermissions = Permission::select('id','group_type','name','is_show','full_name')->get()->toArray();
             // Share permissions with all views

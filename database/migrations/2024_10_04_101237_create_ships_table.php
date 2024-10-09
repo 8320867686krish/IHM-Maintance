@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('ship_type')->nullable();
             $table->string('project_no')->nullable();
             $table->string('imo_number')->nullable()->unique();
+            $table->string('ship_image')->nullable();
             $table->unsignedBigInteger('client_id')->nullable();  // Same data type as hazmat_companies.id
             $table->foreign('client_id')->references('id')->on('client_companies')->onDelete('cascade');
             $table->unsignedBigInteger('client_user_id')->nullable();  // Same data type as hazmat_companies.id

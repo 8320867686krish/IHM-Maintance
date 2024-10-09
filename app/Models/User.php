@@ -56,4 +56,18 @@ class User extends Authenticatable
 
     
        }
+       public function hazmatCompany()
+       {
+           return $this->belongsTo(hazmatCompany::class,'hazmat_companies_id','id');
+       }
+
+       public function clientCompany(){
+        return $this->hasOne(ClientCompany::class,'user_id','id');
+
+       }
+
+       public function shipClient(){
+        return $this->hasOne(Ship::class,'user_id','id');
+
+       }
 }
