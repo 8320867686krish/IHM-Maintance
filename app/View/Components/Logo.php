@@ -20,10 +20,10 @@ class Logo extends Component
         if ($currentUserRoleLevel == 2 || $currentUserRoleLevel == 3 || $currentUserRoleLevel == 4) {
             $logo = "uploads/hazmatCompany/" . $user->hazmatCompany->logo;
         }
-        if ($currentUserRoleLevel == 5) {
+        else if ($currentUserRoleLevel == 5) {
             $logo = "uploads/clientcompany/"/$user->clientCompany->client_image;
         }
-        if ($currentUserRoleLevel == 6) {
+        else if ($currentUserRoleLevel == 6) {
             $logo = 'uploads/clientcompany/' . $user->shipClient->client->client_image;
         }else{
             $logo = 'assets/images/logo.png';
