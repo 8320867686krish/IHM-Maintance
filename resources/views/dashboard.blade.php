@@ -15,25 +15,51 @@
             </div>
         </div>
     </div>
+
     <div class="row">
-    <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12">
-        <div class="card">
-            <h5 class="card-header">Bar Charts</h5>
-            <div class="card-body">
-                <canvas id="chartjs_bar"></canvas>
+
+        <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12">
+            <div class="card">
+                <h5 class="card-header text-center">PO Overview</h5>
+                <div class="card-body">
+                    <canvas id="chartjs_bar"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+            <div class="card">
+                <h5 class="card-header  text-center">Training </h5>
+                <div class="card-body">
+                    <div id="c3chart_pie"></div>
+                </div>
             </div>
         </div>
     </div>
-    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
-                        <div class="card">
-                            <h5 class="card-header">Pie Chart </h5>
-                            <div class="card-body">
-                                <div id="c3chart_pie"></div>
-                            </div>
-                        </div>
-                    </div>
+    <div class="row">
+        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 mb-3 ">
+        <label>Ship</label>
+            <select class="form-control">
+                <option>Select Ship</option>
+                <option selected="selected">Ship1</option>
+                <option>Ship2</option>
+                <option>Ship3</option>
+                <option>Ship4</option>
+                <option>Ship5</option>
+            </select>
+        </div>
+    </div>
+    <div class="row">
+    <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12">
+        <div class="card">
+            <h5 class="card-header text-center">Ship Po Overview</h5>
+            <div class="card-body">
+                <canvas id="chartjs_bar_ship"></canvas>
+            </div>
+        </div>
+    </div>
     </div>
 </div>
+
 @stop
 @push('js')
 <script src="{{ asset('assets/vendor/jquery/jquery-3.3.1.min.js') }}"></script>
@@ -44,5 +70,5 @@
 <script src="{{ asset('assets/vendor/charts/c3charts/d3-5.4.0.min.js') }}"></script>
 <script src="{{ asset('assets/vendor/charts/c3charts/C3chartjs.js') }}"></script>
 
-   
+
 @endpush

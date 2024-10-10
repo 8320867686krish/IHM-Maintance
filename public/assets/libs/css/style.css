@@ -159,7 +159,7 @@ body {
     font-family: 'Circular Std Book';
     font-style: normal;
     font-weight: normal;
-    font-size: 14px;
+    font-size: 16px;
     color: #71748d;
     background-color: #efeff6;
     -webkit-font-smoothing: antialiased;
@@ -3697,7 +3697,7 @@ btn-link
 .tab-regular .nav.nav-tabs .nav-link {
     display: block;
     padding: 17px 49px;
-    color: #71748d;
+    color: #495057;
     background-color: #dddde8;
     margin-right: 5px;
     border-color: #dddde8;

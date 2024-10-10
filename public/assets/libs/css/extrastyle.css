@@ -8,6 +8,12 @@
     /* color: #3d405c !important; */
 
 }
+.campaign-metrics {
+    border: 1px solid #ebeef2 !important;
+    text-align: center;
+    padding: 8px 79px;
+    background: #ebeef2;
+}
 *{
     margin:0px;
     padding: 0px;
@@ -15,14 +21,21 @@
 .invalid-feedback {
     font-size: 14px !important;
 }
-
+.profile{
+    border-radius: 50% !important;
+    border: 1px solid #ebeef2;
+    padding: 16px;
+    background: #ebeef2;
+    color: #495057;
+    font-size:14px;
+}
 .addNewBtn {
-    background-color: #3f80ea !important;
+    background-color: #5969ff  !important;
     font-size: 0.825rem;
     padding: 0.45rem 1rem;
     line-height: 1.625;
     border-radius: 0.3rem;
-    border-color:#3f80ea;
+    border-color:#5969ff;
     /* background-color: #017cc0 !important; */
 }
 

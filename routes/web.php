@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\ClientCompanyController;
 use App\Http\Controllers\HazmatCompanyController;
+use App\Http\Controllers\HelpCente;
+use App\Http\Controllers\HelpCenterController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoleController;
@@ -28,6 +30,7 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
+    Route::get('/helpcenter', [HelpCenterController::class, 'index'])->name('helpcenter.list');
     Route::middleware('can:roles')->group(function () {
         Route::controller(RoleController::class)->group(function () {
             Route::get('roles', 'index')->name('roles')->middleware('can:roles');

@@ -8,6 +8,10 @@
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/vendor/datatables/css/select.bootstrap4.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/vendor/datatables/css/fixedHeader.bootstrap4.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/vendor/fancybox/fancybox.min.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('assets/vendor/datatables/css/dataTables.bootstrap4.css')}}">
+<link rel="stylesheet" type="text/css" href="{{ asset('assets/vendor/datatables/css/buttons.bootstrap4.css')}}">
+<link rel="stylesheet" type="text/css" href="{{ asset('assets/vendor/datatables/css/select.bootstrap4.css')}}">
+<link rel="stylesheet" type="text/css" href="{{ asset('assets/vendor/datatables/css/fixedHeader.bootstrap4.css')}}">
 <style>
     .bg-overlay {
         position: absolute;
@@ -153,14 +157,29 @@
                             <span class="icon"><i class="fas fa-ship"></i></span>Ship Particulars
                         </a>
                     </li>
-                   
-                   
+
+                    @can('ships.add')
                     <li>
                         <a href="#assign_project"><span class="icon"><i
                                     class="fas fa-fw fa-briefcase"></i></span>Assign Team</a>
                     </li>
-                
-                
+                    @endcan
+                    <li>
+                        <a href="#chart"><span class="icon"><i
+                                    class="fas fa-fw fa-briefcase"></i></span>Chart</a>
+                    </li>
+
+                    <li>
+                        <a href="#poOrders"><span class="icon"><i
+                                    class="fas fa-fw fa-briefcase"></i></span>PO Records</a>
+                    </li>
+
+                    <li>
+                        <a href="#training"><span class="icon"><i
+                                    class="fas fa-fw fa-briefcase"></i></span>Onbaord Training Record </a>
+                    </li>
+
+
 
                 </ul>
             </div>
@@ -185,7 +204,7 @@
             <form method="post" class="needs-validation" novalidate id="projectForm" enctype="multipart/form-data">
                 @csrf
                 <input type="hidden" name="id" value="{{ $ship->id ?? '' }}" id="projectId">
-               
+
                 <div class="row">
                     <div class="col-sm-12 col-md-6 col-lg-4">
                         <div class="form-group mb-3">
@@ -394,48 +413,118 @@
         </div>
     </div>
 
-   
 
-    
-    <div class="main-content container-fluid p-0" id="assign_project">
+    <div class="main-content container-fluid p-0" id="chart">
 
         <div class="email-head-subject">
             <div class="title">
-
+                Chart
             </div>
         </div>
 
         <div class="row">
-            @include('ships.assignShip')
+            <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12">
+                <div class="card">
+                    <h5 class="card-header text-center">Po Overview</h5>
+                    <div class="card-body">
+                        <canvas id="chartjs_bar_ship"></canvas>
+                    </div>
+                </div>
+            </div>
         </div>
 
     </div>
 
-   
-  
+    <div class="main-content container-fluid p-0" id="poOrders">
 
-   
-   
+        <div class="email-head-subject">
+            <div class="title">
+                Po Records
+            </div>
+        </div>
 
-  
+        <div class="row">
+            <divv class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-bordered first">
+                        <thead>
+                            <tr>
+                                <th width="15%">Sr.No</th>
+                                <th>PO Detalis</th>
+                                <th width="10%">PO Detalis</th>
+                                <th width="20%">Date</th>
+                                <th width="20%">Checked By</th>
+                            </tr>
+                        </thead>
+                        <tbody>
 
-   
+                            <tr>
+                                <td>test</td>
+                                <td>test</td>
+                                <td>test</td>
+                                <td>test</td>
+                                <td>test</td>
+                            </tr>
+
+
+                        </tbody>
+                    </table>
+                </div>
+        </div>
+
+    </div>
+
+    <div class="main-content container-fluid p-0" id="training">
+
+        <div class="email-head-subject">
+            <div class="title">
+                Onbaord Training Record
+            </div>
+        </div>
+
+        <div class="row">
+            <divv class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-bordered first">
+                        <thead>
+                            <tr>
+                                <th width="15%">Sr.No</th>
+                                <th>Date</th>
+                                <th width="10%">Duration</th>
+                                <th width="20%">Number of Pepole</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <tr>
+                                <td>1</td>
+                                <td>10-10-2024</td>
+                                <td>15 Days</td>
+                                <td>15</td>
+                               
+                            </tr>
+
+
+                        </tbody>
+                    </table>
+                </div>
+        </div>
+
+    </div>
+
+
 </div>
 @endsection
 
 @push('js')
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.9.359/pdf.min.js"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
-<script src="{{ asset('assets/vendor/jquery.areaSelect.js') }}"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
-<script src="{{ asset('assets/vendor/bootstrap-select/js/bootstrap-select.js') }}"></script>
 <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 <script src="{{ asset('assets/vendor/datatables/js/dataTables.bootstrap4.min.js') }}"></script>
 <script src="{{ asset('assets/vendor/datatables/js/data-table.js') }}"></script>
-<script src="{{ asset('assets/libs/js/bootstrap4-toggle.min.js') }}"></script>
-<script src="{{ asset('assets/vendor/fancybox/fancybox.min.js') }}"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-mousewheel/3.1.13/jquery.mousewheel.min.js"></script>
+<script src="{{ asset('assets/vendor/bootstrap-select/js/bootstrap-select.js') }}"></script>
+<script src="{{ asset('assets/vendor/jquery/jquery-3.3.1.min.js') }}"></script>
 
+<script src="{{ asset('assets/vendor/charts/charts-bundle/Chart.bundle.js') }}"></script>
+<script src="{{ asset('assets/vendor/charts/charts-bundle/chartjs.js') }}"></script>
 <script>
     let rotationState = 0;
 
@@ -1047,31 +1136,31 @@
         });
 
 
-      
-      
-       
-       
 
-       
 
-      
-      
-     
-     
+
+
+
+
+
+
+
+
+
         //Check Image javascript code
         let selectedFiles = [];
-        
-        
 
-       
 
-    
 
-     
-    
-     
 
-      
+
+
+
+
+
+
+
+
 
         $(document).on('change', '.documentLoadCheckbox', function() {
             let id = $(this).attr('data-id');

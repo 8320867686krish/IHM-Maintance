@@ -65,7 +65,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="" ><i class="fa fa-fw fa-user-circle"></i>Help Center</a>
+                        <a class="nav-link" href="{{ route('helpcenter.list') }}" ><i class="fa fa-fw fa-user-circle"></i>Help Center</a>
                     </li>
                 </ul>
             </div>

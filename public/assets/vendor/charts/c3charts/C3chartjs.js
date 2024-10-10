@@ -272,22 +272,26 @@
                 bindto: "#c3chart_pie",
                 data: {
                     columns: [
-                        ['data1', 30],
-                        ['data2', 50]
+                        ['ship1', 5],
+                        ['ship2', 10],
+                        ['ship3', 15],
+                        ['ship4', 7],
+                        ['ship5', 9],
                     ],
                     type: 'pie',
 
                     colors: {
-                         data1: '#5969ff',
-                        data2: '#ff407b'
-
-
+                        ship1: '#7040fa',
+                        ship2: '#ff407b',
+                        ship3: '#25d5f2',
+                        ship4: '#ffc750',
+                        ship5: '#ff004e',
                     }
                 },
                 pie: {
                     label: {
                         format: function(value, ratio, id) {
-                            return d3.format('$')(value);
+                            return value;
                         }
                     }
                 }
