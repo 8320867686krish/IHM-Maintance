@@ -81,7 +81,7 @@
                                         <div class="autherrorMsg error text-danger mt-3"></div>
 									</div>
 									<div class="d-grid gap-2 mt-4 text-center">
-                                        <button type="submit" class="btn btn-lg btn-primary">Sign in</button>
+                                        <button type="submit" class="btn btn-lg btn-primary">Sign In</button>
 									</div>
 								</form>
 							</div>
