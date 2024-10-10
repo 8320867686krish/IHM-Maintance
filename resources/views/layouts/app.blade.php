@@ -3,7 +3,8 @@
 <body>
 <div class="bg-overlay" style="display: none;"></div>
 
-	<div class="">
+<div class="dashboard-main-wrapper">
+
 
 
 		@include('layouts.sidebar')
