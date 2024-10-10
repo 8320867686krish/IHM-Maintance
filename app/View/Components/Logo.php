@@ -12,7 +12,7 @@ class Logo extends Component
     /**
      * Create a new component instance.
      */
-   public $logo1;
+   public $logo1,$currentUserRoleLevel;
     public function __construct()
     {
         $user = Auth()->user();
@@ -21,7 +21,7 @@ class Logo extends Component
             $logo = "uploads/hazmatCompany/" . $user->hazmatCompany->logo;
         }
         else if ($currentUserRoleLevel == 5) {
-            $logo = "uploads/clientcompany/"/$user->clientCompany->client_image;
+            $logo = "uploads/clientcompany/".$user->clientCompany->client_image;
         }
         else if ($currentUserRoleLevel == 6) {
             $logo = 'uploads/clientcompany/' . $user->shipClient->client->client_image;
@@ -29,6 +29,7 @@ class Logo extends Component
             $logo = 'assets/images/logo.png';
         }
         $this->logo1 = $logo;
+        $this->currentUserRoleLevel = $currentUserRoleLevel;
       
     }
 
@@ -38,7 +39,7 @@ class Logo extends Component
     public function render(): View|Closure|string
     {
 
-        return view('components.logo', ['logo1' => $this->logo1]);
+        return view('components.logo', ['logo1' => $this->logo1,'currentUserRoleLevel'=>$this->currentUserRoleLevel]);
 
     }
 }

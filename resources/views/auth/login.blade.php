@@ -14,6 +14,9 @@
     <link rel="stylesheet" href="{{ asset('assets/vendor/fonts/fontawesome/css/fontawesome-all.css') }}">
     
     <style>
+        .container-fluid{
+            padding-left: 0px !important;
+        }
         .divider:after,
         .divider:before {
             content: "";

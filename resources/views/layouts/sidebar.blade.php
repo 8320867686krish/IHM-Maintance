@@ -1,7 +1,7 @@
 <div class="nav-left-sidebar sidebar-dark" id="mainSidebar">
     <div class="menu-list">
         <nav class="navbar navbar-expand-lg navbar-light">
-            <a class="d-xl-none d-lg-none" href="#">Dashboard</a>
+          
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -19,9 +19,7 @@
                     $isActive = true;
                     }
                     @endphp
-                    <li class="nav-item">
-                        <a class="nav-link {{ @$isActive ? 'active' : '' }}" href="{{ route('dashboard') }}" ><i class="fa fa-fw fa-user-circle"></i>Dashboard</a>
-                    </li>
+                   
                     @foreach ($allPermissions as $permission)
                     @if ($permission['group_type'] === 'main' && $permission['is_show'] == 1)
                     @can($permission['name'])
@@ -62,6 +60,13 @@
                     @endcan
                     @endif
                     @endforeach
+                    <li class="nav-item">
+                        <a class="nav-link" href="" ><i class="fa fa-fw fa-user-circle"></i>Portal User Guide Line</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="" ><i class="fa fa-fw fa-user-circle"></i>Help Center</a>
+                    </li>
                 </ul>
             </div>
         </nav>
