@@ -159,7 +159,7 @@ body {
     font-family: 'Circular Std Book';
     font-style: normal;
     font-weight: normal;
-    font-size: 14px;
+    font-size: 16px;
     color: #71748d;
     background-color: #efeff6;
     -webkit-font-smoothing: antialiased;
@@ -171,7 +171,7 @@ h3,
 h4,
 h5,
 h6 {
-    color: #3d405c;
+    color: #495057;
     margin: 0px 0px 15px 0px;
     font-family: 'Circular Std Medium';
 }
@@ -1227,7 +1227,7 @@ Top Header
     -webkit-box-shadow: 0px 0px 28px 0px rgba(82, 63, 105, 0.13);
     box-shadow: 0px 0px 28px 0px rgba(82, 63, 105, 0.13);
     -webkit-transition: all 0.3s ease;
-    min-height: 60px;
+    padding-bottom: 0.275rem;
 }
 
 
@@ -1645,7 +1645,9 @@ Left Navigation Sidebar
 
 .nav-left-sidebar {
     position: fixed;
-    width: 264px;
+    max-width: 260px;
+    min-width: 260px;
+
     height: 100%;
     overflow: auto;
     background-color: #fff;
@@ -1690,6 +1692,7 @@ Left Navigation Sidebar
 .nav-left-sidebar .navbar {
     position: relative;
     padding: 14px;
+
 }
 
 .nav-left-sidebar .navbar-nav .nav-item {}
@@ -1825,19 +1828,19 @@ Leftsidebar - dark
 }
 
 .sidebar-dark.nav-left-sidebar .nav-link i {
-    color: #7a80b4;
+    color: #e2e8ee !important;
 }
 
 .sidebar-dark.nav-left-sidebar .navbar-nav .nav-item {}
 
 .sidebar-dark.nav-left-sidebar .navbar-nav .nav-link {
-    color: #7a80b4;
+    color: #e2e8ee !important;
 }
 
 .sidebar-dark.nav-left-sidebar .navbar-nav .nav-link:focus,
 .sidebar-dark.nav-left-sidebar .navbar-nav .nav-link:hover {
     color: #fff;
-    background-color: #242849;
+    background-color: transparent;
     border-radius: 2px;
 }
 
@@ -1943,8 +1946,8 @@ Container / Wrapper
 
 .dashboard-main-wrapper {
     min-height: 100%;
-    padding-top: 60px;
     position: relative;
+    background: #ebeef2;
 }
 
 .dashboard-wrapper {
@@ -1955,7 +1958,8 @@ Container / Wrapper
 }
 
 .dashboard-content {
-    padding: 30px 30px 60px 30px;
+     padding: 30px 30px 60px 30px; 
+   
 }
 
 
@@ -3695,7 +3699,7 @@ btn-link
 .tab-regular .nav.nav-tabs .nav-link {
     display: block;
     padding: 17px 49px;
-    color: #71748d;
+    color: #495057;
     background-color: #dddde8;
     margin-right: 5px;
     border-color: #dddde8;
@@ -7093,10 +7097,6 @@ Media Query
 
     .aside-header .navbar-toggle {
         display: block;
-    }
-
-    .nav-left-sidebar .navbar {
-        padding: 14px;
     }
 
     .nav-left-sidebar {

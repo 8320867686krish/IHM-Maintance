@@ -272,11 +272,11 @@
                 bindto: "#c3chart_pie",
                 data: {
                     columns: [
-                        ['ship1', 5],
-                        ['ship2', 10],
-                        ['ship3', 15],
-                        ['ship4', 7],
-                        ['ship5', 9],
+                        ['Ship1', 5],
+                        ['Ship2', 10],
+                        ['Ship3', 15],
+                        ['Ship4', 7],
+                        ['Ship5', 9],
                     ],
                     type: 'pie',
 

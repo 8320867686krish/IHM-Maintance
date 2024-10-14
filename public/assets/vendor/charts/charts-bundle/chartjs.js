@@ -71,20 +71,20 @@
                         datasets: [{
                             label: 'Relevant PO',
                             data: [12, 19, 3, 17, 28],
-                           backgroundColor: "rgba(89, 105, 255,0.5)",
-                                    borderColor: "rgba(89, 105, 255,0.7)",
+                            backgroundColor: "rgba(255, 64, 123,0.5)",
+                            borderColor: "rgba(255, 64, 123,0.5)",
                             borderWidth: 2
                         }, {
                             label: 'NON Relevant PO',
                             data: [30, 29, 5, 5, 20],
-                           backgroundColor: "rgba(255, 64, 123,0.5)",
-                                    borderColor: "rgba(255, 64, 123,0.7)",
+                           backgroundColor: "#B5DFB2",
+                            borderColor: "#B5DFB2",
                             borderWidth: 2
                         },{
                             label: 'MD & SDOC',
                             data: [2, 5, 4, 3, 20,5],
-                           backgroundColor: "#5969ff",
-                                    borderColor: "#5969ff",
+                            backgroundColor: "rgba(89, 105, 255,0.5)",
+                            borderColor: "rgba(89, 105, 255,0.5)",
                             borderWidth: 2
                         }]
                     },
@@ -136,20 +136,20 @@
                         datasets: [{
                             label: 'Relevant PO',
                             data: [5,8,11,14,17,20,23,26,29,32,35,38], // Updated data to fit the axis
-                            backgroundColor: "rgba(89, 105, 255,0.5)",
-                            borderColor: "rgba(89, 105, 255,0.7)",
+                            backgroundColor: "rgba(255, 64, 123,0.5)",
+                            borderColor: "rgba(255, 64, 123,0.5)",
                             borderWidth: 2
                         }, {
                             label: 'NON Relevant PO',
                             data: [6,9,12,15,18,21,24,27,30,33,36], // Updated data to fit the axis
-                            backgroundColor: "rgba(255, 64, 123,0.5)",
-                            borderColor: "rgba(255, 64, 123,0.7)",
+                            backgroundColor: "#B5DFB2",
+                            borderColor: "#B5DFB2",
                             borderWidth: 2
                         }, {
                             label: 'MD & SDOC',
                             data: [7,10,13,16,19,22,25,28,31,34,37], // Updated data to fit the axis
-                            backgroundColor: "#5969ff",
-                            borderColor: "#5969ff",
+                            backgroundColor: "rgba(89, 105, 255,0.5)",
+                            borderColor: "rgba(89, 105, 255,0.5)",
                             borderWidth: 2
                         }]
                     },
@@ -190,7 +190,58 @@
                 });
             }
             
-
+            
+            if ($('#chartjs_bar_ihm_summery').length) {
+                var ctx = document.getElementById("chartjs_bar_ihm_summery").getContext('2d');
+                var myChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ["Asb","PCB",'ODS','Otin','Cyb','PFOS','Cd','Cr','Pb','Hg','PBB','PBDE','PCN','Radio','SCCP','HBCDD'],
+                        datasets: [{
+                            label: 'Content',
+                            data: [5,8,11,14,17,20,23,26,29,32,35,38,25,18,3,13], // Updated data to fit the axis
+                            backgroundColor: "rgba(255, 64, 123,0.5)",
+                            borderColor: "rgba(255, 64, 123,0.5)",
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true,   // Start the Y-axis from 0
+                                    stepSize: 5,         // Control the step size
+                                    min: 0,              // Minimum value of Y-axis
+                                    max: 40,             // Maximum value of Y-axis
+                                    fontSize: 14,
+                                    fontFamily: 'Circular Std Book',
+                                    fontColor: '#71748d'
+                                },
+                                gridLines: {            // Customize grid lines
+                                    color: "#e0e0e0"
+                                }
+                            }],
+                            xAxes: [{
+                                ticks: {
+                                    fontSize: 14,
+                                    fontFamily: 'Circular Std Book',
+                                    fontColor: '#71748d'
+                                }
+                            }]
+                        },
+                        legend: {
+                            display: true,
+                            position: 'bottom',
+                            labels: {
+                                fontColor: '#71748d',
+                                fontFamily: 'Circular Std Book',
+                                fontSize: 14
+                            }
+                        }
+                    }
+                });
+            }
+            
             if ($('#chartjs_radar').length) {
                 var ctx = document.getElementById("chartjs_radar");
                 var myChart = new Chart(ctx, {

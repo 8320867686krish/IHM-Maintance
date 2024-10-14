@@ -6,20 +6,20 @@
     <!-- pageheader -->
     <!-- ============================================================== -->
 
-    <div class="col-xl-10 offset-xl-1 col-lg-12 col-md-12 col-sm-12 col-12 mb-5">
+    <div class="col-xl-12  col-lg-12 col-md-12 col-sm-12 col-12 mb-5">
         <div class="section-block">
             <h2 class="pageheader-title">Help Center</h2>
         </div>
         <div class="tab-regular">
             <ul class="nav nav-tabs " id="myTab" role="tablist">
                 <li class="nav-item">
-                    <a class="nav-link active show" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Corresponding</a>
+                    <a class="nav-link active show" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Correspondence</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Credential</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Extract From Sms</a>
+                    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Extract From SMS</a>
                 </li>
             </ul>
             <div class="tab-content" id="myTabContent">
@@ -27,20 +27,21 @@
                     <div class="row">
 
 
-                        <div class="form-group col-6 mb-3">
+                        <div class="form-group col-12 mb-3">
                             <label for="assign_date">Subject<span class="text-danger">*</span></label>
                             <input type="text" class="form-control form-control-lg" id="subject" value="" name="subject" autocomplete="off" onchange="removeInvalidClass(this)">
                             <div class="invalid-feedback error" id="subjectError"></div>
                         </div>
-                        <div class="form-group col-6 mb-3">
-                            <label for="assign_date">File</label>
+                     
+                        <div class="form-group col-12 mt-3">
+                        <label for="attachment">Content</label>
+                        <textarea id="mytextarea">Content!</textarea>
+
+                        </div>
+                        <div class="form-group col-12 mb-3">
+                            <label for="attachment">Attachment</label>
                             <input type="file" class="form-control form-control-lg" id="file" name="file" autocomplete="off" onchange="removeInvalidClass(this)">
                             <div class="invalid-feedback error" id="fileError"></div>
-                        </div>
-                        <div class="form-group col-12 mt-3">
-                            <label class="control-label sr-only" for="summernote">Descriptions </label>
-                            <textarea id="mytextarea">Hello, World!</textarea>
-
                         </div>
 
 
@@ -97,12 +98,14 @@
 </div>
 @endsection
 @push('js')
-<script src="https://cdn.tiny.cloud/1/wk6mj8u8aldjoamdjmtc73at3fvdp6hxvt5fvb9elsc83x1d/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
-<script>
-    $(document).ready(function() {
-        tinymce.init({
-            selector: '#mytextarea'
+<script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            CKEDITOR.replace( 'mytextarea',{
+                versionCheck: false,
+            } );
+           
         });
-    });
-</script>
+    </script>
 @endpush

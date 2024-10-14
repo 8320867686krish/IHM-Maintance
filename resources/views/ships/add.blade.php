@@ -3,6 +3,8 @@
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/vendor/bootstrap-select/css/bootstrap-select.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/vendor/datatables/css/select.bootstrap4.css') }}">
 @endsection
+@section('shiptitle','Ships')
+
 @section('content')
     <div class="container-fluid dashboard-content">
         <!-- ============================================================== -->

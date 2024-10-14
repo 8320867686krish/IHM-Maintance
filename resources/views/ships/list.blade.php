@@ -1,5 +1,6 @@
 @extends('layouts.app')
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+@section('shiptitle','Ships')
 
 @section('content')
 <div class="container-fluid dashboard-content">
@@ -30,37 +31,27 @@
         @if (isset($ships) && $ships->count() > 0)
         @foreach ($ships as $ship)
         <div class="col-12 col-md-6 col-lg-3">
+        <a href="{{ route('ships.view', ['ship_id' => $ship->id]) }}" style='color:#71748d !important;'>
+
             <div class="card">
                 <img src="{{ asset('uploads/ship/' . $ship->ship_image) }}" alt="Company Logo" class="card-img-top">
 
                 <div class="card-header px-4 pt-4">
                     <div class="card-actions float-end">
-                        <div class="dropdown position-relative">
-                            <a href="#" data-bs-toggle="dropdown" data-bs-display="static">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="more-horizontal" class="lucide lucide-more-horizontal align-middle">
-                                    <circle cx="12" cy="12" r="1"></circle>
-                                    <circle cx="19" cy="12" r="1"></circle>
-                                    <circle cx="5" cy="12" r="1"></circle>
-                                </svg>
-                            </a>
+                        <div class="position-relative">
+                            
 
-                            <div class="dropdown-menu dropdown-menu-end">
+                          
 
 
                                 @can('ships.remove')
-                                <a href="{{ route('ships.delete', ['id' => $ship->id]) }}" class="dropdown-item
+                                <a href="{{ route('ships.delete', ['id' => $ship->id]) }}" 
                                                 onclick=" return confirm('Are you sure you want to delete this project?');"
                                     title="Delete">
                                     Remove
                                 </a>
                                 @endcan
-                                @can('ships.read')
-                                <a href="{{ route('ships.view', ['ship_id' => $ship->id]) }}"
-                                    rel="noopener noreferrer" title="View" class="dropdown-item">
-                                    View
-                                </a>
-                                @endcan
-                            </div>
+                              
                         </div>
                     </div>
                     <h5 class="card-title mb-0">{{ ucfirst($ship->ship_name) }}</h5>
@@ -73,7 +64,9 @@
                 </div>
 
             </div>
+        </a>
         </div>
+        
 
         @endforeach
         @else

@@ -14,6 +14,12 @@
     padding: 8px 79px;
     background: #ebeef2;
 }
+.chartSelect{
+    display: flex;
+    align-items: end;
+    gap: 10px;
+}
+
 *{
     margin:0px;
     padding: 0px;
