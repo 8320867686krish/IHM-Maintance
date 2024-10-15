@@ -228,7 +228,9 @@ ul {}
 
 ol li,
 ul li {}
-
+p:last-child {
+    margin: 0px;
+}
 .lead {
     font-size: 1.25rem;
     font-weight: 300;

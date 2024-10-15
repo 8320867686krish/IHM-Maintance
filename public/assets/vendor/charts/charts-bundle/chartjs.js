@@ -198,7 +198,7 @@
                     data: {
                         labels: ["Asb","PCB",'ODS','Otin','Cyb','PFOS','Cd','Cr','Pb','Hg','PBB','PBDE','PCN','Radio','SCCP','HBCDD'],
                         datasets: [{
-                            label: 'Content',
+                            label: 'Hazmat (Contained)',
                             data: [5,8,11,14,17,20,23,26,29,32,35,38,25,18,3,13], // Updated data to fit the axis
                             backgroundColor: "rgba(255, 64, 123,0.5)",
                             borderColor: "rgba(255, 64, 123,0.5)",

@@ -23,9 +23,8 @@
                             <table class="table table-striped table-bordered first">
                                 <thead>
                                     <tr>
-                                        <th width="15%">SR.NO</th>
+                                        <th width="15%">SR NO</th>
                                         <th>PO NO</th>
-                                        <th width="10%">PO Details</th>
                                         <th width="20%">Supplier Name</th>
                                         <th width="20%">Machinery</th>
                                         <th width="20%">Total No Of Items</th>
@@ -35,7 +34,6 @@
                                     <tr>
                                         <td>1</td>
                                         <td>PO10001</td>
-                                        <td>Engine overhaul parts for Ship A</td>
                                         <td>Marine Supplies Ltd</td>
                                         <td>Ship Engine</td>
                                         <td>12</td>
@@ -43,7 +41,6 @@
                                     <tr>
                                         <td>2</td>
                                         <td>PO10002</td>
-                                        <td>Navigation equipment for Ship B</td>
                                         <td>OceanTech Co.</td>
                                         <td>Navigation System</td>
                                         <td>5</td>
@@ -51,7 +48,6 @@
                                     <tr>
                                         <td>3</td>
                                         <td>PO10003</td>
-                                        <td>Fuel system parts for Ship C</td>
                                         <td>Seaworthy Supplies</td>
                                         <td>Fuel System</td>
                                         <td>8</td>
@@ -59,7 +55,6 @@
                                     <tr>
                                         <td>4</td>
                                         <td>PO10004</td>
-                                        <td>Communication system for Ship D</td>
                                         <td>Maritime Equipments Ltd</td>
                                         <td>Communication System</td>
                                         <td>3</td>
@@ -67,7 +62,6 @@
                                     <tr>
                                         <td>5</td>
                                         <td>PO10005</td>
-                                        <td>Deck machinery for Ship E</td>
                                         <td>ShipTech Solutions</td>
                                         <td>Deck Machinery</td>
                                         <td>7</td>
@@ -75,7 +69,6 @@
                                     <tr>
                                         <td>6</td>
                                         <td>PO10006</td>
-                                        <td>Propulsion system for Ship F</td>
                                         <td>Nautical Services</td>
                                         <td>Propulsion System</td>
                                         <td>6</td>
@@ -83,7 +76,6 @@
                                     <tr>
                                         <td>7</td>
                                         <td>PO10007</td>
-                                        <td>Electrical system upgrade for Ship G</td>
                                         <td>OceanView Equipments</td>
                                         <td>Electrical System</td>
                                         <td>10</td>
@@ -91,7 +83,6 @@
                                     <tr>
                                         <td>8</td>
                                         <td>PO10008</td>
-                                        <td>Hull maintenance tools for Ship H</td>
                                         <td>BlueWave Supply Co.</td>
                                         <td>Hull Maintenance Tools</td>
                                         <td>15</td>
@@ -99,7 +90,6 @@
                                     <tr>
                                         <td>9</td>
                                         <td>PO10009</td>
-                                        <td>Anchor system for Ship I</td>
                                         <td>MarineWorks Ltd</td>
                                         <td>Anchor System</td>
                                         <td>4</td>
@@ -107,7 +97,6 @@
                                     <tr>
                                         <td>10</td>
                                         <td>PO10010</td>
-                                        <td>Safety equipment for Ship J</td>
                                         <td>SafeSeas Equipments</td>
                                         <td>Safety Equipment</td>
                                         <td>20</td>
@@ -123,7 +112,7 @@
                 <div class="card-header" id="headingma2">
                     <h5 class="mb-0">
                         <button class="btn btn-link collapsed d-flex justify-content-between w-100" data-toggle="collapse" data-target="#collapsema2" aria-expanded="false" aria-controls="collapsema2">
-                            Onbaord Training Record
+                            Onbaord Training Records
                             <span class="fas fa-angle-down mr-3"></span>
 
                         </button>
@@ -134,10 +123,10 @@
                         <table class="table table-striped table-bordered first">
                             <thead>
                                 <tr>
-                                    <th width="15%">Sr.No</th>
-                                    <th>Date</th>
-                                    <th width="10%">Duration</th>
-                                    <th width="20%">Number of Pepole</th>
+                                    <th width="15%">Sr No</th>
+                                    <th>Training Date</th>
+                                    <th width="10%">Training Duration</th>
+                                    <th width="20%">Number of People Attended</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -219,7 +208,7 @@
                 </div>
                 <div id="collapsema3" class="collapse" aria-labelledby="headingma3" data-parent="#accordion">
                     <div class="card-body">
-                        Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-tabhetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                        MD & SDoc data goes here.
                     </div>
                 </div>
             </div>
@@ -238,7 +227,7 @@
                 </div>
                 <div id="collapsema4" class="collapse" aria-labelledby="headingma4" data-parent="#accordion">
                     <div class="card-body">
-                        Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-tabhetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                        Major Repair / Retrofit / Dry Doc / Conversion data goes here.
                     </div>
                 </div>
             </div>
@@ -256,7 +245,7 @@
                 </div>
                 <div id="collapsema5" class="collapse" aria-labelledby="headingma5" data-parent="#accordion">
                     <div class="card-body">
-                        Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-tabhetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                       Report Center data goes here.
                     </div>
                 </div>
             </div>

@@ -1,29 +1,9 @@
 @extends('layouts.app')
-@section('shiptitle','Client Company')
+@section('shiptitle','Client Management')
 
 @section('content')
     <div class="container-fluid dashboard-content">
-        <!-- ============================================================== -->
-        <!-- pageheader -->
-        <!-- ============================================================== -->
-        <div class="row">
-            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                <div class="page-header">
-                    <h2 class="pageheader-title">Client Management</h2>
-                    {{-- <div class="page-breadcrumb">
-                        <nav aria-label="breadcrumb">
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="{{ route('clientCompany') }}" class="breadcrumb-link">Client</a></li>
-                                <li class="breadcrumb-item active"><a href="#" class="breadcrumb-link">{{ $head_title ?? 'Add' }}</a></li>
-                            </ol>
-                        </nav>
-                    </div> --}}
-                </div>
-            </div>
-        </div>
-        <!-- ============================================================== -->
-        <!-- end pageheader -->
-        <!-- ============================================================== -->
+      
         <div class="row">
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                 @include('layouts.message')

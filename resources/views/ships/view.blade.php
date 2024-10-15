@@ -40,7 +40,7 @@ button.btn.btn-link .fas.fa-angle-down {
                     </li>
                     <li class="{{ $isBack == 0 ? 'active' : '' }}">
                         <a href="#ship_particulars">
-                            <span class="icon"><i class="fas fa-ship"></i></span>IHM Summary
+                            <span class="icon"><i class="fas fa-ship"></i></span>IHM Summary Key Details
                         </a>
                     </li>
 
@@ -54,7 +54,7 @@ button.btn.btn-link .fas.fa-angle-down {
 
                     <li>
                         <a href="#ihm_intial"><span class="icon"><i
-                                    class="fas fa-fw fa-briefcase"></i></span>IHM Initial Record</a>
+                                    class="fas fa-fw fa-briefcase"></i></span>IHM Initial Records</a>
                     </li>
 
                     <li>
@@ -94,9 +94,7 @@ button.btn.btn-link .fas.fa-angle-down {
     <div class="main-content container-fluid p-0" id="ship_particulars"
         {{ $isBack == 0 ? 'style=display:block' : 'style=display:none' }}>
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-            <div class="section-block">
-                <h5 class="section-title">IHM Summary Key Details</h5>
-            </div>
+            
             <div class="accrodion-regular">
                 <div id="accordion">
                     <div class="card">
@@ -108,7 +106,7 @@ button.btn.btn-link .fas.fa-angle-down {
                                 </button>
                             </h5>
                         </div>
-                        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion" style="">
+                        <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion" style="">
                             <div class="card-body">
                                 <canvas id="chartjs_bar_ihm_summery"></canvas>
                             </div>
@@ -134,7 +132,7 @@ button.btn.btn-link .fas.fa-angle-down {
                         <div class="card-header" id="headingThree">
                             <h5 class="mb-0">
                                 <button class="btn btn-link collapsed d-flex justify-content-between w-100 align-items-center" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                    Ship Particular
+                                    Ship Particulars
                                     <span class="fas fa-angle-down mr-3"></span>
                                 </button>
                             </h5>
@@ -340,10 +338,7 @@ button.btn.btn-link .fas.fa-angle-down {
 
                                     <div class="row mt-3">
                                         <div class="col-sm-12 col-md-6">
-                                            <div class="form-group">
-                                                <a href="{{ route('ships') }}" class="btn pl-0" type="button"><i
-                                                        class="fas fa-arrow-left"></i> <b>Back</b></a>
-                                            </div>
+                                           &nbsp;
                                         </div>
                                         <div class="col-sm-12 col-md-6">
                                             <div class="form-group">

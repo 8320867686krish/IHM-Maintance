@@ -3,30 +3,14 @@
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/vendor/bootstrap-select/css/bootstrap-select.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/vendor/datatables/css/select.bootstrap4.css') }}">
 @endsection
-@section('shiptitle','Ships')
+@section('shiptitle','Ship Management')
 
 @section('content')
     <div class="container-fluid dashboard-content">
         <!-- ============================================================== -->
         <!-- pageheader -->
         <!-- ============================================================== -->
-        <div class="row">
-            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                <div class="page-header">
-                    <h2 class="pageheader-title">Ship Management</h2>
-                    {{-- <div class="page-breadcrumb">
-                        <nav aria-label="breadcrumb">
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="{{ route('ships') }}"
-                                        class="breadcrumb-link">Ships</a></li>
-                                <li class="breadcrumb-item active"><a href="#"
-                                        class="breadcrumb-link">{{ $head_title ?? 'Add' }}</a></li>
-                            </ol>
-                        </nav>
-                    </div> --}}
-                </div>
-            </div>
-        </div>
+       
         <!-- ============================================================== -->
         <!-- end pageheader -->
         <!-- ============================================================== -->

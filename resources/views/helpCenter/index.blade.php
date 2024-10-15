@@ -9,16 +9,14 @@
     <!-- ============================================================== -->
 
     <div class="col-xl-12  col-lg-12 col-md-12 col-sm-12 col-12 mb-5">
-        <div class="section-block">
-            <h2 class="pageheader-title">Help Center</h2>
-        </div>
+       
         <div class="tab-regular">
             <ul class="nav nav-tabs " id="myTab" role="tablist">
                 <li class="nav-item">
                     <a class="nav-link active show" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Correspondence</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Credential</a>
+                    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Credentials</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Extract From SMS</a>
