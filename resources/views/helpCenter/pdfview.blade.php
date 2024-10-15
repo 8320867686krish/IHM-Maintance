@@ -3,7 +3,7 @@
 @section('content')
 @section('shiptitle','Help Center')
 <div class="container-fluid dashboard-content">
-<pdf-viewer src="{{url('assets/tet.pdf')}}"></pdf-viewer>
+<pdf-viewer src="{{ asset('assets/tet.pdf')}}"></pdf-viewer>
 </div>
 @endsection
 @push('js')
