@@ -47,7 +47,6 @@ class ShipController extends Controller
 
             // Execute the query and get the ships
             $ships = $shipsQuery->get();
-            
         }
         // Return the view with the ships data
         return view('ships.list', compact('ships'));
@@ -70,101 +69,111 @@ class ShipController extends Controller
         $experts = User::whereHas('roles', function ($query) use ($user) {
             $query->where('level', 4)->orderBy('level', 'asc');
         })->when($user->roles->first()->level != 1, function ($query) use ($user) {
-                return $query->where('hazmat_companies_id', $user->hazmat_companies_id);
+            return $query->where('hazmat_companies_id', $user->hazmat_companies_id);
         })->get(['id', 'name']);
 
         $managers = User::whereHas('roles', function ($query) use ($user) {
             $query->where('level', 3)->orderBy('level', 'asc');
         })->when($user->roles->first()->level != 1, function ($query) use ($user) {
-                return $query->where('hazmat_companies_id', $user->hazmat_companies_id);
+            return $query->where('hazmat_companies_id', $user->hazmat_companies_id);
         })->get(['id', 'name']);
 
         $clientsQuery->when($role_level == 6, function ($query) use ($user) {
             return $query->where('hazmat_companies_id', $user['hazmat_companies_id'])
                 ->where('user_id', $user->id);
         });
-        if (!Gate::allows('projects.edit')) {
-            $readonly = "readOnly";
-        } else {
-            $readonly = "";
-        }
+
         $clients = $clientsQuery->orderBy('id', 'desc')->get(['id', 'name', 'manager_initials']);
-        return view('ships.add', ['head_title' => 'Add', 'button' => 'Save', 'clients' => $clients, 'hazmat_companies_id' => $hazmat_companies_id, 'managers' => $managers, 'experts' => $experts, 'readonly' => $readonly]);
+        return view('ships.add', ['head_title' => 'Add', 'button' => 'Save', 'clients' => $clients, 'hazmat_companies_id' => $hazmat_companies_id, 'managers' => $managers, 'experts' => $experts]);
     }
     public function store(Request $request)
     {
         try {
+
             $id = $request->input('id');
             $inputData = $request->input();
-            $client_user = ClientCompany::where('id', $inputData['client_id'])->select('user_id', 'hazmat_companies_id')->first();
-            $userdata = [
-                'name' =>   $inputData['ship_name'],
-                'email' =>   $inputData['email'],
-                'phone' =>   $inputData['phone'],
-                'password' => $inputData['password'],
-                'hazmat_companies_id' => $client_user['hazmat_companies_id']
-            ];
+            if (@$inputData['client_id']) {
+                $client_user = ClientCompany::where('id', $inputData['client_id'])->select('user_id', 'hazmat_companies_id')->first();
+                $userdata = [
+                    'name' =>   $inputData['ship_name'],
+                    'email' =>   $inputData['email'],
+                    'phone' =>   $inputData['phone'],
+                    'password' => $inputData['password'],
+                    'hazmat_companies_id' => $client_user['hazmat_companies_id']
+                ];
+            }
+
             if ($id == 0) {
                 $user = User::create($userdata);
                 $role_id = Role::where('level', 6)->pluck('id')->first();
                 $user->assignRole([$role_id]);
                 $inputData['user_id'] = $user->id;
             } else {
-                if (@!$userdata['password']) {
-                    unset($userdata['password']);
+                if (@$inputData['user_id']) {
+                    if (@!$userdata['password']) {
+                        unset($userdata['password']);
+                    }
+                    User::updateOrCreate(['id' => $inputData['user_id']], $userdata);
                 }
-                User::updateOrCreate(['id' => $inputData['user_id']], $userdata);
             }
 
-            $inputData['client_user_id'] = $client_user['user_id'];
-            $inputData['hazmat_companies_id'] = $client_user['hazmat_companies_id'];
-            if( $request->hasFile('ship_image' ) ) {
-                if($inputData['id'] != 0){
+            if (@$client_user) {
+                $inputData['client_user_id'] = $client_user['user_id'];
+                $inputData['hazmat_companies_id'] = $client_user['hazmat_companies_id'];
+            }
+
+            if ($request->hasFile('ship_image')) {
+                if ($inputData['id'] != 0) {
                     $shipData = Ship::find($inputData['id']);
                     if ($shipData && $shipData->ship_image) {
-                        $oldImagePath = $this->deleteImage('uploads/ship/',$shipData->logo);
+                        $oldImagePath = $this->deleteImage('uploads/ship/', $shipData->logo);
                     }
                 }
-                $image = $this->upload($request,'ship_image', 'uploads/ship');
+                $image = $this->upload($request, 'ship_image', 'uploads/ship');
                 $inputData['ship_image'] = $image;
             }
+            
             $ship = Ship::updateOrCreate(['id' => $id], $inputData);
             if ($id == 0) {
                 $inputData['ship_id'] = $ship->id;
             } else {
                 $inputData['ship_id'] = $id;
             }
-            ShipTeams::where('ship_id', $inputData['ship_id'])->delete();
+         
+            if (@$inputData['maneger_id'] || @$inputData['expert_id']) {
+                ShipTeams::where('ship_id', $inputData['ship_id'])->delete();
+                if (@$inputData['maneger_id']) {
+                    foreach ($inputData['maneger_id'] as $user_id) {
+                        ShipTeams::create([
+                            'user_id' => $user_id,
+                            'ship_id' => $inputData['ship_id'],
+                            'hazmat_companies_id' => $inputData['hazmat_companies_id']
+                        ]);
+                    }
+                }
 
-            if (@$inputData['maneger_id']) {
-                foreach ($inputData['maneger_id'] as $user_id) {
-                    ShipTeams::create([
-                        'user_id' => $user_id,
-                        'ship_id' => $inputData['ship_id'],
-                        'hazmat_companies_id' => $inputData['hazmat_companies_id']
-                    ]);
+                if (@$inputData['expert_id']) {
+                    foreach ($inputData['expert_id'] as $user_id) {
+
+                        ShipTeams::create([
+                            'user_id' => $user_id,
+                            'ship_id' => $inputData['ship_id'],
+                            'hazmat_companies_id' => $inputData['hazmat_companies_id']
+                        ]);
+                    }
                 }
             }
-
-            if (@$inputData['expert_id']) {
-                foreach ($inputData['expert_id'] as $user_id) {
-
-                    ShipTeams::create([
-                        'user_id' => $user_id,
-                        'ship_id' => $inputData['ship_id'],
-                        'hazmat_companies_id' => $inputData['hazmat_companies_id']
-                    ]);
-                }
-            }
+           
             $message = empty($id) ? "Ship added successfully" : "Ship updated successfully";
+            return response()->json(['isStatus' => true, 'message' => $message]);
 
-            return redirect('ships')->with('message', $message);
         } catch (\Throwable $th) {
-            return back()->withError($th->getMessage())->withInput();
+            print_r($th->getMessage());
+          //  return back()->withError($th->getMessage())->withInput();
         }
     }
 
- 
+
     public function destroy(string $id)
     {
         try {
@@ -172,7 +181,8 @@ class ShipController extends Controller
             $user = User::findOrFail($ship['user_id']);
             $user->delete();
             $ship->delete();
-            return redirect('ships')->with('message', 'Ship deleted successfully');
+            return response()->json(['isStatus' => true, 'message' => 'Ship deleted successfully']);
+
         } catch (\Throwable $th) {
             return back()->withError($th->getMessage())->withInput();
         }
@@ -194,7 +204,8 @@ class ShipController extends Controller
         $managers =  User::whereHas('roles', function ($query) {
             $query->where('level', 3)->orderBy('level', 'asc');
         })->where('hazmat_companies_id', $user->hazmat_companies_id)->get(['id', 'name']);
-        $ship = Ship::with('shipTeams')->find($ship_id);
+        $ship = Ship::with(['shipTeams', 'client'])->find($ship_id);
+
         $users = $ship->shipTeams->pluck('user_id')->toArray();
         if (!Gate::allows('projects.edit')) {
             $readonly = "readOnly";
@@ -205,13 +216,13 @@ class ShipController extends Controller
         $experts = User::whereHas('roles', function ($query) use ($user) {
             $query->where('level', 4)->orderBy('level', 'asc');
         })->when($user->roles->first()->level != 1, function ($query) use ($user) {
-                return $query->where('hazmat_companies_id', $user->hazmat_companies_id);
+            return $query->where('hazmat_companies_id', $user->hazmat_companies_id);
         })->get(['id', 'name']);
 
         $managers = User::whereHas('roles', function ($query) use ($user) {
             $query->where('level', 3)->orderBy('level', 'asc');
         })->when($user->roles->first()->level != 1, function ($query) use ($user) {
-                return $query->where('hazmat_companies_id', $user->hazmat_companies_id);
+            return $query->where('hazmat_companies_id', $user->hazmat_companies_id);
         })->get(['id', 'name']);
 
         return view('ships.view', compact('experts', 'managers', 'isBack', 'ship', 'readonly', 'users'));

@@ -19,6 +19,17 @@ return new class extends Migration
             $table->string('ship_type')->nullable();
             $table->string('project_no')->nullable();
             $table->string('imo_number')->nullable()->unique();
+            $table->string('call_sign')->nullable();
+            $table->string('port_of_registry')->nullable('');
+            $table->string('vessel_class')->nullable('');
+            $table->string('ihm_class')->nullable('');
+            $table->string('flag_of_ship')->nullable();
+            $table->date('delivery_date')->nullable();
+            $table->string('building_details')->nullable('');
+            $table->string('x_breadth_depth')->nullable();
+            $table->string('gross_tonnage')->nullable();
+            $table->string('vessel_previous_name')->nullable('');
+
             $table->string('ship_image')->nullable();
             $table->unsignedBigInteger('client_id')->nullable();  // Same data type as hazmat_companies.id
             $table->foreign('client_id')->references('id')->on('client_companies')->onDelete('cascade');

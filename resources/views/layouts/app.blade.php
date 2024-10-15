@@ -2,14 +2,16 @@
 
 <body>
 <div class="bg-overlay" style="display: none;"></div>
+	@include('layouts.navbar',['shiptitle'=>@$shiptitle])
+	@include('layouts.sidebar')
 
-	<div class="dashboard-main-wrapper">
+<div class="dashboard-main-wrapper">
 
-		@include('layouts.navbar')
 
-		@include('layouts.sidebar')
+
 
 		<div class="dashboard-wrapper">
+
 			@yield('content')
 
 			@include('layouts.footer')

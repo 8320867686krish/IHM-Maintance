@@ -18,7 +18,17 @@ class Ship extends Model
         'client_user_id', 
         'user_id',
         'hazmat_companies_id',
-        'ship_image'
+        'ship_image',
+        'call_sign',
+        'port_of_registry',
+        'vessel_class',
+        'ihm_class',
+        'flag_of_ship',
+        'delivery_date',
+        'building_details',
+        'x_breadth_depth',
+        'gross_tonnage',
+        'vessel_previous_name'
     ];
 
    public function shipTeams(){

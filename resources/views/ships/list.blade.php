@@ -30,43 +30,36 @@
     <div class="row equal-height">
         @if (isset($ships) && $ships->count() > 0)
         @foreach ($ships as $ship)
-        <div class="col-12 col-md-6 col-lg-3">
-        <a href="{{ route('ships.view', ['ship_id' => $ship->id]) }}" style='color:#71748d !important;'>
+        <div class="col-12 col-md-6 col-lg-3" id="shipid{{$ship->id}}">
+            <a href="{{ route('ships.view', ['ship_id' => $ship->id]) }}" style='color:#71748d !important;'>
 
-            <div class="card">
-                <img src="{{ asset('uploads/ship/' . $ship->ship_image) }}" alt="Company Logo" class="card-img-top">
+                <div class="card">
+                    <img src="{{ asset('uploads/ship/' . $ship->ship_image) }}" alt="Company Logo" class="card-img-top">
 
-                <div class="card-header px-4 pt-4">
-                    <div class="card-actions float-end">
-                        <div class="position-relative">
-                            
-
-                          
-
-
+                    <div class="card-header px-4 pt-4">
+                        <div class="card-actions float-end">
+                            <div class="position-relative">
                                 @can('ships.remove')
-                                <a href="{{ route('ships.delete', ['id' => $ship->id]) }}" 
-                                                onclick=" return confirm('Are you sure you want to delete this project?');"
-                                    title="Delete">
-                                    Remove
+                                <a href="{{ route('ships.delete', ['id' => $ship->id]) }}" class="deleteship" data-id="{{$ship->id}}"
+                                   title="Delete"> <i class="fas fa-trash-alt text-danger" style="font-size: 1rem"></i>
                                 </a>
                                 @endcan
-                              
+
+                            </div>
                         </div>
+                        <h5 class="card-title mb-0">{{ ucfirst($ship->ship_name) }}</h5>
                     </div>
-                    <h5 class="card-title mb-0">{{ ucfirst($ship->ship_name) }}</h5>
-                </div>
-                <div class="card-body px-4 pt-2">
-                    <p style="line-height: 2.0rem;">IMO Number : {{ $ship->imo_number }}<br />
-                        Client Name : {{ $ship->client->name }}<br />
-                        Project No. : {{ $ship->project_no }}</p>
+                    <div class="card-body px-4 pt-2">
+                        <p style="line-height: 2.0rem;">IMO Number : {{ $ship->imo_number }}<br />
+                            Client Name : {{ $ship->client->name }}<br />
+                            Project No. : {{ $ship->project_no }}</p>
+
+                    </div>
 
                 </div>
-
-            </div>
-        </a>
+            </a>
         </div>
-        
+
 
         @endforeach
         @else
@@ -84,5 +77,22 @@
 <script>
     $(document).ready(matchHeight);
     $(window).resize(matchHeight);
+    $('.deleteship').on('click', function(e) {
+                e.preventDefault();
+                var id =$(this).attr('data-id');
+              
+                let deleteUrl = $(this).attr('href');
+                let $deleteButton = $(this);
+                let confirmMsg = "Are you sure you want to delete this ship?";
+
+                confirmDelete(deleteUrl, confirmMsg, function(response) {
+                    // Success callback
+                    $('#shipid'+id).remove();
+                  //  $deleteButton.closest('.shipid').remove();
+                }, function(response) {
+                    // Error callback (optional)
+                    console.log("Failed to delete: " + response.message);
+                });
+            });
 </script>
 @endpush

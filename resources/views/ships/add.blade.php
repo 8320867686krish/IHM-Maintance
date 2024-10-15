@@ -129,7 +129,7 @@
                                         <label for="project_no">Ship Initials <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control @error('ship_initials') is-invalid @enderror"
                                             id="ship_initials" name="ship_initials" placeholder="Ship Initials..."
-                                            value="{{ old('ship_initials', $ship->ship_initials ?? '') }}"  onchange="removeInvalidClass(this)" {{ @$ship->ship_initials ? 'readonly' : '' }}>
+                                            value="{{ old('ship_initials', $ship->ship_initials ?? '') }}"  onchange="removeInvalidClass(this)" {{ @$ship->ship_initials ? '' : '' }}>
                                             @error('ship_initials')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -176,7 +176,7 @@
                                     <label for="project_no">Managers <span class="text-danger">*</span></label>
                                     <select class="selectpicker show-tick form-control form-control-lg" name="maneger_id[]"
                                         id="manager_id" multiple data-live-search="true" data-actions-box="true"
-                                        {{ $readonly }} onchange="removeInvalidClass(this)">
+                                         onchange="removeInvalidClass(this)">
                                         @if ($managers->count() > 0)
                                             @foreach ($managers as $manager)
                                          
@@ -194,7 +194,7 @@
                                     <label for="project_no">Experts <span class="text-danger">*</span></label>
                                     <select class="selectpicker show-tick form-control form-control-lg" name="expert_id[]"
                                         id="expert_id" multiple data-live-search="true" data-actions-box="true"
-                                        {{ $readonly }} onchange="removeInvalidClass(this)">
+                                       onchange="removeInvalidClass(this)">
                                         @if ($experts->count() > 0)
                                             @foreach ($experts as $expert)
                                           
@@ -236,8 +236,44 @@
 <script src="{{ asset('assets/vendor/bootstrap-select/js/bootstrap-select.js') }}"></script>
 
     <script>
-        $(document).ready(function() {
-          
+         $('#projectForm').submit(function(e) {
+            e.preventDefault();
+
+            $('.error').empty().hide();
+            $('input').removeClass('is-invalid');
+            $('select').removeClass('is-invalid');
+
+            let formData = new FormData(this);
+
+            $.ajax({
+                url: "{{ route('ships.store') }}",
+                type: 'POST',
+                data: formData,
+                dataType: 'json',
+                contentType: false,
+                processData: false,
+                success: function(response) {
+                    if (response.isStatus) {
+                        successMsgWithRedirect(response.message, "{{ route('ships') }}");
+
+                    } else {
+                        errorMsg(response.message);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    let errors = xhr.responseJSON.errors;
+
+                    if (errors) {
+                        $.each(errors, function(field, messages) {
+                            $('#' + field + 'Error').text(messages[0]).show();
+                            $('[name="' + field + '"]').addClass('is-invalid');
+                        });
+                    } else {
+                        console.error('Error submitting form:', error);
+                    }
+                },
+            });
         });
+
     </script>
 @endpush

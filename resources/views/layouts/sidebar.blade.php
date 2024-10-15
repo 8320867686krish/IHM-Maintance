@@ -8,6 +8,10 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav flex-column">
+                   <li class="nav-item">
+                   <x-logo />
+
+                   </li>
                 <li class="nav-item">
                 <a class="nav-link {{ @$isActive ? 'active' : '' }}" href="{{ route('dashboard') }}" ><i class="fa fa-fw fa-user-circle"></i>Dashboard</a>
                 </li>

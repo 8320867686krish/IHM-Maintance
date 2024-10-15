@@ -18,6 +18,20 @@
     {{-- <link rel="stylesheet" type="text/css" href="https://common.olemiss.edu/_js/sweet-alert/sweet-alert.css"> --}}
 
     <style>
+        .navbar-center {
+    position: absolute;
+    left: 55%;
+    transform: translateX(-55%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    list-style: none;
+}
+
+.pageheader-title {
+    font-size: 20px; /* Adjust as needed */
+    font-weight: bold;
+}
         .invalid-feedback {
             font-size: 14px;
         }

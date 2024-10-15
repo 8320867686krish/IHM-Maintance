@@ -101,7 +101,7 @@
                 e.preventDefault();
                 let deleteUrl = $(this).attr('href');
                 let $deleteButton = $(this);
-                let confirmMsg = "Are you sure you want to delete this role?";
+                let confirmMsg = "Are you sure you want to delete this client company?";
 
                 confirmDelete(deleteUrl, confirmMsg, function(response) {
                     // Success callback

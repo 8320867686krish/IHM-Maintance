@@ -7,8 +7,10 @@
                     <div class="card">
                         <div class="card-header" id="headinginitial1">
                             <h5 class="mb-0">
-                                <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseinitial1" aria-expanded="false" aria-controls="collapseinitial1">
+                                <button class="btn btn-link collapsed  d-flex justify-content-between w-100" data-toggle="collapse" data-target="#collapseinitial1" aria-expanded="false" aria-controls="collapseinitial1">
                                     IHM Part 1
+                                    <span class="fas fa-angle-down mr-3"></span>
+
                                 </button>
                             </h5>
                         </div>
@@ -24,8 +26,10 @@
                     <div class="card">
                         <div class="card-header" id="headinginitial2">
                             <h5 class="mb-0">
-                                <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseinitial2" aria-expanded="false" aria-controls="collapseinitial2">
-                                   IHM Part 2&3
+                                <button class="btn btn-link collapsed  d-flex justify-content-between w-100" data-toggle="collapse" data-target="#collapseinitial2" aria-expanded="false" aria-controls="collapseinitial2">
+                                   IHM Part 2
+                                   <span class="fas fa-angle-down mr-3"></span>
+
                                 </button>
                             </h5>
                         </div>
@@ -39,8 +43,10 @@
                     <div class="card">
                         <div class="card-header" id="headinginitial3">
                             <h5 class="mb-0">
-                                <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapsinitial3" aria-expanded="false" aria-controls="collapsinitial3">
-                                    Ship Particular
+                                <button class="btn btn-link collapsed  d-flex justify-content-between w-100" data-toggle="collapse" data-target="#collapsinitial3" aria-expanded="false" aria-controls="collapsinitial3">
+                                    IHM Part 3
+                                    <span class="fas fa-angle-down mr-3"></span>
+
                                 </button>
                             </h5>
                         </div>
@@ -56,8 +62,10 @@
                     <div class="card">
                         <div class="card-header" id="headinginitial4">
                             <h5 class="mb-0">
-                                <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapsinitial4" aria-expanded="false" aria-controls="collapsinitial4">
+                                <button class="btn btn-link collapsed  d-flex justify-content-between w-100" data-toggle="collapse" data-target="#collapsinitial4" aria-expanded="false" aria-controls="collapsinitial4">
                                     GA Plan
+                                    <span class="fas fa-angle-down mr-3"></span>
+
                                 </button>
                             </h5>
                         </div>
@@ -72,8 +80,9 @@
                     <div class="card">
                         <div class="card-header" id="headinginitial5">
                             <h5 class="mb-0">
-                                <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapsinitial5" aria-expanded="false" aria-controls="collapsinitial5">
+                                <button class="btn btn-link collapsed  d-flex justify-content-between w-100" data-toggle="collapse" data-target="#collapsinitial5" aria-expanded="false" aria-controls="collapsinitial5">
                                     IHM Summary Report
+                                    <span class="fas fa-angle-down mr-3"></span>
                                 </button>
                             </h5>
                         </div>
@@ -87,8 +96,10 @@
                     <div class="card">
                         <div class="card-header" id="headinginitial6">
                             <h5 class="mb-0">
-                                <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapsinitial6" aria-expanded="false" aria-controls="collapsinitial6">
+                                <button class="btn btn-link collapsed  d-flex justify-content-between w-100" data-toggle="collapse" data-target="#collapsinitial6" aria-expanded="false" aria-controls="collapsinitial6">
                                    Part1 Menual
+                                   <span class="fas fa-angle-down mr-3"></span>
+
                                 </button>
                             </h5>
                         </div>
@@ -102,8 +113,10 @@
                     <div class="card">
                         <div class="card-header" id="headinginitial7">
                             <h5 class="mb-0">
-                                <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapsinitial7" aria-expanded="false" aria-controls="collapsinitial7">
-                                   Amenled IHM Part 1
+                                <button class="btn btn-link collapsed  d-flex justify-content-between w-100" data-toggle="collapse" data-target="#collapsinitial7" aria-expanded="false" aria-controls="collapsinitial7">
+                                   Amended IHM Part 1
+                                   <span class="fas fa-angle-down mr-3"></span>
+
                                 </button>
                             </h5>
                         </div>
