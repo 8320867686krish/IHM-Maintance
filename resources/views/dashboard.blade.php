@@ -12,7 +12,7 @@
     <div class="row">
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
             <div class="page-header">
-                <h3 style="color:#6c757d;font-size:14px;">Welcome {{Auth()->user()->name}} everything looks great.</h3>
+                <h3 style="color:#6c757d;font-size:14px;">Welcome {{Auth()->user()->name}}, everything looks great.</h3>
             </div>
         </div>
     </div>

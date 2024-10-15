@@ -94,7 +94,10 @@ button.btn.btn-link .fas.fa-angle-down {
     <div class="main-content container-fluid p-0" id="ship_particulars"
         {{ $isBack == 0 ? 'style=display:block' : 'style=display:none' }}>
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-            
+        <div class="section-block">
+        <h5 class="section-title">IHM Summary Key Details</h5>
+    </div>
+   
             <div class="accrodion-regular">
                 <div id="accordion">
                     <div class="card">
@@ -371,7 +374,7 @@ button.btn.btn-link .fas.fa-angle-down {
     </div>
 
     <div class="main-content container-fluid p-0" id="ihm_maintenance">
-
+    @include('ships.ihm-maintance')
        
     </div>
 
