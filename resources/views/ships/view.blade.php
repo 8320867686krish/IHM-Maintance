@@ -106,7 +106,7 @@ button.btn.btn-link .fas.fa-angle-down {
                                 </button>
                             </h5>
                         </div>
-                        <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion" style="">
+                        <div id="collapseOne" class="collapse" aria-labelledby="headingOne"  >
                             <div class="card-body">
                                 <canvas id="chartjs_bar_ihm_summery"></canvas>
                             </div>
@@ -122,7 +122,7 @@ button.btn.btn-link .fas.fa-angle-down {
 
                             </h5>
                         </div>
-                        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" >
                             <div class="card-body">
                                 <canvas id="chartjs_bar_ship"></canvas>
                             </div>
@@ -137,7 +137,7 @@ button.btn.btn-link .fas.fa-angle-down {
                                 </button>
                             </h5>
                         </div>
-                        <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
+                        <div id="collapseThree" class="collapse" aria-labelledby="headingThree" >
                             <div class="card-body">
                                 <div class="alert alert-success sucessMsg" role="alert" style="display: none;">
                                     Save Successfully!!<a href="#" class="close" data-dismiss="alert" aria-label="Close">
@@ -372,7 +372,7 @@ button.btn.btn-link .fas.fa-angle-down {
 
     <div class="main-content container-fluid p-0" id="ihm_maintenance">
 
-        @include('ships.ihm-maintance')
+       
     </div>
 
 

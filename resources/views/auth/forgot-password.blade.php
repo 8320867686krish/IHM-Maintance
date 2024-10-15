@@ -53,8 +53,8 @@
                             <div class="d-flex flex-column w-75 h-100 mt-5">
                                 <div class="auth-form mt-5">
 
-                                    <div class="text-center mt-5">
-                                        <p class="lead">Don't worry, we'll send you an email to reset your password.</p>
+                                    <div class="text-center mt-5 mb-2">
+                                        <p class="form-label" style="font-size:15px;">Don't worry, we'll send you an email to reset your password.</p>
                                     </div>
 
                                     <div class="mb-3">
@@ -64,6 +64,8 @@
                                                 @csrf
 
                                                 <div class="mb-3">
+                                                <label class="form-label">Email</label>
+
                                                     <input class="form-control form-control-lg" type="email" name="email" placeholder="Enter your email">
                                                     @if ($errors->any())
                                                     @foreach ($errors->all() as $error)
