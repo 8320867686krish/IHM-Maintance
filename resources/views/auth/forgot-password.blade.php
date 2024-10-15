@@ -53,10 +53,7 @@
                             <div class="d-flex flex-column w-75 h-100 mt-5">
                                 <div class="auth-form mt-5">
 
-                                    <div class="text-center mt-5 mb-2">
-                                        <p class="form-label" style="font-size:15px;">Don't worry, we'll send you an email to reset your password.</p>
-                                    </div>
-
+                                  
                                     <div class="mb-3">
                                         <div class="d-grid gap-2 mb-3">
 
@@ -64,7 +61,7 @@
                                                 @csrf
 
                                                 <div class="mb-3">
-                                                <label class="form-label">Email</label>
+                                                <label class="form-label">Don't worry, we'll send you an email to reset your password</label>
 
                                                     <input class="form-control form-control-lg" type="email" name="email" placeholder="Enter your email">
                                                     @if ($errors->any())
@@ -75,7 +72,9 @@
                                                     @endforeach
                                                     @endif
                                                 </div>
-
+                                                <div class="mb-3 float-right">
+                                    <a href="{{ route('login') }}" class="footer-link ">Sign In</a>
+                                    </div>
 
                                                 <div class="d-grid gap-2 mt-5 text-center">
                                                     <button type="submit" class="btn btn-lg btn-primary">Reset Password</button>
