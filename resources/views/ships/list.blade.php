@@ -1,19 +1,13 @@
 @extends('layouts.app')
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-@section('shiptitle','Ships')
+@section('shiptitle','Ships Management')
 
 @section('content')
 <div class="container-fluid dashboard-content">
     <!-- ============================================================== -->
     <!-- pageheader -->
     <!-- ============================================================== -->
-    <div class="row">
-        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-            <div class="page-header">
-                <h2 class="pageheader-title">Ships Management</h2>
-            </div>
-        </div>
-    </div>
+   
     <!-- ============================================================== -->
     <!-- end pageheader -->
     <!-- ============================================================== -->

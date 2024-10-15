@@ -26,7 +26,7 @@
                             @csrf
                             @method('PUT')
                             <div class="row">
-                            <div class="form-group col-6">
+                            <div class="form-group col-12">
                                 <x-input-label for="current_password" :value="__('Current Password')" /><span class="text-danger">*</span>
                                 <input id="current_password" class="form-control @error('current_password') is-invalid @enderror" type="password" name="current_password" placeholder="Current Password" onchange="removeInvalidClass(this)" aria-describedby="currentPasswordError" />
                                 @error('current_password')
@@ -34,8 +34,8 @@
                                 @enderror
                             </div>
 
-                            <div class="form-group col-6">
-                                <x-input-label for="password" :value="__('Password')" /><span class="text-danger">*</span>
+                            <div class="form-group col-12">
+                                <x-input-label for="password" :value="__('New Password')" /><span class="text-danger">*</span>
                                 <input class="form-control @error('password') is-invalid @enderror" id="password"
                                     type="password" placeholder="Password" name="password" minlength="8"
                                     onchange="removeInvalidClass(this)" aria-describedby="passwordError" />
@@ -45,8 +45,8 @@
                             </div>
                             </div>
                             <div class="row">
-                            <div class="form-group col-6">
-                                <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
+                            <div class="form-group col-12">
+                                <x-input-label for="password_confirmation" :value="__('Confirm New Password')" />
                                 <input type="password"
                                     class="form-control @error('password_confirmation') is-invalid @enderror"
                                     name="password_confirmation" placeholder="Confirm Password"
