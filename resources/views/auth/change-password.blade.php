@@ -39,7 +39,7 @@
                             </div>
                             <div class="row">
                             <div class="form-group col-12">
-                                <x-input-label for="password_confirmation" :value="__('Confirm New Password')" />
+                                <x-input-label for="password_confirmation" :value="__('Confirm New Password')" /><span class="text-danger">*</span>
                                 <input type="password"
                                     class="form-control @error('password_confirmation') is-invalid @enderror"
                                     name="password_confirmation" placeholder="Confirm Password"
