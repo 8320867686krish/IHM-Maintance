@@ -123,7 +123,7 @@
                         <table class="table table-striped table-bordered first">
                             <thead>
                                 <tr>
-                                    <th width="15%">SR No</th>
+                                    <th width="15%">SR NO</th>
                                     <th>Training Date</th>
                                     <th width="10%">Training Duration</th>
                                     <th width="20%">Number of People Attended</th>
