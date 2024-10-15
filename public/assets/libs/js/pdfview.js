@@ -1,7 +1,7 @@
 const template = document.createElement('template');
 template.innerHTML = `
   <iframe frameborder="0" 
-    width="1280" 
+    width="100%" 
     height="900">
   </iframe>
 `
