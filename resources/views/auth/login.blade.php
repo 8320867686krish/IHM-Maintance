@@ -80,9 +80,13 @@
                                         <div class="passwordMsg error text-danger mt-1"></div>
                                         <div class="autherrorMsg error text-danger mt-3"></div>
 									</div>
-									<div class="d-grid gap-2 mt-4 text-center">
+                                    <div class="mb-3 float-right">
+                                    <a href="{{ route('password.request') }}" class="footer-link ">Forgot Password</a>
+                                    </div>
+									<div class="d-grid gap-2 mt-5 text-center">
                                         <button type="submit" class="btn btn-lg btn-primary">Sign In</button>
 									</div>
+                                  
 								</form>
 							</div>
 
