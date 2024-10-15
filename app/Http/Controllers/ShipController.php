@@ -173,7 +173,9 @@ class ShipController extends Controller
         }
     }
 
-
+    public function portalGuide(){
+        return view('helpCenter.pdfview');
+    }
     public function destroy(string $id)
     {
         try {

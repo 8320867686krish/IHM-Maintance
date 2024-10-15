@@ -61,7 +61,7 @@
                     @endif
                     @endforeach
                     <li class="nav-item">
-                        <a class="nav-link" href="" ><i class="fa fa-fw fa-user-circle"></i>Portal User Guide</a>
+                        <a class="nav-link" href="{{route('portal.guide')}}" ><i class="fa fa-fw fa-user-circle"></i>Portal User Guide</a>
                     </li>
 
                     <li class="nav-item">

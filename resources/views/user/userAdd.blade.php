@@ -1,8 +1,7 @@
 @extends('layouts.app')
 
-@section('css')
-<link rel="stylesheet" type="text/css" href="{{ asset('assets/libs/css/switchButton.css') }}">
-@endsection
+
+@section('shiptitle','User Management')
 
 @section('content')
 <div class="container-fluid dashboard-content">

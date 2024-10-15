@@ -62,7 +62,7 @@ Route::middleware('auth')->group(function () {
             Route::get('clientCompany/{id}/delete', 'destroy')->name('clientCompany.delete')->middleware('can:clientCompany.remove');
         });
     });
-
+    Route::get('/portal-guide', [ShipController::class, 'portalGuide'])->name('portal.guide');
 
     Route::middleware('can:ships')->group(function () {
         Route::controller(ShipController::class)->group(function () {

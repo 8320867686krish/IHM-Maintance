@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
+@section('shiptitle','Help Center')
+
 <div class="container-fluid dashboard-content">
     <!-- ============================================================== -->
     <!-- pageheader -->

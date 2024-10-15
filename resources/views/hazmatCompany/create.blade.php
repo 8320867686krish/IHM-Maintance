@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@section('shiptitle','Hazmat Company')
 
 @section('content')
 <div class="container-fluid dashboard-content">
