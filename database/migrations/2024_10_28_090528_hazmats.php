@@ -15,7 +15,7 @@ return new class extends Migration
         Schema::create('hazmats', function (Blueprint $table) {
             $table->id();
             $table->string('name')->nullable();
-            $table->ating('short_name')->nullable();
+            $table->string('short_name')->nullable();
             $table->string('table_type')->nullable();
             $table->string('color')->nullable();
             $table->timestamps();
