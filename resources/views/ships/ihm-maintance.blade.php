@@ -19,7 +19,7 @@
                 </div>
                 <div id="po-records" class="collapse show" aria-labelledby="headinginitial1" data-parent="#accordion" style="">
                     <div class="card-body">
-                        @include('ship.po.poItems')
+                        @include('ships.po.poItems')
                     </div>
                 </div>
             </div>
