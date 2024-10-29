@@ -66,8 +66,8 @@ class POOrderController extends Controller
     {
         $ship_id  = $request->input('ship_id');
 
-        $path = $request->file('excel_file')->getRealPath();
-        $data = Excel::toArray([], $path);
+        $file = $request->file('excel_file');
+        $data = Excel::toArray([], $file);
 
         $errors = []; // Array to collect errors
 
