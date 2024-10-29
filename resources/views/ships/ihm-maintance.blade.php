@@ -2,123 +2,39 @@
     <div class="section-block">
         <h5 class="section-title">IHM Maintenance</h5>
     </div>
-   
+
 
 
     <div class="accrodion-regular">
         <div id="accordion">
             <div class="card">
-                <div class="card-header" id="headingma1">
+                <div class="card-header" id="poRecordsHeading">
                     <h5 class="mb-0">
-                        <button class="btn btn-link collapsed d-flex justify-content-between w-100" data-toggle="collapse" data-target="#collapsema1" aria-expanded="false" aria-controls="collapsema1">
+                        <button class="btn btn-link collapsed d-flex justify-content-between w-100" data-toggle="collapse" data-target="#po-records" aria-expanded="false" aria-controls="po-records">
                             PO Records
                             <span class="fas fa-angle-down mr-3"></span>
 
                         </button>
                     </h5>
                 </div>
-                <div id="collapsema1" class="collapse show" aria-labelledby="headinginitial1" data-parent="#accordion" style="">
+                <div id="po-records" class="collapse show" aria-labelledby="headinginitial1" data-parent="#accordion" style="">
                     <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-striped table-bordered first">
-                                <thead>
-                                    <tr>
-                                        <th width="15%">SR NO</th>
-                                        <th>PO NO</th>
-                                        <th width="20%">Supplier Name</th>
-                                        <th width="20%">Machinery</th>
-                                        <th width="20%">Total No Of Items</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>PO10001</td>
-                                        <td>Marine Supplies Ltd</td>
-                                        <td>Ship Engine</td>
-                                        <td>12</td>
-                                    </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td>PO10002</td>
-                                        <td>OceanTech Co.</td>
-                                        <td>Navigation System</td>
-                                        <td>5</td>
-                                    </tr>
-                                    <tr>
-                                        <td>3</td>
-                                        <td>PO10003</td>
-                                        <td>Seaworthy Supplies</td>
-                                        <td>Fuel System</td>
-                                        <td>8</td>
-                                    </tr>
-                                    <tr>
-                                        <td>4</td>
-                                        <td>PO10004</td>
-                                        <td>Maritime Equipments Ltd</td>
-                                        <td>Communication System</td>
-                                        <td>3</td>
-                                    </tr>
-                                    <tr>
-                                        <td>5</td>
-                                        <td>PO10005</td>
-                                        <td>ShipTech Solutions</td>
-                                        <td>Deck Machinery</td>
-                                        <td>7</td>
-                                    </tr>
-                                    <tr>
-                                        <td>6</td>
-                                        <td>PO10006</td>
-                                        <td>Nautical Services</td>
-                                        <td>Propulsion System</td>
-                                        <td>6</td>
-                                    </tr>
-                                    <tr>
-                                        <td>7</td>
-                                        <td>PO10007</td>
-                                        <td>OceanView Equipments</td>
-                                        <td>Electrical System</td>
-                                        <td>10</td>
-                                    </tr>
-                                    <tr>
-                                        <td>8</td>
-                                        <td>PO10008</td>
-                                        <td>BlueWave Supply Co.</td>
-                                        <td>Hull Maintenance Tools</td>
-                                        <td>15</td>
-                                    </tr>
-                                    <tr>
-                                        <td>9</td>
-                                        <td>PO10009</td>
-                                        <td>MarineWorks Ltd</td>
-                                        <td>Anchor System</td>
-                                        <td>4</td>
-                                    </tr>
-                                    <tr>
-                                        <td>10</td>
-                                        <td>PO10010</td>
-                                        <td>SafeSeas Equipments</td>
-                                        <td>Safety Equipment</td>
-                                        <td>20</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                        @include('ship.po.poItems')
                     </div>
                 </div>
             </div>
 
             <div class="card">
-                <div class="card-header" id="headingma2">
+                <div class="card-header" id="OnbaordTraining">
                     <h5 class="mb-0">
-                        <button class="btn btn-link collapsed d-flex justify-content-between w-100" data-toggle="collapse" data-target="#collapsema2" aria-expanded="false" aria-controls="collapsema2">
+                        <button class="btn btn-link collapsed d-flex justify-content-between w-100" data-toggle="collapse" data-target="#onbaord-training" aria-expanded="false" aria-controls="onbaord-training">
                             Onbaord Training Records
                             <span class="fas fa-angle-down mr-3"></span>
 
                         </button>
                     </h5>
                 </div>
-                <div id="collapsema2" class="collapse" aria-labelledby="headingma2" data-parent="#accordion">
+                <div id="onbaord-training" class="collapse" aria-labelledby="OnbaordTraining" data-parent="#accordion">
                     <div class="card-body">
                         <table class="table table-striped table-bordered first">
                             <thead>
@@ -245,7 +161,7 @@
                 </div>
                 <div id="collapsema5" class="collapse" aria-labelledby="headingma5" data-parent="#accordion">
                     <div class="card-body">
-                       Report Center data goes here.
+                        Report Center data goes here.
                     </div>
                 </div>
             </div>
@@ -255,3 +171,11 @@
         </div>
     </div>
 </div>
+@push('js')
+<script>
+    
+    document.getElementById('excel_file').addEventListener('change', function() {
+        document.getElementById('uploadForm').submit();
+    });
+</script>
+@endpush

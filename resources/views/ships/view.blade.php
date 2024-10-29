@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('css')
-<link rel="stylesheet" type="text/css" href="{{ asset('assets/vendor/bootstrap-select/css/bootstrap-select.css') }}">
+
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/vendor/datatables/css/buttons.bootstrap4.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/vendor/datatables/css/select.bootstrap4.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/vendor/datatables/css/dataTables.bootstrap4.css')}}">
@@ -9,14 +9,17 @@
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/vendor/datatables/css/select.bootstrap4.css')}}">
 <style>
     button.btn.btn-link:not(.collapsed) .fas.fa-angle-down {
-    transform: rotate(180deg); /* Arrow rotates upwards */
-    transition: transform 0.3s ease-out; /* Smooth transition */
-}
+        transform: rotate(180deg);
+        /* Arrow rotates upwards */
+        transition: transform 0.3s ease-out;
+        /* Smooth transition */
+    }
 
-/* Default state for the arrow when collapsed */
-button.btn.btn-link .fas.fa-angle-down {
-    transition: transform 0.3s ease-out; /* Smooth transition */
-}
+    /* Default state for the arrow when collapsed */
+    button.btn.btn-link .fas.fa-angle-down {
+        transition: transform 0.3s ease-out;
+        /* Smooth transition */
+    }
 </style>
 @endsection
 @section('shiptitle',$ship->ship_name)
@@ -38,27 +41,27 @@ button.btn.btn-link .fas.fa-angle-down {
                         <a href="{{ route('ships') }}"><span class="icon"><i
                                     class="fas fa-arrow-left"></i></span>Back</a>
                     </li>
-                    <li class="{{ $isBack == 0 ? 'active' : '' }}">
-                        <a href="#ship_particulars">
+                    <li class="active">
+                        <a href="#ship_particulars" class="ship_particulars">
                             <span class="icon"><i class="fas fa-ship"></i></span>IHM Summary Key Details
                         </a>
                     </li>
 
-                    @can('ships.add')
+                    @can('assign_team.add')
                     <li>
-                        <a href="#assign_project"><span class="icon"><i
+                        <a href="#assign_project" class="assign_project"><span class="icon"><i
                                     class="fas fa-fw fa-briefcase"></i></span>Assign Team</a>
                     </li>
                     @endcan
 
 
                     <li>
-                        <a href="#ihm_intial"><span class="icon"><i
+                        <a href="#ihm_intial" class="ihm_intial"><span class="icon"><i
                                     class="fas fa-fw fa-briefcase"></i></span>IHM Initial Records</a>
                     </li>
 
                     <li>
-                        <a href="#ihm_maintenance"><span class="icon"><i
+                        <a href="#ihm_maintenance" class="ihm_maintenance"><span class="icon"><i
                                     class="fas fa-fw fa-briefcase"></i></span>IHM Maintenance</a>
                     </li>
 
@@ -68,7 +71,7 @@ button.btn.btn-link .fas.fa-angle-down {
             </div>
         </div>
     </aside>
-    <div class="main-content container-fluid p-0" id="assign_project">
+    <div class="main-content container-fluid p-0" id="assign_project" style="display: none;">
 
         <div class="email-head-subject">
             <div class="title"><span>Assign Team</span>
@@ -81,23 +84,15 @@ button.btn.btn-link .fas.fa-angle-down {
         </div>
 
     </div>
-    @php
-   
-    @endphp
 
-    @can('ships.edit')
-    $readonly = "readOnly";
-    @php
-    $readonly = "";
-    @endphp
-    @endcan
+
     <div class="main-content container-fluid p-0" id="ship_particulars"
         {{ $isBack == 0 ? 'style=display:block' : 'style=display:none' }}>
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-        <div class="section-block">
-        <h5 class="section-title">IHM Summary Key Details</h5>
-    </div>
-   
+            <div class="section-block">
+                <h5 class="section-title">IHM Summary Key Details</h5>
+            </div>
+
             <div class="accrodion-regular">
                 <div id="accordion">
                     <div class="card">
@@ -109,7 +104,7 @@ button.btn.btn-link .fas.fa-angle-down {
                                 </button>
                             </h5>
                         </div>
-                        <div id="collapseOne" class="collapse" aria-labelledby="headingOne"  >
+                        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne">
                             <div class="card-body">
                                 <canvas id="chartjs_bar_ihm_summery"></canvas>
                             </div>
@@ -125,7 +120,7 @@ button.btn.btn-link .fas.fa-angle-down {
 
                             </h5>
                         </div>
-                        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" >
+                        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo">
                             <div class="card-body">
                                 <canvas id="chartjs_bar_ship"></canvas>
                             </div>
@@ -140,7 +135,7 @@ button.btn.btn-link .fas.fa-angle-down {
                                 </button>
                             </h5>
                         </div>
-                        <div id="collapseThree" class="collapse" aria-labelledby="headingThree" >
+                        <div id="collapseThree" class="collapse" aria-labelledby="headingThree">
                             <div class="card-body">
                                 <div class="alert alert-success sucessMsg" role="alert" style="display: none;">
                                     Save Successfully!!<a href="#" class="close" data-dismiss="alert" aria-label="Close">
@@ -148,7 +143,7 @@ button.btn.btn-link .fas.fa-angle-down {
                                     </a>
                                 </div>
                                 <form method="post" action="{{ route('ships.store') }}" class="needs-validation" novalidate
-                                id="projectForm" enctype="multipart/form-data">
+                                    id="projectForm" enctype="multipart/form-data">
                                     @csrf
                                     <input type="hidden" name="id" value="{{ $ship->id ?? '' }}" id="id">
 
@@ -159,7 +154,7 @@ button.btn.btn-link .fas.fa-angle-down {
                                                 <input type="text" class="form-control  @error('ship_name') is-invalid @enderror"
                                                     id="ship_name" value="{{ old('ship_name', $ship->ship_name ?? '') }}"
                                                     name="ship_name" placeholder="Ship Name..." autocomplete="off"
-                                                    onchange="removeInvalidClass(this)" {{ $readonly }}>
+                                                    onchange="removeInvalidClass(this)" {{$readonly}}>
                                                 <div class="invalid-feedback error" id="ship_nameError"></div>
                                             </div>
                                         </div>
@@ -202,7 +197,7 @@ button.btn.btn-link .fas.fa-angle-down {
                                         <div class="col-sm-12 col-md-6 col-lg-4">
                                             <div class="form-group">
                                                 <label for="client_id">Ship Owner</label>
-                                                
+
                                                 <input type="text" class="form-control" id="owner_name"
                                                     value="{{ old('owner_name', $ship->client->ship_owner_name ?? '') }}" readonly>
                                             </div>
@@ -341,8 +336,9 @@ button.btn.btn-link .fas.fa-angle-down {
 
                                     <div class="row mt-3">
                                         <div class="col-sm-12 col-md-6">
-                                           &nbsp;
+                                            &nbsp;
                                         </div>
+                                        @if(!@$readonly)
                                         <div class="col-sm-12 col-md-6">
                                             <div class="form-group">
                                                 @can('ships.edit')
@@ -351,6 +347,7 @@ button.btn.btn-link .fas.fa-angle-down {
                                                 @endcan
                                             </div>
                                         </div>
+                                        @endif
                                     </div>
                                 </form>
                             </div>
@@ -367,15 +364,33 @@ button.btn.btn-link .fas.fa-angle-down {
 
 
 
-    <div class="main-content container-fluid p-0" id="ihm_intial">
+    <div class="main-content container-fluid p-0" id="ihm_intial" style="display: none;">
 
         @include('ships.ihm-initial')
 
     </div>
 
-    <div class="main-content container-fluid p-0" id="ihm_maintenance">
-    @include('ships.ihm-maintance')
-       
+    <div class="main-content container-fluid p-0" id="ihm_maintenance" style="display: none;">
+
+        @if(session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        @endif
+
+        @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+        @endif
+
+        @include('ships.ihm-maintance')
+
     </div>
 
 
@@ -383,7 +398,11 @@ button.btn.btn-link .fas.fa-angle-down {
 @endsection
 
 @push('js')
-<script src="{{ asset('assets/vendor/bootstrap-select/js/bootstrap-select.js') }}"></script>
+<script>
+    var shipSave = "{{ route('ships.store') }}";
+</script>
+<script src="{{ asset('assets/js/ship.js') }}"></script>
+
 <script src="{{ asset('assets/vendor/jquery/jquery-3.3.1.min.js') }}"></script>
 <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 <script src="{{ asset('assets/vendor/datatables/js/dataTables.bootstrap4.min.js') }}"></script>
@@ -391,8 +410,35 @@ button.btn.btn-link .fas.fa-angle-down {
 <script src="{{ asset('assets/vendor/charts/charts-bundle/Chart.bundle.js') }}"></script>
 <script src="{{ asset('assets/vendor/charts/charts-bundle/chartjs.js') }}"></script>
 <script>
-  $(document).ready(function() {
+    $(document).ready(function() {
+        if (window.location.hash) {
+            // Use the hash to find the section
+            var target = $(window.location.hash);
+            var subsection = window.location.href.split("#").pop();
+            var section = '';
+            if (subsection == 'po-records' || subsection == 'onbaord-training') {
+                section = "ihm_maintenance";
+            }
+
+            // Scroll to the section smoothly
+            if (target.length) {
+                $('.aside-nav .nav li').removeClass('active');
+                $(`.${section}`).parent('li').addClass('active');
+                $('.main-content').hide();
+                $(`#${section}`).show();
+                let targetId = $(this).attr('href');
+                $(`#${subsection}`).addClass('show');
+
+
+                $(targetId).show();
+
+                $('html, body').animate({
+                    scrollTop: target.offset().top
+                }, 1000);
+            }
+        }
         const url = window.location.href;
+
         const segments = url.split('/');
         const projectId = segments[segments.length - 1];
         let sidebar = $("#mainSidebar");
@@ -423,23 +469,9 @@ button.btn.btn-link .fas.fa-angle-down {
             }
         });
 
-     
-      
 
-      
 
-        let back = "{{ $isBack }}";
-        if (back == 1) {
-            $('#ship_particulars').hide();
-            $('#ihm_maintenance').hide();
-            $('#ihm_intial').hide();
-            $("#assign_project").hide();
-        } else {
-            $('#ship_particulars').show();
-            $('#ihm_maintenance').hide();
-            $('#ihm_intial').hide();
-            $("#assign_project").hide();
-        }
+
 
         $('.aside-nav .nav li a').click(function() {
             $('.aside-nav .nav li').removeClass('active');
@@ -463,48 +495,11 @@ button.btn.btn-link .fas.fa-angle-down {
             $('.alert-success').fadeOut();
         }, 15000);
 
-      
 
-        $('#projectForm').submit(function(e) {
-            e.preventDefault();
 
-            $('.error').empty().hide();
-            $('input').removeClass('is-invalid');
-            $('select').removeClass('is-invalid');
+       
 
-            let formData = new FormData(this);
 
-            $.ajax({
-                url: "{{ route('ships.store') }}",
-                type: 'POST',
-                data: formData,
-                dataType: 'json',
-                contentType: false,
-                processData: false,
-                success: function(response) {
-                    if (response.isStatus) {
-                        successMsg(response.message);
-                    } else {
-                        errorMsg(response.message);
-                    }
-                },
-                error: function(xhr, status, error) {
-                    let errors = xhr.responseJSON.errors;
-
-                    if (errors) {
-                        $.each(errors, function(field, messages) {
-                            $('#' + field + 'Error').text(messages[0]).show();
-                            $('[name="' + field + '"]').addClass('is-invalid');
-                        });
-                    } else {
-                        console.error('Error submitting form:', error);
-                    }
-                },
-            });
-        });
-
-      
     });
-   
 </script>
 @endpush

@@ -55,6 +55,10 @@ class PermissionSeeder extends Seeder
                 'full_name' => 'Document Declaration'
 
             ],
+            'assign_team' => [
+                'actions' => ['add' => 0],
+                "is_show" => 0
+            ],
 
          
         ];

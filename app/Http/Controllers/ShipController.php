@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ClientCompany;
+use App\Models\poOrder;
 use App\Models\Ship;
 use App\Models\ShipTeams;
 use App\Models\User;
@@ -207,10 +208,10 @@ class ShipController extends Controller
             $query->where('level', 3)->orderBy('level', 'asc');
         })->where('hazmat_companies_id', $user->hazmat_companies_id)->get(['id', 'name']);
         $ship = Ship::with(['shipTeams', 'client'])->find($ship_id);
-
+        $poOrders = poOrder::withCount(['poOrderItems'])->where('ship_id',$ship_id)->get();
         $users = $ship->shipTeams->pluck('user_id')->toArray();
-        if (!Gate::allows('projects.edit')) {
-            $readonly = "readOnly";
+        if (!Gate::allows('ships.add')) {
+            $readonly = "readonly";
         } else {
             $readonly = "";
         }
@@ -227,7 +228,7 @@ class ShipController extends Controller
             return $query->where('hazmat_companies_id', $user->hazmat_companies_id);
         })->get(['id', 'name']);
 
-        return view('ships.view', compact('experts', 'managers', 'isBack', 'ship', 'readonly', 'users'));
+        return view('ships.view', compact('experts', 'managers', 'isBack', 'ship', 'readonly', 'users','poOrders','ship_id'));
     }
 
     public function assignShip(Request $request)

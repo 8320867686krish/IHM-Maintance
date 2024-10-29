@@ -14,7 +14,7 @@
                                 </button>
                             </h5>
                         </div>
-                        <div id="collapseinitial1" class="collapse" aria-labelledby="headinginitial1" data-parent="#accordion" style="">
+                        <div id="collapseinitial1" class="collapse show" aria-labelledby="headinginitial1" data-parent="#accordion" style="">
                             <div class="card-body">
                             IHM Part 1 data goes here.
                             </div>

@@ -4,11 +4,13 @@ use App\Http\Controllers\ClientCompanyController;
 use App\Http\Controllers\HazmatCompanyController;
 use App\Http\Controllers\HelpCente;
 use App\Http\Controllers\HelpCenterController;
+use App\Http\Controllers\POOrderController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\ShipController;
 use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,6 +24,9 @@ use App\Http\Controllers\UserController;
 */
 
 Route::get('/', function () {
+    if (Auth::check()) {
+        return redirect()->route('dashboard');
+    }
     return view('auth.login');
 });
 
@@ -31,6 +36,12 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
+    Route::post('/import', [POOrderController::class, 'import'])->name('import');
+    Route::get('ships/po-order/add/{ship_id}/{po_order_id?}',[POOrderController::class,'add'])->name('po.add');
+    Route::post('po-order/save',[POOrderController::class,'store'])->name('po.store');
+    Route::delete('po-order/delete/{po_id}',[POOrderController::class,'poDelete'])->name('po.delete');
+    Route::post('po-item/hazmat/save',[POOrderController::class,'poItemsHazmatSave'])->name('poItems.hazmat');
+
     Route::get('/helpcenter', [HelpCenterController::class, 'index'])->name('helpcenter.list');
     Route::middleware('can:roles')->group(function () {
         Route::controller(RoleController::class)->group(function () {
@@ -89,7 +100,7 @@ Route::middleware('auth')->group(function () {
 
     Route::middleware('can:documentdeclaration')->group(function () {
         // Route::resource('makemodel', MakeModelContoller::class);
-        Route::controller(MakeModelContoller::class)->group(function () {
+        Route::controller(UserController::class)->group(function () {
             Route::get('documentdeclaration', 'index')->name('documentdeclaration')->middleware('can:documentdeclaration');
             Route::get('documentdeclaration/add', 'create')->name('documentdeclaration.add')->middleware('can:documentdeclaration.add');
             Route::post('documentdeclaration', 'store')->name('documentdeclaration.store')->middleware('can:documentdeclaration.add');
