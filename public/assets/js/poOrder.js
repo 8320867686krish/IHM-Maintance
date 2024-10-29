@@ -1,15 +1,15 @@
 $(document).ready(function () {
     var itemIndex = "{{ isset($poData->poOrderItems) ? count($poData->poOrderItems) : 0 }}";
-        $("#checkHazmatAddForm").on('submit', function(e) {
+    $("#checkHazmatAddForm").on('submit', function (e) {
 
         e.preventDefault();
 
         $('.error').empty().hide();
         $('input').removeClass('is-invalid');
         $('select').removeClass('is-invalid');
-    
+
         let formData = new FormData(this);
-    
+
         $.ajax({
             url: shipSave,
             type: 'POST',
@@ -17,18 +17,18 @@ $(document).ready(function () {
             dataType: 'json',
             contentType: false,
             processData: false,
-            success: function(response) {
+            success: function (response) {
                 if (response.isStatus) {
                     successMsg(response.message);
                 } else {
                     errorMsg(response.message);
                 }
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 let errors = xhr.responseJSON.errors;
-    
+
                 if (errors) {
-                    $.each(errors, function(field, messages) {
+                    $.each(errors, function (field, messages) {
                         $('#' + field + 'Error').text(messages[0]).show();
                         $('[name="' + field + '"]').addClass('is-invalid');
                     });
@@ -46,10 +46,10 @@ $(document).ready(function () {
             $.each(item, function (key, value) {
                 var $field = $("#" + key); // Get the field by ID
                 $field.val(value);
-                
+
             });
         }
-    $("#shipId").val(item.ship_id);
+        $("#shipId").val(item.ship_id);
         $("#relevantModal").modal('show');
 
     });
@@ -139,18 +139,15 @@ $(document).ready(function () {
             processData: false,
             success: function (response) {
                 if (response.message) {
-                    successMsgWithRedirect(response.message, "{{ url('ship/view') }}/{{ $ship_id }}#po-records");
+                    successMsgWithRedirect(response.message, poItemGrid);
                 }
             },
             error: function (xhr, status, error) {
                 // If there are errors, display them
                 let errors = xhr.responseJSON.errors;
                 if (errors) {
-                    // Loop through errors and display them
                     $.each(errors, function (field, messages) {
-                        // Display error message for each field
                         $('#' + field + 'Error').text(messages[0]).show();
-                        // Add is-invalid class to input or select field
                         $('[name="' + field + '"]').addClass('is-invalid');
                     });
                 } else {
@@ -178,7 +175,7 @@ $('#suspected_hazmat').on('changed.bs.select', function (e, clickedIndex, isSele
                 <div class="row card-body">
                     <div class="col-4 table_typecol">
                         <div class="form-group mb-3">
-                            <select class="form-control table_type tableType${selectedValue}" id="table_type_${selectedValue}" name="hazmats[${selectedValue}]['table_type']">
+                            <select class="form-control table_type tableType${selectedValue}" id="table_type_${selectedValue}" name="hazmats[${selectedValue}][table_type]">
                                 <option value="Contained">Contained
                                 </option>
                                 <option value="Not Contained" selected="">
@@ -194,14 +191,14 @@ $('#suspected_hazmat').on('changed.bs.select', function (e, clickedIndex, isSele
 
                     <div class="col-4 imagehazmat" id="imagehazmat9">
                         <div class="form-group mb-3">
-                            <input type="file" class="form-control" accept="*/*" id="image_${selectedValue}" name="image[${selectedValue}]">
+                            <input type="file" class="form-control" accept="*/*" id="image_${selectedValue}" name="hazmats[${selectedValue}][image]">
                         </div>
                     
                     </div>
 
                     <div class="col-4 dochazmat" id="dochazmat9">
                         <div class="form-group mb-3">
-                            <input type="file" class="form-control" id="doc_9" name="doc[${selectedValue}]">
+                            <input type="file" class="form-control" id="doc_9" name="hazmats[${selectedValue}][doc]">
                         </div>
                         <div style="font-size: 13px; margin-bottom: 10px;" id="docNameShow_${selectedValue}">
                                                 </div>

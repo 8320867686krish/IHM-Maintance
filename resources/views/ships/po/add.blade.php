@@ -158,7 +158,7 @@
                                 <div class="form-group col-2 mb-3">
                                     <select class="form-control form-control-lg" name="items[{{$item->id}}][type_category]">
                                         <option value="Relevant" {{ $item->type_category === 'Relevant' ? 'selected' : '' }}>Relevant</option>
-                                        <option value="Non relevant" {{ $item->type_category === 'Non Relavant' ? 'selected' : '' }}>Non relevant</option>
+                                        <option value="Non relevant" {{ $item->type_category === 'Non relevant' ? 'selected' : '' }}>Non relevant</option>
                                     </select>
                                 </div>
                                 <div class="form-group col-1 mb-3">
@@ -201,5 +201,7 @@
 <script src="{{ asset('assets/vendor/bootstrap-select/js/bootstrap-select.js') }}"></script>
 
 <script src="{{ asset('assets/js/poOrder.js') }}"></script>
-
+<script>
+    var poItemGrid = "{{ url('ship/view') }}/{{ $ship_id }}#po-records"
+</script>
 @endpush

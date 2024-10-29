@@ -162,27 +162,18 @@ class POOrderController extends Controller
        $post = $request->input();
        if(@$post['hazmats']){
        
-        foreach ($post['hazmats'] as $key => $hazmat) {
-            print_r($hazmat[$key]);
-            if (isset($hazmat['table_type'])) {
-                $tableType = $hazmat['table_type']; // Accessing table type
-                echo $tableType; // Print the table type
-            } else {
-                echo "Row $key: table_type is not set."; // Handle the missing key
-            }
-            // Do tableType with $key and $tableType
-        }
+     
             foreach($post['hazmats'] as $key=>$value){
-               
-                // $hazmats = [
-                //     'ship_id ' => $post['shipId'],
-                //     'po_order_id' => $post['po_order_id'],
-                //     'po_order_item_id' => $post['id'],
-                //     'hazmat_id' => $key,
-                //     'hazmat_type' => $value['table_type']
-                // ];
+              
+                $hazmats = [
+                    'ship_id ' => $post['shipId'],
+                    'po_order_id' => $post['po_order_id'],
+                    'po_order_item_id' => $post['id'],
+                    'hazmat_id' => $key,
+                    'hazmat_type' => $value['table_type']
+                ];
             }
-          //  PoOrderItemsHazmats::create($hazmats);
+            PoOrderItemsHazmats::create($hazmats);
        }
        return response()->json(['isStatus' => true, 'message' => 'save successfully']);
 
