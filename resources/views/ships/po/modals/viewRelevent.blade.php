@@ -46,8 +46,8 @@
                           
                            <div class="col-12 col-md-6">
                                <div class="form-group mb-4">
-                                   <label for="unit_price">Unit Price</label>
-                                   <input type="text" id="unit_price" name="unit_price" class="form-control">
+                                   <label for="unit">Unit</label>
+                                   <input type="text" id="unit" name="unit" class="form-control">
                                </div>
                            </div>
 

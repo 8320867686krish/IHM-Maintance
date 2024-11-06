@@ -158,6 +158,7 @@
                                                 <div class="invalid-feedback error" id="ship_nameError"></div>
                                             </div>
                                         </div>
+                                      
                                         <div class="col-sm-12 col-md-6 col-lg-4">
                                             <div class="form-group mb-3">
                                                 <label for="imo_number">Ship IMO Number <span class="text-danger">*</span></label>
@@ -332,6 +333,18 @@
                                                 @enderror
                                             </div>
                                         </div>
+
+                                        <div class="col-sm-12 col-md-6 col-lg-4">
+                                    <div class="form-group">
+                                        <label for="project_name">Ship Image</label>
+                                        <input type="file" class="form-control @error('ship_image') is-invalid @enderror"
+                                            id="ship_image" name="ship_image" autocomplete="off"
+                                            onchange="removeInvalidClass(this)">
+                                        @error('ship_type')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
                                     </div>
 
                                     <div class="row mt-3">

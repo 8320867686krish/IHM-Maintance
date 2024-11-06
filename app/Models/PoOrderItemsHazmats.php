@@ -11,8 +11,8 @@ class PoOrderItemsHazmats extends Model
     protected $fillable = [
         'ship_id',
         'po_order_item_id',
-        'hazmat_id ',
+        'hazmat_id',
         'po_order_id',
         'hazmat_type',
-     ];
+    ];
 }

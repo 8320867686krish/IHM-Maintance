@@ -61,7 +61,10 @@ class POOrderController extends Controller
 
         return response()->json(['isStatus' => true, 'message' => 'Po Order save successfully']);
     }
-
+    public function viewReleventItem($poiteam_id){
+        $poItem = poOrderItem::find($poiteam_id);
+        return view('ships.po.releventItem',compact('poItem'));
+    }
     public function import(Request $request)
     {
         $ship_id  = $request->input('ship_id');
@@ -77,7 +80,7 @@ class POOrderController extends Controller
                 $rowWithHeaders = array_combine($headers, $row);
                 $rowErrors = []; 
                 
-                $requiredFields = ['PO NO', 'Request NO', 'Vessel NO', 'Machinery', 'Make Model', 'Supplier Name', 'Contact Person', 'Phone Number', 'Email', 'Address', 'Item Description', 'Item Part No', 'Item Qty', 'Item Unite Price', 'Item Amount','Type'];
+                $requiredFields = ['PO NO', 'PO Date', 'Vessel Name', 'Machinery', 'Make Model', 'Supplier Name', 'Contact Person', 'Phone Number', 'Email', 'Address', 'Item Description', 'Item Part No', 'Item Qty', 'Item Unite Price','Type','Item IMPA No'];
 
                 foreach ($requiredFields as $field) {
 
@@ -101,8 +104,8 @@ class POOrderController extends Controller
                 $insert = [
                     'po_no' => $rowWithHeaders['PO NO'],
                     'ship_id' => $ship_id,
-                    'request_number' => $rowWithHeaders['Request NO'],
-                    'vessel_no' => $rowWithHeaders['Vessel NO'],
+                    'po_date' => $rowWithHeaders['PO DATE'],
+                    'vessel_name' => $rowWithHeaders['Vessel Name'],
                     'machinery' => $rowWithHeaders['Machinery'],
                     'make_model' => $rowWithHeaders['Make Model'],
                     'supplier_name' => $rowWithHeaders['Supplier Name'],
@@ -132,8 +135,8 @@ class POOrderController extends Controller
                     'description' => $rowWithHeaders['Item Description'],
                     'part_no' => $rowWithHeaders['Item Part No'],
                     'qty' => $rowWithHeaders['Item Qty'],
-                    'unit_price' => $rowWithHeaders['Item Unite Price'],
-                    'amount' => $rowWithHeaders['Item Amount'],
+                    'unit' => $rowWithHeaders['Item Unite'],
+                    'impa_no' => $rowWithHeaders['Item IMPA No'],
                     'type_category' => $rowWithHeaders['Type']
                 ];
 
@@ -164,9 +167,8 @@ class POOrderController extends Controller
        
      
             foreach($post['hazmats'] as $key=>$value){
-              
                 $hazmats = [
-                    'ship_id ' => $post['shipId'],
+                    'ship_id' => $post['shipId'],
                     'po_order_id' => $post['po_order_id'],
                     'po_order_item_id' => $post['id'],
                     'hazmat_id' => $key,

@@ -13,8 +13,8 @@ class poOrder extends Model
     protected $fillable = [
         'ship_id',
         'po_no',
-        'request_number',
-        'vessel_no',
+        'po_date',
+        'vessel_name',
         'machinery',
         'make_model',
         'supplier_name',
@@ -22,6 +22,8 @@ class poOrder extends Model
         'contact_person',
         'phone',
         'email',
+        'delivery_location',
+        'onboard_reciving_date',
     ];
 
     public function poOrderItems(){

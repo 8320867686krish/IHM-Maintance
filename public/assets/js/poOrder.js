@@ -40,19 +40,7 @@ $(document).ready(function () {
     })
     // Increment the index for each new item
 
-    $(".view-item-btn").click(function () {
-        var item = $(this).closest('.new-item-row').data('item');
-        if (item) {
-            $.each(item, function (key, value) {
-                var $field = $("#" + key); // Get the field by ID
-                $field.val(value);
 
-            });
-        }
-        $("#shipId").val(item.ship_id);
-        $("#relevantModal").modal('show');
-
-    });
 
     $('#addItemBtn').click(function () {
         $('#emptyMsg').hide();
@@ -64,7 +52,10 @@ $(document).ready(function () {
                 <input type="text" class="form-control form-control-lg" name="items[` + itemIndex + `][description]" autocomplete="off" placeholder="Description">
                 <div class="invalid-feedback error"></div>
             </div>
-
+            <div class="form-group col-2 mb-3">
+                <input type="text" class="form-control form-control-lg" name="items[` + itemIndex + `][impa_no]" autocomplete="off" placeholder="IMPA NO">
+                <div class="invalid-feedback error"></div>
+            </div>
             <div class="form-group col-2 mb-3">
                 <input type="text" class="form-control form-control-lg" name="items[` + itemIndex + `][part_no]" autocomplete="off" placeholder="Part No">
                 <div class="invalid-feedback error"></div>
@@ -75,15 +66,12 @@ $(document).ready(function () {
                 <div class="invalid-feedback error"></div>
             </div>
 
-            <div class="form-group col-2 mb-3">
-                <input type="text" class="form-control form-control-lg" name="items[` + itemIndex + `][unit_price]" autocomplete="off" placeholder="Unit Price">
+            <div class="form-group col-1 mb-3">
+                <input type="text" class="form-control form-control-lg" name="items[` + itemIndex + `][unit]" autocomplete="off" placeholder="Unit">
                 <div class="invalid-feedback error"></div>
             </div>
 
-            <div class="form-group col-1 mb-3">
-                <input type="text" class="form-control form-control-lg" name="items[` + itemIndex + `][amount]" autocomplete="off" placeholder="Amount">
-                <div class="invalid-feedback error"></div>
-            </div>
+          
 
 
              <div class="form-group col-2 mb-3">

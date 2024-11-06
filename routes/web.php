@@ -4,6 +4,7 @@ use App\Http\Controllers\ClientCompanyController;
 use App\Http\Controllers\HazmatCompanyController;
 use App\Http\Controllers\HelpCente;
 use App\Http\Controllers\HelpCenterController;
+use App\Http\Controllers\MakeModelContoller;
 use App\Http\Controllers\POOrderController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -31,16 +32,17 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-  
+
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::post('/import', [POOrderController::class, 'import'])->name('import');
-    Route::get('ships/po-order/add/{ship_id}/{po_order_id?}',[POOrderController::class,'add'])->name('po.add');
-    Route::post('po-order/save',[POOrderController::class,'store'])->name('po.store');
-    Route::delete('po-order/delete/{po_id}',[POOrderController::class,'poDelete'])->name('po.delete');
-    Route::post('po-item/hazmat/save',[POOrderController::class,'poItemsHazmatSave'])->name('poItems.hazmat');
+    Route::get('ships/po-order/add/{ship_id}/{po_order_id?}', [POOrderController::class, 'add'])->name('po.add');
+    Route::get('po-order/po-item/relevant/{poiteam_id}', [POOrderController::class, 'viewReleventItem'])->name('po.relevent');
+    Route::post('po-order/save', [POOrderController::class, 'store'])->name('po.store');
+    Route::delete('po-order/delete/{po_id}', [POOrderController::class, 'poDelete'])->name('po.delete');
+    Route::post('po-item/hazmat/save', [POOrderController::class, 'poItemsHazmatSave'])->name('poItems.hazmat');
 
     Route::get('/helpcenter', [HelpCenterController::class, 'index'])->name('helpcenter.list');
     Route::middleware('can:roles')->group(function () {
@@ -55,9 +57,9 @@ Route::middleware('auth')->group(function () {
 
     Route::middleware('can:hazmatCompany')->group(function () {
         Route::controller(HazmatCompanyController::class)->group(function () {
-            Route::get('hazmatCompany','index')->name('hazmatCompany')->middleware('can:hazmatCompany');
-            Route::get('hazmatCompany/add','create')->name('hazmatCompany.add')->middleware('can:hazmatCompany.add');
-            Route::post('hazmatCompany','store')->name('hazmatCompany.store');
+            Route::get('hazmatCompany', 'index')->name('hazmatCompany')->middleware('can:hazmatCompany');
+            Route::get('hazmatCompany/add', 'create')->name('hazmatCompany.add')->middleware('can:hazmatCompany.add');
+            Route::post('hazmatCompany', 'store')->name('hazmatCompany.store');
             Route::get('hazmatCompany/{id}/edit', 'edit')->name('hazmatCompany.edit')->middleware('can:hazmatCompany.edit');
             Route::get('hazmatCompany/{id}/delete', 'destroy')->name('hazmatCompany.delete')->middleware('can:hazmatCompany.remove');
         });
@@ -83,8 +85,6 @@ Route::middleware('auth')->group(function () {
             Route::get('ships/{id}/delete', 'destroy')->name('ships.delete')->middleware('can:ships.remove');
             Route::get('ship/view/{ship_id}', 'shipView')->name('ships.view');
             Route::post('ship/assignProject', 'assignShip')->name('ships.assign');
-
-
         });
     });
 
@@ -99,8 +99,7 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::middleware('can:documentdeclaration')->group(function () {
-        // Route::resource('makemodel', MakeModelContoller::class);
-        Route::controller(UserController::class)->group(function () {
+        Route::controller(MakeModelContoller::class)->group(function () {
             Route::get('documentdeclaration', 'index')->name('documentdeclaration')->middleware('can:documentdeclaration');
             Route::get('documentdeclaration/add', 'create')->name('documentdeclaration.add')->middleware('can:documentdeclaration.add');
             Route::post('documentdeclaration', 'store')->name('documentdeclaration.store')->middleware('can:documentdeclaration.add');
@@ -110,4 +109,4 @@ Route::middleware('auth')->group(function () {
     });
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

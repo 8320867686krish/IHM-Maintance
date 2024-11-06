@@ -25,16 +25,16 @@
                             </div>
 
                             <div class="form-group col-6 mb-3">
-                                <label for="assign_date">Request NO<span class="text-danger">*</span></label>
-                                <input type="text" class="form-control form-control-lg" id="request_number" value="{{@$poData->request_number}}" name="request_number" name="po_no" autocomplete="off" onchange="removeInvalidClass(this)">
-                                <div class="invalid-feedback error" id="request_noError"></div>
+                                <label for="assign_date">PO Date<span class="text-danger">*</span></label>
+                                <input type="date" class="form-control form-control-lg" id="po_date" value="{{@$poData->po_date}}" name="po_date" autocomplete="off" onchange="removeInvalidClass(this)">
+                                <div class="invalid-feedback error" id="po_dateError"></div>
                             </div>
 
 
                             <div class="form-group col-6 mb-3">
-                                <label for="vessel_no">Vessel No</label>
-                                <input type="text" class="form-control form-control-lg" id="vessel_no" name="vessel_no" autocomplete="off" onchange="removeInvalidClass(this)" value="{{@$poData->vessel_no}}">
-                                <div class="invalid-feedback error" id="vessel_noError"></div>
+                                <label for="vessel_name">Vessel Name</label>
+                                <input type="text" class="form-control form-control-lg" id="vessel_name" name="vessel_name" autocomplete="off" onchange="removeInvalidClass(this)" value="{{@$poData->vessel_name}}">
+                                <div class="invalid-feedback error" id="vessel_nameError"></div>
                             </div>
 
                             <div class="form-group col-6 mb-3">
@@ -43,7 +43,7 @@
                                 <div class="invalid-feedback error" id="machineryError"></div>
                             </div>
                             <div class="form-group col-6 mb-3">
-                                <label for="vessel_no">Make Model</label>
+                                <label for="make_model">Make Model</label>
                                 <input type="text" class="form-control form-control-lg" id="make_model" name="make_model" autocomplete="off" onchange="removeInvalidClass(this)" value="{{@$poData->make_model}}">
                                 <div class="invalid-feedback error" id="make_modelError"></div>
                             </div>
@@ -58,20 +58,20 @@
                             </div>
 
                             <div class="form-group col-6 mb-3">
-                                <label for="supplier_name">Address</label>
+                                <label for="supplier_name">Supplier Address</label>
                                 <input type="text" class="form-control form-control-lg" id="address" name="address" autocomplete="off" onchange="removeInvalidClass(this)" value="{{@$poData->address}}">
                                 <div class="invalid-feedback error" id="addressError"></div>
                             </div>
 
                             <div class="form-group col-6 mb-3">
-                                <label for="supplier_name">Contact Person</label>
+                                <label for="supplier_name">Supplier Contact Person</label>
                                 <input type="text" class="form-control form-control-lg" id="contact_person" name="contact_person" autocomplete="off" onchange="removeInvalidClass(this)" value="{{@$poData->contact_person}}">
                                 <div class="invalid-feedback error" id="contact_personError"></div>
                             </div>
 
 
                             <div class="form-group col-6 mb-3">
-                                <label for="supplier_name">Phone Number</label>
+                                <label for="supplier_name">Supplier Phone Number</label>
                                 <input type="text" class="form-control form-control-lg" id="phone" name="phone" autocomplete="off" onchange="removeInvalidClass(this)" value="{{@$poData->phone}}">
                                 <div class="invalid-feedback error" id="phoneError"></div>
                             </div>
@@ -80,10 +80,23 @@
 
 
                             <div class="form-group col-6 mb-3">
-                                <label for="supplier_name">Email</label>
-                                <input type="text" class="form-control form-control-lg" id="email" name="email" autocomplete="off" onchange="removeInvalidClass(this)">
+                                <label for="supplier_name">Supplier Email</label>
+                                <input type="text" class="form-control form-control-lg" id="email" name="email" autocomplete="off" onchange="removeInvalidClass(this)"  value="{{@$poData->emil}}">
                                 <div class="invalid-feedback error" id="emailError"></div>
                             </div>
+
+                            <div class="form-group col-6 mb-3">
+                                <label for="onboard_reciving_date">Onboard reciving date</label>
+                                <input type="date" class="form-control form-control-lg" id="onboard_reciving_date" name="onboard_reciving_date" autocomplete="off" onchange="removeInvalidClass(this)"  value="{{@$poData->onboard_reciving_date}}">
+                                <div class="invalid-feedback error" id="onboard_reciving_dateError"></div>
+                            </div>
+
+                            <div class="form-group col-6 mb-3">
+                                <label for="delivery_location">Delivery Location</label>
+                                <input type="text" class="form-control form-control-lg" id="delivery_location" name="delivery_location" autocomplete="off" onchange="removeInvalidClass(this)" value="{{@$poData->delivery_location}}">
+                                <div class="invalid-feedback error" id="delivery_locationError"></div>
+                            </div>
+
 
 
 
@@ -109,19 +122,20 @@
                                 <label for="machinery">Description</label>
                             </div>
                             <div class="form-group col-2 mb-3">
+                                <label for="contact_person">IMPA NO</label>
+
+                            </div>
+                            <div class="form-group col-2 mb-3">
                                 <label for="make_model">Part No</label>
                             </div>
                             <div class="form-group col-1 mb-3">
                                 <label for="supplier_name">Qty</label>
 
                             </div>
-                            <div class="form-group col-2 mb-3">
-                                <label for="address">Unit Price</label>
-                            </div>
                             <div class="form-group col-1 mb-3">
-                                <label for="contact_person">Amount</label>
-
+                                <label for="address">Unit</label>
                             </div>
+
                             <div class="form-group col-1 mb-3">
                                 <label for="contact_person">Type</label>
 
@@ -136,6 +150,10 @@
                                     <div class="invalid-feedback error"></div>
                                 </div>
                                 <div class="form-group col-2 mb-3">
+                                    <input type="text" class="form-control form-control-lg" name="items[{{$item->id}}][impa_no]" autocomplete="off" placeholder="IMPA NO" value="{{$item->impa_no   }}">
+                                    <div class="invalid-feedback error"></div>
+                                </div>
+                                <div class="form-group col-2 mb-3">
                                     <input type="text" class="form-control form-control-lg" name="items[{{$item->id}}][part_no]" autocomplete="off" placeholder="Part No" value="{{$item->part_no}}">
                                     <div class="invalid-feedback error"></div>
                                 </div>
@@ -145,15 +163,12 @@
                                     <div class="invalid-feedback error"></div>
                                 </div>
 
-                                <div class="form-group col-2 mb-3">
-                                    <input type="text" class="form-control form-control-lg" name="items[{{$item->id}}][unit_price]" autocomplete="off" placeholder="Unit Price" value="{{$item->unit_price}}">
+                                <div class="form-group col-1 mb-3">
+                                    <input type="text" class="form-control form-control-lg" name="items[{{$item->id}}][unit]" autocomplete="off" placeholder="Unit" value="{{$item->unit}}">
                                     <div class="invalid-feedback error"></div>
                                 </div>
 
-                                <div class="form-group col-1 mb-3">
-                                    <input type="text" class="form-control form-control-lg" name="items[{{$item->id}}][amount]" autocomplete="off" placeholder="Amount" value="{{$item->amount}}">
-                                    <div class="invalid-feedback error"></div>
-                                </div>
+
 
                                 <div class="form-group col-2 mb-3">
                                     <select class="form-control form-control-lg" name="items[{{$item->id}}][type_category]">
@@ -164,7 +179,8 @@
                                 <div class="form-group col-1 mb-3">
                                     <i class="fas fa-trash-alt text-danger mt-3 remove-item-btn"></i>
                                     @if($item->type_category === 'Relevant')
-                                    <i class="fas fa-eye text-info ml-2 view-item-btn"></i>
+                                    <a href="{{ route('po.relevent', $item->id) }}">
+                                    <i class="fas fa-eye text-info ml-2 view-item-btn"></i></a>
                                     @endif
                                 </div>
 
@@ -193,8 +209,7 @@
             </div>
         </div>
     </div>
- 
-    @include('ships.po.modals.viewRelevent')
+
 </div>
 @endsection
 @push('js')

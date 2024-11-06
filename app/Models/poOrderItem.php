@@ -14,8 +14,8 @@ class poOrderItem extends Model
         'description',
         'qty',
         'po_order_id',
-        'unit_price',
-        'amount',
+        'unit',
+        'impa_no',
         'part_no',
         'type_category',
 

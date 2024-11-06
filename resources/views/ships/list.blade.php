@@ -24,8 +24,10 @@
     <div class="row equal-height">
         @if (isset($ships) && $ships->count() > 0)
         @foreach ($ships as $ship)
+        <a href="{{ route('ships.view', ['ship_id' => $ship->id]) }}" style='color:#71748d !important;'>
+
         <div class="col-12 col-md-6 col-lg-3" id="shipid{{$ship->id}}">
-            <a href="{{ route('ships.view', ['ship_id' => $ship->id]) }}" style='color:#71748d !important;'>
+          
 
                 <div class="card">
                     <img src="{{ asset('uploads/ship/' . $ship->ship_image) }}" alt="Company Logo" class="card-img-top">
@@ -51,10 +53,9 @@
                     </div>
 
                 </div>
-            </a>
+           
         </div>
-
-
+        </a>
         @endforeach
         @else
         <div class="col-12">

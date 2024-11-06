@@ -25,8 +25,8 @@ return new class extends Migration
             $table->string('description')->nullable();
             $table->string('part_no')->nullable();
             $table->string('qty')->nullable();
-            $table->string('unit_price')->nullable();
-            $table->string('amount')->nullable();
+            $table->string('unit')->nullable();
+            $table->string('impa_no')->nullable();
             $table->string('type_category',15)->nullable();
 
             $table->timestamps();

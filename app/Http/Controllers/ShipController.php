@@ -127,7 +127,7 @@ class ShipController extends Controller
                 if ($inputData['id'] != 0) {
                     $shipData = Ship::find($inputData['id']);
                     if ($shipData && $shipData->ship_image) {
-                        $oldImagePath = $this->deleteImage('uploads/ship/', $shipData->logo);
+                        $oldImagePath = $this->deleteImage('uploads/ship/', $shipData->ship_image);
                     }
                 }
                 $image = $this->upload($request, 'ship_image', 'uploads/ship');
