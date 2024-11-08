@@ -20,4 +20,8 @@ class poOrderItem extends Model
         'type_category',
 
     ];
+    public function poOrderItemsHazmets(){
+        return $this->hasMany(PoOrderItemsHazmats::class, 'po_order_item_id', 'id');
+    
+       }
 }

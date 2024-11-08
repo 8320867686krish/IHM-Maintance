@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('po_order_items_hazmats', function (Blueprint $table) {
             $table->id();
+            
             $table->unsignedBigInteger('ship_id')->nullable();  // Same data type as hazmat_companies.id
             $table->foreign('ship_id')->references('id')->on('ships')->onDelete('cascade');
 
@@ -27,6 +28,19 @@ return new class extends Migration
             $table->foreign('hazmat_id')->references('id')->on('hazmats')->onDelete('cascade');
 
             $table->string('hazmat_type')->nullable();
+            $table->boolean('isArrived')->default(0);
+            $table->boolean('isRemove')->default(0);
+            $table->string('service_supplier_name')->nullable();
+            $table->string('service_supplier_address')->nullable();
+            $table->date('removal_date')->nullable();
+            $table->string('removal_location')->nullable();
+            $table->string('attachment')->nullable();
+            $table->string('po_no')->nullable();
+            $table->boolean('isReturn')->default(0);
+            $table->boolean('isInstalled')->default(0);
+            $table->string('location')->nullable();
+            $table->date('date')->nullable();
+            $table->boolean('isIHMUpdated')->default(0);
 
             $table->timestamps();
         });

@@ -108,8 +108,4 @@
            </div>
        </div>
    </div>
-   @push('js')
-   <script>
-    var shipSave = "{{ route('poItems.hazmat') }}";
-</script>
-   @endpush
+ 

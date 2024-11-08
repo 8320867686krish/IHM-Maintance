@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ExampleMail;
 use App\Models\Hazmat;
 use App\Models\poOrder;
 use App\Models\poOrderItem;
 use App\Models\PoOrderItemsHazmats;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Maatwebsite\Excel\Facades\Excel;
 
 class POOrderController extends Controller
@@ -14,6 +16,18 @@ class POOrderController extends Controller
     //
     public function add($ship_id, $po_order_id = null)
     {
+        $data = array('name' => "Our Code World");
+        // Path or name to the blade template to be rendered
+        $template_path = 'email.example';
+
+
+
+        Mail::send(['text'=> $template_path ], $data, function($message) {
+            // Set the receiver and subject of the mail.
+            $message->to('krishna.patel628@gmail.com', 'krishna')->subject('Laravel First Mail');
+            // Set the sender
+            $message->from('shopify@meetanshi.org','Our Code World');
+        });
         if (@$po_order_id) {
             $head_title = "View";
         } else {
@@ -21,14 +35,8 @@ class POOrderController extends Controller
         }
         $backurl = "ship/view" . "/" . $ship_id . "#po-records";
         $poData = poOrder::with('poOrderItems')->find($po_order_id);
-        $table_type = Hazmat::select('table_type')->distinct()->pluck('table_type');
 
-        $hazmats = [];
-
-        foreach ($table_type as $type) {
-            $hazmats[$type] = Hazmat::where('table_type', $type)->get(['id', 'name', 'table_type']);
-        }
-        return view('ships.po.add', compact('head_title', 'ship_id', 'poData', 'backurl','hazmats'));
+        return view('ships.po.add', compact('head_title', 'ship_id', 'poData', 'backurl'));
     }
 
     public function store(Request $request)
@@ -61,9 +69,18 @@ class POOrderController extends Controller
 
         return response()->json(['isStatus' => true, 'message' => 'Po Order save successfully']);
     }
-    public function viewReleventItem($poiteam_id){
-        $poItem = poOrderItem::find($poiteam_id);
-        return view('ships.po.releventItem',compact('poItem'));
+    public function viewReleventItem($poiteam_id)
+    {
+        $poItem = poOrderItem::with('poOrderItemsHazmets.hazmat')->find($poiteam_id);
+        $backurl = 'ships/po-order/add/' . $poItem['ship_id'] . "/" . $poItem['po_order_id'];
+        $table_type = Hazmat::select('table_type')->distinct()->pluck('table_type');
+        $hazmats = [];
+        $hazmatIds = $poItem->poOrderItemsHazmets->pluck('hazmat_id')->toArray();
+
+        foreach ($table_type as $type) {
+            $hazmats[$type] = Hazmat::where('table_type', $type)->get(['id', 'name', 'table_type']);
+        }
+        return view('ships.po.releventItem', compact('poItem', 'backurl', 'hazmats', 'hazmatIds'));
     }
     public function import(Request $request)
     {
@@ -76,11 +93,11 @@ class POOrderController extends Controller
 
         if (!empty($data) && count($data) > 0) {
             $headers = array_shift($data[0]); // Get headers
-            foreach ($data[0] as $rowIndex =>$row) { // Assuming data is on the first sheet
+            foreach ($data[0] as $rowIndex => $row) { // Assuming data is on the first sheet
                 $rowWithHeaders = array_combine($headers, $row);
-                $rowErrors = []; 
-                
-                $requiredFields = ['PO NO', 'PO Date', 'Vessel Name', 'Machinery', 'Make Model', 'Supplier Name', 'Contact Person', 'Phone Number', 'Email', 'Address', 'Item Description', 'Item Part No', 'Item Qty', 'Item Unite Price','Type','Item IMPA No'];
+                $rowErrors = [];
+
+                $requiredFields = ['PO NO', 'PO Date', 'Vessel Name', 'Machinery', 'Make Model', 'Supplier Name', 'Contact Person', 'Phone Number', 'Email', 'Address', 'Item Description', 'Item Part No', 'Item Qty', 'Item Unite Price', 'Type', 'Item IMPA No'];
 
                 foreach ($requiredFields as $field) {
 
@@ -93,7 +110,7 @@ class POOrderController extends Controller
                 // If there are errors, continue to the next row
                 if (!empty($rowErrors)) {
                     $errors = array_merge($errors, $rowErrors);
-                    continue; 
+                    continue;
                 }
                 // Check if PO order exists
                 $poorder = poOrder::where('po_no', $rowWithHeaders['PO NO'])
@@ -161,23 +178,21 @@ class POOrderController extends Controller
         poOrder::where('id', $po_id)->delete();
         return response()->json(['isStatus' => true, 'message' => 'Po Order Delete successfully']);
     }
-    public function poItemsHazmatSave(Request $request){
-       $post = $request->input();
-       if(@$post['hazmats']){
-       
-     
-            foreach($post['hazmats'] as $key=>$value){
-                $hazmats = [
-                    'ship_id' => $post['shipId'],
-                    'po_order_id' => $post['po_order_id'],
-                    'po_order_item_id' => $post['id'],
-                    'hazmat_id' => $key,
-                    'hazmat_type' => $value['table_type']
-                ];
-            }
-            PoOrderItemsHazmats::create($hazmats);
-       }
-       return response()->json(['isStatus' => true, 'message' => 'save successfully']);
+    public function poItemsHazmatSave(Request $request)
+    {
+        $post = $request->input();
+        if (@$post['hazmats']) {
 
+
+            foreach ($post['hazmats'] as $key => $value) {
+                $value['ship_id'] = $post['ship_id'];
+                $value['po_order_id'] = $post['po_order_id'];
+                $value['po_order_item_id'] = $post['po_order_item_id'];
+                $value['hazmat_id'] = $key;
+                PoOrderItemsHazmats::updateOrCreate(['id' => $value['id']], $value);
+
+            }
+        }
+        return response()->json(['isStatus' => true, 'message' => 'save successfully']);
     }
 }

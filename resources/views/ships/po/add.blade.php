@@ -1,8 +1,6 @@
 @extends('layouts.app')
 @section('shiptitle','Po Records')
-@section('css')
-<link rel="stylesheet" type="text/css" href="{{ asset('assets/vendor/bootstrap-select/css/bootstrap-select.css') }}">
-@endsection
+
 @section('content')
 <div class="container-fluid dashboard-content">
     <div class="row">
@@ -122,7 +120,7 @@
                                 <label for="machinery">Description</label>
                             </div>
                             <div class="form-group col-2 mb-3">
-                                <label for="contact_person">IMPA NO</label>
+                                <label for="contact_person">IMPA NO.(if available)</label>
 
                             </div>
                             <div class="form-group col-2 mb-3">
