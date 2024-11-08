@@ -19,7 +19,9 @@
     align-items: end;
     gap: 10px;
 }
-
+.bold{
+    font-weight:bold;
+}
 *{
     margin:0px;
     padding: 0px;

@@ -48,25 +48,25 @@ $(document).ready(function () {
 
         var newItemRow = `
         <div class="row new-item-row">
-            <div class="form-group col-3 mb-3">
+            <div class="form-group col-3 mb-1">
                 <input type="text" class="form-control form-control-lg" name="items[` + itemIndex + `][description]" autocomplete="off" placeholder="Description">
                 <div class="invalid-feedback error"></div>
             </div>
-            <div class="form-group col-2 mb-3">
+            <div class="form-group col-2 mb-1">
                 <input type="text" class="form-control form-control-lg" name="items[` + itemIndex + `][impa_no]" autocomplete="off" placeholder="IMPA NO">
                 <div class="invalid-feedback error"></div>
             </div>
-            <div class="form-group col-2 mb-3">
+            <div class="form-group col-2 mb-1">
                 <input type="text" class="form-control form-control-lg" name="items[` + itemIndex + `][part_no]" autocomplete="off" placeholder="Part No">
                 <div class="invalid-feedback error"></div>
             </div>
 
-            <div class="form-group col-1 mb-3">
+            <div class="form-group col-1 mb-1">
                 <input type="text" class="form-control form-control-lg" name="items[` + itemIndex + `][qty]" autocomplete="off" placeholder="Qty">
                 <div class="invalid-feedback error"></div>
             </div>
 
-            <div class="form-group col-1 mb-3">
+            <div class="form-group col-1 mb-1">
                 <input type="text" class="form-control form-control-lg" name="items[` + itemIndex + `][unit]" autocomplete="off" placeholder="Unit">
                 <div class="invalid-feedback error"></div>
             </div>
@@ -74,12 +74,12 @@ $(document).ready(function () {
           
 
 
-             <div class="form-group col-2 mb-3">
+             <div class="form-group col-2 mb-1">
                 <select  class="form-control form-control-lg" name="items[` + itemIndex + `][type_category]"><option value="Relavant">Relavant</option><option value="Non relevant">Non relevant</option></select>
                 <div class="invalid-feedback error"></div>
             </div>
 
-            <div class="form-group col-1 mb-3">
+            <div class="form-group col-1 mb-1">
                 <i class="fas fa-trash-alt text-danger mt-3 remove-item-btn" style="font-size: 1rem"></i>
             </div>
         </div>
@@ -166,11 +166,11 @@ $('#suspected_hazmat').on('changed.bs.select', function (e, clickedIndex, isSele
             $(`#cloneTableTypeDiv${selectedValue}`).remove();
         } else {
             var div = `<input type="hidden" name="hazmats[${selectedValue}][id]" id="po_iteam_hazmat_id" value="0">
-<div class="col-12 col-md-12 col-lg-12 cloneTableTypeDiv mb-3 card" id="cloneTableTypeDiv${selectedValue}">
+<div class="col-12 col-md-12 col-lg-12 cloneTableTypeDiv mb-1 card" id="cloneTableTypeDiv${selectedValue}">
                 <label for="table_type" id="tableTypeLable" class="mr-5 mt-3 tableTypeLable card-header">${selectedText}</label>
                 <div class="row card-body">
                     <div class="col-4 table_typecol">
-                        <div class="form-group mb-3">
+                        <div class="form-group mb-1">
                             <select class="form-control table_type tableType${selectedValue}" id="table_type_${selectedValue}" name="hazmats[${selectedValue}][hazmat_type]"  data-findTable="${tableType[0]}" data-divValue="${selectedValue}">
                                 <option value="Contained">Contained
                                 </option>
@@ -186,14 +186,14 @@ $('#suspected_hazmat').on('changed.bs.select', function (e, clickedIndex, isSele
                     </div>
 
                     <div class="col-4 imagehazmat" id="imagehazmat9">
-                        <div class="form-group mb-3">
+                        <div class="form-group mb-1">
                             <input type="file" class="form-control" accept="*/*" id="image_${selectedValue}" name="hazmats[${selectedValue}][image]">
                         </div>
                     
                     </div>
 
                     <div class="col-4 dochazmat" id="dochazmat9">
-                        <div class="form-group mb-3">
+                        <div class="form-group mb-1">
                             <input type="file" class="form-control" id="doc_9" name="hazmats[${selectedValue}][doc]">
                         </div>
                         <div style="font-size: 13px; margin-bottom: 10px;" id="docNameShow_${selectedValue}">
@@ -221,22 +221,21 @@ $("#showTableTypeDiv").on("change", ".cloneTableTypeDiv select.table_type", func
     const divValue = $(this).attr("data-divvalue");
     cloneTableTypeDiv.find(`.onboard${divValue}`).remove();
 
-    if (tabletype === 'A') {
-        if (selectedValue === 'Contained' || selectedValue === 'PCHM') {
+    if (selectedValue === 'Contained' || selectedValue === 'PCHM') {
 
-            let isOnboardDiv = `
-            <div class="col-12 col-md-12 col-lg-12  mb-3  onboard${divValue}">
+        let isOnboardDiv = `
+            <div class="col-12 col-md-12 col-lg-12  mb-1  onboard${divValue}">
                 <h5>Item arrived on board?</h5>
                <label class="custom-control custom-radio custom-control-inline">
-                 <input type="radio" id="isArrived${divValue}" name="hazmats[${divValue}][isArrived]" value="yes" class="custom-control-input isArrivedChoice" data-isArrived="${divValue}"><span class="custom-control-label">Yes</span>
+                 <input type="radio" id="isArrived${divValue}" name="hazmats[${divValue}][isArrived]" value="yes" class="custom-control-input isArrivedChoice" data-tab="${tabletype}" data-isArrived="${divValue}"><span class="custom-control-label">Yes</span>
                 </label>
                   <label class="custom-control custom-radio custom-control-inline">
-                 <input type="radio" id="isArrived${divValue}" name="hazmats[${divValue}][isArrived]" value="no" class="custom-control-input isArrivedChoice" data-isArrived="${divValue}"><span class="custom-control-label">No</span>
+                 <input type="radio" id="isArrived${divValue}" name="hazmats[${divValue}][isArrived]" value="no" class="custom-control-input isArrivedChoice"  data-tab="${tabletype}" data-isArrived="${divValue}"><span class="custom-control-label">No</span>
                 </label>
                
             </div>
 
-             <div class="col-12 col-md-12 col-lg-12  mb-3  removeItem${divValue}">
+             <div class="col-12 col-md-12 col-lg-12  mb-1  removeItem${divValue}">
                 <h5>remove the item?</h5>
                <label class="custom-control custom-radio custom-control-inline">
                  <input type="radio" id="isRemove${divValue}" name="hazmats[${divValue}][isRemove]" value="yes" class="custom-control-input isRemoveChoice" data-isRemove="${divValue}"><span class="custom-control-label">Yes</span>
@@ -248,53 +247,53 @@ $("#showTableTypeDiv").on("change", ".cloneTableTypeDiv select.table_type", func
             </div>
            
         `;
-            $(cloneTableTypeDiv).append(isOnboardDiv).fadeIn('slow');
+        $(cloneTableTypeDiv).append(isOnboardDiv).fadeIn('slow');
 
-        } else {
-            cloneTableTypeDiv.find(`.returnItem${divValue}`).remove();
-            cloneTableTypeDiv.find(`.returnItemDetails${divValue}`).remove();
-            cloneTableTypeDiv.find(`.ihmUpdated${divValue}`).remove();
-            cloneTableTypeDiv.find(`.itemInstall${divValue}`).remove();
-
-        }
+    } else {
+        cloneTableTypeDiv.find(`.returnItem${divValue}`).remove();
+        cloneTableTypeDiv.find(`.returnItemDetails${divValue}`).remove();
+        cloneTableTypeDiv.find(`.ihmUpdated${divValue}`).remove();
+        cloneTableTypeDiv.find(`.itemInstall${divValue}`).remove();
 
     }
+
+
 })
 $("#showTableTypeDiv").on("change", ".cloneTableTypeDiv input[type=radio].isRemoveChoice", function () {
     const divValue = $(this).attr("data-isRemove");
     const cloneTableTypeDiv = $(this).closest(".cloneTableTypeDiv");
     $(`.removeItemDetails${divValue}`).remove();
     if ($(this).val() === 'yes') {
-        let removeItemDetails = ` <div class="row  col-12 mb-3  removeItemDetails${divValue}">
-    <div class="col-4">
-                   <div class="form-group mb-3">
+        let removeItemDetails = ` <div class="row  col-12 mb-1  removeItemDetails${divValue}">
+    <div class="col-4 mb-2">
+                   <div class="form-group">
                    <input type="text" name="hazmats[${divValue}][service_supplier_name]" id="service_supplier_name${divValue}" class="form-control" placeHolder="Service Supplier Name">
                    </div>
    </div>
-     <div class="col-4">
-                   <div class="form-group mb-3">
+     <div class="col-4 mb-2">
+                   <div class="form-group">
                    <input type="text" name="hazmats[${divValue}][service_supplier_address]" id="service_supplier_address${divValue}" class="form-control" placeHolder="Service Supplier Address">
                    </div>
    </div>
-    <div class="col-4">
-                   <div class="form-group mb-3">
+    <div class="col-4 mb-2">
+                   <div class="form-group">
                    <input type="date" name="hazmats[${divValue}][removal_date]" id="removal_date${divValue}" class="form-control" placeHolder="Removal Date">
                    </div>
    </div>
 
-   <div class="col-4">
-                   <div class="form-group mb-3">
+   <div class="col-4 mb-2">
+                   <div class="form-group">
                    <input type="text" name="hazmats[${divValue}][removal_location]" id="removal_location${divValue}" class="form-control" placeHolder="Removal Location">
                    </div>
    </div>
 
-    <div class="col-4">
-                   <div class="form-group mb-3">
+    <div class="col-4 mb-2">
+                   <div class="form-group">
                    <input type="file" name="hazmats[${divValue}][attachment]" id="attachment${divValue}" class="form-control" placeHolder="Attachment">
                    </div>
    </div>
-     <div class="col-4">
-                   <div class="form-group mb-3">
+     <div class="col-4 mb-2">
+                   <div class="form-group">
                    <input type="text" name="hazmats[${divValue}][po_no]" id="po_no${divValue}" class="form-control" placeHolder="PO No">
                    </div>
    </div>
@@ -309,6 +308,8 @@ $("#showTableTypeDiv").on("change", ".cloneTableTypeDiv input[type=radio].isRemo
 $("#showTableTypeDiv").on("change", ".cloneTableTypeDiv input[type=radio].isArrivedChoice", function () {
 
     const divValue = $(this).attr("data-isArrived");
+    const tabValue = $(this).attr("data-tab");
+
     const cloneTableTypeDiv = $(this).closest(".cloneTableTypeDiv");
     cloneTableTypeDiv.find(`.returnItem${divValue}`).remove();
 
@@ -317,9 +318,38 @@ $("#showTableTypeDiv").on("change", ".cloneTableTypeDiv input[type=radio].isArri
     }
     cloneTableTypeDiv.find(`.ihmUpdated${divValue}`).remove();
 
+    cloneTableTypeDiv.find(`.ihmItemDetails${divValue}`).remove();
+    cloneTableTypeDiv.find(`.noitemInstalled${divValue}`).remove();
+
     cloneTableTypeDiv.find(`.itemInstall${divValue}`).remove();
-    let isReturnDiv = `
-        <div class="col-12 col-md-12 col-lg-12  mb-3  returnItem${divValue}">
+    cloneTableTypeDiv.find(`.arrivedItemDetails${divValue}`).remove();
+
+    let isReturnDiv = "";
+    if ($(this).val() === 'yes') {
+        isReturnDiv += ` <div class="row col-12 col-md-12 col-lg-12  mb-1   arrivedItemDetails${divValue}">
+        <div class="col-4">
+                       <div class="form-group mb-1">
+                       <input type="text" name="hazmats[${divValue}][arrived_location]" id="arrived_location${divValue}" class="form-control" placeHolder="Location">
+                       </div>
+       </div>
+         <div class="col-4">
+                       <div class="form-group mb-1">
+                       <input type="date" name="hazmats[${divValue}][arrived_date]" id="arrived_date${divValue}" class="form-control" placeHolder="Date">
+                       </div>
+       </div>
+      
+   </div>`
+        if (tabValue === 'B') {
+            isReturnDiv += `<div class="col-12 col-md-12 col-lg-12  mb-1  ihmUpdated${divValue}">
+                <h5>ihm been updated ?</h5>
+                <label class="custom-control custom-checkbox">
+                <input type="checkbox" id="isIHMUpdated_yes${divValue}" name="hazmats[${divValue}][isIHMUpdated]" value="yes" class="custom-control-input isIHMUpdatedChoice" data-isIHMUpdated="${divValue}"><span class="custom-control-label"></span>
+                </label></div>`
+        }
+    }
+    if (tabValue === 'A') {
+        isReturnDiv += `
+        <div class="col-12 col-md-12 col-lg-12  mb-1  returnItem${divValue}">
             <h5>return of item initiated ?</h5>
            <label class="custom-control custom-radio custom-control-inline">
              <input type="radio" id="isReturn_yes${divValue}" name="hazmats[${divValue}][isReturn]" value="yes" class="custom-control-input isReturnChoice" data-isReturn="${divValue}"><span class="custom-control-label">Yes</span>
@@ -329,14 +359,16 @@ $("#showTableTypeDiv").on("change", ".cloneTableTypeDiv input[type=radio].isArri
             </label>
            
         </div>`
+    }
     $(isReturnDiv).insertBefore(`.removeItem${divValue}`).fadeIn('slow');
-
 
 });
 $("#showTableTypeDiv").on("change", ".cloneTableTypeDiv input[type=radio].isReturnChoice", function () {
     const divValue = $(this).attr("data-isReturn");
     const cloneTableTypeDiv = $(this).closest(".cloneTableTypeDiv");
     cloneTableTypeDiv.find(`.itemInstall${divValue}`).remove();
+    cloneTableTypeDiv.find(`.noitemInstalled${divValue}`).remove();
+
 
     if ($(this).val() === 'no') {
         let isArrived = $(`#isArrived${divValue}:checked`).val();  // Get value of the checked radio button
@@ -345,7 +377,7 @@ $("#showTableTypeDiv").on("change", ".cloneTableTypeDiv input[type=radio].isRetu
             cloneTableTypeDiv.find(`.returnItemDetails${divValue}`).remove();
 
             let isInstalledDiv = `
-        <div class="col-12 col-md-12 col-lg-12  mb-3  itemInstall${divValue}">
+        <div class="col-12 col-md-12 col-lg-12  mb-1  itemInstall${divValue}">
             <h5>Has the item been installed ?</h5>
            <label class="custom-control custom-radio custom-control-inline">
              <input type="radio" id="isInstalled_yes${divValue}" name="hazmats[${divValue}][isInstalled]" value="yes" class="custom-control-input isInstalledChoice" data-isInstalled="${divValue}"><span class="custom-control-label">Yes</span>
@@ -360,30 +392,22 @@ $("#showTableTypeDiv").on("change", ".cloneTableTypeDiv input[type=radio].isRetu
 
 
         } else {
-            let isInstalledDiv = `
-            <div class="col-12 col-md-12 col-lg-12  mb-3  reminderSend${divValue}">
-                <h5>Send Reminder</h5>
-                
-               
-            </div>`
-            $(isInstalledDiv).insertBefore(`.removeItem${divValue}`).fadeIn('slow');
-
             cloneTableTypeDiv.find(`.returnItemDetails${divValue}`).remove();
 
         }
     } else {
         cloneTableTypeDiv.find(`.ihmUpdated${divValue}`).remove();
-        let returnItemDetails = ` <div class="row  col-12 mb-3  returnItemDetails${divValue}">
+        let returnItemDetails = ` <div class="row  col-12 mb-1  returnItemDetails${divValue}">
          <div class="col-4">
-                        <div class="form-group mb-3">
+                        <div class="form-group mb-1">
                         <input type="text" name="hazmats[${divValue}][location]" id="location${divValue}" class="form-control" placeHolder="Location">
                         </div>
         </div>
           <div class="col-4">
-                        <div class="form-group mb-3">
-                        <input type="date" name=""hazmats[${divValue}][date]" id="date${divValue}" class="form-control" placeHolder="Date">
+                        <div class="form-group mb-1">
+                        <input type="date" name="hazmats[${divValue}][date]" id="date${divValue}" class="form-control" placeHolder="Date">
                         </div>
-        <div>
+        </div>
        
     </div>`
         $(returnItemDetails).insertBefore(`.removeItem${divValue}`).fadeIn('slow');
@@ -394,20 +418,86 @@ $("#showTableTypeDiv").on("change", ".cloneTableTypeDiv input[type=radio].isInst
     const divValue = $(this).attr("data-isInstalled");
     const cloneTableTypeDiv = $(this).closest(".cloneTableTypeDiv");
     cloneTableTypeDiv.find(`.ihmUpdated${divValue}`).remove();
+    cloneTableTypeDiv.find(`.noitemInstalled${divValue}`).remove();
+    cloneTableTypeDiv.find(`.ihmItemDetails${divValue}`).remove();
+
+
     if ($(this).val() === 'yes') {
         let isInstalledDiv = `
-        <div class="col-12 col-md-12 col-lg-12  mb-3  ihmUpdated${divValue}">
+        <div class="col-12 col-md-12 col-lg-12  mb-1  ihmUpdated${divValue}">
             <h5>ihm been updated ?</h5>
-           <label class="custom-control custom-radio custom-control-inline">
-             <input type="radio" id="isIHMUpdated_yes${divValue}" name="hazmats[${divValue}][isIHMUpdated]" value="yes" class="custom-control-input isIHMUpdatedChoice" data-isIHMUpdated="${divValue}"><span class="custom-control-label">Yes</span>
+           <label class="custom-control custom-checkbox">
+             <input type="checkbox" id="isIHMUpdated_yes${divValue}" name="hazmats[${divValue}][isIHMUpdated]" value="yes" class="custom-control-input isIHMUpdatedChoice" data-isIHMUpdated="${divValue}"><span class="custom-control-label"></span>
             </label>
            
            
         </div>`
         $(isInstalledDiv).insertBefore(`.removeItem${divValue}`).fadeIn('slow');
 
+    } else {
+        let isInstalledDiv = `
+        <div class=" col-12 col-md-12 col-lg-12  mb-1 noitemInstalled${divValue}">
+           <p>Waiting for return to initiate
+            </p>
+           
+           
+        </div>`
+        $(isInstalledDiv).insertBefore(`.removeItem${divValue}`).fadeIn('slow');
     }
 });
+$("#showTableTypeDiv").on("change", ".cloneTableTypeDiv input[type=checkbox].isIHMUpdatedChoice", function () {
+    const divValue = $(this).attr("data-isIHMUpdated");
+    const cloneTableTypeDiv = $(this).closest(".cloneTableTypeDiv");
+    cloneTableTypeDiv.find(`.ihmItemDetails${divValue}`).remove();
+    let tableValue = $(`#isArrived${divValue}:checked`).attr('data-tab');  // Get value of the checked radio button
+    if ($(this).is(":checked")) {
+
+        let ihmupdetedDetails = ` <div class="row  col-12 mb-2  ihmItemDetails${divValue}">
+        <div class="col-4 mb-2">
+                       <div class="form-group">
+                       <input type="text" name="hazmats[${divValue}][ihm_location]" id="location${divValue}" class="form-control" placeHolder="Location">
+                       </div>
+       </div>
+         <div class="col-4 mb-2">
+                       <div class="form-group">
+                       <input type="text" name="hazmats[${divValue}][ihm_sublocation]" id="ihm_sublocation${divValue}" class="form-control" placeHolder="Sub Location">
+                       </div>
+       </div>
+       <div class="col-4 mb-2">
+                       <div class="form-group">
+                       <input type="text" name="hazmats[${divValue}][ihm_machinery_equipment]" id="ihm_machinery_equipment${divValue}" class="form-control" placeHolder="Machinary/Equipment">
+                       </div>
+       </div>
+
+       <div class="col-4 mb-2">
+                       <div class="form-group">
+                       <input type="text" name="hazmats[${divValue}][ihm_parts]" id="ihm_parts${divValue}" class="form-control" placeHolder="Parts where used">
+                       </div>
+       </div>
+ ${tableValue === 'B' ? tableBFiled(divValue): `<div class="col-4 mb-2">
+                       <div class="form-group">
+                       <input type="text" name="hazmats[${divValue}][ihm_qty]" id="ihm_qty${divValue}" class="form-control" placeHolder="Quantity">
+                       </div>
+       </div>
+
+       <div class="col-4 mb-2">
+                       <div class="form-group">
+                       <input type="text" name="hazmats[${divValue}][ihm_unit]" id="ihm_unit${divValue}" class="form-control" placeHolder="Unit">
+                       </div>
+       </div>`}
+       
+       <div class="col-12 mb-2">
+                       <div class="form-group">
+                       <input type="text" name="hazmats[${divValue}][ihm_remarks]" id="remarks${divValue}" class="form-control" placeHolder="remarks">
+                       </div>
+       </div>
+      
+   </div>`
+        $(ihmupdetedDetails).insertBefore(`.removeItem${divValue}`).fadeIn('slow');
+
+    }
+});
+
 $(".deletePo").click(function (e) {
     e.preventDefault();
     var itemId = $(this).closest('.new-po-order').data('id');
@@ -421,3 +511,40 @@ $(".deletePo").click(function (e) {
         console.log("Failed to delete: " + response.message);
     });
 });
+function tableBFiled(divValue){
+    let data =`<div class="col-4 mb-2">
+                       <div class="form-group">
+                       <input type="text" name="hazmats[${divValue}][ihm_previous_qty]" id="ihm_previous_qty${divValue}" class="form-control" placeHolder="Previous Quantity">
+                       </div>
+       </div>
+
+       <div class="col-4 mb-2">
+                       <div class="form-group">
+                       <input type="text" name="hazmats[${divValue}][ihm_previous_unit]" id="ihm_previous_unit${divValue}" class="form-control" placeHolder="Unit">
+                       </div>
+       </div>
+        <div class="col-3 mb-2">
+                       <div class="form-group">
+                       <input type="date" name="hazmats[${divValue}][ihm_last_date]" id="ihm_last_date${divValue}" class="form-control" placeHolder="Last Date">
+                       </div>
+       </div>
+       <div class="col-3 mb-2">
+                       <div class="form-group">
+                       <input type="text" name="hazmats[${divValue}][ihm_qty]" id="ihm_qty${divValue}" class="form-control" placeHolder="Next Quantity">
+                       </div>
+       </div>
+
+       <div class="col-3 mb-2">
+                       <div class="form-group">
+                       <input type="text" name="hazmats[${divValue}][ihm_unit]" id="ihm_unit${divValue}" class="form-control" placeHolder="Unit">
+                       </div>
+       </div>
+          <div class="col-3 mb-2">
+                       <div class="form-group">
+                       <input type="date" name="hazmats[${divValue}][ihm_date]" id="ihm_date${divValue}" class="form-control" placeHolder="Next Date">
+                       </div>
+       </div>
+       
+       `;
+       return data;
+}

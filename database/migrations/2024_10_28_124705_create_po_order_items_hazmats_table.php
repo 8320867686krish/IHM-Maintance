@@ -40,7 +40,25 @@ return new class extends Migration
             $table->boolean('isInstalled')->default(0);
             $table->string('location')->nullable();
             $table->date('date')->nullable();
+
+            $table->string('arrived_location')->nullable();
+            $table->date('arrived_date')->nullable();
             $table->boolean('isIHMUpdated')->default(0);
+
+
+            $table->string('ihm_location')->nullable();
+            $table->string('ihm_sublocation')->nullable();
+            $table->string('ihm_machinery_equipment')->nullable();
+            $table->string('ihm_parts')->nullable();
+            $table->string('ihm_qty')->nullable();
+            $table->string('ihm_unit',20)->nullable();
+            $table->string('ihm_remarks')->nullable();
+
+            $table->string('ihm_previous_qty')->nullable();
+            $table->string('ihm_previous_unit',20)->nullable();
+            $table->date('ihm_last_date')->nullable();
+            $table->date('ihm_date')->nullable();
+
 
             $table->timestamps();
         });

@@ -27,7 +27,20 @@ class PoOrderItemsHazmats extends Model
         'isInstalled',
         'location',
         'date',
-        'isIHMUpdated'
+        'isIHMUpdated',
+        'arrived_date',
+        'arrived_location',
+        'ihm_location',
+        'ihm_sublocation',
+        'ihm_machinery_equipment',
+        'ihm_parts',
+        'ihm_qty',
+        'ihm_unit',
+        'ihm_remarks',
+        'ihm_previous_qty',
+        'ihm_previous_unit',
+        'ihm_last_date',
+        'ihm_date'
     ];
     public function setIsArrivedAttribute($value)
     {

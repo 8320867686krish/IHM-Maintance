@@ -26,7 +26,7 @@ class POOrderController extends Controller
             // Set the receiver and subject of the mail.
             $message->to('krishna.patel628@gmail.com', 'krishna')->subject('Laravel First Mail');
             // Set the sender
-            $message->from('shopify@meetanshi.org','Our Code World');
+            $message->from('shopify@meetanshi.email','Our Code World');
         });
         if (@$po_order_id) {
             $head_title = "View";
@@ -185,6 +185,9 @@ class POOrderController extends Controller
 
 
             foreach ($post['hazmats'] as $key => $value) {
+                if(@$value['isInstalled'] == 'no'){
+                    $value['isIHMUpdated'] = 'no';
+                }
                 $value['ship_id'] = $post['ship_id'];
                 $value['po_order_id'] = $post['po_order_id'];
                 $value['po_order_item_id'] = $post['po_order_item_id'];
