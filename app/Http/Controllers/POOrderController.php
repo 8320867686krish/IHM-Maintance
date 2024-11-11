@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Mail\ExampleMail;
 use App\Models\Hazmat;
+use App\Models\MakeModel;
 use App\Models\poOrder;
 use App\Models\poOrderItem;
 use App\Models\PoOrderItemsHazmats;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Maatwebsite\Excel\Facades\Excel;
+use Throwable;
 
 class POOrderController extends Controller
 {
@@ -22,12 +24,12 @@ class POOrderController extends Controller
 
 
 
-        Mail::send(['text'=> $template_path ], $data, function($message) {
-            // Set the receiver and subject of the mail.
-            $message->to('krishna.patel628@gmail.com', 'krishna')->subject('Laravel First Mail');
-            // Set the sender
-            $message->from('shopify@meetanshi.email','Our Code World');
-        });
+        // Mail::send(['text'=> $template_path ], $data, function($message) {
+        //     // Set the receiver and subject of the mail.
+        //     $message->to('krishna.patel628@gmail.com', 'krishna')->subject('Laravel First Mail');
+        //     // Set the sender
+        //     $message->from('shopify@meetanshi.email','Our Code World');
+        // });
         if (@$po_order_id) {
             $head_title = "View";
         } else {
@@ -198,4 +200,41 @@ class POOrderController extends Controller
         }
         return response()->json(['isStatus' => true, 'message' => 'save successfully']);
     }
+    public function getEquipMent($hazmat_id)
+    {
+        try {
+            $hazmat = Hazmat::with('equipment:id,hazmat_id,equipment')->find($hazmat_id);
+            $groupedEquipment = $hazmat->equipment->groupBy('equipment');
+            return response()->json(['isStatus' => true, 'message' => 'Equipment retrieved successfully.', 'equipments' => $groupedEquipment]);
+        } catch (Throwable $th) {
+            return response()->json(['error' => $th->getMessage()], 500);
+        }
+    }
+   
+    public function getManufacturer($hazmat_id, $type)
+    {
+        try {
+            $manufacturers = MakeModel::where('hazmat_id', $hazmat_id)->where('equipment', $type)->select('manufacturer')->distinct()->get();
+            return response()->json(['isStatus' => true, 'message' => 'Equipment besed manufacturers retrieved successfully.', 'manufacturers' => $manufacturers]);
+        } catch (Throwable $th) {
+            return response()->json(['error' => $th->getMessage()], 500);
+        }
+    }
+
+    public function getManufacturerBasedDocumentData($hazmat_id, $equipment, $manufacturer)
+    {
+        try {
+            $documentData = MakeModel::where('hazmat_id', $hazmat_id)->where('equipment', $equipment)->where('manufacturer', $manufacturer)->get();
+
+            $data = $documentData->map(function ($document) {
+                $document->modelmakepart = "{$document->model}-{$document->make}-{$document->part}";
+                return $document;
+            });
+
+            return response()->json(['isStatus' => true, 'message' => 'Manufacturers besed document data retrieved successfully.', 'documentData' => $data]);
+        } catch (Throwable $th) {
+            return response()->json(['error' => $th->getMessage()], 500);
+        }
+    }
+
 }

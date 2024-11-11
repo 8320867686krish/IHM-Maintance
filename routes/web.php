@@ -43,6 +43,8 @@ Route::middleware('auth')->group(function () {
     Route::post('po-order/save', [POOrderController::class, 'store'])->name('po.store');
     Route::delete('po-order/delete/{po_id}', [POOrderController::class, 'poDelete'])->name('po.delete');
     Route::post('po-item/hazmat/save', [POOrderController::class, 'poItemsHazmatSave'])->name('poItems.hazmat');
+    Route::get('equipment/{hazmat_id}',[POOrderController::class, 'getEquipMent'])->name('equipment');
+    Route::get('manufacturer/{hazmat_id}/{equipment}',[POOrderController::class, 'getManufacturer'])->name('getManufacturer');
 
     Route::get('/helpcenter', [HelpCenterController::class, 'index'])->name('helpcenter.list');
     Route::middleware('can:roles')->group(function () {

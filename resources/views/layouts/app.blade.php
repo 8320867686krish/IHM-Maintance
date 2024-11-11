@@ -22,5 +22,7 @@
 
 	@include('layouts.script')
 </body>
-
+<script>
+    var baseUrl = "{{ url('/') }}";
+</script>
 </html>

@@ -46,8 +46,8 @@
                                     <td>{{ $client->name}}</td>
                                     <td>{{ $client->ship_owner_email}}</td>
                                     <td>{{@$client->hazmatCompaniesId->name}}</td>
-                                    <td>{{$client->userDetail->email}}</td>
-                                    <td>{{$client->userDetail->phone}}</td>
+                                    <td>{{@$client->userDetail->email}}</td>
+                                    <td>{{@$client->userDetail->phone}}</td>
                                     <td>
                                         @can('clientCompany.edit')
                                         <a href="{{ route('clientCompany.edit', ['id' => $client->id]) }}"

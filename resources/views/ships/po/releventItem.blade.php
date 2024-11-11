@@ -96,6 +96,9 @@
                                 <div class="mb-4 col-12" id="showTableTypeDiv">
                                     @if(@$poItem->poOrderItemsHazmets)
                                     @foreach($poItem->poOrderItemsHazmets as $value)
+                                    @php
+                                    $hazmetTable = explode('-', $value['hazmat']['table_type'])[0]
+                                    @endphp
                                     <input type="hidden" name="hazmats[{{$value['hazmat_id']}}][id]" id="id{{$value['hazmat_id']}}" value="{{@$value->id}}">
 
                                     <div class="col-12 col-md-12 col-lg-12 cloneTableTypeDiv mb-2 card" id="cloneTableTypeDiv{{$value['hazmat_id']}}">
@@ -130,15 +133,14 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        @if( explode('-', $value['hazmat']['table_type'])[0] == 'A')
                                         @if($value->hazmat_type === 'Contained' || $value->hazmat_type === 'PCHM')
                                         <div class="col-12 col-md-12 col-lg-12  mb-2  onboard{{$value['hazmat_id']}}">
                                             <h5>Item arrived on board?</h5>
                                             <label class="custom-control custom-radio custom-control-inline">
-                                                <input type="radio" id="isArrived{{$value['hazmat_id']}}" name="hazmats[{{$value['hazmat_id']}}][isArrived]" value='yes' class="custom-control-input isArrivedChoice" data-isArrived="{{$value['hazmat_id']}}" {{ $value->isArrived == 'yes' ? 'checked' : '' }}><span class="custom-control-label">Yes</span>
+                                                <input type="radio" id="isArrived{{$value['hazmat_id']}}" name="hazmats[{{$value['hazmat_id']}}][isArrived]" value='yes' class="custom-control-input isArrivedChoice" data-tab="{{$hazmetTable}}" data-isArrived="{{$value['hazmat_id']}}" {{ $value->isArrived == 'yes' ? 'checked' : '' }}><span class="custom-control-label">Yes</span>
                                             </label>
                                             <label class="custom-control custom-radio custom-control-inline">
-                                                <input type="radio" id="isArrived{{$value['hazmat_id']}}" name="hazmats[{{$value['hazmat_id']}}][isArrived]" value="no" class="custom-control-input isArrivedChoice" data-isArrived="{{$value['hazmat_id']}}" {{ $value->isArrived == 'no' ? 'checked' : '' }}><span class="custom-control-label">No</span>
+                                                <input type="radio" id="isArrived{{$value['hazmat_id']}}" name="hazmats[{{$value['hazmat_id']}}][isArrived]" value="no" class="custom-control-input isArrivedChoice" data-tab="{{ $hazmetTable }}" data-isArrived="{{$value['hazmat_id']}}" {{ $value->isArrived == 'no' ? 'checked' : '' }}><span class="custom-control-label">No</span>
                                             </label>
 
                                         </div>
@@ -146,17 +148,18 @@
                                         <div class="row col-12 col-md-12 col-lg-12 mb-2 arrivedItemDetails{{$value['hazmat_id']}}">
                                             <div class="col-4 mb-2">
                                                 <div class="form-group">
-                                                    <input type="text" name="hazmats[{{$value['hazmat_id']}}][arrived_location]" id="arrived_location${divValue}" class="form-control" placeHolder="Location" value="{{$value['arrived_location']}}">
+                                                    <input type="text" name="hazmats[{{$value['hazmat_id']}}][arrived_location]" id="arrived_location{{$value['hazmat_id']}}" class="form-control" placeHolder="Location" value="{{$value['arrived_location']}}">
                                                 </div>
                                             </div>
                                             <div class="col-4 mb-2">
                                                 <div class="form-group">
-                                                    <input type="date" name="hazmats[{{$value['hazmat_id']}}][arrived_date]" id="arrived_date${divValue}" class="form-control" placeHolder="Date" value="{{$value['arrived_date']}}">
+                                                    <input type="date" name="hazmats[{{$value['hazmat_id']}}][arrived_date]" id="arrived_date{{$value['hazmat_id']}}" class="form-control" placeHolder="Date" value="{{$value['arrived_date']}}">
                                                 </div>
                                             </div>
 
                                         </div>
                                         @endif
+                                        @if( $hazmetTable == 'A')
                                         <div class="col-12 col-md-12 col-lg-12  mb-2  returnItem{{$value['hazmat_id']}}">
                                             <h5>return of item initiated ?</h5>
                                             <label class="custom-control custom-radio custom-control-inline">
@@ -167,6 +170,7 @@
                                             </label>
 
                                         </div>
+                                        @endif
                                         @if( $value->isReturn == 'yes')
                                         <div class="row col-12 mb-2 returnItemDetails{{$value['hazmat_id']}}">
                                             <div class="col-4 mb-2">
@@ -181,7 +185,7 @@
                                             </div>
                                         </div>
                                         @else
-                                        @if($value['isArrived'] == 'yes')
+                                        @if($value['isArrived'] == 'yes' && $hazmetTable == 'A')
                                         <div class="col-12 col-md-12 col-lg-12  mb-2  itemInstall{{$value['hazmat_id']}}">
 
                                             <h5>Is Installed?</h5>
@@ -198,7 +202,15 @@
                                         @endif
                                         @endif
 
-                                        @if($value->isInstalled == 'yes' && $value->isArrived == 'yes')
+                                        @if($value->isArrived == 'yes')
+                                        @php
+                                        $isShow = false;
+                                        if ($hazmetTable == 'A' && $value->isInstalled == 'yes') {
+                                        $isShow = true;
+                                        }else if($hazmetTable == 'B' && $value->isArrived == 'yes'){
+                                        $isShow = true;
+                                        }
+                                        @endphp @if($isShow)
                                         <div class="col-12 col-md-12 col-lg-12  mb-2  ihmUpdated{{$value['hazmat_id']}}">
                                             <h5>IHM & IHM Maintenance update ?</h5>
                                             <label class="custom-control custom-checkbox">
@@ -207,6 +219,7 @@
 
 
                                         </div>
+                                        @endif
                                         @else
                                         <div class=" col-12 col-md-12 col-lg-12 mb-2 noitemInstalled{{$value['hazmat_id']}}">
                                             <p>Waiting for return to initiate
@@ -215,41 +228,76 @@
 
                                         </div>
                                         @endif
-                                        @if($value->isIHMUpdated == 'yes')
+                                        @if($value->isIHMUpdated == 'yes' && $value->isArrived == 'yes')
                                         <div class="row col-12 mb-2 ihmItemDetails{{$value['hazmat_id']}}">
                                             <div class="col-4 mb-2">
                                                 <div class="form-group">
-                                                    <input type="text" name="hazmats[{{$value['hazmat_id']}}][ihm_location]" id="location{{$value['hazmat_id']}}" class="form-control" placeholder="Location"  value="{{$value->ihm_location}}">
+                                                    <input type="text" name="hazmats[{{$value['hazmat_id']}}][ihm_location]" id="location{{$value['hazmat_id']}}" class="form-control" placeholder="Location" value="{{$value->ihm_location}}">
                                                 </div>
                                             </div>
                                             <div class="col-4 mb-2">
                                                 <div class="form-group">
-                                                    <input type="text" name="hazmats[{{$value['hazmat_id']}}][ihm_sublocation]" id="ihm_sublocation{{$value['hazmat_id']}}" class="form-control" placeholder="Sub Location"  value="{{$value->ihm_sublocation}}">
+                                                    <input type="text" name="hazmats[{{$value['hazmat_id']}}][ihm_sublocation]" id="ihm_sublocation{{$value['hazmat_id']}}" class="form-control" placeholder="Sub Location" value="{{$value->ihm_sublocation}}">
                                                 </div>
                                             </div>
                                             <div class="col-4 mb-2">
                                                 <div class="form-group">
-                                                    <input type="text" name="hazmats[{{$value['hazmat_id']}}][ihm_machinery_equipment]" id="ihm_machinery_equipment{{$value['hazmat_id']}}" class="form-control" placeholder="Machinery/Equipment" value="{{$value->ihm_machinery_equipment}}" >
+                                                    <input type="text" name="hazmats[{{$value['hazmat_id']}}][ihm_machinery_equipment]" id="ihm_machinery_equipment{{$value['hazmat_id']}}" class="form-control" placeholder="Machinery/Equipment" value="{{$value->ihm_machinery_equipment}}">
                                                 </div>
                                             </div>
                                             <div class="col-4 mb-2">
                                                 <div class="form-group">
-                                                    <input type="text" name="hazmats[{{$value['hazmat_id']}}][ihm_parts]" id="ihm_parts{{$value['hazmat_id']}}" class="form-control" placeholder="Parts where used"  value="{{$value->ihm_parts}}">
+                                                    <input type="text" name="hazmats[{{$value['hazmat_id']}}][ihm_parts]" id="ihm_parts{{$value['hazmat_id']}}" class="form-control" placeholder="Parts where used" value="{{$value->ihm_parts}}">
+                                                </div>
+                                            </div>
+                                            @if($hazmetTable == 'A')
+                                            <div class="col-4 mb-2">
+                                                <div class="form-group">
+                                                    <input type="text" name="hazmats[{{$value['hazmat_id']}}][ihm_qty]" id="ihm_qty{{$value['hazmat_id']}}" class="form-control" placeholder="Quantity" value="{{$value->ihm_qty}}">
                                                 </div>
                                             </div>
                                             <div class="col-4 mb-2">
                                                 <div class="form-group">
-                                                    <input type="text" name="hazmats[{{$value['hazmat_id']}}][ihm_qty]" id="ihm_qty{{$value['hazmat_id']}}" class="form-control" placeholder="Quantity"  value="{{$value->ihm_qty}}">
+                                                    <input type="text" name="hazmats[{{$value['hazmat_id']}}][ihm_unit]" id="ihm_unit{{$value['hazmat_id']}}" class="form-control" placeholder="Unit" value="{{$value->ihm_machinery_equipment}}" value="{{$value->ihm_unit}}">
                                                 </div>
                                             </div>
+                                            @else
                                             <div class="col-4 mb-2">
                                                 <div class="form-group">
-                                                    <input type="text" name="hazmats[{{$value['hazmat_id']}}][ihm_unit]" id="ihm_unit{{$value['hazmat_id']}}" class="form-control" placeholder="Unit"  value="{{$value->ihm_machinery_equipment}}"  value="{{$value->ihm_unit}}">
+                                                    <input type="text" name="hazmats[{{$value['hazmat_id']}}][ihm_previous_qty]" id="ihm_previous_qty{{$value['hazmat_id']}}" class="form-control" placeHolder="Previous Quantity"  value="{{$value['ihm_previous_qty']}}">
                                                 </div>
                                             </div>
+
+                                            <div class="col-4 mb-2">
+                                                <div class="form-group">
+                                                    <input type="text" name="hazmats[{{$value['hazmat_id']}}][ihm_previous_unit]" id="ihm_previous_unit{{$value['hazmat_id']}}" class="form-control" placeHolder="Unit"  value="{{$value['ihm_previous_unit']}}">
+                                                </div>
+                                            </div>
+                                            <div class="col-3 mb-2">
+                                                <div class="form-group">
+                                                    <input type="date" name="hazmats[{{$value['hazmat_id']}}][ihm_last_date]" id="ihm_last_date{{$value['hazmat_id']}}" class="form-control" placeHolder="Last Date"  value="{{$value['ihm_last_date']}}">
+                                                </div>
+                                            </div>
+                                            <div class="col-3 mb-2">
+                                                <div class="form-group">
+                                                    <input type="text" name="hazmats[{{$value['hazmat_id']}}][ihm_qty]" id="ihm_qty{{$value['hazmat_id']}}" class="form-control" placeHolder="Next Quantity"  value="{{$value['ihm_qty']}}">
+                                                </div>
+                                            </div>
+
+                                            <div class="col-3 mb-2">
+                                                <div class="form-group">
+                                                    <input type="text" name="hazmats[{{$value['hazmat_id']}}][ihm_unit]" id="ihm_unit{{$value['hazmat_id']}}" class="form-control" placeHolder="Unit"  value="{{$value['ihm_unit']}}">
+                                                </div>
+                                            </div>
+                                            <div class="col-3 mb-2">
+                                                <div class="form-group">
+                                                    <input type="date" name="hazmats[{{$value['hazmat_id']}}][ihm_date]" id="ihm_date{{$value['hazmat_id']}}" class="form-control" placeHolder="Next Date"  value="{{$value['ihm_date']}}">
+                                                </div>
+                                            </div>
+                                            @endif
                                             <div class="col-12 mb-2">
                                                 <div class="form-group">
-                                                    <input type="text" name="hazmats[{{$value['hazmat_id']}}][ihm_remarks]" id="remarks{{$value['hazmat_id']}}" class="form-control" placeholder="Remarks"  value="{{$value->ihm_remarks}}">
+                                                    <input type="text" name="hazmats[{{$value['hazmat_id']}}][ihm_remarks]" id="remarks{{$value['hazmat_id']}}" class="form-control" placeholder="Remarks" value="{{$value->ihm_remarks}}">
                                                 </div>
                                             </div>
                                         </div>
@@ -259,10 +307,10 @@
                                         <div class="col-12 col-md-12 col-lg-12  mb-2  removeItem{{$value['hazmat_id']}}">
                                             <h5>remove the item?</h5>
                                             <label class="custom-control custom-radio custom-control-inline">
-                                                <input type="radio" id="isRemove${divValue}" name="hazmats[{{$value['hazmat_id']}}][isRemove]" value="yes" class="custom-control-input isRemoveChoice" data-isRemove="{{$value['hazmat_id']}}" {{ $value->isRemove === 'yes' ? 'checked' : '' }}><span class="custom-control-label">Yes</span>
+                                                <input type="radio" id="isRemove{{$value['hazmat_id']}}" name="hazmats[{{$value['hazmat_id']}}][isRemove]" value="yes" class="custom-control-input isRemoveChoice" data-isRemove="{{$value['hazmat_id']}}" {{ $value->isRemove === 'yes' ? 'checked' : '' }}><span class="custom-control-label">Yes</span>
                                             </label>
                                             <label class="custom-control custom-radio custom-control-inline">
-                                                <input type="radio" id="isRemove${divValue}" name="hazmats[{{$value['hazmat_id']}}][isRemove]" value="no" class="custom-control-input isRemoveChoice" data-isRemove="{{$value['hazmat_id']}}" {{ $value->isRemove === 'no' ? 'checked' : '' }}><span class="custom-control-label">No</span>
+                                                <input type="radio" id="isRemove{{$value['hazmat_id']}}" name="hazmats[{{$value['hazmat_id']}}][isRemove]" value="no" class="custom-control-input isRemoveChoice" data-isRemove="{{$value['hazmat_id']}}" {{ $value->isRemove === 'no' ? 'checked' : '' }}><span class="custom-control-label">No</span>
                                             </label>
 
                                         </div>
@@ -306,7 +354,6 @@
 
                                         @endif
 
-                                        @endif
                                     </div>
                                     @endforeach
                                     @endif

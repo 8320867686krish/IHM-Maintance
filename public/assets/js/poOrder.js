@@ -165,12 +165,13 @@ $('#suspected_hazmat').on('changed.bs.select', function (e, clickedIndex, isSele
         if (!isSelected) {
             $(`#cloneTableTypeDiv${selectedValue}`).remove();
         } else {
+            getEquipment(selectedValue);
             var div = `<input type="hidden" name="hazmats[${selectedValue}][id]" id="po_iteam_hazmat_id" value="0">
 <div class="col-12 col-md-12 col-lg-12 cloneTableTypeDiv mb-1 card" id="cloneTableTypeDiv${selectedValue}">
                 <label for="table_type" id="tableTypeLable" class="mr-5 mt-3 tableTypeLable card-header">${selectedText}</label>
                 <div class="row card-body">
-                    <div class="col-4 table_typecol">
-                        <div class="form-group mb-1">
+                    <div class="col-4 table_typecol mb-2">
+                        <div class="form-group">
                             <select class="form-control table_type tableType${selectedValue}" id="table_type_${selectedValue}" name="hazmats[${selectedValue}][hazmat_type]"  data-findTable="${tableType[0]}" data-divValue="${selectedValue}">
                                 <option value="Contained">Contained
                                 </option>
@@ -185,20 +186,40 @@ $('#suspected_hazmat').on('changed.bs.select', function (e, clickedIndex, isSele
                     
                     </div>
 
-                    <div class="col-4 imagehazmat" id="imagehazmat9">
-                        <div class="form-group mb-1">
-                            <input type="file" class="form-control" accept="*/*" id="image_${selectedValue}" name="hazmats[${selectedValue}][image]">
+                    <div class="col-4 equipment mb-2" id="equipment${selectedValue}">
+                        <div class="form-group">
+                           <select class="form-control  equipmentSelectTag" id="equipmentselect_${selectedValue}" name="hazmats[${selectedValue}][hazmet_equipment]" data-id="${selectedValue}" data-findTable="${tableType[0]}" data-divValue="${selectedValue}">
+                                <option value="">Select Equipment
+                                </option>
+                              
+                            </select>
                         </div>
                     
                     </div>
 
-                    <div class="col-4 dochazmat" id="dochazmat9">
-                        <div class="form-group mb-1">
-                            <input type="file" class="form-control" id="doc_9" name="hazmats[${selectedValue}][doc]">
+                     <div class="col-4 manufacturer mb-2" id="manufacturer${selectedValue}">
+                        <div class="form-group">
+                           <select class="form-control  manufacturerselect${selectedValue}" id="manufacturerselect_${selectedValue}" name="hazmats[${selectedValue}][hazmet_manufacturer]" data-id="${selectedValue}" data-findTable="${tableType[0]}" data-divValue="${selectedValue}">
+                                <option value="">Select Manufacturer
+                                </option>
+                              
+                            </select>
                         </div>
-                        <div style="font-size: 13px; margin-bottom: 10px;" id="docNameShow_${selectedValue}">
-                                                </div>
+                    
                     </div>
+
+
+                      <div class="col-4 modelMakePart mb-2" id="modelMakePart${selectedValue}">
+                        <div class="form-group">
+                           <select class="form-control  modelMakePartSelect${selectedValue}" data-id="${selectedValue}" id="modelMakePartselect_${selectedValue}" name="hazmats[${selectedValue}][modelMakePart]"  data-findTable="${tableType[0]}" data-divValue="${selectedValue}">
+                                <option value="">Select Model Make and Part
+                                </option>
+                              
+                            </select>
+                        </div>
+                    
+                    </div>
+
 
                   
                 
@@ -212,6 +233,11 @@ $('#suspected_hazmat').on('changed.bs.select', function (e, clickedIndex, isSele
         }
         $('#showTableTypeDiv').append(div);
     }
+});
+$(document).on('change', '.equipmentSelectTag', function () {
+    let optionValue = $(this).val();
+    let id = $(this).attr('data-id');
+    getManufacturer(id,optionValue);
 });
 //for contained or pchm then add
 $("#showTableTypeDiv").on("change", ".cloneTableTypeDiv select.table_type", function () {
@@ -259,12 +285,8 @@ $("#showTableTypeDiv").on("change", ".cloneTableTypeDiv select.table_type", func
 
 
 })
-$("#showTableTypeDiv").on("change", ".cloneTableTypeDiv input[type=radio].isRemoveChoice", function () {
-    const divValue = $(this).attr("data-isRemove");
-    const cloneTableTypeDiv = $(this).closest(".cloneTableTypeDiv");
-    $(`.removeItemDetails${divValue}`).remove();
-    if ($(this).val() === 'yes') {
-        let removeItemDetails = ` <div class="row  col-12 mb-1  removeItemDetails${divValue}">
+function removeItemDetailsfun(divValue) {
+    let removeItemDetails = ` <div class="row  col-12 mb-1  removeItemDetails${divValue}">
     <div class="col-4 mb-2">
                    <div class="form-group">
                    <input type="text" name="hazmats[${divValue}][service_supplier_name]" id="service_supplier_name${divValue}" class="form-control" placeHolder="Service Supplier Name">
@@ -299,10 +321,16 @@ $("#showTableTypeDiv").on("change", ".cloneTableTypeDiv input[type=radio].isRemo
    </div>
   
 </div>`
+    return removeItemDetails;
+}
+$("#showTableTypeDiv").on("change", ".cloneTableTypeDiv input[type=radio].isRemoveChoice", function () {
+    const divValue = $(this).attr("data-isRemove");
+    const cloneTableTypeDiv = $(this).closest(".cloneTableTypeDiv");
+    $(`.removeItemDetails${divValue}`).remove();
+    if ($(this).val() === 'yes') {
+        let removeItemDetails = removeItemDetailsfun(divValue);
         $(cloneTableTypeDiv).append(removeItemDetails).fadeIn('slow');
     }
-
-
 });
 
 $("#showTableTypeDiv").on("change", ".cloneTableTypeDiv input[type=radio].isArrivedChoice", function () {
@@ -474,7 +502,7 @@ $("#showTableTypeDiv").on("change", ".cloneTableTypeDiv input[type=checkbox].isI
                        <input type="text" name="hazmats[${divValue}][ihm_parts]" id="ihm_parts${divValue}" class="form-control" placeHolder="Parts where used">
                        </div>
        </div>
- ${tableValue === 'B' ? tableBFiled(divValue): `<div class="col-4 mb-2">
+ ${tableValue === 'B' ? tableBFiled(divValue) : `<div class="col-4 mb-2">
                        <div class="form-group">
                        <input type="text" name="hazmats[${divValue}][ihm_qty]" id="ihm_qty${divValue}" class="form-control" placeHolder="Quantity">
                        </div>
@@ -511,8 +539,8 @@ $(".deletePo").click(function (e) {
         console.log("Failed to delete: " + response.message);
     });
 });
-function tableBFiled(divValue){
-    let data =`<div class="col-4 mb-2">
+function tableBFiled(divValue) {
+    let data = `<div class="col-4 mb-2">
                        <div class="form-group">
                        <input type="text" name="hazmats[${divValue}][ihm_previous_qty]" id="ihm_previous_qty${divValue}" class="form-control" placeHolder="Previous Quantity">
                        </div>
@@ -546,5 +574,44 @@ function tableBFiled(divValue){
        </div>
        
        `;
-       return data;
+    return data;
+}
+function getEquipment(hazmetId) {
+    let url = `${baseUrl}/equipment/${hazmetId}`;
+    let response = fetchData(url);
+    console.log(response);
+    $(`#equipmentselect_${hazmetId}`).attr('data-id', hazmetId);
+    $.each(response.equipments, function (index, value) {
+        $(`#equipmentselect_${hazmetId}`).append($('<option>', {
+            value: index,
+            text: index
+        }));
+    });
+   
+}
+function fetchData(url){
+    $.ajax({
+        url: `${url}`,  // Use the baseUrl variable here
+        method: 'get',
+        dataType: 'json',
+        contentType: false,
+        processData: false,
+        success: function (response) {
+           return response;
+        }
+
+
+    });
+}
+function getManufacturer(hazmetId, equipment) {
+    let url = `${baseUrl}/manufacturer/${hazmetId}/${equipment}`;
+    let response = fetchData(url);
+    $(`#manufacturerselect_${hazmetId}`).attr('data-id', hazmetId);
+                $.each(response.manufacturers, function (index, value) {
+                    $(`#manufacturerselect_${hazmetId}`).append($('<option>', {
+                        value: index,
+                        text: index
+                    }));
+                });
+
 }

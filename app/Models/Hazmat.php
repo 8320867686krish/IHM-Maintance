@@ -11,4 +11,7 @@ class Hazmat extends Model
     protected $fillable = ["name", "short_name", "table_type", "color",'short_name'];
 
     protected $hidden = ['created_at', 'updated_at'];
+    public function equipment(){
+        return $this->hasMany(MakeModel::class);
+    }
 }
