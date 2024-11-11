@@ -19,7 +19,6 @@ class ClientCompanyRequest extends FormRequest
         return [
             'name' => 'required|unique:client_companies,name,'.$this->id,
             'email' => 'required|email|unique:users,email,'.$this->user_id,
-            'phone' => 'numeric|digits:10',
             'password' => $this->user_id ? 'nullable' : 'required',
             'manager_initials' => 'required|unique:client_companies,IMO_ship_owner_details,'.$this->id,
             'IMO_ship_owner_details' => 'required|unique:client_companies,IMO_ship_owner_details,'.$this->id,
@@ -31,7 +30,6 @@ class ClientCompanyRequest extends FormRequest
             'name.required' => 'please enter name',
             'email.required' => 'please enter email',
             'email.unique' => 'please enter unique email',
-            'phone.required' => 'please enter phone',
             'password.required' => 'please enter password',
             'manager_initials.required' => 'plese enter intials',
             'manager_initials.unique' => 'please enter unique intials',

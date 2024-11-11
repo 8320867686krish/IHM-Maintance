@@ -27,7 +27,6 @@ class hazmatCompanyRequest extends FormRequest
             'email' => $this->id ? 'unique:hazmat_companies,email,' . $this->id : 'required|unique:hazmat_companies,email',
             'logo' => $this->id ? 'image|mimes:jpeg,png,jpg,gif|max:2048,' . $this->id : 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'password' => $this->id ? 'nullable' : 'required',
-            'phone' => 'numeric|digits:10',
 
         ];
     }
