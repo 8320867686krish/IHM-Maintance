@@ -45,7 +45,7 @@
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $client->name}}</td>
                                     <td>{{ $client->ship_owner_email}}</td>
-                                    <td>{{$client->hazmatCompaniesId->name}}</td>
+                                    <td>{{@$client->hazmatCompaniesId->name}}</td>
                                     <td>{{$client->userDetail->email}}</td>
                                     <td>{{$client->userDetail->phone}}</td>
                                     <td>
