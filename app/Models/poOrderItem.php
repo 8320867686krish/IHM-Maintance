@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class poOrderItem extends Model
 {
     use HasFactory;
-    
+
     protected $fillable = [
         'ship_id',
         'description',
@@ -20,8 +20,11 @@ class poOrderItem extends Model
         'type_category',
 
     ];
-    public function poOrderItemsHazmets(){
+    public function poOrderItemsHazmets()
+    {
         return $this->hasMany(PoOrderItemsHazmats::class, 'po_order_item_id', 'id');
-    
-       }
+    }
+    public function poOrder(){
+        return $this->belongsTo(poOrder::class,'po_order_id','id');
+    }
 }

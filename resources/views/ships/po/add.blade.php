@@ -29,12 +29,7 @@
                             </div>
 
 
-                            <div class="form-group col-6 mb-3">
-                                <label for="vessel_name">Vessel Name</label>
-                                <input type="text" class="form-control form-control-lg" id="vessel_name" name="vessel_name" autocomplete="off" onchange="removeInvalidClass(this)" value="{{@$poData->vessel_name}}">
-                                <div class="invalid-feedback error" id="vessel_nameError"></div>
-                            </div>
-
+                          
                             <div class="form-group col-6 mb-3">
                                 <label for="machinery">Machinery</label>
                                 <input type="text" class="form-control form-control-lg" id="machinery" name="machinery" autocomplete="off" onchange="removeInvalidClass(this)" value="{{@$poData->machinery}}">
@@ -79,7 +74,7 @@
 
                             <div class="form-group col-6 mb-3">
                                 <label for="supplier_name">Supplier Email</label>
-                                <input type="text" class="form-control form-control-lg" id="email" name="email" autocomplete="off" onchange="removeInvalidClass(this)"  value="{{@$poData->emil}}">
+                                <input type="text" class="form-control form-control-lg" id="email" name="email" autocomplete="off" onchange="removeInvalidClass(this)"  value="{{@$poData->email}}">
                                 <div class="invalid-feedback error" id="emailError"></div>
                             </div>
 
@@ -171,12 +166,12 @@
                                 <div class="form-group col-2 mb-3">
                                     <select class="form-control form-control-lg" name="items[{{$item->id}}][type_category]">
                                         <option value="Relevant" {{ $item->type_category === 'Relevant' ? 'selected' : '' }}>Relevant</option>
-                                        <option value="Non relevant" {{ $item->type_category === 'Non relevant' ? 'selected' : '' }}>Non relevant</option>
+                                        <option value="Non relevant" {{ $item->type_category === 'Non Relevant' ? 'selected' : '' }}>Non relevant</option>
                                     </select>
                                 </div>
                                 <div class="form-group col-1 mb-3">
                                     <i class="fas fa-trash-alt text-danger mt-3 remove-item-btn"></i>
-                                    @if($item->type_category === 'Relevant')
+                                    @if($item->type_category == 'Relevant')
                                     <a href="{{ route('po.relevent', $item->id) }}">
                                     <i class="fas fa-eye text-info ml-2 view-item-btn"></i></a>
                                     @endif
@@ -216,5 +211,6 @@
 <script src="{{ asset('assets/js/poOrder.js') }}"></script>
 <script>
     var poItemGrid = "{{ url('ship/view') }}/{{ $ship_id }}#po-records"
+    var itemIndex = "{{ isset($poData->poOrderItems) ? count($poData->poOrderItems) : 0 }}";
 </script>
 @endpush

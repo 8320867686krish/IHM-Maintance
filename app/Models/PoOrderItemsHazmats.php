@@ -40,7 +40,12 @@ class PoOrderItemsHazmats extends Model
         'ihm_previous_qty',
         'ihm_previous_unit',
         'ihm_last_date',
-        'ihm_date'
+        'ihm_date',
+        'modelMakePart',
+        'hazmet_manufacturer',
+        'hazmet_equipment',
+        'doc1',
+        'doc2',
     ];
     public function setIsArrivedAttribute($value)
     {

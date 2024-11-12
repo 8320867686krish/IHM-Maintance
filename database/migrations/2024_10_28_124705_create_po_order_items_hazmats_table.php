@@ -59,6 +59,16 @@ return new class extends Migration
             $table->date('ihm_last_date')->nullable();
             $table->date('ihm_date')->nullable();
 
+            $table->string('hazmet_equipment')->nullable();
+            $table->string('modelMakePart')->nullable();
+
+            $table->string('hazmet_manufacturer')->nullable();
+
+            $table->string('doc1')->nullable();
+
+            $table->string('doc2')->nullable();
+
+
 
             $table->timestamps();
         });

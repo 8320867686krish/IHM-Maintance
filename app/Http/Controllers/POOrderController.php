@@ -3,11 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Mail\ExampleMail;
+use App\Mail\sendMail;
 use App\Models\Hazmat;
 use App\Models\MakeModel;
 use App\Models\poOrder;
 use App\Models\poOrderItem;
 use App\Models\PoOrderItemsHazmats;
+use App\Models\Ship;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Maatwebsite\Excel\Facades\Excel;
@@ -73,7 +76,7 @@ class POOrderController extends Controller
     }
     public function viewReleventItem($poiteam_id)
     {
-        $poItem = poOrderItem::with('poOrderItemsHazmets.hazmat')->find($poiteam_id);
+        $poItem = poOrderItem::with(['poOrder:id,po_no','poOrderItemsHazmets.hazmat.equipment'])->find($poiteam_id);
         $backurl = 'ships/po-order/add/' . $poItem['ship_id'] . "/" . $poItem['po_order_id'];
         $table_type = Hazmat::select('table_type')->distinct()->pluck('table_type');
         $hazmats = [];
@@ -194,6 +197,10 @@ class POOrderController extends Controller
                 $value['po_order_id'] = $post['po_order_id'];
                 $value['po_order_item_id'] = $post['po_order_item_id'];
                 $value['hazmat_id'] = $key;
+                $getModel = MakeModel::find($value['modelMakePart']);
+                $value['doc1'] = @$getModel['document1']['name']??'';
+                $value['doc2'] = @$getModel['document2']['name'] ?? '';
+
                 PoOrderItemsHazmats::updateOrCreate(['id' => $value['id']], $value);
 
             }
@@ -221,7 +228,7 @@ class POOrderController extends Controller
         }
     }
 
-    public function getManufacturerBasedDocumentData($hazmat_id, $equipment, $manufacturer)
+    public function getmodel($hazmat_id, $equipment, $manufacturer)
     {
         try {
             $documentData = MakeModel::where('hazmat_id', $hazmat_id)->where('equipment', $equipment)->where('manufacturer', $manufacturer)->get();
@@ -235,6 +242,29 @@ class POOrderController extends Controller
         } catch (Throwable $th) {
             return response()->json(['error' => $th->getMessage()], 500);
         }
+    }
+    public function getPartBasedDocumentFile($hazmat_id){
+        try {
+            $documentFile = MakeModel::select('id', 'document1', 'document2')->find($hazmat_id);
+
+            return response()->json(['isStatus' => true, 'message' => 'Part besed document file retrieved successfully.', 'documentFile' => $documentFile]);
+        } catch (Throwable $th) {
+            return response()->json(['error' => $th->getMessage()], 500);
+        }
+    }
+    public function sendMail(Request $request){
+        $data = $request->input();
+        $shipsData = Ship::find($data['shipId']);
+        $clientCompany = User::select('email')->find($shipsData['client_user_id']);
+        $shipmail = User::select('email')->find($shipsData['user_id']);
+        $supplier_email = poOrder::select('email')->find($data['order_id']);
+        $mailData = ['title' => $data['email_subject'],'body' => $data['email_body']];
+        Mail::to($clientCompany['email'])
+        ->cc([$shipmail['email'], $supplier_email['email']])
+        ->queue(new sendMail($mailData));
+        return response()->json(['isStatus' => true, 'message' => 'sent email successfully.']);
+
+
     }
 
 }

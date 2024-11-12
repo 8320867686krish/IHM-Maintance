@@ -4,8 +4,11 @@
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/vendor/bootstrap-select/css/bootstrap-select.css') }}">
 @endsection
 @section('content')
+@include('ships.po.modals.sendMail')
+
 <div class="container-fluid dashboard-content">
     <div class="row">
+
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
             <div class="card">
                 <h5 class="card-header"> <a href="{{url($backurl)}}"><span class="icon"><i class="fas fa-arrow-left"></i></span> Back</a> <span class="ml-1">{{ $head_title ?? '' }} PO</span></h5>
@@ -18,7 +21,7 @@
                         <input type="hidden" name="ship_id" id="ship_id" value="{{$poItem->ship_id}}">
                         <input type="hidden" name="po_order_item_id" id="po_order_item_id" value="{{@$poItem->id}}">
                         <input type="hidden" name="po_order_id" id="po_order_id" value="{{@$poItem->po_order_id}}">
-
+                        <input type="hidden" name="po_no" id="po_no" value="{{@$poItem->poOrder->po_no}}">
 
                         <div class="row">
                             <div class="col-6 col-md-6 mb-2">
@@ -102,7 +105,7 @@
                                     <input type="hidden" name="hazmats[{{$value['hazmat_id']}}][id]" id="id{{$value['hazmat_id']}}" value="{{@$value->id}}">
 
                                     <div class="col-12 col-md-12 col-lg-12 cloneTableTypeDiv mb-2 card" id="cloneTableTypeDiv{{$value['hazmat_id']}}">
-                                        <label for="table_type" id="tableTypeLable" class="mr-5 mt-3 tableTypeLable card-header">{{$value['hazmat']['name']}}</label>
+                                        <label for="table_type" id="tableTypeLable{{$value['hazmat_id']}}" class="mr-5 mt-3 tableTypeLable card-header">{{$value['hazmat']['name']}}</label>
                                         <div class="row card-body">
                                             <div class="col-4 table_typecol mb-2">
                                                 <div class="form-group">
@@ -119,21 +122,81 @@
                                                 </div>
                                             </div>
 
-                                            <div class="col-4 imagehazmat mb-2" id="imagehazmat{{$value['hazmat_id']}}">
+
+                                            <div class="col-4 equipment mb-2" id="equipment{{$value['hazmat_id']}}">
                                                 <div class="form-group">
-                                                    <input type="file" class="form-control" accept="*/*" id="image_{{$value['hazmat_id']}}" name="hazmats[{{$value['hazmat_id']}}][image]">
+                                                    <select class="form-control  equipmentSelectTag" id="equipmentselect_{{$value['hazmat_id']}}" name="hazmats[{{$value['hazmat_id']}}][hazmet_equipment]" data-id="{{$value['hazmat_id']}}" data-findtable="{{$hazmetTable}}" data-divvalue="{{$value['hazmat_id']}}">
+                                                        <option value="">Select Equipment
+                                                        </option>
+                                                        @foreach($value->hazmat->equipment as $equipment)
+                                                        <option value="{{$equipment['equipment']}}" @if($equipment['equipment']==$value['hazmet_equipment']) selected @endif>
+                                                            {{$equipment['equipment']}}
+                                                        </option>
+                                                        @endforeach
+
+                                                    </select>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="col-4 manufacturer mb-2" id="manufacturer{{$value['hazmat_id']}}">
+                                                <div class="form-group">
+                                                    <select class="form-control  manufacturerselect" id="manufacturerselect_{{$value['hazmat_id']}}" name="hazmats[{{$value['hazmat_id']}}][hazmet_manufacturer]" data-id="{{$value['hazmat_id']}}" data-findtable="{{$hazmetTable}}" data-divvalue="{{$value['hazmat_id']}}">
+                                                        <option value="">Select Manufacturer
+                                                        </option>
+                                                        @foreach($value->hazmat->equipment as $equipment)
+                                                        <option value="{{$equipment['manufacturer']}}" @if($equipment['manufacturer']==$value['hazmet_manufacturer']) selected @endif>{{$equipment['manufacturer']}}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="col-4 modelMakePart mb-1" id="modelMakePart{{$value['hazmat_id']}}">
+                                                <div class="form-group">
+                                                    <select class="form-control  modelMakePartSelect" data-id="{{$value['hazmat_id']}}" id="modelMakePartselect_{{$value['hazmat_id']}}" name="hazmats[{{$value['hazmat_id']}}][modelMakePart]" data-findtable="{{$hazmetTable}}" data-divvalue="{{$value['hazmat_id']}}">
+                                                        <option value="">Select Model Make and Part
+                                                        </option>
+                                                        @foreach($value->hazmat->equipment as $equipment)
+                                                        <option value="{{$equipment->id}}" @if($equipment['id']==$value['modelMakePart']) selected @endif>{{$equipment->model}}-{{$equipment->make}}-{{$equipment->part}}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+
+                                            </div>
+
+                                            <div class=" col-4  documentLoad1 mb-1" id="documentLoad1_{{$value['hazmat_id']}}">
+                                                <div class="form-group">
+                                                    @if(@$value['doc1'])
+                                                    <a href="{{ url('/images/modelDocument/' . $value['doc1']) }}" target="_blank">{{ $value['doc1'] }}</a>
+
+                                                    @endif
                                                 </div>
                                             </div>
 
-                                            <div class="col-4 dochazmat mb-2" id="dochazmat{{$value['hazmat_id']}}">
+                                            <div class=" col-4  documentLoad2 mb-1" id="documentLoad2_{{$value['hazmat_id']}}">
                                                 <div class="form-group">
-                                                    <input type="file" class="form-control" id="doc_{{$value['hazmat_id']}}" name="hazmats[{{$value['hazmat_id']}}][doc]">
-                                                </div>
-                                                <div style="font-size: 13px; margin-bottom: 10px;" id="docNameShow_${selectedValue}">
+                                                @if(@$value['doc2'])
+                                                    <a href="{{ url('/images/modelDocument/' . $value['doc2']) }}" target="_blank">{{ $value['doc2'] }}</a>
+
+                                                    @endif
                                                 </div>
                                             </div>
                                         </div>
                                         @if($value->hazmat_type === 'Contained' || $value->hazmat_type === 'PCHM')
+                                        @if($hazmetTable == 'A')
+                                        <div class="row card-body  notification{{$value['hazmat_id']}}">
+                                            <div class="col-11">
+                                                <div class="form-group">
+                                                    <div class="alert alert-danger" role="alert">Its not allowed on Board.!</div>
+
+                                                </div>
+                                            </div>
+                                            <div class="col-1">
+                                                <div class="form-group"><button class="btn btn-primary float-right mb-1 sendmail" type="button" data-id="{{$value['hazmat_id']}}">Send Email</button></div>
+                                            </div>
+                                        </div>
+                                        @endif
                                         <div class="col-12 col-md-12 col-lg-12  mb-2  onboard{{$value['hazmat_id']}}">
                                             <h5>Item arrived on board?</h5>
                                             <label class="custom-control custom-radio custom-control-inline">
@@ -264,34 +327,34 @@
                                             @else
                                             <div class="col-4 mb-2">
                                                 <div class="form-group">
-                                                    <input type="text" name="hazmats[{{$value['hazmat_id']}}][ihm_previous_qty]" id="ihm_previous_qty{{$value['hazmat_id']}}" class="form-control" placeHolder="Previous Quantity"  value="{{$value['ihm_previous_qty']}}">
+                                                    <input type="text" name="hazmats[{{$value['hazmat_id']}}][ihm_previous_qty]" id="ihm_previous_qty{{$value['hazmat_id']}}" class="form-control" placeHolder="Previous Quantity" value="{{$value['ihm_previous_qty']}}">
                                                 </div>
                                             </div>
 
                                             <div class="col-4 mb-2">
                                                 <div class="form-group">
-                                                    <input type="text" name="hazmats[{{$value['hazmat_id']}}][ihm_previous_unit]" id="ihm_previous_unit{{$value['hazmat_id']}}" class="form-control" placeHolder="Unit"  value="{{$value['ihm_previous_unit']}}">
+                                                    <input type="text" name="hazmats[{{$value['hazmat_id']}}][ihm_previous_unit]" id="ihm_previous_unit{{$value['hazmat_id']}}" class="form-control" placeHolder="Unit" value="{{$value['ihm_previous_unit']}}">
                                                 </div>
                                             </div>
                                             <div class="col-3 mb-2">
                                                 <div class="form-group">
-                                                    <input type="date" name="hazmats[{{$value['hazmat_id']}}][ihm_last_date]" id="ihm_last_date{{$value['hazmat_id']}}" class="form-control" placeHolder="Last Date"  value="{{$value['ihm_last_date']}}">
+                                                    <input type="date" name="hazmats[{{$value['hazmat_id']}}][ihm_last_date]" id="ihm_last_date{{$value['hazmat_id']}}" class="form-control" placeHolder="Last Date" value="{{$value['ihm_last_date']}}">
                                                 </div>
                                             </div>
                                             <div class="col-3 mb-2">
                                                 <div class="form-group">
-                                                    <input type="text" name="hazmats[{{$value['hazmat_id']}}][ihm_qty]" id="ihm_qty{{$value['hazmat_id']}}" class="form-control" placeHolder="Next Quantity"  value="{{$value['ihm_qty']}}">
+                                                    <input type="text" name="hazmats[{{$value['hazmat_id']}}][ihm_qty]" id="ihm_qty{{$value['hazmat_id']}}" class="form-control" placeHolder="Next Quantity" value="{{$value['ihm_qty']}}">
                                                 </div>
                                             </div>
 
                                             <div class="col-3 mb-2">
                                                 <div class="form-group">
-                                                    <input type="text" name="hazmats[{{$value['hazmat_id']}}][ihm_unit]" id="ihm_unit{{$value['hazmat_id']}}" class="form-control" placeHolder="Unit"  value="{{$value['ihm_unit']}}">
+                                                    <input type="text" name="hazmats[{{$value['hazmat_id']}}][ihm_unit]" id="ihm_unit{{$value['hazmat_id']}}" class="form-control" placeHolder="Unit" value="{{$value['ihm_unit']}}">
                                                 </div>
                                             </div>
                                             <div class="col-3 mb-2">
                                                 <div class="form-group">
-                                                    <input type="date" name="hazmats[{{$value['hazmat_id']}}][ihm_date]" id="ihm_date{{$value['hazmat_id']}}" class="form-control" placeHolder="Next Date"  value="{{$value['ihm_date']}}">
+                                                    <input type="date" name="hazmats[{{$value['hazmat_id']}}][ihm_date]" id="ihm_date{{$value['hazmat_id']}}" class="form-control" placeHolder="Next Date" value="{{$value['ihm_date']}}">
                                                 </div>
                                             </div>
                                             @endif
@@ -387,7 +450,8 @@
 <script src="{{ asset('assets/js/poOrder.js') }}"></script>
 <script>
     var hazmatIdsvalue = @json($hazmatIds);
-
+    var itemIndex = "{{ isset($poData->poOrderItems) ? count($poData->poOrderItems) : 0 }}";
+    console.log(itemIndex);
     $(document).ready(function() {
         $('#checkHazmatAddForm #suspected_hazmat').selectpicker('val', hazmatIdsvalue);
 

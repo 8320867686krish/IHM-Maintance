@@ -1,5 +1,53 @@
 $(document).ready(function () {
-    var itemIndex = "{{ isset($poData->poOrderItems) ? count($poData->poOrderItems) : 0 }}";
+    $("#showTableTypeDiv").on("click", ".cloneTableTypeDiv .sendmail", function(e) {
+        e.preventDefault();
+        var hazmatId = $(this).attr('data-id');
+        var text = $(`#tableTypeLable${hazmatId}`).text();
+        var hazmat_type = $(`#table_type_${hazmatId}`).val();
+        var po_order_id = $("#po_order_id").val();
+        var po_no = $("#po_no").val();
+        $("#order_id").val(po_order_id);
+        $("#email_body").val(text+' is '+hazmat_type)
+        $("#shipId").val($("#ship_id").val());
+        $("#email_subject").val(po_no);
+        $("#hazmat_id").val(hazmatId);
+        $('#relevantModal').modal('show');
+
+    });
+    $("#sendEmailForm").on('submit',function(e){
+        e.preventDefault();
+        let formData = new FormData(this);
+        $.ajax({
+            url: $(this).attr('action'),
+            type: 'POST',
+            data: formData,
+            dataType: 'json',
+            contentType: false,
+            processData: false,
+            success: function (response) {
+                if (response.isStatus) {
+                    successMsg(response.message);
+                    $('#relevantModal').modal('hide');
+
+                } else {
+                    errorMsg(response.message);
+                }
+            },
+            error: function (xhr, status, error) {
+                let errors = xhr.responseJSON.errors;
+
+                if (errors) {
+                    $.each(errors, function (field, messages) {
+                        $('#' + field + 'Error').text(messages[0]).show();
+                        $('[name="' + field + '"]').addClass('is-invalid');
+                    });
+                } else {
+                    console.error('Error submitting form:', error);
+                }
+            },
+        });
+    });
+    
     $("#checkHazmatAddForm").on('submit', function (e) {
 
         e.preventDefault();
@@ -75,7 +123,7 @@ $(document).ready(function () {
 
 
              <div class="form-group col-2 mb-1">
-                <select  class="form-control form-control-lg" name="items[` + itemIndex + `][type_category]"><option value="Relavant">Relavant</option><option value="Non relevant">Non relevant</option></select>
+                <select  class="form-control form-control-lg" name="items[` + itemIndex + `][type_category]"><option value="Relevant">Relevant</option><option value="Non relevant">Non relevant</option></select>
                 <div class="invalid-feedback error"></div>
             </div>
 
@@ -168,7 +216,7 @@ $('#suspected_hazmat').on('changed.bs.select', function (e, clickedIndex, isSele
             getEquipment(selectedValue);
             var div = `<input type="hidden" name="hazmats[${selectedValue}][id]" id="po_iteam_hazmat_id" value="0">
 <div class="col-12 col-md-12 col-lg-12 cloneTableTypeDiv mb-1 card" id="cloneTableTypeDiv${selectedValue}">
-                <label for="table_type" id="tableTypeLable" class="mr-5 mt-3 tableTypeLable card-header">${selectedText}</label>
+                <label for="table_type" id="tableTypeLable${selectedValue}" class="mr-5 mt-3 tableTypeLable card-header">${selectedText}</label>
                 <div class="row card-body">
                     <div class="col-4 table_typecol mb-2">
                         <div class="form-group">
@@ -199,7 +247,7 @@ $('#suspected_hazmat').on('changed.bs.select', function (e, clickedIndex, isSele
 
                      <div class="col-4 manufacturer mb-2" id="manufacturer${selectedValue}">
                         <div class="form-group">
-                           <select class="form-control  manufacturerselect${selectedValue}" id="manufacturerselect_${selectedValue}" name="hazmats[${selectedValue}][hazmet_manufacturer]" data-id="${selectedValue}" data-findTable="${tableType[0]}" data-divValue="${selectedValue}">
+                           <select class="form-control  manufacturerselect" id="manufacturerselect_${selectedValue}" name="hazmats[${selectedValue}][hazmet_manufacturer]" data-id="${selectedValue}" data-findTable="${tableType[0]}" data-divValue="${selectedValue}">
                                 <option value="">Select Manufacturer
                                 </option>
                               
@@ -209,9 +257,9 @@ $('#suspected_hazmat').on('changed.bs.select', function (e, clickedIndex, isSele
                     </div>
 
 
-                      <div class="col-4 modelMakePart mb-2" id="modelMakePart${selectedValue}">
+                      <div class="col-4 modelMakePart mb-1" id="modelMakePart${selectedValue}">
                         <div class="form-group">
-                           <select class="form-control  modelMakePartSelect${selectedValue}" data-id="${selectedValue}" id="modelMakePartselect_${selectedValue}" name="hazmats[${selectedValue}][modelMakePart]"  data-findTable="${tableType[0]}" data-divValue="${selectedValue}">
+                           <select class="form-control  modelMakePartSelect" data-id="${selectedValue}" id="modelMakePartselect_${selectedValue}" name="hazmats[${selectedValue}][modelMakePart]"  data-findTable="${tableType[0]}" data-divValue="${selectedValue}">
                                 <option value="">Select Model Make and Part
                                 </option>
                               
@@ -219,14 +267,14 @@ $('#suspected_hazmat').on('changed.bs.select', function (e, clickedIndex, isSele
                         </div>
                     
                     </div>
+                      <div class=" col-4  documentLoad1 mb-1" id="documentLoad1_${selectedValue}">
+                        <div class="form-group"></div>
+                      </div>
 
-
-                  
-                
-                
-
-                  
-                </div>
+                       <div class=" col-4  documentLoad2 mb-1" id="documentLoad2_${selectedValue}">
+                        <div class="form-group"></div>
+                      </div>
+                    </div>
             </div>
             
             `;
@@ -237,20 +285,47 @@ $('#suspected_hazmat').on('changed.bs.select', function (e, clickedIndex, isSele
 $(document).on('change', '.equipmentSelectTag', function () {
     let optionValue = $(this).val();
     let id = $(this).attr('data-id');
-    getManufacturer(id,optionValue);
+    getManufacturer(id, optionValue);
 });
-//for contained or pchm then add
+$(document).on('change', '.manufacturerselect', function () {
+    let optionValue = $(this).val();
+    let id = $(this).attr('data-id');
+    var equipment = $(`#equipmentselect_${id}`).val();
+    getModel(id, equipment, optionValue);
+
+});
+
+$(document).on('change', '.modelMakePartSelect', function () {
+    let optionValue = $(this).val();
+    let id = $(this).attr('data-id');
+
+    getDocument(id);
+
+});
 $("#showTableTypeDiv").on("change", ".cloneTableTypeDiv select.table_type", function () {
     const selectedValue = $(this).val();
     const tabletype = $(this).attr('data-findTable');
     const cloneTableTypeDiv = $(this).closest(".cloneTableTypeDiv");
     const divValue = $(this).attr("data-divvalue");
     cloneTableTypeDiv.find(`.onboard${divValue}`).remove();
+    cloneTableTypeDiv.find(`.notification${divValue}`).remove();
+    cloneTableTypeDiv.find(`.noitemInstalled${divValue}`).remove();
+    cloneTableTypeDiv.find(`. removeItem${divValue}`).remove();
 
     if (selectedValue === 'Contained' || selectedValue === 'PCHM') {
+        let isOnboardDiv = "";
+        if(tabletype == 'A'){
+        isOnboardDiv += `<div class="row card-body  notification${divValue}">
+        <div class="col-11">
+                        <div class="form-group">
+                                       <div class="alert alert-danger" role="alert">Its not allowed on Board.!</div>
 
-        let isOnboardDiv = `
-            <div class="col-12 col-md-12 col-lg-12  mb-1  onboard${divValue}">
+                        </div>
+        </div>
+            <div class="col-1"><div class="form-group"><button class="btn btn-primary float-right mb-1 sendmail"  type="button" data-id=${divValue}>Send Email</button></div></div>
+         </div>`
+        }
+              isOnboardDiv += `  <div class="col-12 col-md-12 col-lg-12  mb-1  onboard${divValue}">
                 <h5>Item arrived on board?</h5>
                <label class="custom-control custom-radio custom-control-inline">
                  <input type="radio" id="isArrived${divValue}" name="hazmats[${divValue}][isArrived]" value="yes" class="custom-control-input isArrivedChoice" data-tab="${tabletype}" data-isArrived="${divValue}"><span class="custom-control-label">Yes</span>
@@ -578,40 +653,86 @@ function tableBFiled(divValue) {
 }
 function getEquipment(hazmetId) {
     let url = `${baseUrl}/equipment/${hazmetId}`;
-    let response = fetchData(url);
-    console.log(response);
-    $(`#equipmentselect_${hazmetId}`).attr('data-id', hazmetId);
-    $.each(response.equipments, function (index, value) {
-        $(`#equipmentselect_${hazmetId}`).append($('<option>', {
-            value: index,
-            text: index
-        }));
+    fetchData(url, function (response) {
+        $(`#equipmentselect_${hazmetId}`).attr('data-id', hazmetId);
+        $.each(response.equipments, function (index, value) {
+            $(`#equipmentselect_${hazmetId}`).append($('<option>', {
+                value: index,
+                text: index
+            }));
+        });
     });
-   
 }
-function fetchData(url){
+
+function fetchData(url, callback) {
     $.ajax({
-        url: `${url}`,  // Use the baseUrl variable here
+        url: url,
         method: 'get',
         dataType: 'json',
         contentType: false,
         processData: false,
         success: function (response) {
-           return response;
+            callback(response);  // Pass the response to the callback
         }
-
-
     });
 }
+
+
 function getManufacturer(hazmetId, equipment) {
     let url = `${baseUrl}/manufacturer/${hazmetId}/${equipment}`;
-    let response = fetchData(url);
-    $(`#manufacturerselect_${hazmetId}`).attr('data-id', hazmetId);
-                $.each(response.manufacturers, function (index, value) {
-                    $(`#manufacturerselect_${hazmetId}`).append($('<option>', {
-                        value: index,
-                        text: index
-                    }));
-                });
+    fetchData(url, function (response) {
+        $(`#manufacturerselect_${hazmetId}`).empty();
+        $(`#manufacturerselect_${hazmetId}`).empty().append($('<option>', {
+            value: "",
+            text: "First Select Equipment"
+        }));
+        $(`#manufacturerselect_${hazmetId}`).attr('data-id', hazmetId);
+        $.each(response.manufacturers, function (index, value) {
+            $(`#manufacturerselect_${hazmetId}`).append($('<option>', {
+                value: value.manufacturer,
+                text: value.manufacturer
+            }));
+        });
+    });
+}
 
+function getModel(hazmetId, equipment, manufacturer) {
+    let url = `${baseUrl}/model/${hazmetId}/${equipment}/${manufacturer}`;
+    fetchData(url, function (response) {
+
+        $(`#modelMakePartselect_${hazmetId}`).attr('data-id', hazmetId);
+
+        $(`#modelMakePartselect_${hazmetId}`).empty();
+        $(`#modelMakePartselect_${hazmetId}`).empty().append($('<option>', {
+            value: "",
+            text: "First Select Make & Model"
+        }));
+        $.each(response.documentData, function (index, value) {
+            $(`#modelMakePartselect_${hazmetId}`).append($('<option>', {
+                value: value.id,
+                text: value.modelmakepart
+            }));
+        });
+    });
+}
+
+function getDocument(hazmetId) {
+    let url = `${baseUrl}/document/${hazmetId}`;
+    fetchData(url, function (response) {
+        let data = response.documentFile;
+        if (data.document1['name'] != null) {
+            $(`#documentLoad1_${hazmetId}`).empty();
+            let html =
+                `<a href="${data.document1['path']}" target="_black" > ${data.document1['name']} </a>`;
+            $(`#documentLoad1_${hazmetId}`).append(html);
+        }
+
+        if (data.document2['name'] != null) {
+            $(`#documentLoad2_${hazmetId}`).empty();
+            let html =
+                `<a href="${data.document2['path']}" target="_black"> ${data.document2['name']} </a>`;
+            $(`#documentLoad2_${hazmetId}`).append(html);
+        }
+
+    });
 }

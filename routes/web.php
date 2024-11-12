@@ -45,6 +45,9 @@ Route::middleware('auth')->group(function () {
     Route::post('po-item/hazmat/save', [POOrderController::class, 'poItemsHazmatSave'])->name('poItems.hazmat');
     Route::get('equipment/{hazmat_id}',[POOrderController::class, 'getEquipMent'])->name('equipment');
     Route::get('manufacturer/{hazmat_id}/{equipment}',[POOrderController::class, 'getManufacturer'])->name('getManufacturer');
+    Route::get('model/{hazmat_id}/{equipment}/{manufacturer}',[POOrderController::class, 'getmodel'])->name('getmodel');
+    Route::get('document/{id}',[POOrderController::class, 'getPartBasedDocumentFile'])->name('getPartBasedDocumentFile');
+    Route::post('send/mail',[POOrderController::class, 'sendMail'])->name('send.mail');
 
     Route::get('/helpcenter', [HelpCenterController::class, 'index'])->name('helpcenter.list');
     Route::middleware('can:roles')->group(function () {
