@@ -17,6 +17,6 @@ class Hazmat extends Model
     }
     public function poOrderItemsHazmats()
     {
-        return $this->hasMany(poOrderItemsHazmats::class, 'hazmat_id');
+        return $this->hasMany(PoOrderItemsHazmats::class, 'hazmat_id');
     }
 }
