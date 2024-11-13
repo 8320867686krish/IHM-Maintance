@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ClientCompany;
+use App\Models\Hazmat;
 use App\Models\poOrder;
 use App\Models\Ship;
 use App\Models\ShipTeams;
@@ -133,14 +134,14 @@ class ShipController extends Controller
                 $image = $this->upload($request, 'ship_image', 'uploads/ship');
                 $inputData['ship_image'] = $image;
             }
-            
+
             $ship = Ship::updateOrCreate(['id' => $id], $inputData);
             if ($id == 0) {
                 $inputData['ship_id'] = $ship->id;
             } else {
                 $inputData['ship_id'] = $id;
             }
-         
+
             if (@$inputData['maneger_id'] || @$inputData['expert_id']) {
                 ShipTeams::where('ship_id', $inputData['ship_id'])->delete();
                 if (@$inputData['maneger_id']) {
@@ -164,17 +165,17 @@ class ShipController extends Controller
                     }
                 }
             }
-           
+
             $message = empty($id) ? "Ship added successfully" : "Ship updated successfully";
             return response()->json(['isStatus' => true, 'message' => $message]);
-
         } catch (\Throwable $th) {
             print_r($th->getMessage());
-          //  return back()->withError($th->getMessage())->withInput();
+            //  return back()->withError($th->getMessage())->withInput();
         }
     }
 
-    public function portalGuide(){
+    public function portalGuide()
+    {
         return view('helpCenter.pdfview');
     }
     public function destroy(string $id)
@@ -185,7 +186,6 @@ class ShipController extends Controller
             $user->delete();
             $ship->delete();
             return response()->json(['isStatus' => true, 'message' => 'Ship deleted successfully']);
-
         } catch (\Throwable $th) {
             return back()->withError($th->getMessage())->withInput();
         }
@@ -204,11 +204,20 @@ class ShipController extends Controller
             $query->where('level', 4)->orderBy('level', 'asc');
         })->where('hazmat_companies_id', $user->hazmat_companies_id)->get(['id', 'name']);
 
+        $shipId = $ship_id; // Set the ship ID you're filtering by
+
+        $hazmats = Hazmat::withCount(['poOrderItemsHazmats' => function ($query) use ($shipId) {
+            $query->where('ship_id', $shipId); // Filter by ship_id
+            $query->where('hazmat_type', 'Contained');
+        }])->get();
+        $hazmatsName =  $hazmats->pluck('short_name')->toArray();
+        $hazmatCount = $hazmats->pluck('po_order_items_hazmats_count')->toArray();
+      
         $managers =  User::whereHas('roles', function ($query) {
             $query->where('level', 3)->orderBy('level', 'asc');
         })->where('hazmat_companies_id', $user->hazmat_companies_id)->get(['id', 'name']);
         $ship = Ship::with(['shipTeams', 'client'])->find($ship_id);
-        $poOrders = poOrder::withCount(['poOrderItems'])->where('ship_id',$ship_id)->get();
+        $poOrders = poOrder::withCount(['poOrderItems'])->where('ship_id', $ship_id)->get();
         $users = $ship->shipTeams->pluck('user_id')->toArray();
         if (!Gate::allows('ships.add')) {
             $readonly = "readonly";
@@ -228,7 +237,7 @@ class ShipController extends Controller
             return $query->where('hazmat_companies_id', $user->hazmat_companies_id);
         })->get(['id', 'name']);
 
-        return view('ships.view', compact('experts', 'managers', 'isBack', 'ship', 'readonly', 'users','poOrders','ship_id'));
+        return view('ships.view', compact('experts', 'managers', 'isBack', 'ship', 'readonly', 'users', 'poOrders', 'ship_id','hazmatsName','hazmatCount'));
     }
 
     public function assignShip(Request $request)

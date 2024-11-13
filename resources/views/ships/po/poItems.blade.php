@@ -1,4 +1,4 @@
-  <a href="{{ asset('assets/sample.xlsx') }}" class="btn btn-primary float-right btn-rounded addNewBtn mb-3 ml-2" download>Download Sample</a>
+  <a href="{{ url('poOrderSample') }}" class="btn btn-primary float-right btn-rounded addNewBtn mb-3 ml-2" download>Download Sample</a>
                         <form method="POST" action="{{route('import')}}" enctype="multipart/form-data" id="uploadForm">
                             @csrf
                             <a href="#" class="btn btn-primary float-right btn-rounded addNewBtn mb-3 ml-2" onclick="document.getElementById('excel_file').click(); return false;">Import</a>
@@ -41,3 +41,8 @@
                                 </tbody>
                             </table>
                         </div>
+                        @push('js')
+
+<script src="{{ asset('assets/js/poOrder.js') }}"></script>
+
+@endpush

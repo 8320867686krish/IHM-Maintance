@@ -39,13 +39,14 @@
     <div class="row">
         <div class="col-xl-4 offset-4  col-lg-4   col-md-4  col-sm-12 col-12 mb-3 ">
             <div class="chartSelect">
-                <label><span>Ships</span></label> <select class="form-control">
+                <label><span>Ships</span></label>
+                <select class="form-control shipswisePo">
                     <option>Select Ship</option>
-                    <option selected="selected">Ship1</option>
-                    <option>Ship2</option>
-                    <option>Ship3</option>
-                    <option>Ship4</option>
-                    <option>Ship5</option>
+                    @foreach($ships as $value)
+                    <option value="{{$value['id']}}" {{ $loop->first ? 'selected' : '' }}>
+                    {{$value['ship_name']}}</option>
+                    @endforeach
+
                 </select>
             </div>
         </div>
@@ -71,6 +72,16 @@
 <script src="{{ asset('assets/vendor/charts/c3charts/c3.min.js') }}"></script>
 <script src="{{ asset('assets/vendor/charts/c3charts/d3-5.4.0.min.js') }}"></script>
 <script src="{{ asset('assets/vendor/charts/c3charts/C3chartjs.js') }}"></script>
+<script src="{{ asset('assets/js/dashbord.js') }}"></script>
 
+<script>
+    var shipsPo = @json($shipsPo);
+    var nonRelevantCounts = @json($nonRelevantCounts);
+    var relevantCounts = @json($relevantCounts);
+  
+    // Initialize the chart
+   
 
+   
+</script>
 @endpush

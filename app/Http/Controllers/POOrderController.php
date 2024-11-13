@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\POExport;
 use App\Mail\ExampleMail;
 use App\Mail\sendMail;
 use App\Models\Hazmat;
@@ -11,6 +12,7 @@ use App\Models\poOrderItem;
 use App\Models\PoOrderItemsHazmats;
 use App\Models\Ship;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Maatwebsite\Excel\Facades\Excel;
@@ -102,7 +104,9 @@ class POOrderController extends Controller
                 $rowWithHeaders = array_combine($headers, $row);
                 $rowErrors = [];
 
-                $requiredFields = ['PO NO', 'PO Date', 'Vessel Name', 'Machinery', 'Make Model', 'Supplier Name', 'Contact Person', 'Phone Number', 'Email', 'Address', 'Item Description', 'Item Part No', 'Item Qty', 'Item Unite Price', 'Type', 'Item IMPA No'];
+                $requiredFields = ['PO NO', 'PO Date'];
+
+              
 
                 foreach ($requiredFields as $field) {
 
@@ -111,7 +115,6 @@ class POOrderController extends Controller
 
                     }
                 }
-
                 // If there are errors, continue to the next row
                 if (!empty($rowErrors)) {
                     $errors = array_merge($errors, $rowErrors);
@@ -121,44 +124,47 @@ class POOrderController extends Controller
                 $poorder = poOrder::where('po_no', $rowWithHeaders['PO NO'])
                     ->where('ship_id', $ship_id)
                     ->first();
-
                 // Prepare data for insertion
+                $po_no = (string)$rowWithHeaders['PO NO'];
                 $insert = [
-                    'po_no' => $rowWithHeaders['PO NO'],
+                    'po_no' =>  $po_no,
                     'ship_id' => $ship_id,
-                    'po_date' => $rowWithHeaders['PO DATE'],
-                    'vessel_name' => $rowWithHeaders['Vessel Name'],
+                    'po_date' => Carbon::createFromFormat('d/m/Y', $rowWithHeaders['PO Date'])->format('Y-m-d'), // Date format
                     'machinery' => $rowWithHeaders['Machinery'],
                     'make_model' => $rowWithHeaders['Make Model'],
                     'supplier_name' => $rowWithHeaders['Supplier Name'],
-                    'contact_person' => $rowWithHeaders['Contact Person'],
-                    'phone' => $rowWithHeaders['Phone Number'],
-                    'email' => $rowWithHeaders['Email'],
-                    'address' => $rowWithHeaders['Address']
+                    'address' => $rowWithHeaders['Supplier Address'],
+                    'contact_person' => $rowWithHeaders['Supplier Contact Person'],
+                    'phone' => $rowWithHeaders['Supplier Phone Number'],
+                    'email' => $rowWithHeaders['Supplier Email'],
+                   'onboard_reciving_date' => Carbon::createFromFormat('d/m/Y', $rowWithHeaders['Onboard reciving date'])->format('Y-m-d'),
+                    'delivery_location' => $rowWithHeaders['Delivery Location']
                 ];
-
+                
                 if (!$poorder) {
+                    // Insert if PO doesn't exist
                     $poinsert = poOrder::create($insert);
                     $po_id = $poinsert->id;
                 } else {
-                    $poinsert = poOrder::where('po_no', $rowWithHeaders['PO NO'])->update($insert);
-                    $po_id = $poorder->id; // Use object instead of array
+                    // Update if PO exists
+                    $poinsert = poOrder::where('po_no', '=', (string) $po_no)->update($insert);
+                    $po_id = $poorder->id; // Existing record ID
                 }
 
                 // Check for existing PO items
                 $poItemsCheck = poOrderItem::where('po_order_id', $po_id)
                     ->where('ship_id', $ship_id)
-                    ->where('description', $rowWithHeaders['Item Description'])
+                    ->where('description', $rowWithHeaders['Description'])
                     ->first();
 
                 $orderItems = [
                     'ship_id' => $ship_id,
                     'po_order_id' => $po_id,
-                    'description' => $rowWithHeaders['Item Description'],
-                    'part_no' => $rowWithHeaders['Item Part No'],
-                    'qty' => $rowWithHeaders['Item Qty'],
-                    'unit' => $rowWithHeaders['Item Unite'],
-                    'impa_no' => $rowWithHeaders['Item IMPA No'],
+                    'description' => $rowWithHeaders['Description'],
+                    'part_no' => $rowWithHeaders['Part No'],
+                    'qty' => $rowWithHeaders['Qty'],
+                    'unit' => $rowWithHeaders['Unit'],
+                    'impa_no' => $rowWithHeaders['IMPA NO.(if available)'],
                     'type_category' => $rowWithHeaders['Type']
                 ];
 
@@ -264,6 +270,10 @@ class POOrderController extends Controller
         ->queue(new sendMail($mailData));
         return response()->json(['isStatus' => true, 'message' => 'sent email successfully.']);
 
+
+    }
+    public function poOrderSample(){
+        return Excel::download(new  POExport, 'sample.xlsx');
 
     }
 

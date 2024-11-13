@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ClientCompanyController;
+use App\Http\Controllers\dashobardController;
 use App\Http\Controllers\HazmatCompanyController;
 use App\Http\Controllers\HelpCente;
 use App\Http\Controllers\HelpCenterController;
@@ -31,13 +32,12 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
-Route::get('/dashboard', function () {
-
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [dashobardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/shipwisepo/{ship_id}', [dashobardController::class, 'shipwiseData'])->middleware(['auth', 'verified'])->name('shipwiseData');
 
 Route::middleware('auth')->group(function () {
     Route::post('/import', [POOrderController::class, 'import'])->name('import');
+    Route::get('poOrderSample',[POOrderController::class,'poOrderSample'])->name('poOrderSample');
     Route::get('ships/po-order/add/{ship_id}/{po_order_id?}', [POOrderController::class, 'add'])->name('po.add');
     Route::get('po-order/po-item/relevant/{poiteam_id}', [POOrderController::class, 'viewReleventItem'])->name('po.relevent');
     Route::post('po-order/save', [POOrderController::class, 'store'])->name('po.store');

@@ -413,6 +413,8 @@
 @push('js')
 <script>
     var shipSave = "{{ route('ships.store') }}";
+    var hazmatsName = @json($hazmatsName);
+    var hazmatCount = @json($hazmatCount);
 </script>
 <script src="{{ asset('assets/js/ship.js') }}"></script>
 
@@ -424,6 +426,7 @@
 <script src="{{ asset('assets/vendor/charts/charts-bundle/chartjs.js') }}"></script>
 <script>
     $(document).ready(function() {
+       
         if (window.location.hash) {
             // Use the hash to find the section
             var target = $(window.location.hash);

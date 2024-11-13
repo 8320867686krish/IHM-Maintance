@@ -296,10 +296,9 @@ $(document).on('change', '.manufacturerselect', function () {
 });
 
 $(document).on('change', '.modelMakePartSelect', function () {
-    let optionValue = $(this).val();
+    let modelId = $(this).val();
     let id = $(this).attr('data-id');
-
-    getDocument(id);
+    getDocument(modelId,id);
 
 });
 $("#showTableTypeDiv").on("change", ".cloneTableTypeDiv select.table_type", function () {
@@ -310,7 +309,7 @@ $("#showTableTypeDiv").on("change", ".cloneTableTypeDiv select.table_type", func
     cloneTableTypeDiv.find(`.onboard${divValue}`).remove();
     cloneTableTypeDiv.find(`.notification${divValue}`).remove();
     cloneTableTypeDiv.find(`.noitemInstalled${divValue}`).remove();
-    cloneTableTypeDiv.find(`. removeItem${divValue}`).remove();
+    cloneTableTypeDiv.find(`.removeItem${divValue}`).remove();
 
     if (selectedValue === 'Contained' || selectedValue === 'PCHM') {
         let isOnboardDiv = "";
@@ -605,8 +604,8 @@ $(".deletePo").click(function (e) {
     e.preventDefault();
     var itemId = $(this).closest('.new-po-order').data('id');
     let confirmMsg = "Are you sure you want to delete this PO Record?";
-    deleteUrl = "{{ url('po-order/delete') }}/" + itemId;
-
+    deleteUrl = `${baseUrl}/po-order/delete/${itemId}`;
+    console.log(deleteUrl);
     confirmDeleteMethod(deleteUrl, confirmMsg, function (response) {
         $(this).closest('.new-po-order').remove();
 
@@ -716,8 +715,8 @@ function getModel(hazmetId, equipment, manufacturer) {
     });
 }
 
-function getDocument(hazmetId) {
-    let url = `${baseUrl}/document/${hazmetId}`;
+function getDocument(modelId,hazmetId) {
+    let url = `${baseUrl}/document/${modelId}`;
     fetchData(url, function (response) {
         let data = response.documentFile;
         if (data.document1['name'] != null) {

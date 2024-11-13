@@ -49,9 +49,8 @@ class PoOrderItemsHazmats extends Model
     ];
     public function setIsArrivedAttribute($value)
     {
-      
-        $this->attributes['isArrived'] = $value == 'yes' ? 1 : ($value == 'no' ? 0 : $value);
 
+        $this->attributes['isArrived'] = $value == 'yes' ? 1 : ($value == 'no' ? 0 : $value);
     }
     public function setIsReturnAttribute($value)
     {
@@ -69,10 +68,7 @@ class PoOrderItemsHazmats extends Model
     {
         $this->attributes['isRemove'] = $value == 'yes' ? 1 : ($value == 'no' ? 0 : $value);
     }
-    public function hazmat()
-    {
-        return $this->belongsTo(Hazmat::class);
-    }
+   
     public function getIsArrivedAttribute($value)
     {
         return $value === 1 ? 'yes' : 'no';
@@ -96,5 +92,9 @@ class PoOrderItemsHazmats extends Model
     public function getIsRemoveAttribute($value)
     {
         return $value == 1 ? 'yes' : 'no';
+    }
+    public function hazmat()
+    {
+        return $this->belongsTo(Hazmat::class);
     }
 }

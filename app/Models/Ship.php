@@ -39,4 +39,8 @@ class Ship extends Model
     return $this->belongsTo(ClientCompany::class,'client_id', 'id');
 
    }
+   public function pOOrderItems(){
+    return $this->hasMany(poOrderItem::class, 'ship_id', 'id');
+
+   }
 }
