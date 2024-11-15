@@ -37,11 +37,11 @@ class ClientCompanyController extends Controller
         $currentUserRoleLevel = Auth::user()->roles->first()->level;
         $hazmat_companies_id = $user->hazmat_companies_id;
         $created_by = $user->id;
-        $hazmetCompany = hazmatCompany::select('id','name')->get();
-     
+        $hazmetCompany = hazmatCompany::select('id', 'name')->get();
 
-        $hazmetCompany = hazmatCompany::select('id','name')->get();
-        return view('clientCompany.add', ['head_title' => 'Add', 'button' => 'Save', 'hazmat_companies_id' => $hazmat_companies_id, 'created_by' => $created_by,'currentUserRoleLevel'=> $currentUserRoleLevel,'hazmetCompany'=> $hazmetCompany]);
+
+        $hazmetCompany = hazmatCompany::select('id', 'name')->get();
+        return view('clientCompany.add', ['head_title' => 'Add', 'button' => 'Save', 'hazmat_companies_id' => $hazmat_companies_id, 'created_by' => $created_by, 'currentUserRoleLevel' => $currentUserRoleLevel, 'hazmetCompany' => $hazmetCompany]);
     }
     public function edit(string $id)
     {
@@ -50,11 +50,11 @@ class ClientCompanyController extends Controller
             $user =  Auth::user();
             $user_client_company = User::find($client_company['user_id']);
             $currentUserRoleLevel = Auth::user()->roles->first()->level;
-            $hazmetCompany = hazmatCompany::select('id','name')->get();
+            $hazmetCompany = hazmatCompany::select('id', 'name')->get();
 
             $hazmat_companies_id = $user->hazmat_companies_id;
             $created_by = $user->id;
-            return view('clientCompany.add', ['head_title' => 'Edit', 'button' => 'Update', 'clientCompany' => $client_company, 'hazmat_companies_id' => $hazmat_companies_id, 'created_by' => $created_by, 'user' => $user_client_company,'currentUserRoleLevel'=>$currentUserRoleLevel,'hazmetCompany' => $hazmetCompany]);
+            return view('clientCompany.add', ['head_title' => 'Edit', 'button' => 'Update', 'clientCompany' => $client_company, 'hazmat_companies_id' => $hazmat_companies_id, 'created_by' => $created_by, 'user' => $user_client_company, 'currentUserRoleLevel' => $currentUserRoleLevel, 'hazmetCompany' => $hazmetCompany]);
         } catch (\Throwable $th) {
             return back()->withError($th->getMessage())->withInput();
         }

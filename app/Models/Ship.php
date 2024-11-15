@@ -9,13 +9,13 @@ class Ship extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'ship_initials', 
-        'ship_name', 
+        'ship_initials',
+        'ship_name',
         'ship_type',
         'project_no',
         'imo_number',
         'client_id',
-        'client_user_id', 
+        'client_user_id',
         'user_id',
         'hazmat_companies_id',
         'ship_image',
@@ -28,19 +28,25 @@ class Ship extends Model
         'building_details',
         'x_breadth_depth',
         'gross_tonnage',
-        'vessel_previous_name'
+        'vessel_previous_name',
+        'ga_plan_pdf',
+        'ga_plan_image'
     ];
 
-   public function shipTeams(){
-    return $this->hasMany(ShipTeams::class, 'ship_id', 'id');
-
-   }
-   public function client(){
-    return $this->belongsTo(ClientCompany::class,'client_id', 'id');
-
-   }
-   public function pOOrderItems(){
-    return $this->hasMany(poOrderItem::class, 'ship_id', 'id');
-
-   }
+    public function shipTeams()
+    {
+        return $this->hasMany(ShipTeams::class, 'ship_id', 'id');
+    }
+    public function client()
+    {
+        return $this->belongsTo(ClientCompany::class, 'client_id', 'id');
+    }
+    public function pOOrderItems()
+    {
+        return $this->hasMany(poOrderItem::class, 'ship_id', 'id');
+    }
+    public function decks()
+    {
+        return $this->hasMany(Deck::class);
+    }
 }

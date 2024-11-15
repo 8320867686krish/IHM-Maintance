@@ -17,44 +17,14 @@
                         <div id="collapseinitial1" class="collapse show" aria-labelledby="headinginitial1" data-parent="#accordion" style="">
                             <div class="card-body">
                             IHM Part 1 data goes here.
+                            <a href="{{ url('ship/vscp/' . $ship_id) }}" class="btn btn-primary float-right mb-3">Vscp Details</a>
                             </div>
                         </div>
                     </div>
 
-                    <div class="card">
-                        <div class="card-header" id="headinginitial2">
-                            <h5 class="mb-0">
-                                <button class="btn btn-link collapsed  d-flex justify-content-between w-100" data-toggle="collapse" data-target="#collapseinitial2" aria-expanded="false" aria-controls="collapseinitial2">
-                                   IHM Part 2
-                                   <span class="fas fa-angle-down mr-3"></span>
+                 
 
-                                </button>
-                            </h5>
-                        </div>
-                        <div id="collapseinitial2" class="collapse" aria-labelledby="headinginitial2" data-parent="#accordion">
-                            <div class="card-body">
-                            IHM Part 2 data goes here.
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card">
-                        <div class="card-header" id="headinginitial3">
-                            <h5 class="mb-0">
-                                <button class="btn btn-link collapsed  d-flex justify-content-between w-100" data-toggle="collapse" data-target="#collapsinitial3" aria-expanded="false" aria-controls="collapsinitial3">
-                                    IHM Part 3
-                                    <span class="fas fa-angle-down mr-3"></span>
-
-                                </button>
-                            </h5>
-                        </div>
-                        <div id="collapsinitial3" class="collapse" aria-labelledby="headinginitial3" data-parent="#accordion">
-                            <div class="card-body">
-                            IHM Part 3 data goes here.
-                            </div>
-                        </div>
-                    </div>
-
+                  
 
                     
                     <div class="card">

@@ -140,9 +140,8 @@
     color: #495057;
 } */
 .card{
-    box-shadow: 0 0 .875rem 0 rgba(41, 48, 66, .05) !important;
+    box-shadow:0 0 .875rem 0 rgba(41, 48, 66, .05) !important;
     border-radius: 0.25rem;
-    border-color: transparent !important;
 }
 .table thead th, .table th {
     color: #6c757d;

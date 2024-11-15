@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\ShipController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\VscpController;
 use Illuminate\Support\Facades\Auth;
 
 /*
@@ -90,6 +91,12 @@ Route::middleware('auth')->group(function () {
             Route::get('ships/{id}/delete', 'destroy')->name('ships.delete')->middleware('can:ships.remove');
             Route::get('ship/view/{ship_id}', 'shipView')->name('ships.view');
             Route::post('ship/assignProject', 'assignShip')->name('ships.assign');
+        });
+        Route::controller(VscpController::class)->group(function () {
+            Route::get('ship/vscp/{ship_id}', 'index')->name('vscp')->middleware('can:ships');          
+            Route::post('upload/GaPlan','uploadGaPlan');
+            Route::get('ship/deleteDeck/{id}', 'deleteDeck')->name('deleteDeck');
+
         });
     });
 

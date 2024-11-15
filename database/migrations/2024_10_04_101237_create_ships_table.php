@@ -29,6 +29,9 @@ return new class extends Migration
             $table->string('x_breadth_depth')->nullable();
             $table->string('gross_tonnage')->nullable();
             $table->string('vessel_previous_name')->nullable('');
+            $table->string('ga_plan_pdf')->nullable('');
+            $table->string('ga_plan_image')->nullable('');
+
 
             $table->string('ship_image')->nullable();
             $table->unsignedBigInteger('client_id')->nullable();  // Same data type as hazmat_companies.id
