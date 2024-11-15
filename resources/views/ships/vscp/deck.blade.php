@@ -25,8 +25,8 @@
                     <span aria-hidden="true">×</span>
                 </a>
             </div>
-            <form method="post" id="deckEditForm">
-                <div class="modal-body">
+            <form method="post" id="deckEditForm" action="{{ route('updateDeckDetails') }}">
+            <div class="modal-body">
                     @csrf
                     <input type="hidden" name="id" id="deckEditFormId">
                     <div class="form-group">

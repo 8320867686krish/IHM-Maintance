@@ -14,11 +14,12 @@ use Illuminate\Support\Facades\Session;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Gate;
 use App\Traits\ImageUpload;
+use  App\Traits\ShipData;
 
 class ShipController extends Controller
 {
     //
-    use ImageUpload;
+    use ImageUpload,ShipData;
 
     public function index($client_id = null)
     {
@@ -197,7 +198,7 @@ class ShipController extends Controller
             $isBack = 1;
         }
         Session::forget('back');
-
+        $poSummeryGraph = $this->getShipData($ship_id);
         $user =  Auth::user();
 
         $experts =   User::whereHas('roles', function ($query) {
@@ -237,7 +238,7 @@ class ShipController extends Controller
             return $query->where('hazmat_companies_id', $user->hazmat_companies_id);
         })->get(['id', 'name']);
 
-        return view('ships.view', compact('experts', 'managers', 'isBack', 'ship', 'readonly', 'users', 'poOrders', 'ship_id','hazmatsName','hazmatCount'));
+        return view('ships.view', compact('experts', 'managers', 'isBack', 'ship', 'readonly', 'users', 'poOrders', 'ship_id','hazmatsName','hazmatCount','poSummeryGraph'));
     }
 
     public function assignShip(Request $request)

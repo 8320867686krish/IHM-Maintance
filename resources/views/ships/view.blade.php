@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('css')
+<link rel="stylesheet" type="text/css" href="{{ asset('assets/vendor/bootstrap-select/css/bootstrap-select.css') }}">
 
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/vendor/datatables/css/buttons.bootstrap4.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/vendor/datatables/css/select.bootstrap4.css') }}">
@@ -122,7 +123,7 @@
                         </div>
                         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo">
                             <div class="card-body">
-                                <canvas id="chartjs_bar_ship"></canvas>
+                                <canvas id="po_summery_graph"></canvas>
                             </div>
                         </div>
                     </div>
@@ -413,10 +414,14 @@
 @push('js')
 <script>
     var shipSave = "{{ route('ships.store') }}";
+var poSummeryGraph =@json($poSummeryGraph);
     var hazmatsName = @json($hazmatsName);
     var hazmatCount = @json($hazmatCount);
 </script>
 <script src="{{ asset('assets/js/ship.js') }}"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+
+<script src="{{ asset('assets/vendor/bootstrap-select/js/bootstrap-select.js') }}"></script>
 
 <script src="{{ asset('assets/vendor/jquery/jquery-3.3.1.min.js') }}"></script>
 <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>

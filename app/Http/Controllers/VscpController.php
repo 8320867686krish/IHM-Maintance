@@ -104,6 +104,26 @@ class VscpController extends Controller
             return response()->json(['error' => $th->getMessage()], 500);
         }
     }
+    public function updateDeckDetails(Request $request)
+    {
+        try {
+            $updated = Deck::where('id', $request->input('id'))->update(['name' => $request->input('name')]);
+            if ($updated) {
+                // Fetch the updated record
+                $deck = Deck::select('id', 'name')->find($request->input('id'));
+
+                if ($deck) {
+                    return response()->json(["isStatus" => true, "message" => "Deck updated successfully", 'deck' => $deck]);
+                } else {
+                    return response()->json(["isStatus" => false, "message" => "Deck not found"]);
+                }
+            } else {
+                return response()->json(["isStatus" => false, "message" => "Failed to update deck"]);
+            }
+        } catch (\Throwable $th) {
+            return response()->json(['error' => $th->getMessage()], 500);
+        }
+    }
     public function deleteDeck($id)
     {
         try {

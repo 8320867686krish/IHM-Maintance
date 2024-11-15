@@ -284,3 +284,38 @@
             $('.deckView').html(response.html);
         });
     });
+    $(document).on('click', '.deckImgEditBtn', function() {
+        let deckId = $(this).data('id');
+        let deckName = $(`#deckTitle_${deckId}`).text();
+        $("#deckEditFormId").val(deckId);
+        $("#name").val(deckName);
+        $("#deckEditFormModal").modal('show');
+    });
+    $('#deckEditForm').submit(function(event) {
+        event.preventDefault();
+
+        let formData = $(this).serialize();
+
+        let form = $(this);
+        let action = $(this).attr('action');
+        $.ajax({
+            type: 'POST',
+            url: action,
+            data: formData,
+            success: function(response) {
+                let deckData = response.deck;
+               
+                if (response.isStatus) {
+                    successMsg(response.message);
+                    $(`#deckTitle_${deckData.id}`).text(deckData.name);
+                    form.trigger('reset');
+                    $("#deckEditFormModal").modal('hide');
+                } else {
+                    errorMsg(response.message);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
+            }
+        });
+    });

@@ -96,7 +96,7 @@ Route::middleware('auth')->group(function () {
             Route::get('ship/vscp/{ship_id}', 'index')->name('vscp')->middleware('can:ships');          
             Route::post('upload/GaPlan','uploadGaPlan');
             Route::get('ship/deleteDeck/{id}', 'deleteDeck')->name('deleteDeck');
-
+            Route::post('ship/updateDeckDetails','updateDeckDetails')->name('updateDeckDetails');
         });
     });
 
