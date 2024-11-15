@@ -127,7 +127,7 @@ class VscpController extends Controller
             // Delete the deck
             $deck->delete();
 
-            $decks = Deck::where('project_id', $shipId)->orderByDesc('id')->get();
+            $decks = Deck::where('ship_id', $shipId)->orderByDesc('id')->get();
 
             $html = view('components.deck-list', compact('decks'))->render();
 

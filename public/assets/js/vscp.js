@@ -275,7 +275,7 @@
     $(document).on('click', '.deckImgDeleteBtn', function(event) {
         event.preventDefault();
         let deckId = $(this).data('id');
-        let deleteUrl = "{{ route('deleteDeckImg', ['id' => ':id']) }}".replace(':id', deckId);
+        let deleteUrl = `${baseUrl}/ship/deleteDeck/${deckId}`
         let confirmMsg = "Are you sure you want to delete this deck?";
 
         confirmDelete(deleteUrl, confirmMsg, function(response) {
