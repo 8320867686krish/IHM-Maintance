@@ -27,7 +27,7 @@ return new class extends Migration
             $table->string('position_left')->nullable();
             $table->string('position_top')->nullable();
             $table->string('recommendation')->nullable();
-            $table->string('initialsChekId')->nullable()->after('position_top');
+            $table->string('initialsChekId')->nullable();
 
             $table->timestamps();
         });
