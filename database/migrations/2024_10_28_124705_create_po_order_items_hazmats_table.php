@@ -68,6 +68,10 @@ return new class extends Migration
 
             $table->string('doc2')->nullable();
 
+            $table->string('removal_quantity',20)->nullable();
+            $table->string('removal_unit',20)->nullable();
+            $table->string('removal_remarks')->nullable();
+
 
 
             $table->timestamps();

@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Check;
+use App\Models\CheckHazmat;
 use App\Models\Deck;
+use App\Models\Hazmat;
 use App\Models\Ship;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
@@ -66,7 +69,6 @@ class VscpController extends Controller
 
                 $croppedImageName = Str::slug($text) . "_{$width}_{$height}_" . time() . ".png";
 
-                // Reload the main image resource for each crop to avoid issues with multiple crops
                 $image = imagecreatefrompng($imagePath . $mainFileName);
                 if (!$image) {
                     throw new \Exception("Failed to create image resource from {$mainFileName}");
@@ -109,7 +111,6 @@ class VscpController extends Controller
         try {
             $updated = Deck::where('id', $request->input('id'))->update(['name' => $request->input('name')]);
             if ($updated) {
-                // Fetch the updated record
                 $deck = Deck::select('id', 'name')->find($request->input('id'));
 
                 if ($deck) {
@@ -130,30 +131,91 @@ class VscpController extends Controller
             // Find the deck by ID
             $deck = Deck::find($id);
             $shipId = $deck->ship_id;
-
-            // Check if the deck exists
             if (!$deck) {
                 return response()->json(["isStatus" => false, 'error' => 'Deck not found'], 404);
             }
-
-            // Construct the image path
             $imagePath = public_path(env('IMAGE_COMMON_PATH', "uploads/shipsVscp/") . $shipId . "/") . $deck->getOriginal('image');
-            // Check if the image file exists before attempting to delete
 
             if (file_exists($imagePath)) {
                 unlink($imagePath);
             }
-
-            // Delete the deck
             $deck->delete();
-
             $decks = Deck::where('ship_id', $shipId)->orderByDesc('id')->get();
-
             $html = view('components.deck-list', compact('decks'))->render();
 
             return response()->json(["isStatus" => true, "message" => "Deck deleted successfully", 'html' => $html]);
         } catch (\Throwable $th) {
             return response()->json(["isStatus" => false, 'error' => $th->getMessage()], 500);
         }
+    }
+    public function check($deck_id){
+        $deck = Deck::with('checks')->find($deck_id);
+        $hazmats = Hazmat::get(['id', 'name', 'table_type']);
+        return view('ships.vscp.check.check', ['deck' => $deck, 'hazmats' => $hazmats]);
+    }
+    public function checkSave(Request $request){
+        $inputData = $request->input();
+        $id = $request->input('id');
+        
+        $data = Check::updateOrCreate(['id' => $id], $inputData);
+        $updatedData = $data->getAttributes();
+        $saveid = $updatedData['id'];
+        $name = $updatedData['name'];
+      
+        if(@$inputData['check_hazmats']){
+            foreach ($inputData['check_hazmats'] as $key => $value){
+                $value['check_id'] = $saveid;
+                $value['ship_id'] = $inputData['ship_id'];
+                $value['deck_id'] = $inputData['deck_id'];
+                CheckHazmat::updateOrCreate(['id' => $key], $value);
+
+            }
+        }
+        if (!empty($inputData['deck_id'])) {
+            $checks = Check::where('deck_id', $inputData['deck_id'])->get();
+
+            //$project = Deck::with('checks')->find($inputData['deck_id']);
+        //    $trtd = view('projects.allcheckList', compact('project'))->render();
+
+            $htmllist = view('components.check-list', compact('checks'))->render();
+
+        }
+
+        $message = empty($id) ? "Check added successfully" : "Check updated successfully";
+
+        return response()->json(['isStatus' => true, 'message' => $message, "id" => $data->id, 'name' => $name, 'htmllist' => $htmllist ?? " ", "trtd" => $trtd ?? " "]);
+
+    }
+    public function deleteCheck($id)
+    {
+        try {
+            $check = Check::find($id);
+            if (!$check) {
+                return response()->json(["status" => false, 'message' => 'Check not found'], 404);
+            }
+            $deckId = $check->deck_id;
+            $check->delete();
+            $checks = Check::where('deck_id', $deckId)->get();
+            $htmldot = view('ships.vscp.check.dot', compact('checks'))->render();
+            $htmllist = view('components.check-list', compact('checks'))->render();
+
+            return response()->json([
+                "isStatus" => true,
+                "message" => "Check deleted successfully",
+                'htmldot' => $htmldot,
+                'htmllist' => $htmllist
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json(["isStatus" => true, 'error' => $th->getMessage()], 500);
+        }
+    }
+
+    public function checkHazmat($check_id){
+        $check = Check::with('hazmats')->find($check_id);
+        $checkhazmat = $check->hazmats ?? [];
+        $hazmats = Hazmat::get(['id', 'name', 'table_type']);
+        $htmllist = view('ships.vscp.check.checkAddModal', compact('checkhazmat','hazmats'))->render();
+
+        return response()->json(['html' => $htmllist,"check" => $check]);
     }
 }

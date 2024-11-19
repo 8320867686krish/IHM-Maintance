@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CheckHazmat;
 use App\Models\ClientCompany;
 use App\Models\Hazmat;
 use App\Models\poOrder;
@@ -60,6 +61,8 @@ class ShipController extends Controller
         $user =  Auth::user();
         $hazmat_companies_id  = $user['hazmat_companies_id'];
         $clientsQuery = ClientCompany::query();
+
+
 
         $clientsQuery->when($role_level == 2, function ($query) use ($user) {
             return $query->where('hazmat_companies_id', $user['hazmat_companies_id']);
@@ -217,8 +220,11 @@ class ShipController extends Controller
         $managers =  User::whereHas('roles', function ($query) {
             $query->where('level', 3)->orderBy('level', 'asc');
         })->where('hazmat_companies_id', $user->hazmat_companies_id)->get(['id', 'name']);
+      
         $ship = Ship::with(['shipTeams', 'client'])->find($ship_id);
+       
         $poOrders = poOrder::withCount(['poOrderItems'])->where('ship_id', $ship_id)->get();
+       
         $users = $ship->shipTeams->pluck('user_id')->toArray();
         if (!Gate::allows('ships.add')) {
             $readonly = "readonly";
@@ -238,7 +244,8 @@ class ShipController extends Controller
             return $query->where('hazmat_companies_id', $user->hazmat_companies_id);
         })->get(['id', 'name']);
 
-        return view('ships.view', compact('experts', 'managers', 'isBack', 'ship', 'readonly', 'users', 'poOrders', 'ship_id','hazmatsName','hazmatCount','poSummeryGraph'));
+        $checkHazmatIHMPart = CheckHazmat::with('hazmat')->where('ship_id',$ship_id)->get();
+        return view('ships.view', compact('experts', 'managers', 'isBack', 'ship', 'readonly', 'users', 'poOrders', 'ship_id','hazmatsName','hazmatCount','poSummeryGraph','checkHazmatIHMPart'));
     }
 
     public function assignShip(Request $request)

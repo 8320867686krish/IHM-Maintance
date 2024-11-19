@@ -91,12 +91,19 @@ Route::middleware('auth')->group(function () {
             Route::get('ships/{id}/delete', 'destroy')->name('ships.delete')->middleware('can:ships.remove');
             Route::get('ship/view/{ship_id}', 'shipView')->name('ships.view');
             Route::post('ship/assignProject', 'assignShip')->name('ships.assign');
+
         });
         Route::controller(VscpController::class)->group(function () {
             Route::get('ship/vscp/{ship_id}', 'index')->name('vscp')->middleware('can:ships');          
             Route::post('upload/GaPlan','uploadGaPlan');
             Route::get('ship/deleteDeck/{id}', 'deleteDeck')->name('deleteDeck');
             Route::post('ship/updateDeckDetails','updateDeckDetails')->name('updateDeckDetails');
+            Route::get('ship/deck/{id}/check', 'check')->name('deck.check');
+            Route::post('check/save','checkSave')->name('check.save');
+            Route::post('ship/check/{id}', 'deleteCheck')->name('check.delete');
+            Route::get('check/{id}/hazmat', 'checkHazmat')->name('check.hazmat');
+
+
         });
     });
 

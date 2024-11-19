@@ -129,7 +129,10 @@ function confirmDelete(deleteUrl, confirmMsg, successCallback, errorCallback) {
     });
 }
 
-function confirmDeleteWithElseIf(deleteUrl, confirmMsg, successCallback, errorCallback) {
+function confirmDeleteWithElseIf(deleteUrl, confirmMsg, method=null,successCallback, errorCallback) {
+    if(method == null){
+        method = 'GET';
+    }
     swal({
         title: "Are you sure?",
         text: confirmMsg,
@@ -144,7 +147,10 @@ function confirmDeleteWithElseIf(deleteUrl, confirmMsg, successCallback, errorCa
         if (isConfirm) {
             $.ajax({
                 url: deleteUrl,
-                method: 'GET',
+                method: method,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') // Add CSRF token
+                },
                 success: function (response) {
                     if (response.isStatus) {
                         swal("Deleted!", `${response.message}`, "success");

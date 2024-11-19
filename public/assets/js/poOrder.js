@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    $("#showTableTypeDiv").on("click", ".cloneTableTypeDiv .sendmail", function(e) {
+    $("#showTableTypeDiv").on("click", ".cloneTableTypeDiv .sendmail", function (e) {
         e.preventDefault();
         var hazmatId = $(this).attr('data-id');
         var text = $(`#tableTypeLable${hazmatId}`).text();
@@ -7,14 +7,14 @@ $(document).ready(function () {
         var po_order_id = $("#po_order_id").val();
         var po_no = $("#po_no").val();
         $("#order_id").val(po_order_id);
-        $("#email_body").val(text+' is '+hazmat_type)
+        $("#email_body").val(text + ' is ' + hazmat_type)
         $("#shipId").val($("#ship_id").val());
         $("#email_subject").val(po_no);
         $("#hazmat_id").val(hazmatId);
         $('#relevantModal').modal('show');
 
     });
-    $("#sendEmailForm").on('submit',function(e){
+    $("#sendEmailForm").on('submit', function (e) {
         e.preventDefault();
         let formData = new FormData(this);
         $.ajax({
@@ -47,7 +47,7 @@ $(document).ready(function () {
             },
         });
     });
-    
+
     $("#checkHazmatAddForm").on('submit', function (e) {
 
         e.preventDefault();
@@ -211,13 +211,22 @@ $('#suspected_hazmat').on('changed.bs.select', function (e, clickedIndex, isSele
         let tableTypeData = selectedOption.data('table');
         let tableType = tableTypeData.split('-');
         if (!isSelected) {
-            $(`#cloneTableTypeDiv${selectedValue}`).remove();
+            $(`#main${selectedValue}`).remove();
         } else {
             getEquipment(selectedValue);
-            var div = `<input type="hidden" name="hazmats[${selectedValue}][id]" id="po_iteam_hazmat_id" value="0">
-<div class="col-12 col-md-12 col-lg-12 cloneTableTypeDiv mb-1 card" id="cloneTableTypeDiv${selectedValue}">
-                <label for="table_type" id="tableTypeLable${selectedValue}" class="mr-5 mt-3 tableTypeLable card-header">${selectedText}</label>
-                <div class="row card-body">
+            var div = `<input type="hidden" name="hazmats[${selectedValue}][id]" id="po_iteam_hazmat_id" value="0">   
+            <div class="card" id="main${selectedValue}">
+                                                <div class="card-header" id="heading${selectedValue}">
+                                                    <h5 class="mb-0">
+                                                        <button class="btn btn-link collapsed  d-flex justify-content-between w-100" data-toggle="collapse" data-target="#collapse${selectedValue}" aria-expanded="false" type="button" aria-controls="collapse${selectedValue}">
+                                                        ${selectedText}
+                                                            <span class="fas fa-angle-down mr-3"></span></button>
+                                                    </h5>
+                                                </div>
+                                                    <div id="collapse${selectedValue}" class="collapse show" aria-labelledby="heading${selectedValue}" data-parent="#accordion" style="">
+                                                    <div class="card-body">
+<div class="col-12 col-md-12 col-lg-12 cloneTableTypeDiv mb-1" id="cloneTableTypeDiv${selectedValue}">
+                <div class="row">
                     <div class="col-4 table_typecol mb-2">
                         <div class="form-group">
                             <select class="form-control table_type tableType${selectedValue}" id="table_type_${selectedValue}" name="hazmats[${selectedValue}][hazmat_type]"  data-findTable="${tableType[0]}" data-divValue="${selectedValue}">
@@ -276,7 +285,9 @@ $('#suspected_hazmat').on('changed.bs.select', function (e, clickedIndex, isSele
                       </div>
                     </div>
             </div>
-            
+            </div>
+            </div>
+            </div>
             `;
         }
         $('#showTableTypeDiv').append(div);
@@ -298,7 +309,7 @@ $(document).on('change', '.manufacturerselect', function () {
 $(document).on('change', '.modelMakePartSelect', function () {
     let modelId = $(this).val();
     let id = $(this).attr('data-id');
-    getDocument(modelId,id);
+    getDocument(modelId, id);
 
 });
 $("#showTableTypeDiv").on("change", ".cloneTableTypeDiv select.table_type", function () {
@@ -313,8 +324,8 @@ $("#showTableTypeDiv").on("change", ".cloneTableTypeDiv select.table_type", func
 
     if (selectedValue === 'Contained' || selectedValue === 'PCHM') {
         let isOnboardDiv = "";
-        if(tabletype == 'A'){
-        isOnboardDiv += `<div class="row card-body  notification${divValue}">
+        if (tabletype == 'A') {
+            isOnboardDiv += `<div class="row   notification${divValue}">
         <div class="col-11">
                         <div class="form-group">
                                        <div class="alert alert-danger" role="alert">Its not allowed on Board.!</div>
@@ -324,7 +335,7 @@ $("#showTableTypeDiv").on("change", ".cloneTableTypeDiv select.table_type", func
             <div class="col-1"><div class="form-group"><button class="btn btn-primary float-right mb-1 sendmail"  type="button" data-id=${divValue}>Send Email</button></div></div>
          </div>`
         }
-              isOnboardDiv += `  <div class="col-12 col-md-12 col-lg-12  mb-1  onboard${divValue}">
+        isOnboardDiv += `  <div class="col-12 col-md-12 col-lg-12  mb-1  onboard${divValue}">
                 <h5>Item arrived on board?</h5>
                <label class="custom-control custom-radio custom-control-inline">
                  <input type="radio" id="isArrived${divValue}" name="hazmats[${divValue}][isArrived]" value="yes" class="custom-control-input isArrivedChoice" data-tab="${tabletype}" data-isArrived="${divValue}"><span class="custom-control-label">Yes</span>
@@ -335,7 +346,7 @@ $("#showTableTypeDiv").on("change", ".cloneTableTypeDiv select.table_type", func
                
             </div>
 
-             <div class="col-12 col-md-12 col-lg-12  mb-1  removeItem${divValue}">
+             <div class="col-12 col-md-12 col-lg-12  mb-1  removeItem${divValue}" style="display:none">
                 <h5>remove the item?</h5>
                <label class="custom-control custom-radio custom-control-inline">
                  <input type="radio" id="isRemove${divValue}" name="hazmats[${divValue}][isRemove]" value="yes" class="custom-control-input isRemoveChoice" data-isRemove="${divValue}"><span class="custom-control-label">Yes</span>
@@ -393,6 +404,24 @@ function removeItemDetailsfun(divValue) {
                    <input type="text" name="hazmats[${divValue}][po_no]" id="po_no${divValue}" class="form-control" placeHolder="PO No">
                    </div>
    </div>
+
+    <div class="col-3 mb-2">
+                   <div class="form-group">
+                   <input type="text" name="hazmats[${divValue}][removal_quantity]" id="removal_quantity${divValue}" class="form-control" placeHolder="Quantty">
+                   </div>
+   </div>
+
+     <div class="col-3 mb-2">
+                   <div class="form-group">
+                   <input type="text" name="hazmats[${divValue}][removal_unit]" id="removal_unit${divValue}" class="form-control" placeHolder="Unit">
+                   </div>
+   </div>
+
+   <div class="col-6 mb-2">
+                   <div class="form-group">
+                   <input type="text" name="hazmats[${divValue}][removal_remarks]" id="removal_remarks${divValue}" class="form-control" placeHolder="Remarks">
+                   </div>
+   </div>
   
 </div>`
     return removeItemDetails;
@@ -414,20 +443,23 @@ $("#showTableTypeDiv").on("change", ".cloneTableTypeDiv input[type=radio].isArri
 
     const cloneTableTypeDiv = $(this).closest(".cloneTableTypeDiv");
     cloneTableTypeDiv.find(`.returnItem${divValue}`).remove();
+    $(`#isRemove${divValue}`).prop('checked', false);
 
     if ($(this).val() === 'no') {
         cloneTableTypeDiv.find(`.returnItemDetails${divValue}`).remove();
+        cloneTableTypeDiv.find(`.removeItem${divValue}`).hide();
+        cloneTableTypeDiv.find(`.removeItemDetails${divValue}`).remove();
     }
     cloneTableTypeDiv.find(`.ihmUpdated${divValue}`).remove();
-
     cloneTableTypeDiv.find(`.ihmItemDetails${divValue}`).remove();
     cloneTableTypeDiv.find(`.noitemInstalled${divValue}`).remove();
-
     cloneTableTypeDiv.find(`.itemInstall${divValue}`).remove();
     cloneTableTypeDiv.find(`.arrivedItemDetails${divValue}`).remove();
 
     let isReturnDiv = "";
     if ($(this).val() === 'yes') {
+
+        cloneTableTypeDiv.find(`.removeItem${divValue}`).show();
         isReturnDiv += ` <div class="row col-12 col-md-12 col-lg-12  mb-1   arrivedItemDetails${divValue}">
         <div class="col-4">
                        <div class="form-group mb-1">
@@ -570,13 +602,13 @@ $("#showTableTypeDiv").on("change", ".cloneTableTypeDiv input[type=checkbox].isI
                        <input type="text" name="hazmats[${divValue}][ihm_machinery_equipment]" id="ihm_machinery_equipment${divValue}" class="form-control" placeHolder="Machinary/Equipment">
                        </div>
        </div>
-
+     
        <div class="col-4 mb-2">
                        <div class="form-group">
                        <input type="text" name="hazmats[${divValue}][ihm_parts]" id="ihm_parts${divValue}" class="form-control" placeHolder="Parts where used">
                        </div>
        </div>
- ${tableValue === 'B' ? tableBFiled(divValue) : `<div class="col-4 mb-2">
+        ${tableValue === 'B' ? tableBFiled(divValue) : `<div class="col-4 mb-2">
                        <div class="form-group">
                        <input type="text" name="hazmats[${divValue}][ihm_qty]" id="ihm_qty${divValue}" class="form-control" placeHolder="Quantity">
                        </div>
@@ -632,18 +664,18 @@ function tableBFiled(divValue) {
        </div>
        <div class="col-3 mb-2">
                        <div class="form-group">
-                       <input type="text" name="hazmats[${divValue}][ihm_qty]" id="ihm_qty${divValue}" class="form-control" placeHolder="Next Quantity">
+                       <input type="text" name="hazmats[${divValue}][ihm_qty]" id="ihm_qty${divValue}" class="form-control" placeHolder="Current Quantity">
                        </div>
        </div>
 
        <div class="col-3 mb-2">
                        <div class="form-group">
-                       <input type="text" name="hazmats[${divValue}][ihm_unit]" id="ihm_unit${divValue}" class="form-control" placeHolder="Unit">
+                       <input type="text" name="hazmats[${divValue}][ihm_unit]" id="ihm_unit${divValue}" class="form-control" placeHolder="Current Unit">
                        </div>
        </div>
           <div class="col-3 mb-2">
                        <div class="form-group">
-                       <input type="date" name="hazmats[${divValue}][ihm_date]" id="ihm_date${divValue}" class="form-control" placeHolder="Next Date">
+                       <input type="date" name="hazmats[${divValue}][ihm_date]" id="ihm_date${divValue}" class="form-control" placeHolder="Current Date">
                        </div>
        </div>
        
@@ -715,7 +747,7 @@ function getModel(hazmetId, equipment, manufacturer) {
     });
 }
 
-function getDocument(modelId,hazmetId) {
+function getDocument(modelId, hazmetId) {
     let url = `${baseUrl}/document/${modelId}`;
     fetchData(url, function (response) {
         let data = response.documentFile;

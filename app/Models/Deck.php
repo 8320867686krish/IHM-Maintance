@@ -13,4 +13,8 @@ class Deck extends Model
         'name',
         'image'
     ];
+    public function checks()
+    {
+        return $this->hasMany(Check::class, 'deck_id', 'id');
+    }
 }

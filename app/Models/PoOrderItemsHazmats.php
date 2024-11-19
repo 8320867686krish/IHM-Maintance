@@ -46,6 +46,9 @@ class PoOrderItemsHazmats extends Model
         'hazmet_equipment',
         'doc1',
         'doc2',
+        'removal_quantity',
+        'removal_unit',
+        'removal_remarks'
     ];
     public function setIsArrivedAttribute($value)
     {

@@ -5,7 +5,7 @@
             <h3 class="card-title text-center" id="deckTitle_{{ $deck->id }}">{{ $deck->name }}</h3>
 
             <div class="deck-img">
-                <a href="#">
+                <a href="{{ url('ship/deck/' . $deck['id'] . '/check') }}">
                     <img class="img-fluid px-3" src="{{ asset('uploads/shipsVscp/' . $deck->ship_id . '/' . $deck->image) }}" alt="{{ $deck->name }}">
                 </a>
             </div>
