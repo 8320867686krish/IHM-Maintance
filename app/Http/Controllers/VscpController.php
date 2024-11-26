@@ -20,7 +20,7 @@ class VscpController extends Controller
         $checks = Check::with('hazmats.hazmat')->where('ship_id',$ship_id)->get();
  
 
-        return view('ships.vscp.index', compact('ship', 'ship_id','checks','hazmats'));
+        return view('ships.vscp.index', compact('ship', 'ship_id','checks'));
     }
     public function uploadGaPlan(Request $request)
     {
