@@ -315,7 +315,7 @@
                                 beginAtZero: true,   // Start the Y-axis from 0
                                 stepSize: stepSize,         // Control the step size
                                 min: 0,              // Minimum value of Y-axis
-                                max: maxQty + stepSize, // Set max value to the maxQty + step size buffer
+                                max: maxQty, // Set max value to the maxQty + step size buffer
                                 fontSize: 14,
                                 fontFamily: 'Circular Std Book',
                                 fontColor: '#71748d'

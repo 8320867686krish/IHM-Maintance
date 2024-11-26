@@ -43,7 +43,7 @@
     <aside class="page-aside" id="page-aside">
         <div class="aside-content">
             <div class="aside-header">
-                <span class="title" style="font-size: 20px;">Vscp Details</span>
+                <span class="title" style="font-size: 20px;">Initial IHM Details</span>
                 <p class="description">{{ $project->ship_name ?? '' }}</p>
                 {{-- <button class="navbar-toggle" type="button"><span class="icon" style="cursor: pointer; font-size: 16px !important;"><i class="fas fa-bars" id="pageNavbarToggleBtn"></i></span></button> --}}
             </div>

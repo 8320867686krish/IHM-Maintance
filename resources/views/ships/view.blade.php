@@ -383,8 +383,9 @@
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
             <div class="page-header">
                 <h5 class="section-title">IHM Initial Reords</h5>
-                <a href="{{ url('ship/vscp/' . $ship_id) }}" class="btn btn-primary float-right mb-3 ">Vscp Details</a>
-
+                @can(ships.edit)
+                <a href="{{ url('ship/vscp/' . $ship_id) }}" class="btn btn-primary float-right mb-3 ">Edit Initial IHM</a>
+                @endcan
             </div>
         </div>
     </div>
