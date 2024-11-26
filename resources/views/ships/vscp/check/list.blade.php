@@ -11,7 +11,7 @@
                  <th>Hazmat</th>
                  <th>IHM Part</th>
                  <th colspan="2">Approximate Quantity</th>
-                 <th>Remrks</th>
+                 <th>Remarks</th>
                  @can('ships.edit')
                  <th width="10%">Action</th>
                  @endcan
