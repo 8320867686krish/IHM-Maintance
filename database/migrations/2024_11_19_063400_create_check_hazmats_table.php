@@ -31,6 +31,7 @@ return new class extends Migration
             $table->string('remarks')->nullable();
             $table->string('ihm_part_table',10)->nullable();
             $table->string('parts_where_used')->nullable();
+            $table->string('hazmat_type',10)->nullable();
             $table->timestamps();
         });
     }

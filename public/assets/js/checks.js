@@ -242,15 +242,15 @@ $(document).ready(function () {
     $(document).on("click", ".dot", function () {
         openAddModalBox(this);
     });
-   
+
     $(document).on("click", "#editCheckbtn", function (event) {
         event.stopPropagation(); // Prevents the click event from bubbling up to the parent .dot element
         let checkId = $(this).attr('data-id');
-        let data  = $(this).attr('data-check');
+        let data = $(this).attr('data-check');
         let allCheck = $(this).attr('data-all');
         $("#allCheck").val(allCheck);
-       
-        if( data){
+
+        if (data) {
             let parseData = JSON.parse(data);
             $("#position_left").val(parseData.position_left);
             $("#position_top").val(parseData.position_top)
@@ -258,10 +258,10 @@ $(document).ready(function () {
             $("#check_id").val(parseData.id);
             $("#deck_id").val(parseData.deck_id);
         }
-      
+
         detailOfHazmats(checkId);
-     //   let dotElement = $(`#${checkDataId}`)[0];
-      //  openAddModalBox(dotElement);
+        //   let dotElement = $(`#${checkDataId}`)[0];
+        //  openAddModalBox(dotElement);
     });
 
     $(document).on("click", "#checkDataAddSubmitBtn", function () {
@@ -271,12 +271,12 @@ $(document).ready(function () {
         let position_top = parseFloat($(".dot.selected").css('top')) * (100 / widthPercent);
         if (!isNaN(position_left)) {
             $("#position_left").val(position_left);
-        } 
+        }
         if (!isNaN(position_top)) {
             $("#position_top").val(position_top);
         }
         if (!checkId) {
-            checkId = 0; 
+            checkId = 0;
             $(".dot.selected").attr('data-checkId', checkId);
         }
         let checkFormData = new FormData($("#checkDataAddForm")[0]);
@@ -295,7 +295,6 @@ $(document).ready(function () {
             success: function (response) {
                 if (response.isStatus) {
                     $(".dot.selected").attr('data-checkId', response.id);
-                    $("#check_id").val(response.id);
                     var checkData = {
                         id: response.id,
                         name: response.name,
@@ -306,7 +305,7 @@ $(document).ready(function () {
                         component: $("#component").val(),
                         remarks: $("#remarks").val(),
                         recommendation: $("#recommendation").val(),
-                        allCheck : $("#allCheck").val()
+                        allCheck: $("#allCheck").val()
                     };
                     let checkDataJson = JSON.stringify(checkData);
                     $(".dot.selected").attr('data-check', checkDataJson);
@@ -315,6 +314,8 @@ $(document).ready(function () {
                     successMsg(response.message);
                     $("#checkDataAddForm").trigger('reset');
                     $("#id").val("");
+                    $("#check_id").val("");
+
                     $('#suspected_hazmat option').prop("selected", false).trigger(
                         'change');
                     $("#showTableHazmat").empty();
@@ -455,6 +456,7 @@ function creteFiledforI1(id, value) {
         <div class="form-group">
                             <label>Materials(classification in appendix 1)</label>
                             <select  name="check_hazmats[${id}][hazmat_id]" id="hazmat_id[${id}]" class="form-control">`;
+    item += '<option value="">Select Hazmat</option>'
     hazmatOptions.forEach(option => {
         item += `<option value="${option.id}">${option.name}</option>`;
     });
@@ -475,7 +477,7 @@ function creteFiledforI1(id, value) {
     item += `<div class="col-4 mb-2">
         <div class="form-group">
                             <label>Quantity</label>
-                            <input type="text" name="check_hazmats[${id}][qty]" id="qty[${id}]" class="form-control">
+                            <input type="number" name="check_hazmats[${id}][qty]" id="qty[${id}]" class="form-control">
                             </div>
     </div>
     <div class="col-4 mb-2">
@@ -484,10 +486,22 @@ function creteFiledforI1(id, value) {
                             <input type="text" name="check_hazmats[${id}][unit]" id="unit[${id}]" class="form-control">
                             </div>
     </div>
-     <div class="col-12 mb-2">
+    
+     <div class="col-9 mb-2">
         <div class="form-group">
                             <label>Remarks</label>
                             <input type="text" name="check_hazmats[${id}][remarks]" id="remarks[${id}]" class="form-control">
+                            </div>
+    </div>
+
+    <div class="col-3 mb-2">
+        <div class="form-group">
+                            <label>Type</label>
+                            <select  name="check_hazmats[${id}][hazmat_type]" id="hazmat_type[${id}]" class="form-control">
+                            <option value="">Select Type</option>
+                             <option value="Contained">Contained</option>
+                              <option value="PCHM">PCHM</option>
+                            </select>
                             </div>
     </div>
     

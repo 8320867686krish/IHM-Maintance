@@ -20,7 +20,8 @@ class CheckHazmat extends Model
         'ihm_part_table',
         'ship_id',
         'deck_id',
-        'parts_where_used'
+        'parts_where_used',
+        'hazmat_type'
     ];
     public function hazmat()
     {
