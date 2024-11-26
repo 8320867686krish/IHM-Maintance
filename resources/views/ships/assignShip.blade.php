@@ -64,7 +64,7 @@
                                 </div>
                                
                                 @can('ships.edit')
-                                    <div class="col-12">
+                                    <div class="col-12 mb-4">
                                         <div class="form-group">
                                             <button class="btn btn-primary float-right" type="submit">Save</button>
                                         </div>

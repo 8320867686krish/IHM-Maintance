@@ -25,7 +25,7 @@
                     @endcan
                 </h4>
                 <div class="card-body">
-                    <div class="table-responsive">
+                    <div>
                         <table class="table table-striped table-bordered first">
                             <thead>
                                 <tr>

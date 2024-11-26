@@ -17,8 +17,10 @@ class VscpController extends Controller
     public function index($ship_id)
     {
         $ship = Ship::with('decks')->find($ship_id);
+        $checks = Check::with('hazmats.hazmat')->where('ship_id',$ship_id)->get();
+ 
 
-        return view('ships.vscp.index', compact('ship', 'ship_id'));
+        return view('ships.vscp.index', compact('ship', 'ship_id','checks','hazmats'));
     }
     public function uploadGaPlan(Request $request)
     {
@@ -156,8 +158,17 @@ class VscpController extends Controller
     public function checkSave(Request $request){
         $inputData = $request->input();
         $id = $request->input('id');
-        
-        $data = Check::updateOrCreate(['id' => $id], $inputData);
+        $existingData = $id ? Check::find($id)->toArray() : [];
+
+// Filter out null or empty values
+$filteredInputData = array_filter($inputData, function ($value) {
+    return $value !== null || $value !== 'NaN'; // You can modify this to include more conditions if needed
+});
+
+// Merge with existing data to preserve non-updated fields
+$finalData = array_merge($existingData, $filteredInputData);
+
+        $data = Check::updateOrCreate(['id' => $id], $finalData);
         $updatedData = $data->getAttributes();
         $saveid = $updatedData['id'];
         $name = $updatedData['name'];
@@ -172,12 +183,18 @@ class VscpController extends Controller
             }
         }
         if (!empty($inputData['deck_id'])) {
-            $checks = Check::where('deck_id', $inputData['deck_id'])->get();
+            if($inputData['allCheck'] == 1){
+                $checks = Check::with('hazmats.hazmat')->where('ship_id',$inputData['ship_id'])->get();
+                $trtd = view('components.all-check-list', compact('checks'))->render();
+            }else{
+                $checks = Check::where('deck_id', $inputData['deck_id'])->get();
+                $htmllist = view('components.check-list', compact('checks'))->render();
+            }
 
-            //$project = Deck::with('checks')->find($inputData['deck_id']);
-        //    $trtd = view('projects.allcheckList', compact('project'))->render();
-
-            $htmllist = view('components.check-list', compact('checks'))->render();
+         
+          
+            
+          
 
         }
 
@@ -214,7 +231,7 @@ class VscpController extends Controller
         $check = Check::with('hazmats')->find($check_id);
         $checkhazmat = $check->hazmats ?? [];
         $hazmats = Hazmat::get(['id', 'name', 'table_type']);
-        $htmllist = view('ships.vscp.check.checkAddModal', compact('checkhazmat','hazmats'))->render();
+        $htmllist = view('components.check-add-model', compact('checkhazmat','hazmats'))->render();
 
         return response()->json(['html' => $htmllist,"check" => $check]);
     }

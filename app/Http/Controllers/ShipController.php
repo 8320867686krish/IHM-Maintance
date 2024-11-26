@@ -196,6 +196,10 @@ class ShipController extends Controller
     }
     public function shipView($ship_id)
     {
+        $hazmatSummeryName = Hazmat::withSum(['checkHazmats as qty_sum' => function ($query) use ($ship_id) {
+            $query->where('ship_id', $ship_id); // Filter by ship_id
+        }], 'qty')->get()->toArray();
+       
         $isBack = 0;
         if (session('back') == 1) {
             $isBack = 1;
@@ -210,12 +214,7 @@ class ShipController extends Controller
 
         $shipId = $ship_id; // Set the ship ID you're filtering by
 
-        $hazmats = Hazmat::withCount(['poOrderItemsHazmats' => function ($query) use ($shipId) {
-            $query->where('ship_id', $shipId); // Filter by ship_id
-            $query->where('hazmat_type', 'Contained');
-        }])->get();
-        $hazmatsName =  $hazmats->pluck('short_name')->toArray();
-        $hazmatCount = $hazmats->pluck('po_order_items_hazmats_count')->toArray();
+   
       
         $managers =  User::whereHas('roles', function ($query) {
             $query->where('level', 3)->orderBy('level', 'asc');
@@ -245,7 +244,7 @@ class ShipController extends Controller
         })->get(['id', 'name']);
 
         $checkHazmatIHMPart = CheckHazmat::with('hazmat')->where('ship_id',$ship_id)->get();
-        return view('ships.view', compact('experts', 'managers', 'isBack', 'ship', 'readonly', 'users', 'poOrders', 'ship_id','hazmatsName','hazmatCount','poSummeryGraph','checkHazmatIHMPart'));
+        return view('ships.view', compact('experts', 'managers', 'isBack', 'ship', 'readonly', 'users', 'poOrders', 'ship_id','poSummeryGraph','checkHazmatIHMPart','hazmatSummeryName'));
     }
 
     public function assignShip(Request $request)

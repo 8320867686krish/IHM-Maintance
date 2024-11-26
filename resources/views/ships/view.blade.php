@@ -379,7 +379,15 @@
 
 
     <div class="main-content container-fluid p-0" id="ihm_intial" style="display: none;">
+    <div class="row card-body">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <div class="page-header">
+                <h5 class="section-title">IHM Initial Reords</h5>
+                <a href="{{ url('ship/vscp/' . $ship_id) }}" class="btn btn-primary float-right mb-3 ">Vscp Details</a>
 
+            </div>
+        </div>
+    </div>
         @include('ships.ihm-initial')
 
     </div>
@@ -415,8 +423,7 @@
 <script>
     var shipSave = "{{ route('ships.store') }}";
 var poSummeryGraph =@json($poSummeryGraph);
-    var hazmatsName = @json($hazmatsName);
-    var hazmatCount = @json($hazmatCount);
+    var hazmatSummeryName = @json($hazmatSummeryName);
 </script>
 <script src="{{ asset('assets/js/ship.js') }}"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
@@ -436,6 +443,7 @@ var poSummeryGraph =@json($poSummeryGraph);
             // Use the hash to find the section
             var target = $(window.location.hash);
             var subsection = window.location.href.split("#").pop();
+            console.log(subsection);
             var section = '';
             if (subsection == 'po-records' || subsection == 'onbaord-training') {
                 section = "ihm_maintenance";
@@ -443,9 +451,10 @@ var poSummeryGraph =@json($poSummeryGraph);
 
             // Scroll to the section smoothly
             if (target.length) {
+                console.log("ddddd");
                 $('.aside-nav .nav li').removeClass('active');
                 $(`.${section}`).parent('li').addClass('active');
-                $('.main-content').hide();
+              //  $('.main-content').hide();
                 $(`#${section}`).show();
                 let targetId = $(this).attr('href');
                 $(`#${subsection}`).addClass('show');

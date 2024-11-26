@@ -19,14 +19,8 @@ return new class extends Migration
             $table->foreign('deck_id')->references('id')->on('decks')->onDelete('cascade');
             $table->string('type',30)->nullable();
             $table->string('name')->nullable();
-            $table->string('equipment')->nullable();
-            $table->string('component')->nullable();
-            $table->string('position')->nullable();
-            $table->string('sub_position')->nullable();
-            $table->string('remarks')->nullable();
             $table->string('position_left')->nullable();
             $table->string('position_top')->nullable();
-            $table->string('recommendation')->nullable();
             $table->string('initialsChekId')->nullable();
 
             $table->timestamps();

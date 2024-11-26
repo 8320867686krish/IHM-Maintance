@@ -18,7 +18,7 @@
                     </h5>
                 </div>
                 <div id="po-records" class="collapse show" aria-labelledby="headinginitial1" data-parent="#accordion" style="">
-                    <div class="card-body">
+                    <div class="card-body mb-4 mt-2">
                         @include('ships.po.poItems')
                     </div>
                 </div>
@@ -35,7 +35,7 @@
                     </h5>
                 </div>
                 <div id="onbaord-training" class="collapse" aria-labelledby="OnbaordTraining" data-parent="#accordion">
-                    <div class="card-body">
+                    <div class="card-body mb-4">
                         <table class="table table-striped table-bordered first">
                             <thead>
                                 <tr>
@@ -123,7 +123,7 @@
                     </h5>
                 </div>
                 <div id="collapsema3" class="collapse" aria-labelledby="headingma3" data-parent="#accordion">
-                    <div class="card-body">
+                    <div class="card-body mb-4">
                         MD & SDoc data goes here.
                     </div>
                 </div>

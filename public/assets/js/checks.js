@@ -3,7 +3,6 @@ var initialLeft, initialTop;
 let widthPercent = 100;
 let previewImgInWidth = $("#previewImg1").width();
 let currectWithPercent = widthPercent;
-
 function makeDotsDraggable() {
     $(".dot").draggable({
         containment: "#previewImg1",
@@ -27,7 +26,8 @@ function detailOfHazmats(checkId) {
         type: 'GET',
         url: `${baseUrl}/check/${checkId}/hazmat`,
         success: function (response) {
-          
+            $("#chksName").val(response.check.name);
+            $("#chkType").val(response.check.type);
             $('#showTableHazmat').html(response.html);
 
             $.each(response.check.hazmats, function (index, hazmatData) {
@@ -64,6 +64,7 @@ function openAddModalBox(dot) {
 
 
     if (checkId) {
+        $("#check_id").val(checkId);
         // $("#checkDataAddModal").removeClass("addForm").addClass("editForm");
         detailOfHazmats(checkId);
     }
@@ -241,13 +242,26 @@ $(document).ready(function () {
     $(document).on("click", ".dot", function () {
         openAddModalBox(this);
     });
-
+   
     $(document).on("click", "#editCheckbtn", function (event) {
-        event
-            .stopPropagation(); // Prevents the click event from bubbling up to the parent .dot element
-        let checkDataId = $(this).attr('data-dotId');
-        let dotElement = $(`#${checkDataId}`)[0];
-        openAddModalBox(dotElement);
+        event.stopPropagation(); // Prevents the click event from bubbling up to the parent .dot element
+        let checkId = $(this).attr('data-id');
+        let data  = $(this).attr('data-check');
+        let allCheck = $(this).attr('data-all');
+        $("#allCheck").val(allCheck);
+       
+        if( data){
+            let parseData = JSON.parse(data);
+            $("#position_left").val(parseData.position_left);
+            $("#position_top").val(parseData.position_top)
+            $("#ship_id").val(parseData.ship_id);
+            $("#check_id").val(parseData.id);
+            $("#deck_id").val(parseData.deck_id);
+        }
+      
+        detailOfHazmats(checkId);
+     //   let dotElement = $(`#${checkDataId}`)[0];
+      //  openAddModalBox(dotElement);
     });
 
     $(document).on("click", "#checkDataAddSubmitBtn", function () {
@@ -255,10 +269,14 @@ $(document).ready(function () {
         $("#id").val(checkId);
         let position_left = parseFloat($(".dot.selected").css('left')) * (100 / widthPercent);
         let position_top = parseFloat($(".dot.selected").css('top')) * (100 / widthPercent);
-        $("#position_left").val(position_left);
-        $("#position_top").val(position_top);
+        if (!isNaN(position_left)) {
+            $("#position_left").val(position_left);
+        } 
+        if (!isNaN(position_top)) {
+            $("#position_top").val(position_top);
+        }
         if (!checkId) {
-            checkId = 0; // Set a temporary value for the new checkId
+            checkId = 0; 
             $(".dot.selected").attr('data-checkId', checkId);
         }
         let checkFormData = new FormData($("#checkDataAddForm")[0]);
@@ -277,6 +295,7 @@ $(document).ready(function () {
             success: function (response) {
                 if (response.isStatus) {
                     $(".dot.selected").attr('data-checkId', response.id);
+                    $("#check_id").val(response.id);
                     var checkData = {
                         id: response.id,
                         name: response.name,
@@ -286,11 +305,13 @@ $(document).ready(function () {
                         equipment: $("#equipment").val(),
                         component: $("#component").val(),
                         remarks: $("#remarks").val(),
-                        recommendation: $("#recommendation").val()
+                        recommendation: $("#recommendation").val(),
+                        allCheck : $("#allCheck").val()
                     };
                     let checkDataJson = JSON.stringify(checkData);
                     $(".dot.selected").attr('data-check', checkDataJson);
                     $('#checkListUl').html(response.htmllist);
+                    $("#checkListTable").html(response.trtd);
                     successMsg(response.message);
                     $("#checkDataAddForm").trigger('reset');
                     $("#id").val("");

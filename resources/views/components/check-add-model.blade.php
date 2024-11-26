@@ -1,4 +1,4 @@
-    @foreach ($checkhazmat as $value)
+@foreach ($checkhazmat as $value)
     @php $title = '';
     $label = 'Name of';
 

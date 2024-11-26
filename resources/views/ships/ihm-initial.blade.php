@@ -1,10 +1,8 @@
-<div class="row card-body">
-          <h5 class="section-title col-11">IHM Initial Reords</h5>
-          <a href="{{ url('ship/vscp/' . $ship_id) }}" class="btn btn-primary float-right mb-3 col-1">Vscp Details</a>
 
-      </div>
   <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 
+
+ 
       <div class="accrodion-regular">
           <div id="accordion">
               <div class="card">
@@ -18,7 +16,7 @@
                       </h5>
                   </div>
                   <div id="collapseinitial1" class="collapse show" aria-labelledby="headinginitial1" data-parent="#accordion" style="">
-                      <div class="card-body">
+                  <div class="card-body mb-4 mt-2">
 
                           <x-ihm-part :checkHazmatIHMPart="$checkHazmatIHMPart" :type="'i-1'"></x-ihm-part>
                       </div>
@@ -36,7 +34,7 @@
                       </h5>
                   </div>
                   <div id="collapseinitial2" class="collapse" aria-labelledby="headinginitial2" data-parent="#accordion" style="">
-                      <div class="card-body">
+                      <div class="card-body  mb-4 mt-2">
 
                           <x-ihm-part :checkHazmatIHMPart="$checkHazmatIHMPart" :type="'i-2'"></x-ihm-part>
                       </div>
@@ -54,7 +52,7 @@
                       </h5>
                   </div>
                   <div id="collapseinitial3" class="collapse" aria-labelledby="headinginitial3" data-parent="#accordion" style="">
-                      <div class="card-body">
+                      <div class="card-body  mb-4 mt-2">
 
                           <x-ihm-part :checkHazmatIHMPart="$checkHazmatIHMPart" :type="'i-3'"></x-ihm-part>
                       </div>
@@ -74,7 +72,7 @@
                   </div>
                   <div id="collapsinitial4" class="collapse" aria-labelledby="headinginitial4" data-parent="#accordion">
                       <div class="card-body">
-                          GA Plan data goes here.
+                          <a href="{{asset('uploads/shipsVscp/'.$ship->id.'/'.$ship->ga_plan_pdf)}}" target="_blank" class="btn btn-primary float-right mb-3 ">Download</a>
                       </div>
                   </div>
               </div>

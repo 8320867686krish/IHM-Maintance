@@ -292,23 +292,18 @@
         }
         if ($('#chartjs_bar_ihm_summery').length) {
             var ctx = document.getElementById("chartjs_bar_ihm_summery").getContext('2d');
+            const datasets = hazmatSummeryName.map(hazmat => ({
+                label: hazmat.short_name,
+                data: [hazmat.qty_sum || 0], // Use qty or 0 if it's undefined
+                backgroundColor: hazmat.color,
+                borderColor: hazmat.color,
+                borderWidth: 2
+            }));
             var myChart = new Chart(ctx, {
                 type: 'bar',
                 data: {
                     labels: ['hazmats'],
-                    datasets: [{
-                        label: 'Asbestos',
-                        data: [1],
-                        backgroundColor: "#2B35AF",
-                        borderColor: "#2B35AF",
-                        borderWidth: 2
-                    },{
-                        label: 'Polychlorinated Biphenyls (PCB)',
-                        data: [2],
-                        backgroundColor: "#9F2B68",
-                        borderColor: "#9F2B68",
-                        borderWidth: 2
-                    }]
+                    datasets: datasets 
                 },
                 options: {
                     scales: {

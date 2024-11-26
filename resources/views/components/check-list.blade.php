@@ -7,7 +7,7 @@
             </span>
             <span class>{{ $loop->iteration }}.{{ $dot->name }}</span>
             <div class="float-right">
-                <a href="javascript:;" id="editCheckbtn" data-dotId="dot_{{ $loop->iteration }}"><i class="fas fa-edit text-primary" style="font-size: 1rem"></i></a>
+                <a href="javascript:;" id="editCheckbtn"   data-id="{{$dot->id}}"  data-dotId="dot_{{ $loop->iteration }}" data-check="{{$dot}}" data-all="0"><i class="fas fa-edit text-primary" style="font-size: 1rem"></i></a>
                 <a href="{{ route('check.delete', ['id' => $dot->id]) }}" class="deleteCheckbtn" data-id="{{ $dot->id }}" title="Delete"><i class="fas fa-trash-alt text-danger" style="font-size: 1rem"></i></a>
             </div>
         </li>

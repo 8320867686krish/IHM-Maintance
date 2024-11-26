@@ -15,7 +15,7 @@ $title .= 'I-3 Strucure and hull';
 }
 @endphp
 
-<div class="table-responsive">
+<div>
 <h4>{{$title}} containing materials listed in table A and table B of appendix 1 of these guidelines</h4>
 
 <table class="table table-striped table-bordered first dataTable no-footer" id="DataTables_Table_0" role="grid" aria-describedby="DataTables_Table_0_info">

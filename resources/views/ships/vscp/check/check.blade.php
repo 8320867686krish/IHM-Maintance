@@ -94,9 +94,8 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-12">
-                        <a href="{{ route('ships', ['project_id' => $deck->project_id]) }}"
-                            onclick="setSession(event, {{ $deck->ship_id }})"><i class="fas fa-arrow-left"></i>
-                            <b>Back</b></a>
+                    <a href="{{ url('ship/view/'.$deck->ship_id) }}"><i class="fas fa-arrow-left"></i></a>
+                    <b>Back</b></a>
                     </div>
                 </div>
                 <div class="row">
@@ -144,95 +143,8 @@
 
      
 
-        <div class="modal fade bd-example-modal-lg" data-backdrop="static" id="checkDataAddModal" tabindex="-1" role="dialog"
-            aria-labelledby="checkDataAddModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg" role="document" style="margin-left:15%;max-width:none">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Checks</h5>
-                        <a href="#" class="close" data-dismiss="modal" aria-label="Close"
-                            id="checkDataAddCloseBtn">
-                            <span aria-hidden="true">×</span>
-                        </a>
-                    </div>
+        @include('ships.models.checkDetail')
 
-                    <form method="post" action="{{route('check.save')}}" id="checkDataAddForm"
-                        enctype="multipart/form-data">
-                        <div class="modal-body"
-                            style="overflow-x: auto; overflow-y: auto; max-height: calc(81vh - 1rem);">
-                            @csrf
-                            <input type="hidden" id="id" name="id">
-                            <input type="hidden" id="formType" value="add">
-                            <input type="hidden" id="ship_id" name="ship_id"
-                                value="{{ $deck->ship_id ?? '' }}">
-                            <input type="hidden" id="deck_id" name="deck_id" value="{{ $deck->id ?? '' }}">
-                            <input type="hidden" id="position_left" name="position_left">
-                            <input type="hidden" id="position_top" name="position_top">
-                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 row">
-                                <div class="col-4 col-md-4 mb-2" id="chkName">
-                                    <div class="form-group">
-                                        <label for="name">Name</label>
-                                        <input type="text" id="name" name="name" class="form-control">
-                                    </div>
-                                </div>
-
-                                <div class="col-4 col-md-4 mb-2">
-                                    <div class="form-group">
-                                        <label for="type">Type <span class="text-danger">*</span></label>
-                                        <select name="type" id="type" class="form-control">
-                                            <option value>Select Type</option>
-                                            <option value="sample">Sample</option>
-                                            <option value="visual">Visual</option>
-                                        </select>
-                                        <div class="invalid-feedback error" id="typeError"></div>
-                                    </div>
-                                </div>
-                               
-                                <div class="col-4 col-md-4 mb-2">
-                                    <div class="form-group">
-                                        <label for="equipment">Equipment</label>
-                                        <input type="text" id="equipment" name="equipment" class="form-control">
-                                    </div>
-                                </div>
-                                <div class="col-4 col-md-4 mb-2">
-                                    <div class="form-group">
-                                        <label for="component">Component</label>
-                                        <input type="text" id="component" name="component" class="form-control">
-                                    </div>
-                                </div>
-                              
-                              
-
-                                <div class="col-4 mb-2">
-                                    <div class="form-group">
-                                        <label for="remarks">Remarks</label>
-                                        <textarea name="remarks" id="remarks" class="form-control" rows="2"></textarea>
-                                    </div>
-                                </div>
-                                <div class="col-4 mb-2">
-                                    <div class="form-group">
-                                        <label for="recommendation">Recommendation</label>
-                                        <textarea name="recommendation" id="recommendation" class="form-control" rows="2"></textarea>
-                                    </div>
-                                </div>
-                                <div class="col-12 mb-2">
-                                <button class="btn btn-primary float-right btn-rounded addNewItemBtn" type="button">Add Item</button>
-                                </div>
-                                <div class="col-12 mb-2">
-                                    <div class="col-12 col-md-12  pt-4"
-                                        style="background: #efeff6;border: 1px solid #efeff6;" id="showTableHazmat">
-                                       
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-primary" id="checkDataAddSubmitBtn">Save</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
     </div>
 @stop
 
