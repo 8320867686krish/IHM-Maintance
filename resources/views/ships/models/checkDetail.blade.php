@@ -21,12 +21,12 @@
                             <input type="hidden" id="ship_id" name="ship_id"
                                 value="{{ $deck->ship_id ?? '' }}">
                             <input type="hidden" id="deck_id" name="deck_id" value="{{ $deck->id ?? '' }}">
-                            <input type="text" id="position_left" name="position_left">
+                            <input type="hidden" id="position_left" name="position_left">
                             <input type="hidden" id="position_top" name="position_top">
                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 row">
                                 <div class="col-4 col-md-4 mb-2" id="chkName">
                                     <div class="form-group">
-                                        <label for="name">Name</label>
+                                        <label for="name">Sample NO</label>
                                         <input type="text" id="chksName" name="name" class="form-control">
                                     </div>
                                 </div>
