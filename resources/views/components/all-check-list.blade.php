@@ -13,11 +13,12 @@
                 <td>&nbsp;</td>
                 <td>&nbsp;</td>
                 <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
                 @can('ships.edit')
                     <td class="text-center">
-                    <a href="javascript:;" id="editCheckbtn" data-id="{{$check->id}}" data-dotId="dot_{{ $loop->iteration }}" data-check="{{$check}}" data-all="1"><i class="fas fa-edit text-primary" style="font-size: 1rem"></i></a>
+                    <a title="Edit" href="javascript:;" id="editCheckbtn" data-id="{{$check->id}}" data-dotId="dot_{{ $loop->iteration }}"  data-check="{{$check}}" data-all="1"><i class="fas fa-edit text-primary" style="font-size: 1rem"></i></a>
 
-                   
                    
                     
                     </td>
@@ -30,15 +31,25 @@
             <td>{{ $count }}</td>
                 <td>{{ $check->name }}</td>
                 <td>{{ $check->type }}</td>
+                <td>{{ $hazmat->hazmat_type }}</td>
                 <td>{{ $hazmat->location }} </td>
                 <td>{{ $hazmat->application_of_paint }} <br> {{ $hazmat->name_of_paint }} </td>
                 <td>{{ @$hazmat->hazmat->name ?? ""}}</td>
                 <td>{{ $hazmat->ihm_part_table }}</td>
                 <td>{{ $hazmat->qty }}</td>
                 <td>{{ $hazmat->unit }}</td>
+                <td>
+                    @if(strlen($hazmat['remarks']) > 35)
+                    {{ \Illuminate\Support\Str::limit($hazmat['remarks'], 50) }}
+                    <a title="view" href="javascript:;" id="viewRemarks" data-remarks="{{$hazmat->remarks}}" style="color:blue">..more</a>
+                    @else
+                    {{ $hazmat['remarks'] }}
+                    @endif
+                </td>
+
                 @can('ships.edit')
                     <td class="text-center">
-                    <a href="javascript:;" id="editCheckbtn" data-dotId="dot_{{ $loop->iteration }}" data-id="{{$check->id}}}" data-check="{{$check}}"  data-all="1"><i class="fas fa-edit text-primary" style="font-size: 1rem"></i></a>
+                    <a title="Edit" href="javascript:;" id="editCheckbtn" data-dotId="dot_{{ $loop->iteration }}" data-id="{{$check->id}}}" data-check="{{$check}}"  data-all="1"><i class="fas fa-edit text-primary" style="font-size: 1rem"></i></a>
 
                         
                     </td>

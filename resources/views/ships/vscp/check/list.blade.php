@@ -5,11 +5,13 @@
                  <th>Sr No</th>
                  <th>Sample No</th>
                  <th>Type</th>
+                 <th>Hazmat Type</th>
                  <th>Location</th>
                  <th>Equip. & Comp.</th>
                  <th>Hazmat</th>
                  <th>IHM Part</th>
                  <th colspan="2">Approximate Quantity</th>
+                 <th>Remrks</th>
                  @can('ships.edit')
                  <th width="10%">Action</th>
                  @endcan

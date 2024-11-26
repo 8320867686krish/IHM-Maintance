@@ -426,12 +426,14 @@
 var poSummeryGraph =@json($poSummeryGraph);
     var hazmatSummeryName = @json($hazmatSummeryName);
 </script>
-<script src="{{ asset('assets/js/ship.js') }}"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+
+<script src="{{ asset('assets/js/ship.js') }}"></script>
+<script src="{{ asset('assets/js/checks.js') }}"></script>
+
 
 <script src="{{ asset('assets/vendor/bootstrap-select/js/bootstrap-select.js') }}"></script>
 
-<script src="{{ asset('assets/vendor/jquery/jquery-3.3.1.min.js') }}"></script>
 <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 <script src="{{ asset('assets/vendor/datatables/js/dataTables.bootstrap4.min.js') }}"></script>
 <script src="{{ asset('assets/vendor/datatables/js/data-table.js') }}"></script>
@@ -505,12 +507,12 @@ var poSummeryGraph =@json($poSummeryGraph);
 
 
         $('.aside-nav .nav li a').click(function() {
+
             $('.aside-nav .nav li').removeClass('active');
             $(this).parent('li').addClass('active');
             $('.main-content').hide();
 
             let targetId = $(this).attr('href');
-
             $(targetId).show();
 
             return false;
@@ -532,5 +534,6 @@ var poSummeryGraph =@json($poSummeryGraph);
 
 
     });
+   
 </script>
 @endpush

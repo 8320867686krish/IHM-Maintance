@@ -1,3 +1,5 @@
+<input type="hidden" name="check_deleted_id" id="check_deleted_id" value="">
+
 @foreach ($checkhazmat as $value)
 @php $title = '';
 $label = 'Name of';
@@ -15,8 +17,13 @@ $label .= 'structural element';
 $title .= 'I-3 Strucure and hull';
 }
 @endphp
-<div class="col-12 col-md-12 col-lg-12 card cloneCheck" id="cloneCheck{{$value['id']}}">
 
+<div class="col-12 col-md-12 col-lg-12 card cloneCheck" id="cloneCheck{{$value['id']}}">
+<div class="col-12 col-md-12 col-lg-12 mt-2 text-right">
+              
+              <a href="javascript:;" class="deleteCheckItem" data-itemId="{{$value['id']}}" title="Delete"><i class="fas fa-trash-alt text-danger" style="font-size: 1rem"></i></a>
+  
+          </div>
 
     <div class="row card-body">
         <div class="col-12 mt-2 ihm_part">

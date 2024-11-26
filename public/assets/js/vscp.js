@@ -184,6 +184,11 @@
             if (subsection == 'po-records' || subsection == 'onbaord-training') {
                 section = "ihm_maintenance";
             }
+            if(subsection == 'check_list'){
+                console.log("hh");
+                section ="check_list";
+
+            }
 
             // Scroll to the section smoothly
             if (target.length) {

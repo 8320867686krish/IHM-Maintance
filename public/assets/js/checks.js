@@ -50,7 +50,11 @@ function detailOfHazmats(checkId) {
         },
     });
 }
-
+$(document).on('click','#viewRemarks',function (e) {
+    var remarks = $(this).attr('data-remarks');
+    $(".remrksText").text(remarks)
+    $("#remarksModel").modal('show');
+});
 function openAddModalBox(dot) {
     let $dot = $(dot);
     // Remove the "selected" class from all dots
@@ -65,6 +69,7 @@ function openAddModalBox(dot) {
 
     if (checkId) {
         $("#check_id").val(checkId);
+        $("#id").val(checkId);
         // $("#checkDataAddModal").removeClass("addForm").addClass("editForm");
         detailOfHazmats(checkId);
     }
@@ -242,7 +247,7 @@ $(document).ready(function () {
     $(document).on("click", ".dot", function () {
         openAddModalBox(this);
     });
-
+    
     $(document).on("click", "#editCheckbtn", function (event) {
         event.stopPropagation(); // Prevents the click event from bubbling up to the parent .dot element
         let checkId = $(this).attr('data-id');
@@ -380,8 +385,11 @@ $(document).on('click', '.addNewItemBtn', function (e) {
 
     // Add a new item to the container
     var newItem = `<div class="col-12 col-md-12 col-lg-12 card cloneCheck" id="cloneCheck${checkIteamindex}">
-                
-               
+                 <div class="col-12 col-md-12 col-lg-12 mt-2 text-right">
+              
+                <a href="javascript:;" class="deleteCheckItem" data-itemId=${checkIteamindex} title="Delete"><i class="fas fa-trash-alt text-danger" style="font-size: 1rem"></i></a>
+    
+            </div>
                 <div class="row card-body">
                     <div class="col-12 mt-2 ihm_part">
                         <div class="form-group">
@@ -400,6 +408,15 @@ $(document).on('click', '.addNewItemBtn', function (e) {
     // Log the index for debugging
 
 });
+
+$(document).on('click', '.deleteCheckItem', function (e) {
+    var checkItemId = $(this).attr('data-itemId');
+    var deletedCheckIds = $('#check_deleted_id').val();
+    $('#check_deleted_id').val(deletedCheckIds ? deletedCheckIds + ',' + checkItemId : checkItemId);
+    $(`#cloneCheck${checkItemId}`).remove();
+
+});
+
 $(document).on('change', '.ihm_part_table', function (e) {
     var id = $(this).attr('data-check');
     var value = $(this).val();

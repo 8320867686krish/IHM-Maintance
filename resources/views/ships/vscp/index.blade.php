@@ -84,6 +84,7 @@
                 @include('ships.vscp.check.list')
 
             </div>
+            @include('ships.models.remarksModel')
         </div>
     </div>
 

@@ -183,6 +183,10 @@ $finalData = array_merge($existingData, $filteredInputData);
 
             }
         }
+        if (@$inputData['check_deleted_id']) {
+            $deletedIds = explode(',', $inputData['check_deleted_id']); // This splits the string into an array
+            CheckHazmat::whereIn('id', $deletedIds)->delete();
+        }
         if (!empty($inputData['deck_id'])) {
             if($inputData['allCheck'] == 1){
                 $checks = Check::with('hazmats.hazmat')->where('ship_id',$inputData['ship_id'])->get();
