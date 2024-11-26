@@ -292,6 +292,9 @@
         }
         if ($('#chartjs_bar_ihm_summery').length) {
             var ctx = document.getElementById("chartjs_bar_ihm_summery").getContext('2d');
+            const maxQty = Math.max(...hazmatSummeryName.map(hazmat => hazmat.qty_sum || 0));
+            const stepSize = Math.ceil(maxQty / 10);  // Example: Divide the max value by 5, and round up to the nearest integer
+
             const datasets = hazmatSummeryName.map(hazmat => ({
                 label: hazmat.short_name,
                 data: [hazmat.qty_sum || 0], // Use qty or 0 if it's undefined
@@ -310,9 +313,9 @@
                         yAxes: [{
                             ticks: {
                                 beginAtZero: true,   // Start the Y-axis from 0
-                                stepSize: 5,         // Control the step size
+                                stepSize: stepSize,         // Control the step size
                                 min: 0,              // Minimum value of Y-axis
-                                max: 40,             // Maximum value of Y-axis
+                                max: maxQty + stepSize, // Set max value to the maxQty + step size buffer
                                 fontSize: 14,
                                 fontFamily: 'Circular Std Book',
                                 fontColor: '#71748d'
