@@ -84,5 +84,39 @@ jQuery(document).ready(function($) {
             });
         });
     }
+    if ($("#part1MenualTable").length) {
+
+        $(document).ready(function() {
+            var table = $('#part1MenualTable').DataTable({
+                fixedHeader: true
+            });
+        });
+    }
+  
+    if ($("#ihmpart2Table").length) {
+
+        $(document).ready(function() {
+            var table = $('#ihmpart2Table').DataTable({
+                fixedHeader: true
+            });
+        });
+    }
+    if ($("#ihmpart3Table").length) {
+
+        $(document).ready(function() {
+            var table = $('#ihmpart3Table').DataTable({
+                fixedHeader: true
+            });
+        });
+    }
+    if ($("#summaryTable").length) {
+
+        $(document).ready(function() {
+            var table = $('#summaryTable').DataTable({
+                fixedHeader: true
+            });
+        });
+    }
+
 
 });

@@ -94,7 +94,7 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-12">
-                    <a href="{{ url('ship/view/'.$deck->ship_id) }}"><i class="fas fa-arrow-left"></i></a>
+                    <a href="{{ url('ship/vscp/'.$deck->ship_id) }}"><i class="fas fa-arrow-left"></i></a>
                     <b>Back</b></a>
                     </div>
                 </div>

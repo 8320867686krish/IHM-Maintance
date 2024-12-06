@@ -22,7 +22,8 @@ return new class extends Migration
             $table->string('position_left')->nullable();
             $table->string('position_top')->nullable();
             $table->string('initialsChekId')->nullable();
-
+            $table->string('close_image')->nullable();
+            $table->string('away_image')->nullable();
             $table->timestamps();
         });
     }

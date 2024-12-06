@@ -24,7 +24,8 @@ class ClientCompany extends Model
         'hazmat_companies_id',
         'IMO_ship_owner_details',
         'owner_contact_person_email',
-        'client_image'
+        'client_image',
+        'accounting_team_email'
     ];
     public function hazmatCompaniesId()
     {

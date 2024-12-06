@@ -45,7 +45,8 @@
             <div class="container-fluid">
                 <div class="row d-flex">
                     <div class="col-md-9 col-lg-6 col-xl-6">
-                        <img src="https://assets.cntraveller.in/photos/640af7ca1ee43c0c0b7eb57c/3:2/w_1427,h_951,c_limit/image-007.jpg" class="img-fluid" alt="Sample image" style="height:100vh">
+                    <img src="{{asset('assets/images/loginBackImage.jpg')}}" class="img-fluid" alt="Sample image" style="height:100vh">
+
                     </div>
                     <br />
                     <div class="col-xl-6 mt-5">

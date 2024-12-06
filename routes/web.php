@@ -102,6 +102,10 @@ Route::middleware('auth')->group(function () {
             Route::post('check/save','checkSave')->name('check.save');
             Route::post('ship/check/{id}', 'deleteCheck')->name('check.delete');
             Route::get('check/{id}/hazmat', 'checkHazmat')->name('check.hazmat');
+            Route::post('partManual', 'partManual')->name('partManual');
+            Route::delete('part/remove/{id}', 'partManualDelete')->name('partManualDelete');
+            Route::post('summary', 'summary')->name('summary');
+            Route::delete('summary/remove/{id}', 'summaryDelete')->name('summaryDelete');
 
 
         });

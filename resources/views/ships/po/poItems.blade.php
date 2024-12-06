@@ -7,7 +7,7 @@
                         </form>
                         <a href="{{route('po.add',['ship_id'=>$ship_id])}}" class="btn btn-primary float-right btn-rounded addNewBtn mb-3">Add PO</a>
 
-                        <div>
+                        <div class="table-responsive">
                             <table class="table table-striped table-bordered first">
                                 <thead>
                                     <tr>

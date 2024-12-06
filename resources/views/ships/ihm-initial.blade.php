@@ -14,16 +14,16 @@
                         </button>
                     </h5>
                 </div>
-                <div id="collapseinitial1" class="collapse show" aria-labelledby="headinginitial1" data-parent="#accordion" style="">
-                    <div class="card-body mb-2 mt-2">
-
-                        <x-ihm-part :checkHazmatIHMPart="$checkHazmatIHMPart" :type="'i-1'"></x-ihm-part>
-                    </div>
-                    <div class="card-body mb-2 mt-2">
-                        <x-ihm-part :checkHazmatIHMPart="$checkHazmatIHMPart" :type="'i-2'"></x-ihm-part>
-                    </div>
+                <div id="collapseinitial1" class="collapse show" aria-labelledby="headinginitial1" data-parent="#accordion">
                     <div class="card-body mb-2 mt-2">
                         <x-ihm-part :checkHazmatIHMPart="$checkHazmatIHMPart" :type="'i-3'"></x-ihm-part>
+
+
+                    </div>
+                    <div class="card-body mb-2 mt-2">
+
+                    </div>
+                    <div class="card-body mb-2 mt-2">
                     </div>
                 </div>
 
@@ -61,8 +61,28 @@
                     </h5>
                 </div>
                 <div id="collapsinitial5" class="collapse" aria-labelledby="headinginitial5" data-parent="#accordion">
-                    <div class="card-body">
-                        IHM Summary Report data goes here.
+                    <div class="card-body mb-4">
+                        <a href="#" class="btn btn-primary float-right addSummary mb-3 ml-2">Add</a>
+                       
+                        <div class="table-responsive">
+                            <table class="table table-striped table-bordered first">
+                                <thead>
+                                    <tr>
+                                        <th width="15%">SR NO</th>
+                                        <th>Title</th>
+                                        <th width="20%">Updated By</th>
+                                        <th width="20%">Date</th>
+                                        <th width="20%">Document</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="summaryList">
+                                    <x-summary-list :summary="$summary"></x-summary-list>
+                                </tbody>
+                             
+                            </table>
+                        </div>
+                        @include('ships.models.SummaryModel')
                     </div>
                 </div>
             </div>
@@ -78,8 +98,29 @@
                     </h5>
                 </div>
                 <div id="collapsinitial6" class="collapse" aria-labelledby="headinginitial6" data-parent="#accordion">
-                    <div class="card-body">
-                        Part1 Manuel data goes here.
+                    <div class="card-body mb-4">
+                        <a href="#" class="btn btn-primary float-right addPart mb-3 ml-2">Add</a>
+                      
+
+                        <div class="table-responsive">
+                            <table class="table table-striped table-bordered first">
+                                <thead>
+                                    <tr>
+                                        <th width="15%">SR NO</th>
+                                        <th>Title</th>
+                                        <th width="20%">Updated By</th>
+                                        <th width="20%">Date</th>
+                                        <th width="20%">Document</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="partmanullist">
+                                    <x-part-manual-list :partMenual="$partMenual"></x-part-manual-list>
+                                </tbody>
+                               
+                            </table>
+                        </div>
+                        @include('ships.models.partMenualModel')
                     </div>
                 </div>
             </div>
@@ -106,5 +147,8 @@
     </div>
 </div>
 @include('ships.models.remarksModel')
+@push('js')
+<script src="{{ asset('assets/js/PartManual.js') }}"></script>
+<script src="{{ asset('assets/js/Summary.js') }}"></script>
 
-
+@endpush

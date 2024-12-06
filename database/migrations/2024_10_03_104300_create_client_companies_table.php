@@ -26,6 +26,7 @@ return new class extends Migration
             $table->string('tax_details')->nullable();
             $table->string('IMO_ship_owner_details');
             $table->string('client_image')->nullable();
+            $table->string('accounting_team_email')->nullable();
 
             $table->unsignedBigInteger('created_by')->nullable();  // Same data type as hazmat_companies.id
             $table->foreign('created_by')->references('id')->on('users')->onDelete('cascade');

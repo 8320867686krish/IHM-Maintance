@@ -140,7 +140,7 @@
                             <div class="card-body">
                                 <div class="alert alert-success sucessMsg" role="alert" style="display: none;">
                                     Save Successfully!!<a href="#" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">×</span>
+                                        <span>×</span>
                                     </a>
                                 </div>
                                 <form method="post" action="{{ route('ships.store') }}" class="needs-validation" novalidate
@@ -446,23 +446,20 @@ var poSummeryGraph =@json($poSummeryGraph);
             // Use the hash to find the section
             var target = $(window.location.hash);
             var subsection = window.location.href.split("#").pop();
-            console.log(subsection);
-            var section = '';
+            var section = subsection;
             if (subsection == 'po-records' || subsection == 'onbaord-training') {
                 section = "ihm_maintenance";
             }
 
             // Scroll to the section smoothly
             if (target.length) {
-                console.log("ddddd");
+                console.log(section);
                 $('.aside-nav .nav li').removeClass('active');
                 $(`.${section}`).parent('li').addClass('active');
-              //  $('.main-content').hide();
+                $('.main-content').hide();
                 $(`#${section}`).show();
                 let targetId = $(this).attr('href');
                 $(`#${subsection}`).addClass('show');
-
-
                 $(targetId).show();
 
                 $('html, body').animate({

@@ -12,9 +12,7 @@
         </div>
         <div class="card-footer">
             <div class="float-right">
-                <a href="#" data-id="{{ $deck->id }}">
-                    <i class="fas fa-qrcode" style="font-size: 1rem;"></i>
-                </a>
+              
                 <a href="javascript:;" class="ml-2 deckImgEditBtn" data-id="{{ $deck->id }}" rel="noopener noreferrer" title="Edit">
                     <i class="fas fa-edit text-primary" style="font-size: 1rem;"></i>
                 </a>

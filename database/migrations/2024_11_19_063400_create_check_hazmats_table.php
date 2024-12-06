@@ -32,6 +32,11 @@ return new class extends Migration
             $table->string('ihm_part_table',10)->nullable();
             $table->string('parts_where_used')->nullable();
             $table->string('hazmat_type',10)->nullable();
+            $table->text('strike_remarks')->nullable();
+            $table->string('strike_document')->nullable();
+            $table->date('strike_date')->nullable();
+            $table->boolean('isStrike')->default(0);
+
             $table->timestamps();
         });
     }

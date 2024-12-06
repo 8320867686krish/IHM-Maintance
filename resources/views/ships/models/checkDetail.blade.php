@@ -1,12 +1,12 @@
  <div class="modal fade bd-example-modal-lg" data-backdrop="static" id="checkDataAddModal" tabindex="-1" role="dialog"
-            aria-labelledby="checkDataAddModalLabel" aria-hidden="true" >
+            aria-labelledby="checkDataAddModalLabel" >
             <div class="modal-dialog modal-lg  modal-dialog-centered" role="document" style="max-width:70%">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">Checks</h5>
                         <a href="#" class="close" data-dismiss="modal" aria-label="Close"
                             id="checkDataAddCloseBtn">
-                            <span aria-hidden="true">×</span>
+                            <span>×</span>
                         </a>
                     </div>
 
@@ -24,14 +24,14 @@
                             <input type="hidden" id="position_left" name="position_left">
                             <input type="hidden" id="position_top" name="position_top">
                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 row">
-                                <div class="col-4 col-md-4 mb-2" id="chkName">
+                                <div class="col-3 col-md-3 mb-2" id="chkName">
                                     <div class="form-group">
                                         <label for="name">Sample NO</label>
                                         <input type="text" id="chksName" name="name" class="form-control">
                                     </div>
                                 </div>
 
-                                <div class="col-4 col-md-4 mb-2">
+                                <div class="col-3 col-md-3 mb-2">
                                     <div class="form-group">
                                         <label for="type">Type <span class="text-danger">*</span></label>
                                         <select name="type" id="chkType" class="form-control">
@@ -43,7 +43,23 @@
                                     </div>
                                 </div>
                                
-                           
+                                <div class="col-3 col-md-3 mb-2" id="chkName">
+                                    <div class="form-group">
+                                        <label for="name">Cloase Image</label>
+                                        <input type="file" id="close_image" name="close_image" class="form-control">
+                                        <span class="showcloseUpImage"></span>
+                                    </div>
+                                </div>
+
+                                <div class="col-3 col-md-3 mb-2" id="chkName">
+                                    <div class="form-group">
+                                        <label for="name">Away Image</label>
+                                        <input type="file" id="away_image" name="away_image" class="form-control">
+                                        <span class="showawayImage"></span>
+                                    </div>
+                                </div>
+
+
                               
 
                             

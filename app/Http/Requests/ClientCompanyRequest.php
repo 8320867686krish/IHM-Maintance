@@ -22,6 +22,7 @@ class ClientCompanyRequest extends FormRequest
             'password' => $this->user_id ? 'nullable' : 'required',
             'manager_initials' => 'required|unique:client_companies,IMO_ship_owner_details,'.$this->id,
             'IMO_ship_owner_details' => 'required|unique:client_companies,IMO_ship_owner_details,'.$this->id,
+            'accounting_team_email' => $this->id ? 'nullable' : 'required',
         ];
     }
     public function messages(): array

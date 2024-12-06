@@ -27,7 +27,15 @@
             @php $count++; @endphp
         @endif
         @foreach ($check->hazmats as $index => $hazmat)
-            <tr id="checkListTr_{{ $check->id }}" @if($check->markAsChange == 1) style="background-color: #f7ff005e; color: #000000" @endif>
+        <tr 
+        id="checkListTr_{{ $check->id }}" 
+        @if($check->markAsChange == 1) 
+            style="background-color: #f7ff005e; color: #000000" 
+        @endif
+        @if($hazmat->isStrike == 1) 
+            style="text-decoration: line-through;color:red" 
+        @endif
+    >
             <td>{{ $count }}</td>
                 <td>{{ $check->name }}</td>
                 <td>{{ $check->type }}</td>

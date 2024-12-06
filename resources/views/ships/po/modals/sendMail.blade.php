@@ -1,5 +1,5 @@
    <div class="modal fade" data-backdrop="static" id="relevantModal" tabindex="-1" role="dialog"
-       aria-labelledby="relevantModalLabel" aria-hidden="true">
+       aria-labelledby="relevantModalLabel">
        <div class="modal-dialog" role="document" style="  width: 50% !important;
     max-width: none !important;
     margin: auto;
@@ -11,7 +11,7 @@
                    <h5 class="modal-title" id="exampleModalLabel">Send Email</h5>
                    <a href="#" class="close" data-dismiss="modal" aria-label="Close"
                        id="checkDataAddCloseBtn">
-                       <span aria-hidden="true">×</span>
+                       <span>×</span>
                    </a>
                </div>
 

@@ -50,7 +50,7 @@
             <div class="aside-nav collapse">
                 <ul class="nav">
                     <li>
-                        <a href="{{ route('ships') }}"><span class="icon"><i
+                        <a href="{{ url('/ship/view/'.$ship_id.'#ihm_intial') }}"><span class="icon"><i
                                     class="fas fa-arrow-left"></i></span>Back</a>
                     </li>
                     <li class="active">

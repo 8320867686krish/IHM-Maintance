@@ -19,11 +19,11 @@ $title .= 'I-3 Strucure and hull';
 @endphp
 
 <div class="col-12 col-md-12 col-lg-12 card cloneCheck" id="cloneCheck{{$value['id']}}">
-<div class="col-12 col-md-12 col-lg-12 mt-2 text-right">
-              
-              <a href="javascript:;" class="deleteCheckItem" data-itemId="{{$value['id']}}" title="Delete"><i class="fas fa-trash-alt text-danger" style="font-size: 1rem"></i></a>
-  
-          </div>
+    <div class="col-12 col-md-12 col-lg-12 mt-2 text-right">
+
+        <a href="javascript:;" class="deleteCheckItem" data-itemId="{{$value['id']}}" title="Delete"><i class="fas fa-trash-alt text-danger" style="font-size: 1rem"></i></a>
+
+    </div>
 
     <div class="row card-body">
         <div class="col-12 mt-2 ihm_part">
@@ -116,6 +116,43 @@ $title .= 'I-3 Strucure and hull';
 
 
     </div>
+  
+    <div class="row card-body strikethroughDiv" id="strikethroughDiv{{$value['id']}}">
+        <div class="col-3 mb-2">
+            <label class="custom-control custom-checkbox custom-control-inline">
+                <input type="checkbox" value="1" name="check_hazmats[{{$value['id']}}][isStrike]" id="strike[{{$value['id']}}]" data-id="{{$value['id']}}" value=1 class="custom-control-input strike" {{ $value->isStrike == 1 ? 'checked' : ''}}><span class="custom-control-label">Strike through </span>
+            </label>
+
+        </div>
+    </div>
+    @if($value['isStrike'] == 1)
+    <div class="row card-body strikethroughDivIteam" id="strikethroughDivIteam{{$value['id']}}">
+        <div class="col-12 mb-2">
+            <div class="form-group">
+                <label>Remarks</label>
+                <textarea name="check_hazmats[{{$value['id']}}][strike_remarks]" id="strike[{{$value['id']}}]" class="form-control">{{$value['strike_remarks']}}</textarea>
+            </div>
+        </div>
+
+        <div class="col-6 mb-2">
+            <div class="form-group">
+                <label>Document</label>
+                <input type="file" name="check_hazmats[{{$value['id']}}][strike_document]" id="strike_document[{{$value['id']}}]" class="form-control">
+                @if($value['strike_document'])
+                <a href="{{$value['strike_document']}}" target="_blank" style="color:blue">{{basename($value['strike_document'])}}</a>
+                @endif
+            </div>
+        </div>
+
+        <div class="col-6 mb-2">
+            <div class="form-group">
+                <label>Date</label>
+                <input type="date" name="check_hazmats[{{$value['id']}}][strike_date]" id="strike_date[{{$value['id']}}]" class="form-control" value="{{$value['strike_date']}}">
+            </div>
+        </div>
+    </div>
+    @endif
+
 </div>
 </div>
 @endforeach

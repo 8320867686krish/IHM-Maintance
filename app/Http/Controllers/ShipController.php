@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\CheckHazmat;
 use App\Models\ClientCompany;
 use App\Models\Hazmat;
+use App\Models\partManuel;
 use App\Models\poOrder;
 use App\Models\Ship;
 use App\Models\ShipTeams;
+use App\Models\Summary;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -242,9 +244,12 @@ class ShipController extends Controller
         })->when($user->roles->first()->level != 1, function ($query) use ($user) {
             return $query->where('hazmat_companies_id', $user->hazmat_companies_id);
         })->get(['id', 'name']);
+        $hazmat_companies_id = $ship->hazmat_companies_id;
+        $partMenual = partManuel::where('ship_id',$ship_id)->where('hazmat_companies_id',$hazmat_companies_id)->get(); 
+        $summary = Summary::where('ship_id',$ship_id)->where('hazmat_companies_id',$hazmat_companies_id)->get();
 
         $checkHazmatIHMPart = CheckHazmat::with('hazmat')->where('ship_id',$ship_id)->get();
-        return view('ships.view', compact('experts', 'managers', 'isBack', 'ship', 'readonly', 'users', 'poOrders', 'ship_id','poSummeryGraph','checkHazmatIHMPart','hazmatSummeryName'));
+        return view('ships.view', compact('experts', 'managers', 'isBack', 'ship', 'readonly', 'users', 'poOrders', 'ship_id','poSummeryGraph','checkHazmatIHMPart','hazmatSummeryName','hazmat_companies_id','partMenual','summary'));
     }
 
     public function assignShip(Request $request)
@@ -277,4 +282,5 @@ class ShipController extends Controller
         }
         return response()->json(['isStatus' => true, 'message' => 'Ship assign successfully!!']);
     }
+    
 }

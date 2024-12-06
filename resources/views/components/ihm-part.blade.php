@@ -14,11 +14,11 @@ $label .= 'structural element';
 $title .= 'I-3 Strucure and hull';
 }
 @endphp
+<h4>{{$title}} containing materials listed in table A and table B of appendix 1 of these guidelines</h4>
 
-<div>
-    <h4>{{$title}} containing materials listed in table A and table B of appendix 1 of these guidelines</h4>
+<div class="table-responsive">
 
-    <table class="table table-striped table-bordered first dataTable no-footer" id="DataTables_Table_0" role="grid" aria-describedby="DataTables_Table_0_info">
+    <table class="table table-striped table-bordered first"  style="width:100%">
         <thead>
             <tr>
                 <th>No</th>
@@ -31,15 +31,17 @@ $title .= 'I-3 Strucure and hull';
                 @if($type == 'i-2' || $type == 'i-3')
                 <th>Parts where used</th>
                 @endif
-                <th colspan="2">Approximate Quantity</th>
+                <th >Approximate Quantity</th>
+                <th >Approximate Quantity</th>
+
                 <th>Remarks</th>
             </tr>
+           
         </thead>
         <tbody>
             @foreach($checkHazmatIHMPart as $value)
             @if($value['ihm_part_table'] == $type)
             <tr>
-
                 <td>{{$value['id']}}</td>
                 @if($type == 'i-1')
                 <td>{{$value['application_of_paint']}}</td>
@@ -48,26 +50,18 @@ $title .= 'I-3 Strucure and hull';
                 <td>{{$value['location']}}</td>
                 <td>{{$value->hazmat->name}}</td>
                 @if($type == 'i-2' || $type == 'i-3')
-                <td>
-                    {{$value->parts_where_used}}
-                </td>
+                <td>{{$value->parts_where_used}}</td>
                 @endif
-                <td>
-                    {{$value->qty}}
-                </td>
-                <td>
-                    {{$value->unit}}
-                </td>
+                <td>{{$value->qty}}</td>
+                <td>{{$value->unit}}</td>
                 <td>
                     @if(strlen($value['remarks']) > 35)
                     {{ \Illuminate\Support\Str::limit($value['remarks'], 50) }}
-                    <a title="view" href="javascript:;" id="viewRemarks" data-remarks="{{$value->remarks}}" style="color:blue">..more</a>
+                    <a title="view" href="javascript:;" id="viewRemarks" data-remarks="{{$value['remarks']}}" style="color:blue">..more</a>
                     @else
                     {{ $value['remarks'] }}
                     @endif
                 </td>
-
-
             </tr>
             @endif
             @endforeach

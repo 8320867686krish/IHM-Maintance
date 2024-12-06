@@ -2,7 +2,9 @@
      @can('ships.edit')
      <div style="float:right">
          <button class="btn btn-primary" onclick="triggerFileInput('pdfFile')">Add</button>&nbsp;&nbsp;
+       
          <input type="file" id="pdfFile" name="pdfFile" accept=".pdf" style="display: none;">
+         <input type="text" id="existingFilePath" name="existingFilePath" value="{{url('uploads/shipsVscp/'.$ship_id.'/'. $ship->ga_plan_pdf)}}">
      </div>
 
 
@@ -16,13 +18,13 @@
 </div>
 
 
-<div class="modal fade" data-backdrop="static" id="deckEditFormModal" tabindex="-1" role="dialog" aria-labelledby="deckEditFormModalLabel" aria-hidden="true">
+<div class="modal fade" data-backdrop="static" id="deckEditFormModal" tabindex="-1" role="dialog" aria-labelledby="deckEditFormModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Title</h5>
                 <a href="#" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
+                    <span>×</span>
                 </a>
             </div>
             <form method="post" id="deckEditForm" action="{{ route('updateDeckDetails') }}">
@@ -42,13 +44,13 @@
     </div>
 </div>
 
-<div class="modal fade" data-backdrop="static" id="pdfModal" tabindex="-1" role="dialog" aria-labelledby="pdfModalLabel" aria-hidden="true" style="padding-right: 0px !important;">
+<div class="modal fade" data-backdrop="static" id="pdfModal" tabindex="-1" role="dialog" aria-labelledby="pdfModalLabel"  style="padding-right: 0px !important;">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl" role="document" style="width: 98% !important; max-width: none !important;">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Edit Deck Title</h5>
                 <a href="#" class="close pdfModalCloseBtn" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                    <span >&times;</span>
                 </a>
             </div>
             <div class="modal-body" style="overflow-x: auto; overflow-y: auto; height: calc(81vh - 1rem);">

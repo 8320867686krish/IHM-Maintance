@@ -17,7 +17,7 @@
                         </button>
                     </h5>
                 </div>
-                <div id="po-records" class="collapse show" aria-labelledby="headinginitial1" data-parent="#accordion" style="">
+                <div id="po-records" class="collapse show" aria-labelledby="headinginitial1" data-parent="#accordion">
                     <div class="card-body mb-4 mt-2">
                         @include('ships.po.poItems')
                     </div>

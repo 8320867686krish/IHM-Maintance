@@ -26,8 +26,19 @@ function detailOfHazmats(checkId) {
         type: 'GET',
         url: `${baseUrl}/check/${checkId}/hazmat`,
         success: function (response) {
-            $("#chksName").val(response.check.name);
-            $("#chkType").val(response.check.type);
+            $("#chksName").val(response.check.data.name);
+            $("#chkType").val(response.check.data.type);
+            if(response.check.data.close_image){
+                $('.showcloseUpImage').show();
+                $('.showcloseUpImage').html(`<a href="${response.check.data.close_image}" target="_blank" style="color:blue">${response.check.original_close_image}</a>`);
+
+
+            }
+            if(response.check.data.away_image){
+                $('.showawayImage').show();
+                $('.showawayImage').html(`<a href="${response.check.data.away_image}" target="_blank" style="color:blue">${response.check.original_away_image}</a>`);
+            }
+
             $('#showTableHazmat').html(response.html);
 
             $.each(response.check.hazmats, function (index, hazmatData) {
@@ -50,7 +61,7 @@ function detailOfHazmats(checkId) {
         },
     });
 }
-$(document).on('click','#viewRemarks',function (e) {
+$(document).on('click', '#viewRemarks', function (e) {
     var remarks = $(this).attr('data-remarks');
     $(".remrksText").text(remarks)
     $("#remarksModel").modal('show');
@@ -112,7 +123,7 @@ function dotsDrugUpdatePositionForDB(dot) {
                 let messages = `<div class="alert alert-primary alert-dismissible fade show" role="alert">
                             ${response.message}
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
+                                <span>&times;</span>
                             </button>
                         </div>`;
 
@@ -247,7 +258,7 @@ $(document).ready(function () {
     $(document).on("click", ".dot", function () {
         openAddModalBox(this);
     });
-    
+
     $(document).on("click", "#editCheckbtn", function (event) {
         event.stopPropagation(); // Prevents the click event from bubbling up to the parent .dot element
         let checkId = $(this).attr('data-id');
@@ -318,6 +329,8 @@ $(document).ready(function () {
                     $("#checkListTable").html(response.trtd);
                     successMsg(response.message);
                     $("#checkDataAddForm").trigger('reset');
+                    $(".showcloseUpImage").hide();
+                    $(".showawayImage").hide();
                     $("#id").val("");
                     $("#check_id").val("");
 
@@ -350,8 +363,10 @@ $(document).ready(function () {
 $(document).on("click", "#checkDataAddCloseBtn", function () {
     $("#checkDataAddForm").trigger('reset');
     $("#id").val("");
+    $("#check_id").val("");
     $("#showTableHazmat").empty();
-
+    $('.showcloseUpImage').hide();
+    $('.showawayImage').hide();
     $("#type").removeClass('is-invalid');
     $("#formType").val("add");
     $("#typeError").text('');
@@ -521,9 +536,51 @@ function creteFiledforI1(id, value) {
                             </select>
                             </div>
     </div>
-    
-    
+     
     </div>`
+    item += ` <div class="row card-body strikethroughDiv" id=strikethroughDiv${id}>
+    <div class="col-3 mb-2">
+      <label class="custom-control custom-checkbox custom-control-inline">
+        <input type="checkbox" value="1" name="check_hazmats[${id}][isStrike]" id="strike[${id}]" data-id="${id}" class="custom-control-input strike"><span class="custom-control-label">Strike through  </span>
+    </label>
+       
+      </div></div>
+    `
     return item;
 }
 
+$("#showTableHazmat").on("change", ".cloneCheck input[type=checkbox].strike", function () {
+    const cloneTableTypeDiv = $(this).closest(".cloneCheck");
+    let id = $(this).attr('data-id');
+    $(`#strikethroughDivIteam${id}`).remove();
+    if ($(this).is(":checked")) {
+        let item = ` <div class="row card-body strikethroughDivIteam" id=strikethroughDivIteam${id}>
+            <div class="col-12 mb-2">
+                <div class="form-group">
+                    <label>Remarks</label>
+                    <textarea name="check_hazmats[${id}][strike_remarks]" id="strike[${id}]"class="form-control"></textarea>
+                </div>
+            </div>
+
+             <div class="col-6 mb-2">
+                <div class="form-group">
+                    <label>Document</label>
+                    <input type="file" name="check_hazmats[${id}][strike_document]" id="strike_document[${id}]"class="form-control">
+                </div>
+            </div>
+
+              <div class="col-6 mb-2">
+                <div class="form-group">
+                    <label>Date</label>
+                    <input type="date" name="check_hazmats[${id}][strike_date]" id="strike_date[${id}]"class="form-control">
+                </div>
+            </div>
+        </div>
+        `
+        $(`#strikethroughDiv${id}`).after(item);
+
+    } else {
+        // Remove strikethrough if unchecked
+        console.log("noo");
+    }
+});

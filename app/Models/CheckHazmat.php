@@ -21,8 +21,16 @@ class CheckHazmat extends Model
         'ship_id',
         'deck_id',
         'parts_where_used',
-        'hazmat_type'
+        'hazmat_type',
+        'strike_document',
+        'strike_remarks',
+        'strike_date',
+        'isStrike'
     ];
+    public function getStrikeDocumentAttribute($value)
+    {
+        return asset('uploads/shipsVscp/' . $this->ship_id . '/check' . "/".$value);
+    }
     public function hazmat()
     {
         return $this->belongsTo(Hazmat::class);

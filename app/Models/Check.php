@@ -18,7 +18,21 @@ class Check extends Model
         'initialsChekId',
         'ship_id',
         'deck_id',
+        'close_image',
+        'away_image',
     ];
+    public function getRawCloseImageAttribute()
+{
+    return $this->attributes['close_image'] ?? null;
+}
+    public function getCloseImageAttribute($value)
+    {
+        return asset('uploads/shipsVscp/' . $this->ship_id . '/check' . "/".$value);
+    }
+    public function getAwayImageAttribute($value)
+    {
+        return asset('uploads/shipsVscp/' . $this->ship_id . '/check' . "/".$value);
+    }
     public function hazmats()
     {
         return $this->hasMany(CheckHazmat::class,'check_id', 'id');
