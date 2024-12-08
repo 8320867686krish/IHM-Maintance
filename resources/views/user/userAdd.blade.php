@@ -32,7 +32,7 @@
         @include('layouts.message')
         <div class="card">
             <h5 class="card-header">{{ $head_title ?? '' }} User</h5>
-            <div class="card-body">
+            <div class="card-body mb-4">
                 <form method="post" class="needs-validation" novalidate id="userForm">
                     @csrf
                     <input type="hidden" name="id" value="{{ $user->id ?? '' }}">

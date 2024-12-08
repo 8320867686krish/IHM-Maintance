@@ -106,6 +106,8 @@ Route::middleware('auth')->group(function () {
             Route::delete('part/remove/{id}', 'partManualDelete')->name('partManualDelete');
             Route::post('summary', 'summary')->name('summary');
             Route::delete('summary/remove/{id}', 'summaryDelete')->name('summaryDelete');
+            Route::post('unlockVscp', 'unlockVscp')->name('unlockVscp');
+            Route::post('amended', 'startamended')->name('amended');
 
 
         });

@@ -28,7 +28,7 @@
                                         class="btn btn-primary float-right btn-rounded addNewBtn">Add New Hazmat Company</a>
                               
                     </h5>
-                    <div class="card-body">
+                    <div class="card-body mb-4">
                         <div>
                             <table class="table table-striped table-bordered first">
                                 <thead>

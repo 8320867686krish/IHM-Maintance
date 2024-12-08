@@ -248,7 +248,7 @@ class ShipController extends Controller
         $partMenual = partManuel::where('ship_id',$ship_id)->where('hazmat_companies_id',$hazmat_companies_id)->get(); 
         $summary = Summary::where('ship_id',$ship_id)->where('hazmat_companies_id',$hazmat_companies_id)->get();
 
-        $checkHazmatIHMPart = CheckHazmat::with('hazmat')->where('ship_id',$ship_id)->get();
+        $checkHazmatIHMPart = CheckHazmat::with(relations: 'hazmat')->where('ship_id',$ship_id)->get();
         return view('ships.view', compact('experts', 'managers', 'isBack', 'ship', 'readonly', 'users', 'poOrders', 'ship_id','poSummeryGraph','checkHazmatIHMPart','hazmatSummeryName','hazmat_companies_id','partMenual','summary'));
     }
 

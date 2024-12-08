@@ -1,5 +1,5 @@
 @php $title = '';
-$label = 'Name of';
+$label = 'Name of ';
 
 if ($type === 'i-1') {
 $label .= 'paint';
@@ -14,11 +14,11 @@ $label .= 'structural element';
 $title .= 'I-3 Strucure and hull';
 }
 @endphp
+
+<div class="table-responsive mt-2">
 <h4>{{$title}} containing materials listed in table A and table B of appendix 1 of these guidelines</h4>
 
-<div class="table-responsive">
-
-    <table class="table table-striped table-bordered first"  style="width:100%">
+    <table class="table table-striped table-bordered first mt-4"  style="width:100%">
         <thead>
             <tr>
                 <th>No</th>
@@ -31,8 +31,8 @@ $title .= 'I-3 Strucure and hull';
                 @if($type == 'i-2' || $type == 'i-3')
                 <th>Parts where used</th>
                 @endif
-                <th >Approximate Quantity</th>
-                <th >Approximate Quantity</th>
+                <th >App.Qty</th>
+                <th >Unit</th>
 
                 <th>Remarks</th>
             </tr>

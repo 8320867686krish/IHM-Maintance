@@ -364,4 +364,152 @@ class VscpController extends Controller
             return response()->json(["isStatus" => false, 'error' => $th->getMessage()], 500);
         }
     }
+    public function unlockVscp(Request $request){
+        $post = $request->input();
+        Ship::where('id',$post['ship_id'])->update(['is_unlock'=>$post['is_unlock']]);
+
+    }
+    public function startamended(Request $request){
+        $post = $request->input();
+        $updateData = [];
+        if(@$post['new_ihm_version']){
+            $updateData['current_ihm_version'] = $post['new_ihm_version'];
+        }
+        if(@$post['new_version_date']){
+            $updateData['ihm_version_updated_date'] = $post['new_version_date'];
+        }
+        Ship::where('id',$post['ship_id'])->update($updateData);
+        $redirecctUrl = url('ship/vscp/'.$post['ship_id']);
+        return response()->json(data: ["isStatus" => true, "message" => "Save successfully",'redirectUrl'=>$redirecctUrl]);
+    }
+    public function summeryReport($post)
+    {
+        $project_id = $post['project_id'];
+        $version = $post['version'];
+        $date = date('d-m-Y', strtotime($post['date']));
+
+        $projectDetail = Ship::with('client')->find($project_id);
+        if (!$projectDetail) {
+            die('Project details not found');
+        }
+        $options = new Options();
+        $dompdf = new Dompdf($options);
+        $html = '';
+        $logo = 'https://sosindi.com/IHM/public/assets/images/logo.png';
+        $checkHazmatIHMPart = CheckHazmat::with(relations: 'hazmat')->where('ship_id',$ship_id)->get();
+
+        $lebResult = LabResult::with(['check', 'hazmat'])->where('project_id', $project_id)->where('type', 'Contained')->orwhere('type', 'PCHM')->get();
+        $filteredResults1 = $lebResult->filter(function ($item) {
+            return $item->IHM_part == 'IHMPart1-1';
+        });
+
+        $filteredResults2 = $lebResult->filter(function ($item) {
+            return $item->IHM_part == 'IHMPart1-2';
+        });
+        $filteredResults3 = $lebResult->filter(function ($item) {
+            return $item->IHM_part == 'IHMPart1-3';
+        });
+        $decks = Deck::with(['checks' => function ($query) {
+            $query->whereHas('labResults', function ($query) {
+                $query->where('type', 'PCHM')->orWhere('type', 'Contained');
+            });
+        }])->where('project_id', $project_id)->get();
+
+        try {
+            // Create an instance of mPDF with specified margins
+            $mpdf = new Mpdf([
+                'mode' => 'c',
+                'mode' => 'utf-8',
+                'format' => 'A4',
+                'margin_left' => 10,
+                'margin_right' => 10,
+                'margin_top' => 10,
+                'margin_bottom' => 20,
+                'margin_header' => 0,
+                'margin_footer' => 10,
+                'defaultPagebreakType' => 'avoid',
+                'imageProcessor' => 'GD', // or 'imagick' if you have Imagick installed
+                'jpeg_quality' => 75, // Set the JPEG quality (0-100)
+                'shrink_tables_to_fit' => 1, // Shrink tables to fit the page width
+                'tempDir' => __DIR__ . '/tmp', // Set a temporary directory for mPDF
+
+
+                'allow_output_buffering' => true,
+            ]);
+            $mpdf->defaultPageNumStyle = '1';
+            $mpdf->SetDisplayMode('fullpage');
+            $mpdf->SetCompression(true);
+
+            // Add each page of the Dompdf-generated PDF to the mPDF document
+
+            $mpdf->use_kwt = true;
+            $mpdf->defaultPageNumStyle = '1';
+            $mpdf->SetDisplayMode('fullpage');
+
+            // Define header content with logo
+            $header = '
+            <table width="100%" style="border-bottom: 1px solid #000000; vertical-align: middle; font-family: serif; font-size: 9pt; color: #000088;">
+                <tr>
+                    <td width="10%"><img src="' . $logo . '" width="50" /></td>
+                    <td width="80%" align="center">' . $projectDetail['ship_name'] . '</td>
+                    <td width="10%" style="text-align: right;">' . $projectDetail['project_no'] . '<br/>' . $date . '</td>
+                </tr>
+            </table>';
+
+            // Define footer content with page number
+            $footer = '
+            <table width="100%" style="vertical-align: bottom; font-family: serif; font-size: 8pt; color: #000000;">
+                <tr>
+                    <td width="33%" style="text-align: left;">' . $projectDetail['ihm_table'] . 'Summary</td>
+                    <td width="33%" style="text-align: center;">Revision:' . $version . '</td>
+                    <td width="33%" style="text-align: right;">{PAGENO}/{nbpg}</td>
+                </tr>
+            </table>';
+            $mpdf->SetHTMLHeader($header);
+            $mpdf->SetHTMLFooter($footer);
+
+            $stylesheet = file_get_contents('public/assets/mpdf.css');
+            $mpdf->WriteHTML($stylesheet, \Mpdf\HTMLParserMode::HEADER_CSS);
+            $summery = 'Summary';
+            $mpdf->WriteHTML(view('report.cover', compact('projectDetail', 'summery')));
+            $mpdf->WriteHTML(view('report.shipParticular', compact('projectDetail')));
+            $mpdf->AddPage('L'); // Set landscape mode for the inventory page
+
+            $mpdf->WriteHTML(view('report.Inventory', compact('filteredResults1', 'filteredResults2', 'filteredResults3', 'decks')));
+            foreach ($decks as $key => $value) {
+                if (count($value['checks']) > 0) {
+                    $html = $this->drawDigarm($value);
+                    $fileNameDiagram = $this->genrateDompdf($html['html'], $html['ori']);
+                    //    $mpdf = new Mpdf(['orientation' => 'L']); // Ensure landscape mode
+                    $mpdf->setSourceFile($fileNameDiagram);
+
+                    $pageCount = $mpdf->setSourceFile($fileNameDiagram);
+                    for ($i = 1; $i <= $pageCount; $i++) {
+
+                        $mpdf->AddPage($html['ori']);
+                        if ($key == 0) {
+                            $mpdf->WriteHTML('<h3 style="font-size:14px">2.1 Location Diagram of Contained HazMat & PCHM.</h3>');
+                        }
+                        $mpdf->WriteHTML('<h5 style="font-size:14px;">Area: ' . $value['name'] . '</h5>');
+
+                        $templateId = $mpdf->importPage($i);
+                        $mpdf->useTemplate($templateId, null, null, $mpdf->w, null); // Use the template with appropriate dimensions
+
+                        //  $mpdf->useTemplate($templateId, 0, 5, null, null);
+                    }
+                }
+            }
+            $safeProjectNo = str_replace('/', '_', $projectDetail['project_no']);
+            $fileName = "summary_" . $safeProjectNo . '.pdf';
+
+            $filePath = public_path('pdfs1/' . $fileName); // Adjust the directory and file name as needed
+            $mpdf->Output($filePath, \Mpdf\Output\Destination::FILE);
+            $response = response()->download($filePath, $fileName)->deleteFileAfterSend(true);
+            $response->headers->set('X-File-Name', $fileName);
+            return $response;
+        } catch (\Mpdf\MpdfException $e) {
+            // Handle mPDF exception
+            echo $e->getMessage();
+        }
+    }
 }

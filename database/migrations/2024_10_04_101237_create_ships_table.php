@@ -30,10 +30,17 @@ return new class extends Migration
             $table->string('gross_tonnage')->nullable();
             $table->string('vessel_previous_name')->nullable('');
             $table->string('ga_plan_pdf')->nullable('');
-            $table->string('ga_plan_image')->nullable('');
+            $table->string(column: 'ga_plan_image')->nullable('');
+            $table->boolean(column: 'is_unlock')->default(0);
 
 
-            $table->string('ship_image')->nullable();
+            $table->date('initial_ihm_date')->nullable();
+            $table->string('survey_location')->nullable();
+            $table->string('prepared_by')->nullable();
+            $table->string('approved_by')->nullable();
+            $table->string('current_ihm_version',20)->nullable();
+            $table->date('ihm_version_updated_date')->nullable();
+
             $table->unsignedBigInteger('client_id')->nullable();  // Same data type as hazmat_companies.id
             $table->foreign('client_id')->references('id')->on('client_companies')->onDelete('cascade');
             $table->unsignedBigInteger('client_user_id')->nullable();  // Same data type as hazmat_companies.id

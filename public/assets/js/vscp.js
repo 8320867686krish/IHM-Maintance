@@ -1,4 +1,5 @@
   $(document).ready(function() {
+   
         $('#getDeckCropImg').click(async function() {
             let $submitButton = $(this);
             let originalText = $submitButton.html();
@@ -166,101 +167,165 @@
         //     fileReader.readAsArrayBuffer(pdfFile);
         //     $('#pdfModal').modal('show');
         // }
-        window.convertToImage = async function() {
+        // async function convertToImage() {
+        //     $(".dashboard-spinner").show();
+        
+        //     const pdfFileInput = document.getElementById('pdfFile').files[0]; // Get selected file from input
+        //     const fileReader = new FileReader();
+        //     fileReader.onload = async function() {
+        //         const pdfData = new Uint8Array(this.result);
+        //         const pdf = await pdfjsLib.getDocument({
+        //             data: pdfData
+        //         }).promise;
+
+        //         for (let i = 1; i <= pdf.numPages; i++) {
+        //             const page = await pdf.getPage(i);
+        //             const viewport = page.getViewport({
+        //                 scale: 1
+        //             });
+
+
+        //             const canvas = document.createElement('canvas');
+        //             const context = canvas.getContext('2d');
+        //             canvas.width = viewport.width;
+        //             canvas.height = viewport.height;
+        //             $(".dashboard-spinner").show();
+
+        //             await page.render({
+        //                 canvasContext: context,
+        //                 viewport
+        //             }).promise;
+        //             const imageData = canvas.toDataURL('image/png');
+        //             const img = document.createElement('img');
+        //             img.src = imageData;
+        //             img.classList.add('pdf-image'); // Add a class to the image
+
+        //             const container = document.getElementById('img-container');
+        //             var pdfContainer = document.createElement('div');
+        //             pdfContainer.id = 'pdfContainer' + i; // Set the ID for the new div
+        //             pdfContainer.className = 'pdfContainer'; // Set the class for the new div
+        //             container.appendChild(pdfContainer);
+        //             // if(i == 1) {
+        //             // } else {
+        //             //     container.appendChild(pdfContainer).style="display:none";
+        //             // }
+        //             pdfContainer.appendChild(img);
+        //             img.onload = function() {
+        //                 var options = {
+        //                     currentPage: i,
+        //                     deleteMethod: 'doubleClick',
+        //                     handles: true,
+        //                     area: {
+        //                         strokeStyle: 'green',
+        //                         lineWidth: 2
+        //                     },
+        //                     onSelectEnd: function(image, selection) {
+        //                         console.log("Selection End:", selection);
+        //                     },
+        //                     initAreas: []
+        //                 };
+        //                 $(this).areaSelect(options);
+        //             };
+        //             $(".dashboard-spinner").hide();
+        //         }
+
+        //         // Bind event listeners after images are loaded
+        //         // $('.pdf-image').on('load', function() {
+        //         //     var options = {
+        //         //         deleteMethod: 'doubleClick',
+        //         //         handles: true,
+        //         //         area: {
+        //         //             strokeStyle: 'green',
+        //         //             lineWidth: 2
+        //         //         },
+
+        //         //         onSelectEnd: function(image, selection) {
+        //         //             console.log("Selection End:", selection);
+        //         //         },
+        //         //         initAreas: []
+        //         //     };
+        //         //     $(this).areaSelect(options);
+        //         // });
+        //     };
+        //     fileReader.readAsArrayBuffer(pdfFile);
+        
+        //     // Check if a file is selected from input
+        
+        //         $(".dashboard-spinner").hide();
+        //         $('#pdfModal').modal('show');
+            
+        // }
+        
+        async function convertToImage() {
             $(".dashboard-spinner").show();
-        
-            const pdfFileInput = document.getElementById('pdfFile').files[0]; // Get selected file from input
-            const existingFilePath = document.getElementById('existingFilePath').value; // URL of existing file
-        
-            let pdfData;
-        
-            // Check if a file is selected from input
-            if (pdfFileInput) {
-                // If file is uploaded, read it as an ArrayBuffer
-                const fileReader = new FileReader();
-                pdfData = await new Promise((resolve) => {
-                    fileReader.onload = () => resolve(new Uint8Array(fileReader.result));
-                    fileReader.readAsArrayBuffer(pdfFileInput);
-                });
-            } 
-            // If no file selected, try fetching from an existing file URL
-            else if (existingFilePath) {
-                try {
-                    // Fetch PDF file from the URL as a Blob
-                    const response = await fetch(existingFilePath);
-                    if (!response.ok) {
-                        throw new Error(`Failed to fetch the PDF: ${response.statusText}`);
-                    }
-                    const arrayBuffer = await response.arrayBuffer();
-                    pdfData = new Uint8Array(arrayBuffer);
-                } catch (error) {
-                    console.error('Error fetching PDF:', error);
-                    alert('Failed to fetch the PDF file.');
-                    $(".dashboard-spinner").hide();
-                    return;
-                }
-            } 
-            else {
-                alert('Please select a PDF file or provide a valid URL.');
-                $(".dashboard-spinner").hide();
+
+            const pdfFile = document.getElementById('pdfFile').files[0];
+            if (!pdfFile) {
+                alert('Please select a PDF file.');
                 return;
             }
-        
-            try {
-                // Load the PDF document using pdf.js
-                const pdf = await pdfjsLib.getDocument({ data: pdfData }).promise;
-        
+
+            const fileReader = new FileReader();
+            fileReader.onload = async function() {
+                const pdfData = new Uint8Array(this.result);
+                const pdf = await pdfjsLib.getDocument({
+                    data: pdfData
+                }).promise;
+
                 for (let i = 1; i <= pdf.numPages; i++) {
                     const page = await pdf.getPage(i);
-                    const viewport = page.getViewport({ scale: 1 });
-        
+                    const viewport = page.getViewport({
+                        scale: 1
+                    });
+
+
                     const canvas = document.createElement('canvas');
                     const context = canvas.getContext('2d');
                     canvas.width = viewport.width;
                     canvas.height = viewport.height;
-        
-                    await page.render({ canvasContext: context, viewport }).promise;
-        
+                    $(".dashboard-spinner").show();
+
+                    await page.render({
+                        canvasContext: context,
+                        viewport
+                    }).promise;
                     const imageData = canvas.toDataURL('image/png');
                     const img = document.createElement('img');
                     img.src = imageData;
-                    img.classList.add('pdf-image');
-        
+                    img.classList.add('pdf-image'); // Add a class to the image
+
                     const container = document.getElementById('img-container');
-                    const pdfContainer = document.createElement('div');
-                    pdfContainer.id = 'pdfContainer' + i;
-                    pdfContainer.className = 'pdfContainer';
+                    var pdfContainer = document.createElement('div');
+                    pdfContainer.id = 'pdfContainer' + i; // Set the ID for the new div
+                    pdfContainer.className = 'pdfContainer'; // Set the class for the new div
                     container.appendChild(pdfContainer);
-        
+                   
                     pdfContainer.appendChild(img);
-        
-                    img.onload = function () {
-                        const options = {
+                    img.onload = function() {
+                        var options = {
                             currentPage: i,
                             deleteMethod: 'doubleClick',
                             handles: true,
                             area: {
                                 strokeStyle: 'green',
-                                lineWidth: 2,
+                                lineWidth: 2
                             },
-                            onSelectEnd: function (image, selection) {
-                                console.log('Selection End:', selection);
+                            onSelectEnd: function(image, selection) {
+                                console.log("Selection End:", selection);
                             },
-                            initAreas: [],
+                            initAreas: []
                         };
                         $(this).areaSelect(options);
                     };
+                    $(".dashboard-spinner").hide();
                 }
-        
-                $(".dashboard-spinner").hide();
-                $('#pdfModal').modal('show');
-            } catch (error) {
-                console.error('Error processing PDF:', error);
-                $(".dashboard-spinner").hide();
-            }
+
+
+            };
+            fileReader.readAsArrayBuffer(pdfFile);
+            $('#pdfModal').modal('show');
         }
-        
-      
+
         
         $('#pdfModal').on('hidden.bs.modal', function() {
             $("#img-container").empty();
@@ -268,7 +333,7 @@
         });
 
         $('#pdfFile').change(function() {
-           window.convertToImage();
+            convertToImage();
         });
         if (window.location.hash) {
             // Use the hash to find the section
@@ -368,14 +433,7 @@
 
     function triggerFileInput(inputId) {
         $(`#${inputId}`).val('');
-        const existingFilePath = document.getElementById('existingFilePath').value;
-
-        if(existingFilePath){
-            window.convertToImage();
-        }else{
-            document.getElementById(inputId).click();
-
-        }
+        document.getElementById(inputId).click();
         $(".dashboard-spinner").show();
     }
     $(document).on('click', '.deckImgDeleteBtn', function(event) {

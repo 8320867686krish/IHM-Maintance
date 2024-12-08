@@ -24,6 +24,13 @@
                                 <input type="text" id="title" name="title" class="form-control">
                             </div>
                         </div>
+                        <div class="col-12 col-md-12 col-lg-12 mb-2">
+                            <div class="form-group">
+                                <label for="name">Version</label>
+                                <input type="text" id="version" name="version" class="form-control">
+                            </div>
+                        </div>
+
 
                         <div class="col-12 col-md-12 col-lg-12 mb-2">
                             <div class="form-group">

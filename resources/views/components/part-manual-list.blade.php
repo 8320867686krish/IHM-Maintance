@@ -3,6 +3,8 @@
         <tr class="new-part-mnual" data-id="{{$value['id']}}}">
             <td>{{$value['id']}}</td>
             <td>{{$value['title']}}</td>
+            <td>{{$value['version']}}</td>
+
             <td>{{$value['uploaded_by']}}</td>
             <td>{{$value['date']}}</td>
             <td><a href="{{$value['document']}}">{{ $value->getAttributes()['document'] }}</a></td>

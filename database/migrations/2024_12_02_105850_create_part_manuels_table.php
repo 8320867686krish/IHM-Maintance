@@ -18,6 +18,8 @@ return new class extends Migration
             $table->unsignedBigInteger('ship_id')->nullable();  // Same data type as hazmat_companies.id
             $table->foreign('ship_id')->references('id')->on('ships')->onDelete('cascade');
             $table->string('document')->nullable();
+            $table->string(column: 'version')->nullable();
+
             $table->string('title')->nullable();
             $table->string('uploaded_by')->nullable();
             $table->date('date')->nullable();

@@ -157,3 +157,7 @@
 .card-header{
 border-bottom :none;
 }
+.initialIhmDisable
+{
+    pointer-events: none;
+}

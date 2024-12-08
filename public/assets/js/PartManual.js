@@ -13,6 +13,8 @@ $(document).on("click", ".addPart", function () {
     form.find('#uploaded_by').val(part.uploaded_by);
     form.find('#date').val(part.date);
     form.find('#id').val(part.id);
+    form.find('#version').val(part.version);
+
     form.find('#documentshow').html(`<a href=${part.document} target="_blank">${doc}</a>`)
     $("#partmanuelModel").modal('show');
   

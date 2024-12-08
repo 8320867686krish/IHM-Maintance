@@ -39,7 +39,7 @@
                                 @endcan
                        
                     </h4>
-                    <div class="card-body">
+                    <div class="card-body mb-4">
                         <div class="table-responsive">
                             <table class="table table-striped table-bordered first">
                                 <thead>

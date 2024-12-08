@@ -24,7 +24,7 @@
                         class="btn btn-primary float-right btn-rounded addNewBtn">Add New Client Company</a>
                     @endcan
                 </h4>
-                <div class="card-body">
+                <div class="card-body mb-4">
                     <div>
                         <table class="table table-striped table-bordered first">
                             <thead>

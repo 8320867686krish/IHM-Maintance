@@ -4,7 +4,6 @@
          <button class="btn btn-primary" onclick="triggerFileInput('pdfFile')">Add</button>&nbsp;&nbsp;
        
          <input type="file" id="pdfFile" name="pdfFile" accept=".pdf" style="display: none;">
-         <input type="text" id="existingFilePath" name="existingFilePath" value="{{url('uploads/shipsVscp/'.$ship_id.'/'. $ship->ga_plan_pdf)}}">
      </div>
 
 

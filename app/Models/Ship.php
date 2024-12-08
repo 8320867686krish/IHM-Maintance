@@ -11,6 +11,7 @@ class Ship extends Model
     protected $fillable = [
         'ship_initials',
         'ship_name',
+        'is_unlock',
         'ship_type',
         'project_no',
         'imo_number',
@@ -30,7 +31,13 @@ class Ship extends Model
         'gross_tonnage',
         'vessel_previous_name',
         'ga_plan_pdf',
-        'ga_plan_image'
+        'ga_plan_image',
+        'initial_ihm_date',
+        'survey_location',
+        'prepared_by',
+        'approved_by',
+        'current_ihm_version',
+        'ihm_version_updated_date'
     ];
 
     public function shipTeams()
