@@ -1,6 +1,6 @@
  <div class="modal fade bd-example-modal-lg" data-backdrop="static" id="checkDataAddModal" tabindex="-1" role="dialog"
             aria-labelledby="checkDataAddModalLabel" >
-            <div class="modal-dialog modal-lg  modal-dialog-centered" role="document" style="max-width:70%">
+            <div class="modal-dialog modal-lg  modal-dialog-centered" role="document" style="max-width:70%;margin-right: calc(7%);">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">Checks</h5>

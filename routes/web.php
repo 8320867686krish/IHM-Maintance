@@ -82,6 +82,8 @@ Route::middleware('auth')->group(function () {
         });
     });
     Route::get('/portal-guide', [ShipController::class, 'portalGuide'])->name('portal.guide');
+    Route::get('/summeryReport/{ship_id}', [VscpController::class, 'summeryReport'])->name('summeryReport');
+
 
     Route::middleware('can:ships')->group(function () {
         Route::controller(ShipController::class)->group(function () {
@@ -94,7 +96,7 @@ Route::middleware('auth')->group(function () {
 
         });
         Route::controller(VscpController::class)->group(function () {
-            Route::get('ship/vscp/{ship_id}', 'index')->name('vscp')->middleware('can:ships');          
+            Route::get('ship/vscp/{ship_id}/{amended?}', 'index')->name('vscp')->middleware('can:ships');          
             Route::post('upload/GaPlan','uploadGaPlan');
             Route::get('ship/deleteDeck/{id}', 'deleteDeck')->name('deleteDeck');
             Route::post('ship/updateDeckDetails','updateDeckDetails')->name('updateDeckDetails');

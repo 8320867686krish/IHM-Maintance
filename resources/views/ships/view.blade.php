@@ -508,9 +508,21 @@ button.btn.btn-link .fas.fa-angle-down {
         @include('ships.ihm-initial')
 
     </div>
+    <div class="main-content container-fluid p-0" id="ihm_intial1" style="display: none;">
+        <div class="row card-body">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="page-header">
+                    <h5 class="section-title">IHM Initial Reords11</h5>
 
-    <div class="main-content container-fluid p-0" id="ihm_maintenance" style="display: none;">
+                </div>
+            </div>
+        </div>
+        @include('ships.ihm-initial')
 
+    </div>
+
+    <div class="main-content container-fluid p-0" id="ihm_maintenance">
+fffffffffff
         @if(session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             {{ session('success') }}
@@ -527,8 +539,7 @@ button.btn.btn-link .fas.fa-angle-down {
             </ul>
         </div>
         @endif
-
-        @include('ships.ihm-maintance')
+hhhh
 
     </div>
 
@@ -621,11 +632,13 @@ $(document).ready(function() {
 
     $('.aside-nav .nav li a').click(function() {
 
+console.log("dddd");
         $('.aside-nav .nav li').removeClass('active');
         $(this).parent('li').addClass('active');
         $('.main-content').hide();
 
         let targetId = $(this).attr('href');
+        console.log(targetId);
         $(targetId).show();
 
         return false;

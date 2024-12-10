@@ -14,20 +14,24 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Str;
 use App\Traits\ImageUpload;
-
+use Dompdf\Dompdf;
+use Mpdf\Mpdf;
+ini_set("pcre.backtrack_limit", "1000000");
+ini_set('exif.decode_jpeg', '0');
 class VscpController extends Controller
 {
     use ImageUpload;
 
     //
-    public function index($ship_id)
+    public function index($ship_id, $Amended=null)
     {
         $ship = Ship::with('decks')->find($ship_id);
         $checks = Check::with('hazmats.hazmat')->where('ship_id', $ship_id)->get();
 
+
         $hazmats = Hazmat::get(['id', 'name', 'table_type']);
 
-        return view('ships.vscp.index', compact('ship', 'ship_id', 'checks', 'hazmats'));
+        return view('ships.vscp.index', compact('ship', 'ship_id', 'checks', 'hazmats', 'Amended'));
     }
     public function uploadGaPlan(Request $request)
     {
@@ -299,18 +303,19 @@ class VscpController extends Controller
                     $oldImagePath = $this->deleteImage($path, basename($partmanul->document));
                 }
             }
-            $image = $this->upload($request, 'document', 'uploads/shipsVscp/'.$inputData['ship_id'].'/partmanual');
+            $image = $this->upload($request, 'document', 'uploads/shipsVscp/' . $inputData['ship_id'] . '/partmanual');
             $inputData['document'] = $image;
         }
         $insert = partManuel::updateOrCreate(['id' => $inputData['id']], $inputData);
 
-        $partMenual = partManuel::where('ship_id',$inputData['ship_id'])->where('hazmat_companies_id',$inputData['hazmat_companies_id'])->get();
+        $partMenual = partManuel::where('ship_id', $inputData['ship_id'])->where('hazmat_companies_id', $inputData['hazmat_companies_id'])->get();
 
         $htmllist = view('components.part-manual-list', compact('partMenual'))->render();
 
-        return response()->json(["isStatus" => true, "message" => "Attachment  save successfully","html"=>$htmllist]);
+        return response()->json(["isStatus" => true, "message" => "Attachment  save successfully", "html" => $htmllist]);
     }
-    public function partManualDelete($id){
+    public function partManualDelete($id)
+    {
         try {
             $partMenualData = partManuel::find($id);
             $shipId = $partMenualData->ship_id;
@@ -327,7 +332,8 @@ class VscpController extends Controller
         }
     }
 
-    public function summary(Request $request){
+    public function summary(Request $request)
+    {
         $inputData =  $request->input();
         $path = 'uploads/shipsVscp/' . $inputData['ship_id']  . '/summary' . "/";
         if ($request->hasFile('document')) {
@@ -337,18 +343,19 @@ class VscpController extends Controller
                     $oldImagePath = $this->deleteImage($path, basename($partmanul->document));
                 }
             }
-            $image = $this->upload($request, 'document', 'uploads/shipsVscp/'.$inputData['ship_id'].'/summary');
+            $image = $this->upload($request, 'document', 'uploads/shipsVscp/' . $inputData['ship_id'] . '/summary');
             $inputData['document'] = $image;
         }
         $insert = Summary::updateOrCreate(['id' => $inputData['id']], $inputData);
 
-        $summary = Summary::where('ship_id',$inputData['ship_id'])->where('hazmat_companies_id',$inputData['hazmat_companies_id'])->get();
+        $summary = Summary::where('ship_id', $inputData['ship_id'])->where('hazmat_companies_id', $inputData['hazmat_companies_id'])->get();
 
         $htmllist = view('components.summary-list', compact('summary'))->render();
 
-        return response()->json(["isStatus" => true, "message" => "Attachment  save successfully","html"=>$htmllist]);
+        return response()->json(["isStatus" => true, "message" => "Attachment  save successfully", "html" => $htmllist]);
     }
-    public function summaryDelete($id){
+    public function summaryDelete($id)
+    {
         try {
             $summaryData = Summary::find($id);
             $shipId = $summaryData->ship_id;
@@ -364,60 +371,62 @@ class VscpController extends Controller
             return response()->json(["isStatus" => false, 'error' => $th->getMessage()], 500);
         }
     }
-    public function unlockVscp(Request $request){
+    public function unlockVscp(Request $request)
+    {
         $post = $request->input();
-        Ship::where('id',$post['ship_id'])->update(['is_unlock'=>$post['is_unlock']]);
-
+        Ship::where('id', $post['ship_id'])->update(['is_unlock' => $post['is_unlock']]);
     }
-    public function startamended(Request $request){
+    public function startamended(Request $request)
+    {
         $post = $request->input();
         $updateData = [];
-        if(@$post['new_ihm_version']){
+        if (@$post['new_ihm_version']) {
             $updateData['current_ihm_version'] = $post['new_ihm_version'];
         }
-        if(@$post['new_version_date']){
+        if (@$post['new_version_date']) {
             $updateData['ihm_version_updated_date'] = $post['new_version_date'];
         }
-        Ship::where('id',$post['ship_id'])->update($updateData);
-        $redirecctUrl = url('ship/vscp/'.$post['ship_id']);
-        return response()->json(data: ["isStatus" => true, "message" => "Save successfully",'redirectUrl'=>$redirecctUrl]);
+        Ship::where('id', $post['ship_id'])->update($updateData);
+        $redirecctUrl = url('ship/vscp/' . $post['ship_id']);
+        return response()->json(data: ["isStatus" => true, "message" => "Save successfully", 'redirectUrl' => $redirecctUrl]);
     }
-    public function summeryReport($post)
+    public function summeryReport($ship_id)
     {
-        $project_id = $post['project_id'];
-        $version = $post['version'];
-        $date = date('d-m-Y', strtotime($post['date']));
 
-        $projectDetail = Ship::with('client')->find($project_id);
-        if (!$projectDetail) {
+
+        $shipDetail = Ship::with('client')->find($ship_id);
+        if (!$shipDetail) {
             die('Project details not found');
         }
-        $options = new Options();
-        $dompdf = new Dompdf($options);
+        $version  =  $shipDetail['current_ihm_version'];
+        $date = $shipDetail['ihm_version_updated_date'];
         $html = '';
         $logo = 'https://sosindi.com/IHM/public/assets/images/logo.png';
-        $checkHazmatIHMPart = CheckHazmat::with(relations: 'hazmat')->where('ship_id',$ship_id)->get();
+        // $checkHazmatIHMPart = CheckHazmat::with(relations: 'hazmat')->where('ship_id',$ship_id)->get();
 
-        $lebResult = LabResult::with(['check', 'hazmat'])->where('project_id', $project_id)->where('type', 'Contained')->orwhere('type', 'PCHM')->get();
-        $filteredResults1 = $lebResult->filter(function ($item) {
-            return $item->IHM_part == 'IHMPart1-1';
+        $checkHazmatIHMPart = CheckHazmat::with(relations: 'hazmat')->where('ship_id', $ship_id)->get();
+        $filteredResults1 = $checkHazmatIHMPart->filter(function ($item) {
+            return $item->ihm_part_table == 'i-1';
         });
 
-        $filteredResults2 = $lebResult->filter(function ($item) {
-            return $item->IHM_part == 'IHMPart1-2';
+        $filteredResults2 = $checkHazmatIHMPart->filter(function ($item) {
+            return $item->ihm_part_table == 'i-2';
         });
-        $filteredResults3 = $lebResult->filter(function ($item) {
-            return $item->IHM_part == 'IHMPart1-3';
+
+        $filteredResults3 = $checkHazmatIHMPart->filter(function ($item) {
+            return $item->ihm_part_table == 'i-3';
         });
+
+
         $decks = Deck::with(['checks' => function ($query) {
-            $query->whereHas('labResults', function ($query) {
-                $query->where('type', 'PCHM')->orWhere('type', 'Contained');
+            $query->whereHas('hazmats', function ($query) {
+                $query->where('hazmat_type', 'PCHM')->orWhere('hazmat_type', 'Contained');
             });
-        }])->where('project_id', $project_id)->get();
+        }])->where('ship_id',$ship_id)->get();
 
         try {
             // Create an instance of mPDF with specified margins
-            $mpdf = new Mpdf([
+            $mpdf =  new Mpdf([
                 'mode' => 'c',
                 'mode' => 'utf-8',
                 'format' => 'A4',
@@ -451,8 +460,8 @@ class VscpController extends Controller
             <table width="100%" style="border-bottom: 1px solid #000000; vertical-align: middle; font-family: serif; font-size: 9pt; color: #000088;">
                 <tr>
                     <td width="10%"><img src="' . $logo . '" width="50" /></td>
-                    <td width="80%" align="center">' . $projectDetail['ship_name'] . '</td>
-                    <td width="10%" style="text-align: right;">' . $projectDetail['project_no'] . '<br/>' . $date . '</td>
+                    <td width="80%" align="center">' . $shipDetail['ship_name'] . '</td>
+                    <td width="10%" style="text-align: right;">' . $shipDetail['project_no'] . '<br/>' . $date . '</td>
                 </tr>
             </table>';
 
@@ -460,7 +469,7 @@ class VscpController extends Controller
             $footer = '
             <table width="100%" style="vertical-align: bottom; font-family: serif; font-size: 8pt; color: #000000;">
                 <tr>
-                    <td width="33%" style="text-align: left;">' . $projectDetail['ihm_table'] . 'Summary</td>
+                    <td width="33%" style="text-align: left;">' . $shipDetail['ihm_table'] . 'Summary</td>
                     <td width="33%" style="text-align: center;">Revision:' . $version . '</td>
                     <td width="33%" style="text-align: right;">{PAGENO}/{nbpg}</td>
                 </tr>
@@ -468,14 +477,12 @@ class VscpController extends Controller
             $mpdf->SetHTMLHeader($header);
             $mpdf->SetHTMLFooter($footer);
 
-            $stylesheet = file_get_contents('public/assets/mpdf.css');
+            $stylesheet = file_get_contents('assets/mpdf.css');
             $mpdf->WriteHTML($stylesheet, \Mpdf\HTMLParserMode::HEADER_CSS);
-            $summery = 'Summary';
-            $mpdf->WriteHTML(view('report.cover', compact('projectDetail', 'summery')));
-            $mpdf->WriteHTML(view('report.shipParticular', compact('projectDetail')));
+            $mpdf->WriteHTML(view('report.cover', compact('shipDetail')));
+            $mpdf->WriteHTML(view('report.shipParticular', compact('shipDetail')));
             $mpdf->AddPage('L'); // Set landscape mode for the inventory page
-
-            $mpdf->WriteHTML(view('report.Inventory', compact('filteredResults1', 'filteredResults2', 'filteredResults3', 'decks')));
+            $mpdf->WriteHTML(view('report.Inventory', compact('filteredResults1', 'filteredResults2', 'filteredResults3')));
             foreach ($decks as $key => $value) {
                 if (count($value['checks']) > 0) {
                     $html = $this->drawDigarm($value);
@@ -495,11 +502,11 @@ class VscpController extends Controller
                         $templateId = $mpdf->importPage($i);
                         $mpdf->useTemplate($templateId, null, null, $mpdf->w, null); // Use the template with appropriate dimensions
 
-                        //  $mpdf->useTemplate($templateId, 0, 5, null, null);
                     }
                 }
             }
-            $safeProjectNo = str_replace('/', '_', $projectDetail['project_no']);
+       
+            $safeProjectNo = str_replace('/', '_', $shipDetail['project_no']);
             $fileName = "summary_" . $safeProjectNo . '.pdf';
 
             $filePath = public_path('pdfs1/' . $fileName); // Adjust the directory and file name as needed
@@ -511,5 +518,213 @@ class VscpController extends Controller
             // Handle mPDF exception
             echo $e->getMessage();
         }
+    }
+    public function genrateDomPdf($html, $page)
+    {
+        $dompdf = new Dompdf();
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', $page);
+         $dompdf->render();
+        $mainContentPdf = $dompdf->output();
+        $filename = "project" . uniqid() . "ab.pdf";
+        $filePath = storage_path('app/pdf') . "/" . $filename;
+
+        file_put_contents($filePath, $mainContentPdf);
+        return $filePath;
+    }
+    public function drawDigarm($decks)
+    {
+        $i = 1;
+        $html = "";
+        $lineCss = 'position:absolute;background-color:#4052d6;border:solid #4052d6 1px;';
+        $tooltipCss = 'position: absolute;background-color: #fff;border: 1px solid #4052d6;padding: 1px;border-radius: 2px;
+                white-space: nowrap;z-index: 1;color:#4052d6;font-size:8px;text-align:center;';
+        if (count($decks['checks']) > 0) {
+            $chunks = array_chunk($decks['checks']->toArray(), 15);
+
+            $k = 0;
+            $gap = 1;
+            $ori = "landscape";
+            $oddincreaseGap = 29;
+            $evenincreaseGap = 29;
+            $imageDesireHeight = 500;
+            foreach ($chunks as $chunkIndex => $chunk) {
+                $imagePath = $decks['image'];
+                $imageData = base64_encode(file_get_contents($imagePath));
+                $imageBase64 = 'data:image/' . pathinfo($imagePath, PATHINFO_EXTENSION) . ';base64,' . $imageData;
+                list($width, $height) = getimagesize($imagePath);
+                $containerWidth = "1024"; 
+                if ($width >= 1000) {
+                    $html .= "<div class='maincontnt next' style='display: flex; justify-content: center; align-items: center; flex-direction: column; height:100vh;'>";
+                } else {
+                    if ($height >= 380) {
+                        $ori = "portrait";
+                        if($width >= 500){
+                            $containerWidth = "794";
+
+                        }else{
+                            $containerWidth = "900";
+
+                        }
+                        $image_height =  $imageDesireHeight;
+                        $image_width = ($image_height * $width) / $height;
+                    } else {
+                        $image_width = $width;
+                    }
+                   
+                    $leftPositionPixels = ($containerWidth - $image_width) / 2;
+                    $leftPositionPercent = ($leftPositionPixels / 1024) * 100;
+
+                    $html .= "<div class='maincontnt next' style='display: flex; justify-content: center; align-items: center; flex-direction: column;margin-left:{$leftPositionPercent}%;'>";
+                }
+                $topPer =  ( $ori == 'portrait') ? '40%':'20%';
+
+                $html .= '<div style="margin-top:'.$topPer.';">';
+
+                $html .= '<div class="image-container " id="imgc' . $i . '" style="position: relative;width: 100%; ">';
+                $image_width  = 1024;
+
+                if ($width > 1000) {
+                    $image_height = ($image_width * $height) / $width;
+
+                    $newImage = '<img src="' . $imageBase64 . '" id="imageDraw' . $i . '" style="width:' .  $image_width . 'px;" />';
+                } else {
+                    if ($height >= 380) {
+                       $image_height =$imageDesireHeight;
+                        $image_width = ($image_height * $width) / $height;
+                        $newImage = '<img src="' . $imageBase64 . '" id="imageDraw' . $i . '"  style="width:' .  $image_width . 'px;"/>';
+                    } else {
+                        $image_height = $height;
+                        $newImage = '<img src="' . $imageBase64 . '" id="imageDraw' . $i . '" />';
+                    }
+                }
+                $html .= $newImage;
+                $evenarrayLeft = [];
+                $evenarrayTop = [];
+                $sameLocationevenarray = [];
+                $sameLocationoddarray = [];
+
+                $oddarrayLeft = [];
+                $oddarrayTop = [];
+
+                $maxLine = ''; // Optional: to store the longest tooltip text
+                $maxLength = 0; // Variable to store the max tooltip length
+
+                foreach ($chunk as $key => $value) {
+                    $top = $value['position_top'];
+                    $left = $value['position_left'];
+
+                    $explode = explode("#", $value['name']);
+                    $tooltipText = ($value['type'] == 'sample' ? 's' : 'v') . $explode[1] . "<br/>";
+                    if (@$value['check_hazmats']) {
+                        $hazmatCount = count($value['check_hazmats']); // Get the total number of elements
+                        foreach ($value['check_hazmats'] as $index => $hazmet) {
+                            $tooltipText .= '<span style="font-size:8px;color:' . $hazmet['hazmat']['color']   . '">' . $hazmet['hazmat']['short_name'] . '</span>';
+                            if ($index < $hazmatCount - 1) {
+                                $tooltipText .= ',';
+                            }
+                        }
+                    }
+                    $currentLength = strlen(strip_tags($tooltipText)); // Remove HTML tags for length calculation
+                    if ($currentLength > $maxLength) {
+                        $maxLength = $currentLength;
+                    }
+                    $k++;
+                    if ($width > 1000 || $height >= 600) {
+                        $topshow = ($image_width * $top) / $width;
+                        $leftshow = ($image_width * $left) / $width;
+                    } else {
+
+                        if ($image_height == $imageDesireHeight) {
+                            $topshow = ($image_width * $top) / $width;
+                            $leftshow = ($image_width * $left) / $width;
+                        } else {
+                            $topshow = $top;
+                            $leftshow = $left;
+                        }
+                    }
+                    $lineLeftPosition =  ($leftshow + 4);
+                    $tool = 0;
+                    if ($k % 2 == 1) {
+                        $lineTopPosition = "-" . $gap;
+                        $lineHeight = ($topshow + $gap);
+                        $tooltipStart = $lineTopPosition - $oddincreaseGap;
+                        $oddsameLocation = 0;
+                        foreach ($oddarrayLeft as $key => $oddvalue) {
+                            if (abs($lineLeftPosition - $oddvalue) < 100 && abs($topshow - $oddarrayTop[$key]) < 100) {
+                                $oddsameLocation++;
+                                $tooltipStart = $tooltipStart - $oddincreaseGap;
+                                $lineHeight = $lineHeight + $oddincreaseGap;
+                                $lineTopPosition = $lineTopPosition - $oddincreaseGap;
+                            } else {
+                                //for else odd i mean line in same place
+                                $tooltipStart = $tooltipStart - 29;
+                                $lineHeight =  $topshow +  abs($tooltipStart);
+                                $lineTopPosition = $tooltipStart;
+                            }
+                        }
+                        if ($oddsameLocation > 1) {
+                            foreach ($sameLocationoddarray as $sameLocationoddValue) {
+                                if ($sameLocationoddValue == $tooltipStart) {
+                                    $tooltipStart = $tooltipStart - 29;
+                                    $lineHeight =  $topshow +  abs($tooltipStart);
+                                    $lineTopPosition = $tooltipStart;
+                                }
+                            }
+                            $sameLocationoddarray[] = $tooltipStart;
+                        }
+                        $oddarrayLeft[$value['id']] =  $lineLeftPosition;
+                        $oddarrayTop[$value['id']] =  $topshow;
+                    } else {
+                        $lineTopPosition =   $topshow;
+                        $lineHeight = ($image_height - $topshow + $gap);
+                        $tooltipStart = $image_height + $gap;
+                        $sameLocation = 0;
+                        $findLeft = abs($maxLength * 5 + 100);
+                    
+
+                        foreach ($evenarrayLeft as $key => $evenvalue) {
+                            if (abs($lineLeftPosition - $evenvalue) < $findLeft && abs($topshow - $evenarrayTop[$key]) < 100) {
+                                $sameLocation++;
+                                $tooltipStart = $tooltipStart + $evenincreaseGap;
+                                $lineHeight = $lineHeight + $evenincreaseGap;
+                            }else{
+                                
+                                    $tooltipStart = $tooltipStart  + $evenincreaseGap; // Example of subtracting for odd
+                                    $lineHeight = $lineHeight + $evenincreaseGap ;    // Adjust this logic as per your needs
+                                
+                            }
+                        }
+                       
+                        if ($sameLocation > 1) {
+                            foreach ($sameLocationevenarray as $sameLocationValue) {
+                                if ($sameLocationValue == $tooltipStart) {
+                                    $tooltipStart = $tooltipStart +  $evenincreaseGap;
+                                    $lineHeight = $lineHeight +  $evenincreaseGap;
+                                }
+                            }
+                            $sameLocationevenarray[] = $tooltipStart;
+                        }
+                        $evenarrayLeft[$value['id']] = $lineLeftPosition;
+                        $evenarrayTop[$value['id']] =  $topshow;
+                    }
+                     $html .= '<div class="dot" style="top:' . $topshow . 'px; left:' . $leftshow . 'px; position: absolute;border: 4px solid #4052d6;background: #4052d6;border-radius: 50%;"></div>';
+
+                     $html .= '<span class="line" style="top:' . $lineTopPosition  . 'px;left:' . $lineLeftPosition . 'px;height:' . $lineHeight . 'px;' . $lineCss . '"></span>';
+
+
+                     $html .= '<span class="tooltip" style="' . $tooltipCss . 'top:' . $tooltipStart . 'px; left:' . ($lineLeftPosition - 15) . 'px">' . $tooltipText . '</span>';
+                }
+                $html .= '</div>';
+                $html .= '</div>';
+                $html .= '</div>';
+
+                $i++; // Increment the counter for the next image ID
+
+            }
+        }
+
+
+        return ['html'=>$html,'ori'=>$ori];
     }
 }

@@ -27,11 +27,17 @@ class Check extends Model
 }
     public function getCloseImageAttribute($value)
     {
-        return asset('uploads/shipsVscp/' . $this->ship_id . '/check' . "/".$value);
+        if (!$value) {
+            return null; // Return null if the value is not available
+        }
+        return asset('uploads/shipsVscp/' . $this->ship_id . '/check' ."/". $value);
     }
     public function getAwayImageAttribute($value)
     {
-        return asset('uploads/shipsVscp/' . $this->ship_id . '/check' . "/".$value);
+        if (!$value) {
+            return null; // Return null if the value is not available
+        }
+        return asset('uploads/shipsVscp/' . $this->ship_id . '/check' ."/". $value);
     }
     public function hazmats()
     {

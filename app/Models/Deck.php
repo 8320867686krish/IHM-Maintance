@@ -17,4 +17,11 @@ class Deck extends Model
     {
         return $this->hasMany(Check::class, 'deck_id', 'id');
     }
+    public function getImageAttribute($value)
+    {
+        if (!$value) {
+            return null; // Return null if the value is not available
+        }
+        return asset('uploads/shipsVscp/' . $this->ship_id  ."/". $value);
+    }
 }

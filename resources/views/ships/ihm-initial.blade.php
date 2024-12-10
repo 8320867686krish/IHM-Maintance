@@ -16,11 +16,11 @@
                 </div>
                 <div id="collapseinitial1" class="collapse show" aria-labelledby="headinginitial1" data-parent="#accordion">
                     <div class="card-body mb-2">
-                       
+
                         @can('ships.edit')
                         <a href="{{ url('ship/vscp/' . $ship_id) }}" id="initialIhm" class="btn btn-primary float-right mb-3 {{ $ship['is_unlock']  ? 'initialIhmDisable' : '' }}">Edit Initial IHM</a>
                         <label class="switch float-right">
-                            <input class="switch-input" type="checkbox" data-shipId="{{$ship_id}}"  {{ $ship['is_unlock']  ? 'checked' : '' }}>
+                            <input class="switch-input" type="checkbox" data-shipId="{{$ship_id}}" {{ $ship['is_unlock']  ? 'checked' : '' }}>
                             <span class="switch-label" data-on="" data-off=""></span>
                             <span class="switch-handle"></span>
                         </label>
@@ -74,7 +74,7 @@
                             </div>
                             @include('ships.models.SummaryModel')
 
-                            
+
                         </div>
                     </div>
                 </div>
@@ -132,7 +132,7 @@
                     </div>
                     <div id="collapsinitial7" class="collapse" aria-labelledby="headinginitial7" data-parent="#accordion">
                         <div class="card-body">
-                        <a href="#" class="btn btn-primary float-right mb-3 startAmended">Start Amended</a>
+                            <a href="#" class="btn btn-primary float-right mb-3 startAmended">Start Amended</a>
                         </div>
                     </div>
                 </div>
@@ -141,11 +141,12 @@
             </div>
         </div>
     </div>
+</div>
     @include('ships.models.remarksModel')
     @include('ships.models.unlockWarningModel')
     @include('ships.models.amendedModel')
 
-    
+
 
     @push('js')
     <script src="{{ asset('assets/js/PartManual.js') }}"></script>

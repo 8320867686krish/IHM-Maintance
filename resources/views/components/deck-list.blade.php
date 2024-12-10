@@ -6,7 +6,7 @@
 
             <div class="deck-img">
                 <a href="{{ url('ship/deck/' . $deck['id'] . '/check') }}">
-                    <img class="img-fluid px-3" src="{{ asset('uploads/shipsVscp/' . $deck->ship_id . '/' . $deck->image) }}" alt="{{ $deck->name }}">
+                    <img class="img-fluid px-3" src="{{$deck->image}}" alt="{{ $deck->name }}">
                 </a>
             </div>
         </div>
