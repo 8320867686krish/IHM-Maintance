@@ -15,6 +15,9 @@ $(document).on("click", ".downloadReport", function () {
 
         $("#amendedModal").modal('show');
 
+    }else{
+        $("#unlockModal").modal('hide');
+
     }
 });
 
@@ -54,6 +57,16 @@ $('.switch-input').change(function () {
             });
         }, function () {
             $checkbox.prop('checked', initialState); // Revert checkbox state if cancelled
+        });
+    }else{
+        $.ajax({
+            url: unlockurl,
+            method: "POST",
+            data: {
+                "_token": unlockToken,
+                "ship_id": shipId,
+                "is_unlock": isChecked ? 1 : 0
+            },
         });
     }
    

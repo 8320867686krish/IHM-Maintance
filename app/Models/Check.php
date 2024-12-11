@@ -21,22 +21,21 @@ class Check extends Model
         'close_image',
         'away_image',
     ];
-    public function getRawCloseImageAttribute()
-{
-    return $this->attributes['close_image'] ?? null;
-}
+ 
     public function getCloseImageAttribute($value)
     {
-        if (!$value) {
-            return null; // Return null if the value is not available
+        if (is_null($value)) {
+            return null; // Return null if the value is null
         }
+    
         return asset('uploads/shipsVscp/' . $this->ship_id . '/check' ."/". $value);
     }
     public function getAwayImageAttribute($value)
     {
-        if (!$value) {
-            return null; // Return null if the value is not available
+        if (is_null($value)) {
+            return null; // Return null if the value is null
         }
+    
         return asset('uploads/shipsVscp/' . $this->ship_id . '/check' ."/". $value);
     }
     public function hazmats()

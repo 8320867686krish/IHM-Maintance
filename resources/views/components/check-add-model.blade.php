@@ -19,12 +19,13 @@ $title .= 'I-3 Strucure and hull';
 @endphp
 
 <div class="col-12 col-md-12 col-lg-12 card cloneCheck" id="cloneCheck{{$value['id']}}">
+    @if(!@$amended)
     <div class="col-12 col-md-12 col-lg-12 mt-2 text-right">
 
         <a href="javascript:;" class="deleteCheckItem" data-itemId="{{$value['id']}}" title="Delete"><i class="fas fa-trash-alt text-danger" style="font-size: 1rem"></i></a>
 
     </div>
-
+    @endif
     <div class="row card-body">
         <div class="col-12 mt-2 ihm_part">
             <div class="form-group">

@@ -11,7 +11,7 @@
  </div>
  <div class="row mt-4 deckView">
     @if (isset($ship->decks) && $ship->decks->count() > 0)
-    <x-deck-list :decks="$ship->decks" />
+    <x-deck-list :decks="$ship->decks" :amended="$amended" />
     
     @endif
 </div>

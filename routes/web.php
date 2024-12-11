@@ -100,10 +100,10 @@ Route::middleware('auth')->group(function () {
             Route::post('upload/GaPlan','uploadGaPlan');
             Route::get('ship/deleteDeck/{id}', 'deleteDeck')->name('deleteDeck');
             Route::post('ship/updateDeckDetails','updateDeckDetails')->name('updateDeckDetails');
-            Route::get('ship/deck/{id}/check', 'check')->name('deck.check');
+            Route::get('ship/deck/{id}/check/{amended?}', 'check')->name('deck.check');
             Route::post('check/save','checkSave')->name('check.save');
             Route::post('ship/check/{id}', 'deleteCheck')->name('check.delete');
-            Route::get('check/{id}/hazmat', 'checkHazmat')->name('check.hazmat');
+            Route::get('check/{id}/hazmat/{amended?}', 'checkHazmat')->name('check.hazmat');
             Route::post('partManual', 'partManual')->name('partManual');
             Route::delete('part/remove/{id}', 'partManualDelete')->name('partManualDelete');
             Route::post('summary', 'summary')->name('summary');

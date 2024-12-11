@@ -12,9 +12,12 @@
 
                     <form method="post" action="{{route('check.save')}}" id="checkDataAddForm"
                         enctype="multipart/form-data">
+                        
                         <div class="modal-body"
                             style="overflow-x: auto; overflow-y: auto; max-height: calc(81vh - 1rem);">
                             @csrf
+                            <input type="hidden" id="amended" name="amended" value="{{$amended ?? ''}}">
+
                             <input type="hidden" id="allCheck" name="allCheck">
                             <input type="hidden" id="check_id" name="id">
                             <input type="hidden" id="formType" value="add">

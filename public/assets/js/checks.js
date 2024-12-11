@@ -3,6 +3,7 @@ var initialLeft, initialTop;
 let widthPercent = 100;
 let previewImgInWidth = $("#previewImg1").width();
 let currectWithPercent = widthPercent;
+let amended = $("#amended").val();
 function makeDotsDraggable() {
     $(".dot").draggable({
         containment: "#previewImg1",
@@ -24,7 +25,7 @@ function makeDotsDraggable() {
 function detailOfHazmats(checkId) {
     $.ajax({
         type: 'GET',
-        url: `${baseUrl}/check/${checkId}/hazmat`,
+        url: `${baseUrl}/check/${checkId}/hazmat/${amended}`,
         success: function (response) {
             $("#chksName").val(response.check.data.name);
             $("#chkType").val(response.check.data.type);
@@ -397,15 +398,19 @@ $(document).on('click', '.addNewItemBtn', function (e) {
     checkIteamindex++;
     // Get the index of the clicked button
     //  var clickedIndex = $('.addNewItemBtn').index(this);
-
+var  newItem = "";
     // Add a new item to the container
-    var newItem = `<div class="col-12 col-md-12 col-lg-12 card cloneCheck" id="cloneCheck${checkIteamindex}">
-                 <div class="col-12 col-md-12 col-lg-12 mt-2 text-right">
+     newItem+= `<div class="col-12 col-md-12 col-lg-12 card cloneCheck" id="cloneCheck${checkIteamindex}">`
+               
+    if(amended == ''){
+        newItem+=  `<div class="col-12 col-md-12 col-lg-12 mt-2 text-right">
+        <a href="javascript:;" class="deleteCheckItem" data-itemId=${checkIteamindex} title="Delete"><i class="fas fa-trash-alt text-danger" style="font-size: 1rem"></i></a> </div>`
+
+    }
               
-                <a href="javascript:;" class="deleteCheckItem" data-itemId=${checkIteamindex} title="Delete"><i class="fas fa-trash-alt text-danger" style="font-size: 1rem"></i></a>
     
-            </div>
-                <div class="row card-body">
+           
+    newItem+= `<div class="row card-body">
                     <div class="col-12 mt-2 ihm_part">
                         <div class="form-group">
                             <label>IHM Table</label>
@@ -418,7 +423,7 @@ $(document).on('click', '.addNewItemBtn', function (e) {
                         </div>
                      </div>
                 </div>
-            </div>`;
+            </div>`
     $('#showTableHazmat').append(newItem);
     // Log the index for debugging
 

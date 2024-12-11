@@ -23,7 +23,7 @@ class VscpController extends Controller
     use ImageUpload;
 
     //
-    public function index($ship_id, $Amended=null)
+    public function index($ship_id, $amended=null)
     {
         $ship = Ship::with('decks')->find($ship_id);
         $checks = Check::with('hazmats.hazmat')->where('ship_id', $ship_id)->get();
@@ -31,7 +31,7 @@ class VscpController extends Controller
 
         $hazmats = Hazmat::get(['id', 'name', 'table_type']);
 
-        return view('ships.vscp.index', compact('ship', 'ship_id', 'checks', 'hazmats', 'Amended'));
+        return view('ships.vscp.index', compact('ship', 'ship_id', 'checks', 'hazmats', 'amended'));
     }
     public function uploadGaPlan(Request $request)
     {
@@ -161,11 +161,11 @@ class VscpController extends Controller
             return response()->json(["isStatus" => false, 'error' => $th->getMessage()], 500);
         }
     }
-    public function check($deck_id)
+    public function check($deck_id,$amended = null)
     {
         $deck = Deck::with('checks')->find($deck_id);
         $hazmats = Hazmat::get(['id', 'name', 'table_type']);
-        return view('ships.vscp.check.check', ['deck' => $deck, 'hazmats' => $hazmats]);
+        return view('ships.vscp.check.check', ['deck' => $deck, 'hazmats' => $hazmats,'amended' => $amended ]);
     }
     public function checkSave(Request $request)
     {
@@ -188,11 +188,11 @@ class VscpController extends Controller
         if ($request->hasFile('close_image')) {
             if ($inputData['id'] != 0) {
                 if ($checkData && $checkData->close_image) {
-                    $oldImagePath = $this->deleteImage($path, basename($checkData->close_image));
+                    $closeimagePath = $this->deleteImage($path, basename($checkData->close_image));
                 }
             }
-            $image = $this->upload($request, 'closeUpImage', 'uploads/shipsVscp/' . $inputData['ship_id'] . '/check');
-            $finalData['close_image'] = $image;
+            $closeimage = $this->upload($request, 'close_image', 'uploads/shipsVscp/' . $inputData['ship_id'] . '/check');
+            $finalData['close_image'] = $closeimage;
         }
         if ($request->hasFile('away_image')) {
             if ($inputData['id'] != 0) {
@@ -274,17 +274,17 @@ class VscpController extends Controller
         }
     }
 
-    public function checkHazmat($check_id)
+    public function checkHazmat($check_id,$amended = null)
     {
         $check = Check::with('hazmats')->find($check_id);
         $checkhazmat = $check->hazmats ?? [];
         $hazmats = Hazmat::get(['id', 'name', 'table_type']);
-        $htmllist = view('components.check-add-model', compact('checkhazmat', 'hazmats'))->render();
+        $htmllist = view('components.check-add-model', compact('checkhazmat', 'hazmats','amended'))->render();
         $response = [
             'html' => $htmllist,
             'check' => [
                 'data' => $check, // Include the original Check object
-                'original_close_image' => basename($check->close_image), // Raw value
+                'original_close_image' => basename($check->getAttributeValue('close_image')), // Raw value
                 'original_away_image' => basename($check->away_image), // Raw value
             ],
         ];
@@ -387,7 +387,7 @@ class VscpController extends Controller
             $updateData['ihm_version_updated_date'] = $post['new_version_date'];
         }
         Ship::where('id', $post['ship_id'])->update($updateData);
-        $redirecctUrl = url('ship/vscp/' . $post['ship_id']);
+        $redirecctUrl = url('ship/vscp/' . $post['ship_id']."/amended");
         return response()->json(data: ["isStatus" => true, "message" => "Save successfully", 'redirectUrl' => $redirecctUrl]);
     }
     public function summeryReport($ship_id)
