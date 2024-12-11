@@ -546,7 +546,7 @@ class VscpController extends Controller
             $k = 0;
             $gap = 1;
             $ori = "landscape";
-            $oddincreaseGap = 29;
+            $oddincreaseGap = 18;
             $evenincreaseGap = 29;
             $imageDesireHeight = 500;
             foreach ($chunks as $chunkIndex => $chunk) {
@@ -610,9 +610,12 @@ class VscpController extends Controller
 
                 $maxLine = ''; // Optional: to store the longest tooltip text
                 $maxLength = 0; // Variable to store the max tooltip length
-
+                $chunkcount = 0;
                 foreach ($chunk as $key => $value) {
-                  
+                    $chunkcount++;
+                    if($chunkcount == 1){
+                        $oddincreaseGap = 18;
+                    }
                     $top = $value['position_top'];
                     $left = $value['position_left'];
 
