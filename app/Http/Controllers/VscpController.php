@@ -477,7 +477,7 @@ class VscpController extends Controller
             $mpdf->SetHTMLHeader($header);
             $mpdf->SetHTMLFooter($footer);
 
-            $stylesheet = file_get_contents('assets/mpdf.css');
+            $stylesheet = file_get_contents('public/assets/mpdf.css');
             $mpdf->WriteHTML($stylesheet, \Mpdf\HTMLParserMode::HEADER_CSS);
             $mpdf->WriteHTML(view('report.cover', compact('shipDetail')));
             $mpdf->WriteHTML(view('report.shipParticular', compact('shipDetail')));

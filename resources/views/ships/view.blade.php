@@ -522,7 +522,6 @@ button.btn.btn-link .fas.fa-angle-down {
     </div>
 
     <div class="main-content container-fluid p-0" id="ihm_maintenance">
-fffffffffff
         @if(session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             {{ session('success') }}
@@ -539,7 +538,7 @@ fffffffffff
             </ul>
         </div>
         @endif
-hhhh
+        @include('ships.ihm-maintance')
 
     </div>
 
