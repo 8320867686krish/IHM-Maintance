@@ -284,8 +284,8 @@ class VscpController extends Controller
             'html' => $htmllist,
             'check' => [
                 'data' => $check, // Include the original Check object
-                'original_close_image' => $check->getAttributes()['close_image'], // Raw value
-                'original_away_image' => $check->getAttributes()['away_image'], // Raw value
+                'original_close_image' => basename($check->close_image), // Raw value
+                'original_away_image' => basename($check->away_image), // Raw value
             ],
         ];
 

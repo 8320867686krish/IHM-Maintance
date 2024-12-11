@@ -106,7 +106,7 @@ $title .= 'I-3 Strucure and hull';
         <div class="col-3 mb-2">
             <div class="form-group">
                 <label>Type</label>
-                <select name="check_hazmats[{{$value['id']}}]['hazmat_type']" id="hazmat_type[${id}]" class="form-control">
+                <select name="check_hazmats[{{$value['id']}}][hazmat_type]" id="hazmat_type[${id}]" class="form-control">
                     <option value="">Select Type</option>
                     <option value="Contained" {{ $value['hazmat_type'] === 'Contained' ? 'selected' : '' }}>Contained</option>
                     <option value="PCHM" {{ $value['hazmat_type'] === 'PCHM' ? 'selected' : '' }}>PCHM</option>
