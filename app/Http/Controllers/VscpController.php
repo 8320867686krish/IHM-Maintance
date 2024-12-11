@@ -503,6 +503,7 @@ class VscpController extends Controller
                         $mpdf->useTemplate($templateId, null, null, $mpdf->w, null); // Use the template with appropriate dimensions
 
                     }
+                    unlink($fileNameDiagram);
                 }
             }
        
@@ -541,7 +542,7 @@ class VscpController extends Controller
                 white-space: nowrap;z-index: 1;color:#4052d6;font-size:8px;text-align:center;';
         if (count($decks['checks']) > 0) {
             $chunks = array_chunk($decks['checks']->toArray(), 15);
-
+         
             $k = 0;
             $gap = 1;
             $ori = "landscape";
@@ -611,11 +612,12 @@ class VscpController extends Controller
                 $maxLength = 0; // Variable to store the max tooltip length
 
                 foreach ($chunk as $key => $value) {
+                  
                     $top = $value['position_top'];
                     $left = $value['position_left'];
 
-                    $explode = explode("#", $value['name']);
-                    $tooltipText = ($value['type'] == 'sample' ? 's' : 'v') . $explode[1] . "<br/>";
+                   
+                    $tooltipText = ($value['type'] == 'sample' ? 's' : 'v') . $value['name'] . "<br/>";
                     if (@$value['check_hazmats']) {
                         $hazmatCount = count($value['check_hazmats']); // Get the total number of elements
                         foreach ($value['check_hazmats'] as $index => $hazmet) {
