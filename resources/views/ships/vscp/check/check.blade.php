@@ -127,7 +127,7 @@
 
                         <div class="outfit">
                             <div class="target">
-                                <img id="previewImg1" src="{{ asset('uploads/shipsVscp/' . $deck->ship_id . '/' . $deck->image) }}" 
+                                <img id="previewImg1" src="{{$deck->image}}" 
                                 alt="Upload Image">
                                 <div id="showDeckCheck">
                                     @include('ships.vscp.check.dot')
