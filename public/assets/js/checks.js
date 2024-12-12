@@ -402,11 +402,10 @@ var  newItem = "";
     // Add a new item to the container
      newItem+= `<div class="col-12 col-md-12 col-lg-12 card cloneCheck" id="cloneCheck${checkIteamindex}">`
                
-    if(amended == ''){
         newItem+=  `<div class="col-12 col-md-12 col-lg-12 mt-2 text-right">
         <a href="javascript:;" class="deleteCheckItem" data-itemId=${checkIteamindex} title="Delete"><i class="fas fa-trash-alt text-danger" style="font-size: 1rem"></i></a> </div>`
 
-    }
+    
               
     
            
