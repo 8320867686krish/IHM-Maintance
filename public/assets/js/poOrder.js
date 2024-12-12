@@ -321,6 +321,8 @@ $("#showTableTypeDiv").on("change", ".cloneTableTypeDiv select.table_type", func
     cloneTableTypeDiv.find(`.notification${divValue}`).remove();
     cloneTableTypeDiv.find(`.noitemInstalled${divValue}`).remove();
     cloneTableTypeDiv.find(`.removeItem${divValue}`).remove();
+    cloneTableTypeDiv.find(`.arrivedItemDetails${divValue}`).remove();
+    cloneTableTypeDiv.find(`.removeItemDetails${divValue}`).remove();
 
     if (selectedValue === 'Contained' || selectedValue === 'PCHM') {
         let isOnboardDiv = "";
