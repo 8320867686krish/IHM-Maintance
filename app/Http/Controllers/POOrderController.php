@@ -199,9 +199,9 @@ class POOrderController extends Controller
             $client_email = $ships->client->userDetail->email;
             $accounting_team_email = $ships->client->accounting_team_email;
             $email_history_arry = [
-                'supplier_emaill' =>  $supplier_emaill,
-                'client_email' =>  $client_email,
-                'accounting_team_email' =>  $accounting_team_email,
+                'suppliear_email' =>  $supplier_emaill,
+                'company_email' =>  $client_email,
+                'accounting_email' =>  $accounting_team_email,
                 'ship_id' =>  $post['ship_id'],
                 'po_order_item_id' => $post['po_order_item_id'],
                 'po_order_id' => $post['po_order_id'],
