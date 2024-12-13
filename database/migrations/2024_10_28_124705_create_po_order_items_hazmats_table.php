@@ -28,6 +28,7 @@ return new class extends Migration
             $table->foreign('hazmat_id')->references('id')->on('hazmats')->onDelete('cascade');
 
             $table->string('hazmat_type')->nullable();
+            $table->string('previous_hazmat_type')->nullable();
             $table->boolean('isArrived')->default(0);
             $table->boolean('isRemove')->default(0);
             $table->string('service_supplier_name')->nullable();
