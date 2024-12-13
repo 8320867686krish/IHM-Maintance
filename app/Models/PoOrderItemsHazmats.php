@@ -50,6 +50,9 @@ class PoOrderItemsHazmats extends Model
         'removal_unit',
         'removal_remarks'
     ];
+    protected $attributes = [
+        'previous_hazmat_type' => null, // Add this as a transient attribute
+    ];
     public function setIsArrivedAttribute($value)
     {
 
@@ -99,5 +102,14 @@ class PoOrderItemsHazmats extends Model
     public function hazmat()
     {
         return $this->belongsTo(Hazmat::class);
+    }
+    protected static function boot()
+    {
+        parent::boot();
+
+        // Attach an event listener for the "updating" event
+        static::updating(function ($model) {
+            $model->previous_hazmat_type = $model->getOriginal('hazmat_type'); // Store the old value
+        });
     }
 }

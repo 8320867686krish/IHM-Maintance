@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Exports\POExport;
 use App\Mail\ExampleMail;
 use App\Mail\sendMail;
+use App\Models\emailHistory;
 use App\Models\Hazmat;
 use App\Models\MakeModel;
 use App\Models\poOrder;
@@ -78,7 +79,7 @@ class POOrderController extends Controller
     }
     public function viewReleventItem($poiteam_id)
     {
-        $poItem = poOrderItem::with(['poOrder:id,po_no','poOrderItemsHazmets.hazmat.equipment'])->find($poiteam_id);
+        $poItem = poOrderItem::with(['poOrder:id,po_no', 'poOrderItemsHazmets.hazmat.equipment'])->find($poiteam_id);
         $backurl = 'ships/po-order/add/' . $poItem['ship_id'] . "/" . $poItem['po_order_id'];
         $table_type = Hazmat::select('table_type')->distinct()->pluck('table_type');
         $hazmats = [];
@@ -106,7 +107,7 @@ class POOrderController extends Controller
 
                 $requiredFields = ['PO NO', 'PO Date'];
 
-              
+
 
                 foreach ($requiredFields as $field) {
 
@@ -137,10 +138,10 @@ class POOrderController extends Controller
                     'contact_person' => $rowWithHeaders['Supplier Contact Person'],
                     'phone' => $rowWithHeaders['Supplier Phone Number'],
                     'email' => $rowWithHeaders['Supplier Email'],
-                   'onboard_reciving_date' => Carbon::createFromFormat('d/m/Y', $rowWithHeaders['Onboard reciving date'])->format('Y-m-d'),
+                    'onboard_reciving_date' => Carbon::createFromFormat('d/m/Y', $rowWithHeaders['Onboard reciving date'])->format('Y-m-d'),
                     'delivery_location' => $rowWithHeaders['Delivery Location']
                 ];
-                
+
                 if (!$poorder) {
                     // Insert if PO doesn't exist
                     $poinsert = poOrder::create($insert);
@@ -193,10 +194,21 @@ class POOrderController extends Controller
     {
         $post = $request->input();
         if (@$post['hazmats']) {
-
-
+            $supplier_emaill = poOrder::find($post['po_order_id'])->email;
+            $ships = Ship::with('client.userDetail')->find($post['ship_id']);
+            $client_email = $ships->client->userDetail->email;
+            $accounting_team_email = $ships->client->accounting_team_email;
+            $email_history_arry = [
+                'supplier_emaill' =>  $supplier_emaill,
+                'client_email' =>  $client_email,
+                'accounting_team_email' =>  $accounting_team_email,
+                'ship_id' =>  $post['ship_id'],
+                'po_order_item_id' => $post['po_order_item_id'],
+                'po_order_id' => $post['po_order_id'],
+                'is_sent_email' => 0
+            ];
             foreach ($post['hazmats'] as $key => $value) {
-                if(@$value['isInstalled'] == 'no'){
+                if (@$value['isInstalled'] == 'no') {
                     $value['isIHMUpdated'] = 'no';
                 }
                 $value['ship_id'] = $post['ship_id'];
@@ -204,15 +216,41 @@ class POOrderController extends Controller
                 $value['po_order_item_id'] = $post['po_order_item_id'];
                 $value['hazmat_id'] = $key;
                 $getModel = MakeModel::find($value['modelMakePart']);
-                $value['doc1'] = @$getModel['document1']['name']??'';
+                $value['doc1'] = @$getModel['document1']['name'] ?? '';
                 $value['doc2'] = @$getModel['document2']['name'] ?? '';
+                $sloats = [];
 
-                PoOrderItemsHazmats::updateOrCreate(['id' => $value['id']], $value);
+                $poOrderItemHazmat =  PoOrderItemsHazmats::updateOrCreate(['id' => $value['id']], $value);
+                $email_history_arry['po_order_item_hazmat_id'] = $poOrderItemHazmat->id;
+                if($poOrderItemHazmat->wasRecentlyCreated){
+                    if ($value['hazmat_type'] == 'Unknown') {
+                        // Example Usage
+                        $startDate = date('Y-m-d');  // Starting date (today's date)
+                        $daysToAdd = 1;
+                        $newDate = $this->addDaysToCurrentDate($startDate, $daysToAdd);
+                        $email_history_arry['start_date'] =    $newDate;
+                        emailHistory::create($email_history_arry);
 
+                        for ($i = 0; $i <= 3; $i++) {
+                            $daysToAdd = 3;
+                            $newDate = $this->addDaysToCurrentDate($newDate, $daysToAdd);
+                            $email_history_arry['start_date'] =    $newDate;
+                            emailHistory::create($email_history_arry);
+                        }
+                    }
+                }
+               
             }
         }
         return response()->json(['isStatus' => true, 'message' => 'save successfully']);
     }
+
+    function addDaysToCurrentDate($startDate, $daysToAdd)
+    {
+        $newDate = strtotime("+$daysToAdd days", strtotime($startDate)); // Add days to start date
+        return date('Y-m-d', $newDate); // Format the new date
+    }
+
     public function getEquipMent($hazmat_id)
     {
         try {
@@ -223,7 +261,7 @@ class POOrderController extends Controller
             return response()->json(['error' => $th->getMessage()], 500);
         }
     }
-   
+
     public function getManufacturer($hazmat_id, $type)
     {
         try {
@@ -249,7 +287,8 @@ class POOrderController extends Controller
             return response()->json(['error' => $th->getMessage()], 500);
         }
     }
-    public function getPartBasedDocumentFile($hazmat_id){
+    public function getPartBasedDocumentFile($hazmat_id)
+    {
         try {
             $documentFile = MakeModel::select('id', 'document1', 'document2')->find($hazmat_id);
 
@@ -258,23 +297,21 @@ class POOrderController extends Controller
             return response()->json(['error' => $th->getMessage()], 500);
         }
     }
-    public function sendMail(Request $request){
+    public function sendMail(Request $request)
+    {
         $data = $request->input();
         $shipsData = Ship::find($data['shipId']);
         $clientCompany = User::select('email')->find($shipsData['client_user_id']);
         $shipmail = User::select('email')->find($shipsData['user_id']);
         $supplier_email = poOrder::select('email')->find($data['order_id']);
-        $mailData = ['title' => $data['email_subject'],'body' => $data['email_body']];
+        $mailData = ['title' => $data['email_subject'], 'body' => $data['email_body']];
         Mail::to($clientCompany['email'])
-        ->cc([$shipmail['email'], $supplier_email['email']])
-        ->queue(new sendMail($mailData));
+            ->cc([$shipmail['email'], $supplier_email['email']])
+            ->queue(new sendMail($mailData));
         return response()->json(['isStatus' => true, 'message' => 'sent email successfully.']);
-
-
     }
-    public function poOrderSample(){
+    public function poOrderSample()
+    {
         return Excel::download(new  POExport, 'sample.xlsx');
-
     }
-
 }
