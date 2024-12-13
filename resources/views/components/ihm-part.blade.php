@@ -13,12 +13,15 @@ else {
 $label .= 'structural element';
 $title .= 'I-3 Strucure and hull';
 }
+$filteredData = collect($checkHazmatIHMPart)->filter(function ($item) use ($type) {
+return $item['ihm_part_table'] == $type;
+});
 @endphp
 
 <div class="table-responsive mt-2">
-<h4>{{$title}} containing materials listed in table A and table B of appendix 1 of these guidelines</h4>
+    <h4>{{$title}} containing materials listed in table A and table B of appendix 1 of these guidelines</h4>
 
-    <table class="table table-striped table-bordered first mt-4"  style="width:100%">
+    <table class="table table-bordered mb-4 mt-4" style="width:100%">
         <thead>
             <tr>
                 <th>No</th>
@@ -31,16 +34,16 @@ $title .= 'I-3 Strucure and hull';
                 @if($type == 'i-2' || $type == 'i-3')
                 <th>Parts where used</th>
                 @endif
-                <th >App.Qty</th>
-                <th >Unit</th>
+                <th>App.Qty</th>
+                <th>Unit</th>
 
                 <th>Remarks</th>
             </tr>
-           
+
         </thead>
         <tbody>
-            @foreach($checkHazmatIHMPart as $value)
-            @if($value['ihm_part_table'] == $type)
+            @if($filteredData->isNotEmpty())
+            @foreach($filteredData as $value)
             <tr>
                 <td>{{$value['id']}}</td>
                 @if($type == 'i-1')
@@ -63,8 +66,10 @@ $title .= 'I-3 Strucure and hull';
                     @endif
                 </td>
             </tr>
-            @endif
             @endforeach
+            @else
+            <td colspan="8" class="text-center">No Records Available</td>
+            @endif
         </tbody>
     </table>
 </div>

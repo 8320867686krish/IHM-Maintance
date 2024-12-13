@@ -39,7 +39,7 @@
         }
 
         .sa-button-container .cancel {
-            background-color: #004f47 !important; /* Green color for cancel button */
+            background-color:rgb(221, 107, 85) !important; /* Green color for cancel button */
             color: white !important;
             border: none !important;
         }

@@ -77,11 +77,11 @@ function confirmChangeStatus(message, confirmCallback, cancelCallback) {
         text: message,
         type: "warning",
         showCancelButton: true,
-        confirmButtonColor: "#DD6B55",
+        confirmButtonColor: "#7066e0",
         confirmButtonText: "Yes, do it!",
         cancelButtonText: "No, cancel!",
         closeOnConfirm: false,
-        closeOnCancel: false
+        closeOnCancel: false,
     }, function (isConfirm) {
         if (isConfirm) {
             confirmCallback();

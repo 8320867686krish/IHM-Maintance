@@ -173,7 +173,6 @@
 </div>
 @push('js')
 <script>
-    
     document.getElementById('excel_file').addEventListener('change', function() {
         document.getElementById('uploadForm').submit();
     });
