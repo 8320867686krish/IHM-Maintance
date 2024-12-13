@@ -170,10 +170,10 @@
                                     </select>
                                 </div>
                                 <div class="form-group col-1 mb-3">
-                                    <i class="fas fa-trash-alt text-danger mt-3 remove-item-btn"></i>
+                                    <i class="fas fa-trash-alt text-danger mt-3 remove-item-btn" title="Delete"></i>
                                     @if($item->type_category == 'Relevant')
-                                    <a href="{{ route('po.relevent', $item->id) }}">
-                                    <i class="fas fa-eye text-info ml-2 view-item-btn"></i></a>
+                                    <a href="{{ route('po.relevent', $item->id) }}" title="Edit">
+                                    <i class="fas fa-edit text-primary ml-2 view-item-btn"></i></a>
                                     @endif
                                 </div>
 

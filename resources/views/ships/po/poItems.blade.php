@@ -28,10 +28,10 @@
                                         <td>{{$order['machinery']}}</td>
                                         <td>{{$order['po_order_items_count']}}</td>
                                         <td>
-                                            <a href="{{ route('po.add', ['ship_id' => $order['ship_id'], 'po_order_id' => $order['id'] ?? 0]) }}">
-                                                <span class="icon"><i class="fas fa-eye text-primary"></i></span>
+                                            <a title="Edit" href="{{ route('po.add', ['ship_id' => $order['ship_id'], 'po_order_id' => $order['id'] ?? 0]) }}">
+                                                <span class="icon"><i class="fas fa-edit text-primary"></i></span>
                                             </a>&nbsp;
-                                            <a href="#" class="deletePo" data-id="{{$order['id']}}" title="Delete"> <i class="fas fa-trash-alt text-danger"></i>
+                                            <a href="#" title="Delete"  class="deletePo" data-id="{{$order['id']}}" > <i class="fas fa-trash-alt text-danger"></i>
                                             </a>
                                         </td>
                                     </tr>
