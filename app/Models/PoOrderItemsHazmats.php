@@ -48,11 +48,19 @@ class PoOrderItemsHazmats extends Model
         'doc2',
         'removal_quantity',
         'removal_unit',
-        'removal_remarks'
+        'removal_remarks',
+        'isRecivedDoc',
+        'recived_document_comment',
+        'recived_document_date'
     ];
     protected $attributes = [
         'previous_hazmat_type' => null, // Add this as a transient attribute
     ];
+    public function setIsRecivedDocAttribute($value)
+    {
+
+        $this->attributes['isRecivedDoc'] = $value == 'yes' ? 1 : ($value == 'no' ? 0 : $value);
+    }
     public function setIsArrivedAttribute($value)
     {
 
@@ -76,6 +84,10 @@ class PoOrderItemsHazmats extends Model
     }
    
     public function getIsArrivedAttribute($value)
+    {
+        return $value === 1 ? 'yes' : 'no';
+    }
+    public function getIsRecivedDocAttribute($value)
     {
         return $value === 1 ? 'yes' : 'no';
     }
@@ -111,5 +123,9 @@ class PoOrderItemsHazmats extends Model
         static::updating(function ($model) {
             $model->previous_hazmat_type = $model->getOriginal('hazmat_type'); // Store the old value
         });
+    }
+    public function emailHistory(){
+        return $this->hasMany(emailHistory::class, 'po_order_item_hazmat_id', 'id');
+
     }
 }
