@@ -323,6 +323,7 @@ $("#showTableTypeDiv").on("change", ".cloneTableTypeDiv select.table_type", func
     cloneTableTypeDiv.find(`.removeItem${divValue}`).remove();
     cloneTableTypeDiv.find(`.arrivedItemDetails${divValue}`).remove();
     cloneTableTypeDiv.find(`.removeItemDetails${divValue}`).remove();
+    cloneTableTypeDiv.find(`.recivedDocumentDetail${divValue}`).remove();
 
     if (selectedValue === 'Contained' || selectedValue === 'PCHM') {
         let isOnboardDiv = "";
@@ -436,6 +437,32 @@ $("#showTableTypeDiv").on("change", ".cloneTableTypeDiv input[type=radio].isRemo
         let removeItemDetails = removeItemDetailsfun(divValue);
         $(cloneTableTypeDiv).append(removeItemDetails).fadeIn('slow');
     }
+});
+$("#showTableTypeDiv").on("change", ".cloneTableTypeDiv input[type=radio].isRecivedDocChoice", function () {
+    const divValue = $(this).attr("data-isRecivedDoc");
+    const tabValue = $(this).attr("data-tab");
+    const cloneTableTypeDiv = $(this).closest(".cloneTableTypeDiv");
+    cloneTableTypeDiv.find(`.recivedDocumentDetail${divValue}`).remove();
+
+    var reciveddocumt = ` <div class="row   mb-1   recivedDocumentDetail${divValue}">
+            <div class="col-8">
+                   <div class="form-group mb-1">
+                   <input type="text" name="hazmats[${divValue}][recived_document_comment]" id="recived_document_comment${divValue}" class="form-control" placeHolder="Remarks">
+                   </div>
+            </div>
+            
+    `;
+    if ($(this).val() === 'yes') {
+       reciveddocumt +=`  <div class="col-4">
+                   <div class="form-group mb-1">
+                   <input type="date" name="hazmats[${divValue}][recived_document_date]" id="recived_document_date${divValue}" class="form-control" placeHolder="Date">
+                   </div>
+            </div>`
+    }
+    reciveddocumt +=`</div>`;
+    $(reciveddocumt).insertAfter(`.recivedDoc${divValue}`).fadeIn('slow');
+
+
 });
 
 $("#showTableTypeDiv").on("change", ".cloneTableTypeDiv input[type=radio].isArrivedChoice", function () {

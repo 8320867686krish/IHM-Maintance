@@ -79,7 +79,8 @@ class POOrderController extends Controller
     }
     public function viewReleventItem($poiteam_id)
     {
-        $poItem = poOrderItem::with(['poOrder:id,po_no', 'poOrderItemsHazmets.hazmat.equipment'])->find($poiteam_id);
+        $poItem = poOrderItem::with(['poOrder:id,po_no', 'poOrderItemsHazmets.hazmat.equipment','poOrderItemsHazmets.emailHistory'])->find($poiteam_id);
+       
         $backurl = 'ships/po-order/add/' . $poItem['ship_id'] . "/" . $poItem['po_order_id'];
         $table_type = Hazmat::select('table_type')->distinct()->pluck('table_type');
         $hazmats = [];

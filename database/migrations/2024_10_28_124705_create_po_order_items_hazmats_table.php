@@ -41,11 +41,16 @@ return new class extends Migration
             $table->string('location')->nullable();
             $table->date('date')->nullable();
 
-            $table->string('arrived_location')->nullable();
+            $table->string(column: 'arrived_location')->nullable();
             $table->date('arrived_date')->nullable();
             $table->boolean('isIHMUpdated')->default(0);
+            
+            $table->boolean('isRecivedDoc')->default(0);
+            $table->string('recived_document_comment')->nullable();
+            
+            $table->date('recived_document_date')->nullable();
 
-
+            
             $table->string('ihm_location')->nullable();
             $table->string('ihm_sublocation')->nullable();
             $table->string('ihm_machinery_equipment')->nullable();
