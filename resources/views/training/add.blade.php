@@ -214,8 +214,15 @@
                         <tr>
                             <td>{{$loop->iteration}}</td>
                             <td>{{$training['name']}}</td>
+                            <td>{{$value->hazmatCompaniesName->name}}</td>
+                            <td><a href="#" title="Delete" class="deletAssignHazmat" data-id="{{$value->hazmatCompaniesName->id}}"> <i class="fas fa-trash-alt text-danger"></i>
+                            </a></td>
                         </tr>
                         @endforeach
+                        @else
+                        <tr>
+                        <td colspan="4" class="text-center">No records found</td>
+                        </tr>
                         @endif
                     </tbody>
                    </table>
