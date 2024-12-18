@@ -11,6 +11,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\ShipController;
+use App\Http\Controllers\TrainingController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VscpController;
 use Illuminate\Support\Facades\Auth;
@@ -93,6 +94,15 @@ Route::middleware('auth')->group(function () {
             Route::get('ships/{id}/delete', 'destroy')->name('ships.delete')->middleware('can:ships.remove');
             Route::get('ship/view/{ship_id}', 'shipView')->name('ships.view');
             Route::post('ship/assignProject', 'assignShip')->name('ships.assign');
+
+        });
+        Route::controller(TrainingController::class)->group(function () {
+            Route::get('training', 'index')->name('training');
+            Route::get('training/add', 'add')->name('training.add');
+            Route::get('training/{id}/edit','editTraining')->name('training.edit');
+            Route::post('training/save','trainingSave')->name('training.save');
+            Route::post('assigntraining','assigntraining')->name('assigntraining');
+
 
         });
         Route::controller(VscpController::class)->group(function () {

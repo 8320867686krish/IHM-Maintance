@@ -161,3 +161,8 @@ border-bottom :none;
 {
     pointer-events: none;
 }
+.thumbnail {
+    width: 200px;
+    object-fit: cover; /* Ensures the image is cropped proportionally */
+   
+}
