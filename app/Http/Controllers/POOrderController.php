@@ -223,7 +223,7 @@ class POOrderController extends Controller
 
                 $poOrderItemHazmat =  PoOrderItemsHazmats::updateOrCreate(['id' => $value['id']], $value);
                 $email_history_arry['po_order_item_hazmat_id'] = $poOrderItemHazmat->id;
-                if($value['isRecivedDoc'] == 'yes'){
+                if(@$value['isRecivedDoc'] == 'yes'){
                     emailHistory::where('po_order_item_hazmat_id',$poOrderItemHazmat->id)->where('is_sent_email',0)->delete();
                 }
                 if($poOrderItemHazmat->wasRecentlyCreated){
