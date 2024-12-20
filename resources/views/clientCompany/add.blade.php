@@ -133,164 +133,160 @@
                             <div class="col-sm-12 col-md-6 col-lg-4">
                                 <div class="form-group mb-3">
                                     <label for="level">Accounting Team Email<span class="text-danger">*</span></label>
-                               
-                                <input type="text" name="accounting_team_email" id="accounting_team_email"
-                                    class="form-control @error('tax_details') is-invalid @enderror"
-                                    placeholder="Accounting Team Email..."
-                                    value="{{ old('tax_details', $clientCompany->accounting_team_email ?? '') }}"
-                                    onchange="removeInvalidClass(this)" autocomplete="off">
-                            </div>
 
+                                    <input type="text" name="accounting_team_email" id="accounting_team_email"
+                                        class="form-control @error('tax_details') is-invalid @enderror"
+                                        placeholder="Accounting Team Email..."
+                                        value="{{ old('tax_details', $clientCompany->accounting_team_email ?? '') }}"
+                                        onchange="removeInvalidClass(this)" autocomplete="off">
+                                </div>
+
+                            </div>
                         </div>
 
 
 
-                        <div class="row">
-
-
-
-
-
-                            <div class="col-12">
-                                <hr class="mb-4">
-                            </div>
-                        </div>
-
-                        <h5>Ship Owner / Manager Details</h5>
-
-                        <div class="row">
-                            <div class="col-sm-12 col-md-6 col-lg-4">
-                                <div class="form-group mb-3">
-                                    <label for="ship_owner_name">Ship Owner NAme</label>
-                                    <input type="text"
-                                        class="form-control @error('ship_owner_name') is-invalid @enderror"
-                                        id="owner_name" value="{{ old('ship_owner_name', $clientCompany->ship_owner_name ?? '') }}"
-                                        name="ship_owner_name" placeholder="Ship Owner Name..." autocomplete="off"
-                                        onchange="removeInvalidClass(this)">
-                                    @error('ship_owner_name')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="col-sm-12 col-md-6 col-lg-4">
-                                <div class="form-group mb-3">
-                                    <label for="ship_owner_email">Email</label>
-                                    <input type="email"
-                                        class="form-control @error('ship_owner_email') is-invalid @enderror"
-                                        id="owner_email" name="ship_owner_email"
-                                        value="{{ old('ship_owner_email', $clientCompany->ship_owner_email ?? '') }}"
-                                        placeholder="Ship Owner Email..." autocomplete="off"
-                                        onchange="removeInvalidClass(this)">
-
-                                </div>
-                            </div>
-                            <div class="col-sm-12 col-md-6 col-lg-4">
-                                <div class="form-group mb-3">
-                                    <label for="ship_owner_phone">Phone</label>
-                                    <input type="number"
-                                        class="form-control @error('ship_owner_phone') is-invalid @enderror"
-                                        id="owner_phone" name="ship_owner_phone"
-                                        value="{{ old('ship_owner_phone', $clientCompany->ship_owner_phone ?? '') }}"
-                                        placeholder="Ship Owner Phone..." autocomplete="off"
-                                        onchange="removeInvalidClass(this)">
-
-
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12 col-md-6">
-                                <div class="form-group mb-3">
-                                    <label for="ship_owner_address">Address</label>
-                                    <textarea name="owner_address" id="ship_owner_address" rows="1"
-                                        class="form-control @error('ship_owner_address') is-invalid @enderror">{{ old('ship_owner_address', $clientCompany->ship_owner_address ?? '') }}</textarea>
-                                    @error('owner_address')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
+                            <div class="row">
+                                <div class="col-12">
+                                    <hr class="mb-4">
                                 </div>
                             </div>
 
-                            <div class="col-12 col-md-6">
-                                <div class="form-group mb-3">
-                                    <label for="IMO_ship_owner_details">IMO Ship owner details<span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" id="IMO_ship_owner_details"
-                                        name="IMO_ship_owner_details"
-                                        value="{{old('IMO_ship_owner_details', $clientCompany->IMO_ship_owner_details ?? '')}}"
-                                        placeholder="IMO Ship owner details..." autocomplete="off"
-                                        onchange="removeInvalidClass(this)">
-                                    <div class="invalid-feedback error" id="IMO_ship_owner_detailsError"></div>
+                            <h5>Ship Owner / Manager Details</h5>
 
+                            <div class="row">
+                                <div class="col-sm-12 col-md-6 col-lg-4">
+                                    <div class="form-group mb-3">
+                                        <label for="ship_owner_name">Ship Owner NAme</label>
+                                        <input type="text"
+                                            class="form-control @error('ship_owner_name') is-invalid @enderror"
+                                            id="owner_name" value="{{ old('ship_owner_name', $clientCompany->ship_owner_name ?? '') }}"
+                                            name="ship_owner_name" placeholder="Ship Owner Name..." autocomplete="off"
+                                            onchange="removeInvalidClass(this)">
+                                        @error('ship_owner_name')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-6 col-lg-4">
+                                    <div class="form-group mb-3">
+                                        <label for="ship_owner_email">Email</label>
+                                        <input type="email"
+                                            class="form-control @error('ship_owner_email') is-invalid @enderror"
+                                            id="owner_email" name="ship_owner_email"
+                                            value="{{ old('ship_owner_email', $clientCompany->ship_owner_email ?? '') }}"
+                                            placeholder="Ship Owner Email..." autocomplete="off"
+                                            onchange="removeInvalidClass(this)">
+
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-6 col-lg-4">
+                                    <div class="form-group mb-3">
+                                        <label for="ship_owner_phone">Phone</label>
+                                        <input type="number"
+                                            class="form-control @error('ship_owner_phone') is-invalid @enderror"
+                                            id="owner_phone" name="ship_owner_phone"
+                                            value="{{ old('ship_owner_phone', $clientCompany->ship_owner_phone ?? '') }}"
+                                            placeholder="Ship Owner Phone..." autocomplete="off"
+                                            onchange="removeInvalidClass(this)">
+
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 col-md-6">
+                                    <div class="form-group mb-3">
+                                        <label for="ship_owner_address">Address</label>
+                                        <textarea name="owner_address" id="ship_owner_address" rows="1"
+                                            class="form-control @error('ship_owner_address') is-invalid @enderror">{{ old('ship_owner_address', $clientCompany->ship_owner_address ?? '') }}</textarea>
+                                        @error('owner_address')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-md-6">
+                                    <div class="form-group mb-3">
+                                        <label for="IMO_ship_owner_details">IMO Ship owner details<span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" id="IMO_ship_owner_details"
+                                            name="IMO_ship_owner_details"
+                                            value="{{old('IMO_ship_owner_details', $clientCompany->IMO_ship_owner_details ?? '')}}"
+                                            placeholder="IMO Ship owner details..." autocomplete="off"
+                                            onchange="removeInvalidClass(this)">
+                                        <div class="invalid-feedback error" id="IMO_ship_owner_detailsError"></div>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12 col-md-6 col-lg-4">
+                                    <div class="form-group mb-3">
+                                        <label for="contact_person_name">Contact Person Name</label>
+                                        <input type="text"
+                                            class="form-control @error('contact_person_name') is-invalid @enderror"
+                                            id="contact_person_name"
+                                            value="{{ old('contact_person_name', $clientCompany->contact_person_name ?? '') }}"
+                                            name="contact_person_name" placeholder="Contact Person Name..."
+                                            autocomplete="off" onchange="removeInvalidClass(this)">
+
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-6 col-lg-4">
+                                    <div class="form-group mb-3">
+                                        <label for="owner_contact_person_email">Email</label>
+                                        <input type="email"
+                                            class="form-control @error('owner_contact_person_email') is-invalid @enderror"
+                                            id="owner_contact_person_email" name="owner_contact_person_email"
+                                            value="{{ old('owner_contact_person_email', $clientCompany->owner_contact_person_email ?? '') }}"
+                                            placeholder="Contact Person Email..." autocomplete="off"
+                                            onchange="removeInvalidClass(this)">
+                                        @error('owner_contact_person_email')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-6 col-lg-4">
+                                    <div class="form-group mb-3">
+                                        <label for="contact_person_phone">Phone</label>
+                                        <input type="number"
+                                            class="form-control @error('contact_person_phone') is-invalid @enderror"
+                                            id="contact_person_phone" name="contact_person_phone"
+                                            value="{{ old('contact_person_phone', $clientCompany->contact_person_phone ?? '') }}"
+                                            placeholder="Contact Person Phone..." autocomplete="off"
+                                            onchange="removeInvalidClass(this)">
+
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-6 col-lg-4">
+                                    <div class="form-group mb-3">
+                                        <label for="contact_person_designation">Designation</label>
+                                        <input type="text"
+                                            class="form-control @error('contact_person_designation') is-invalid @enderror"
+                                            id="contact_person_designation" name="contact_person_designation"
+                                            value="{{ old('contact_person_designation', $clientCompany->contact_person_designation ?? '') }}"
+                                            placeholder="Contact Person Designation..." autocomplete="off"
+                                            onchange="removeInvalidClass(this)">
+
+                                    </div>
                                 </div>
                             </div>
 
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-12 col-md-6 col-lg-4">
-                                <div class="form-group mb-3">
-                                    <label for="contact_person_name">Contact Person Name</label>
-                                    <input type="text"
-                                        class="form-control @error('contact_person_name') is-invalid @enderror"
-                                        id="contact_person_name"
-                                        value="{{ old('contact_person_name', $clientCompany->contact_person_name ?? '') }}"
-                                        name="contact_person_name" placeholder="Contact Person Name..."
-                                        autocomplete="off" onchange="removeInvalidClass(this)">
-
+                            <div class="row mt-3">
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="form-group mb-3">
+                                        <a href="{{ route('clientCompany') }}" type="button" class="btn pl-0"><i
+                                                class="fas fa-arrow-left"></i> <b>Back</b></a>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="form-group mb-3">
+                                        <button class="btn btn-primary float-right formSubmitBtn"
+                                            type="submit">{!! $button ?? 'Add' !!}</button>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-sm-12 col-md-6 col-lg-4">
-                                <div class="form-group mb-3">
-                                    <label for="owner_contact_person_email">Email</label>
-                                    <input type="email"
-                                        class="form-control @error('owner_contact_person_email') is-invalid @enderror"
-                                        id="owner_contact_person_email" name="owner_contact_person_email"
-                                        value="{{ old('owner_contact_person_email', $clientCompany->owner_contact_person_email ?? '') }}"
-                                        placeholder="Contact Person Email..." autocomplete="off"
-                                        onchange="removeInvalidClass(this)">
-                                    @error('owner_contact_person_email')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="col-sm-12 col-md-6 col-lg-4">
-                                <div class="form-group mb-3">
-                                    <label for="contact_person_phone">Phone</label>
-                                    <input type="number"
-                                        class="form-control @error('contact_person_phone') is-invalid @enderror"
-                                        id="contact_person_phone" name="contact_person_phone"
-                                        value="{{ old('contact_person_phone', $clientCompany->contact_person_phone ?? '') }}"
-                                        placeholder="Contact Person Phone..." autocomplete="off"
-                                        onchange="removeInvalidClass(this)">
-
-                                </div>
-                            </div>
-                            <div class="col-sm-12 col-md-6 col-lg-4">
-                                <div class="form-group mb-3">
-                                    <label for="contact_person_designation">Designation</label>
-                                    <input type="text"
-                                        class="form-control @error('contact_person_designation') is-invalid @enderror"
-                                        id="contact_person_designation" name="contact_person_designation"
-                                        value="{{ old('contact_person_designation', $clientCompany->contact_person_designation ?? '') }}"
-                                        placeholder="Contact Person Designation..." autocomplete="off"
-                                        onchange="removeInvalidClass(this)">
-
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row mt-3">
-                            <div class="col-sm-12 col-md-6">
-                                <div class="form-group mb-3">
-                                    <a href="{{ route('clientCompany') }}" type="button" class="btn pl-0"><i
-                                            class="fas fa-arrow-left"></i> <b>Back</b></a>
-                                </div>
-                            </div>
-                            <div class="col-sm-12 col-md-6">
-                                <div class="form-group mb-3">
-                                    <button class="btn btn-primary float-right formSubmitBtn"
-                                        type="submit">{!! $button ?? 'Add' !!}</button>
-                                </div>
-                            </div>
-                        </div>
                     </form>
                 </div>
             </div>

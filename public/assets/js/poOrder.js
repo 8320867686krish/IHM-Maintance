@@ -715,10 +715,11 @@ function getEquipment(hazmetId) {
     let url = `${baseUrl}/equipment/${hazmetId}`;
     fetchData(url, function (response) {
         $(`#equipmentselect_${hazmetId}`).attr('data-id', hazmetId);
+    console.log(response.equipments);
         $.each(response.equipments, function (index, value) {
             $(`#equipmentselect_${hazmetId}`).append($('<option>', {
-                value: index,
-                text: index
+                value: value.equipment,
+                text: value.equipment
             }));
         });
     });
@@ -744,7 +745,7 @@ function getManufacturer(hazmetId, equipment) {
         $(`#manufacturerselect_${hazmetId}`).empty();
         $(`#manufacturerselect_${hazmetId}`).empty().append($('<option>', {
             value: "",
-            text: "First Select Equipment"
+            text: "First Select Manufacturer"
         }));
         $(`#manufacturerselect_${hazmetId}`).attr('data-id', hazmetId);
         $.each(response.manufacturers, function (index, value) {
@@ -780,17 +781,17 @@ function getDocument(modelId, hazmetId) {
     let url = `${baseUrl}/document/${modelId}`;
     fetchData(url, function (response) {
         let data = response.documentFile;
-        if (data.document1['name'] != null) {
+        if (data.md_no != null) {
             $(`#documentLoad1_${hazmetId}`).empty();
             let html =
-                `<a href="${data.document1['path']}" target="_black" > ${data.document1['name']} </a>`;
+                `<input type="hidden" name="hazmats[${hazmetId}][doc1]" value=${data.md_no}><a > MD NO.${data.md_no} </a>`;
             $(`#documentLoad1_${hazmetId}`).append(html);
         }
 
-        if (data.document2['name'] != null) {
+        if (data.sdoc_no != null) {
             $(`#documentLoad2_${hazmetId}`).empty();
             let html =
-                `<a href="${data.document2['path']}" target="_black"> ${data.document2['name']} </a>`;
+                `<input type="hidden" name="hazmats[${hazmetId}][doc2]" value=${data.sdoc_no}><a >SDoc No. ${data.sdoc_no} </a>`;
             $(`#documentLoad2_${hazmetId}`).append(html);
         }
 

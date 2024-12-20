@@ -216,9 +216,9 @@ class POOrderController extends Controller
                 $value['po_order_id'] = $post['po_order_id'];
                 $value['po_order_item_id'] = $post['po_order_item_id'];
                 $value['hazmat_id'] = $key;
-                $getModel = MakeModel::find($value['modelMakePart']);
-                $value['doc1'] = @$getModel['document1']['name'] ?? '';
-                $value['doc2'] = @$getModel['document2']['name'] ?? '';
+             //   $getModel = MakeModel::find($value['modelMakePart']);
+                // $value['doc1'] = @$getModel['document1']['name'] ?? '';
+                // $value['doc2'] = @$getModel['document2']['name'] ?? '';
                 $sloats = [];
 
                 $poOrderItemHazmat =  PoOrderItemsHazmats::updateOrCreate(['id' => $value['id']], $value);
@@ -258,9 +258,10 @@ class POOrderController extends Controller
     public function getEquipMent($hazmat_id)
     {
         try {
-            $hazmat = Hazmat::with('equipment:id,hazmat_id,equipment')->find($hazmat_id);
-            $groupedEquipment = $hazmat->equipment->groupBy('equipment');
-            return response()->json(['isStatus' => true, 'message' => 'Equipment retrieved successfully.', 'equipments' => $groupedEquipment]);
+            $equipments = MakeModel::select('id','hazmat_id','equipment')->distinct()->get();
+
+           
+            return response()->json(['isStatus' => true, 'message' => 'Equipment retrieved successfully.', 'equipments' => $equipments]);
         } catch (Throwable $th) {
             return response()->json(['error' => $th->getMessage()], 500);
         }
@@ -269,7 +270,7 @@ class POOrderController extends Controller
     public function getManufacturer($hazmat_id, $type)
     {
         try {
-            $manufacturers = MakeModel::where('hazmat_id', $hazmat_id)->where('equipment', $type)->select('manufacturer')->distinct()->get();
+            $manufacturers = MakeModel::where('equipment', $type)->select('manufacturer')->distinct()->get();
             return response()->json(['isStatus' => true, 'message' => 'Equipment besed manufacturers retrieved successfully.', 'manufacturers' => $manufacturers]);
         } catch (Throwable $th) {
             return response()->json(['error' => $th->getMessage()], 500);
@@ -279,7 +280,7 @@ class POOrderController extends Controller
     public function getmodel($hazmat_id, $equipment, $manufacturer)
     {
         try {
-            $documentData = MakeModel::where('hazmat_id', $hazmat_id)->where('equipment', $equipment)->where('manufacturer', $manufacturer)->get();
+            $documentData = MakeModel::where('equipment', $equipment)->where('manufacturer', $manufacturer)->get();
 
             $data = $documentData->map(function ($document) {
                 $document->modelmakepart = "{$document->model}-{$document->make}-{$document->part}";
@@ -294,7 +295,7 @@ class POOrderController extends Controller
     public function getPartBasedDocumentFile($hazmat_id)
     {
         try {
-            $documentFile = MakeModel::select('id', 'document1', 'document2')->find($hazmat_id);
+            $documentFile = MakeModel::select('id', 'md_no', 'sdoc_no')->find($hazmat_id);
 
             return response()->json(['isStatus' => true, 'message' => 'Part besed document file retrieved successfully.', 'documentFile' => $documentFile]);
         } catch (Throwable $th) {

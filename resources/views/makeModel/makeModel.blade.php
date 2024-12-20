@@ -42,7 +42,7 @@
                             </div>
                         </div>
                     </h4>
-                    <div class="card-body">
+                    <div class="card-body mb-4">
                         <div>
                             <table class="table table-striped table-bordered first" width="100%">
                                 <thead>
@@ -54,7 +54,8 @@
                                         <th>Make</th>
                                         <th>Manufacturer</th>
                                         <th>Part</th>
-                                        <th>Ref No</th>
+                                        <th>MD No</th>
+                                        <th>SDoc No</th>
 
                                         <th>Document 1</th>
                                         <th>Document 2</th>
@@ -72,7 +73,8 @@
                                                 <td>{{ $model->make }}</td>
                                                 <td>{{ $model->manufacturer }}</td>
                                                 <td>{{ $model->part }}</td>
-                                                <td>{{$model->ref_no}}</td>
+                                                <td>{{$model->md_no}}</td>
+                                                <td>{{$model->sdoc_no}}</td>
                                                 <td>
                                                     <a href="{{ $model->document1['path'] }}" target="_black">{{ $model->document1['name'] }}</a>
                                                 </td>

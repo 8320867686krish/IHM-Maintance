@@ -28,7 +28,8 @@ class MakeModelRequest extends FormRequest
             'make' => 'required|max:254',
             'manufacturer' => 'required|max:254',
             'part' => 'required|max:254',
-            'ref_no' => 'required'
+            'md_no' => 'required',
+            'sdoc_no' => 'required'
         ];
 
         if (empty($this->id)) {

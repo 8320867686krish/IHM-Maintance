@@ -180,7 +180,7 @@
 																<div class=" col-4  documentLoad1 mb-1" id="documentLoad1_{{$value['hazmat_id']}}">
 																	<div class="form-group">
 																		@if(@$value['doc1'])
-																		<a href="{{ url('/images/modelDocument/' . $value['doc1']) }}" target="_blank">{{ $value['doc1'] }}</a>
+																		<a>{{ $value['doc1'] }}</a>
 
 																		@endif
 																	</div>
@@ -189,7 +189,7 @@
 																<div class=" col-4  documentLoad2 mb-1" id="documentLoad2_{{$value['hazmat_id']}}">
 																	<div class="form-group">
 																		@if(@$value['doc2'])
-																		<a href="{{ url('/images/modelDocument/' . $value['doc2']) }}" target="_blank">{{ $value['doc2'] }}</a>
+																		<input type="hidden" name="hazmats[${hazmetId}][doc2]" value="{{$value['sdoc_no']}}"><a>{{ $value['doc2'] }}</a>
 
 																		@endif
 																	</div>
