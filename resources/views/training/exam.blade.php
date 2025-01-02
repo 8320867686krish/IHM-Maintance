@@ -205,8 +205,8 @@ function checkAnswer() {
         selectedOption.parentElement.classList.add('correct'); // Highlight as correct
     } else {
         wrong++;
-        selectedOption.parentElement.classList.add('correct'); // Highlight as incorrect
-        optionsEl.children[question.correct].classList.add('correct'); // Highlight the correct answer
+        selectedOption.parentElement.classList.add('incorrect'); // Highlight as incorrect
+        optionsEl.children[question.correct].classList.add('correct');
     }
     console.log(score,"::",wrong);
     // Disable all options
@@ -280,7 +280,7 @@ nextBtn.addEventListener('click', () => {
     if (currentQuestion < quizData.length) {
         loadQuestion();
     } else {
-        saveResult();
+      //  saveResult();
         showResults();
     }
 });
