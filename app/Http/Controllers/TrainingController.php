@@ -98,4 +98,37 @@ class TrainingController extends Controller
         return response()->json(['isStatus' => true, 'message' => 'Assign successfully!!']);
 
     }
+    public function training(Request $request){
+        $hazmat_companies_id= Auth::user()->hazmat_companies_id;
+        $training_sets_id = AssignTarainingSets::where('hazmat_companies_id', $hazmat_companies_id)
+        ->inRandomOrder()
+        ->limit(2)
+        ->pluck('training_sets_id')
+        ->toArray();
+        shuffle($training_sets_id);
+
+        $questionSets = QuestionSets::whereIn('training_sets_id',$training_sets_id )->get();
+        $quizData = $questionSets->map(function ($question) {
+            return [
+                'question' => $question->question_name,
+                'options' => [
+                    $question->option_a,
+                    $question->option_b,
+                    $question->option_c,
+                    $question->option_d,
+                ],
+                'correct' => match ($question->correct_answer) {
+                    'A' => 0,
+                    'B' => 1,
+                    'C' => 2,
+                    'D' => 3,
+                    default => null, // Handle unexpected values
+                },
+            ];
+        });
+        return view('training.exam',['quizData'=>$quizData]);
+    }
+    public function saveResult(Request $request){
+     print_r($request->input());
+    }
 }

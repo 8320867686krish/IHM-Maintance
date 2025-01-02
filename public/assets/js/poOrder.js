@@ -791,7 +791,7 @@ function getDocument(modelId, hazmetId) {
         if (data.sdoc_no != null) {
             $(`#documentLoad2_${hazmetId}`).empty();
             let html =
-                `<input type="hidden" name="hazmats[${hazmetId}][doc2]" value=${data.sdoc_no}><a >SDoc No. ${data.sdoc_no} </a>`;
+                `<input type="hidden" name="hazmats[${hazmetId}][doc2]" value=${data.sdoc_no}><a >SDoC No. ${data.sdoc_no} </a>`;
             $(`#documentLoad2_${hazmetId}`).append(html);
         }
 

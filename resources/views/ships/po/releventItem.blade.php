@@ -180,7 +180,7 @@
 																<div class=" col-4  documentLoad1 mb-1" id="documentLoad1_{{$value['hazmat_id']}}">
 																	<div class="form-group">
 																		@if(@$value['doc1'])
-																		<a>{{ $value['doc1'] }}</a>
+																		<input type="hidden" name="hazmats[{{$value['hazmat_id']}}][doc1]" value="{{$value['doc1']}}"><a>MD NO.{{ $value['doc1'] }}</a>
 
 																		@endif
 																	</div>
@@ -189,7 +189,7 @@
 																<div class=" col-4  documentLoad2 mb-1" id="documentLoad2_{{$value['hazmat_id']}}">
 																	<div class="form-group">
 																		@if(@$value['doc2'])
-																		<input type="hidden" name="hazmats[${hazmetId}][doc2]" value="{{$value['sdoc_no']}}"><a>{{ $value['doc2'] }}</a>
+																		<input type="hidden" name="hazmats[{{$value['hazmat_id']}}][doc2]" value="{{$value['doc2']}}"><a>SDoC No.{{ $value['doc2'] }}</a>
 
 																		@endif
 																	</div>

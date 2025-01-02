@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 
-@section('shiptitle','User Management')
+@section('shiptitle','Training Management')
 
 @section('content')
 <div class="container-fluid dashboard-content">
@@ -14,7 +14,7 @@
 
                  <div class="page-breadcrumb">
                         <nav aria-label="breadcrumb">
-                        <h5 class="pageheader-title"> <a href="{{url('training')}}"><span class="icon"><i class="fas fa-arrow-left"></i></span> Back</a> <span class="ml-1">{{ $head_title ?? '' }} Training Management</span></h5>
+                        <h5 class="pageheader-title"> <a href="{{url('trainingsets')}}"><span class="icon"><i class="fas fa-arrow-left"></i></span> Back</a> <span class="ml-1">{{ $head_title ?? '' }} Training Management</span></h5>
 
                 </nav>
             </div> 
@@ -39,13 +39,13 @@
             </ul>
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade active show" id="questions" role="tabpanel" aria-labelledby="home-tab">
-                    <form method="post" class="needs-validation" novalidate id="trainingForm" action="{{ url('training/save') }}" enctype="multipart/form-data">
+                    <form method="post" class="needs-validation" novalidate id="trainingForm" action="{{ url('trainingsets/save') }}" enctype="multipart/form-data">
                         @csrf
                         <input type="hidden" name="id" value="{{ @$training->id ?? '' }}">
                         <input type="hidden" name="deleted_questions_id" value="" id="deleted_questions_id">
 
                         <div class="row">
-                            <div class="col-sm-12 col-md-6">
+                            <div class="col-sm-12 col-md-9">
                                 <div class="form-group">
                                     <label for="name">Sets Name <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control @error('name') is-invalid @enderror"
@@ -55,7 +55,7 @@
                                     <div class="invalid-feedback error" id="nameError"></div>
                                 </div>
                             </div>
-                            <div class="col-6">
+                            <div class="col-3">
                                 <div class="form-group">
 
                                     <button class="btn btn-primary float-right" type="button" id="addQuestion"><i class="fas fa-plus"></i> Add Question</button>
@@ -76,7 +76,7 @@
                                 <div class="form-group col-12">
                                     <div class="row align-items-center">
                                         <label class="col-md-2">Q - {{$loop->iteration}}</label>
-                                        <div class="col-md-10">
+                                        <div class="col-md-7">
                                             <input type="text" class="form-control form-control-lg"
                                                 name="questions[{{$quesvalue['id']}}][question_name]"
                                                 autocomplete="off" placeholder="Enter Question" value="{{$quesvalue['question_name']}}">
@@ -89,7 +89,7 @@
                                 <div class="form-group col-12">
                                     <div class="row align-items-center">
                                         <label class="col-md-2">Answer Type</label>
-                                        <div class="col-md-10">
+                                        <div class="col-md-7">
                                             <select class="form-control form-control-lg answer-type-select"
                                                 name="questions[{{$quesvalue['id']}}][answer_type]"
                                                 data-item-id="{{$quesvalue['id']}}">
@@ -177,7 +177,7 @@
                                 <div class="form-group col-12" id="correctAnswerContainer{{$quesvalue['id']}}">
                                     <div class="row align-items-center">
                                         <label class="col-md-2">Correct Answer</label>
-                                        <div class="col-md-10">
+                                        <div class="col-md-7">
                                             <input type="text" class="form-control form-control-lg"
                                                 name="questions[{{$quesvalue['id']}}][correct_answer]"
                                                 autocomplete="off" placeholder="Correct Answer" value="{{$quesvalue['correct_answer']}}">
@@ -209,7 +209,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @if(@$training->assignsethzmatCompany)
+                        @if(count($training->assignsethzmatCompany)> 0)
                         @foreach($training->assignsethzmatCompany as $value)
                         <tr>
                             <td>{{$loop->iteration}}</td>

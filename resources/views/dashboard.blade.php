@@ -16,7 +16,19 @@
             </div>
         </div>
     </div>
+    <!-- For ship Login -->
+    @if($currentUserRoleLevel == 6 || $currentUserRoleLevel == 5)
 
+    <div class="row">
+        <div class="col-12">
+        <div class="alert alert-info card" role="alert">
+            All The designated personnel of IHM must do their familiarization Training within 15 days of joining as per company SMS Manual and crew brifing every 3 months.
+        </div>
+        </div>
+    </div>
+    @include('shipdesignated.list')
+    @endif
+    <!-- end -->
     <div class="row">
 
         <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12">
@@ -36,6 +48,7 @@
             </div>
         </div>
     </div>
+    @if($currentUserRoleLevel != 6)
     <div class="row">
         <div class="col-xl-4 offset-4  col-lg-4   col-md-4  col-sm-12 col-12 mb-3 ">
             <div class="chartSelect">
@@ -44,13 +57,15 @@
                     <option>Select Ship</option>
                     @foreach($ships as $value)
                     <option value="{{$value['id']}}" {{ $loop->first ? 'selected' : '' }}>
-                    {{$value['ship_name']}}</option>
+                        {{$value['ship_name']}}
+                    </option>
                     @endforeach
 
                 </select>
             </div>
         </div>
     </div>
+
     <div class="row">
         <div class="col-xl-12  col-lg-12 col-md-12 col-sm-12 col-12">
             <div class="card">
@@ -61,11 +76,14 @@
             </div>
         </div>
     </div>
+    @endif
 </div>
+@include('shipdesignated.DesignatedModel')
 
 @stop
 @push('js')
-<script src="{{ asset('assets/vendor/jquery/jquery-3.3.1.min.js') }}"></script>
+
+<script src="{{ asset('assets/js/shipdesignatedperson.js') }}"></script>
 
 <script src="{{ asset('assets/vendor/charts/charts-bundle/Chart.bundle.js') }}"></script>
 <script src="{{ asset('assets/vendor/charts/charts-bundle/chartjs.js') }}"></script>
@@ -78,10 +96,7 @@
     var shipsPo = @json($shipsPo);
     var nonRelevantCounts = @json($nonRelevantCounts);
     var relevantCounts = @json($relevantCounts);
-  
-    // Initialize the chart
-   
 
-   
+    // Initialize the chart
 </script>
 @endpush

@@ -33,8 +33,8 @@
                 <h4 class="card-header">
                     <a href=""
                         class="btn btn-primary float-right  assignSets mr-2"> Assign Sets</a>
-                    @can('training.add')
-                    <a href="{{ route('training.add') }}"
+                    @can('trainingsets.add')
+                    <a href="{{ route('trainingsets.add') }}"
                         class="btn btn-primary float-right btn-rounded addNewBtn mr-2"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="plus" class="lucide lucide-plus">
                             <path d="M5 12h14"></path>
                             <path d="M12 5v14"></path>
@@ -67,8 +67,8 @@
 
 
                                     <td class="text-center">
-                                        @can('training.edit')
-                                        <a href="{{ route('training.edit', ['id' => $value->id]) }}"
+                                        @can('trainingsets.edit')
+                                        <a href="{{ route('trainingsets.edit', ['id' => $value->id]) }}"
                                             rel="noopener noreferrer" title="Edit" class="text-center">
                                             <i class="fas fa-edit text-primary" style="font-size: 1rem"></i>
                                         </a>

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ClientCompanyController;
 use App\Http\Controllers\dashobardController;
+use App\Http\Controllers\DesignatedPersonController;
 use App\Http\Controllers\HazmatCompanyController;
 use App\Http\Controllers\HelpCente;
 use App\Http\Controllers\HelpCenterController;
@@ -84,7 +85,13 @@ Route::middleware('auth')->group(function () {
     });
     Route::get('/portal-guide', [ShipController::class, 'portalGuide'])->name('portal.guide');
     Route::get('/summeryReport/{ship_id}', [VscpController::class, 'summeryReport'])->name('summeryReport');
-
+    Route::post('designatedPerson',[DesignatedPersonController::class,'store'])->name('designatedPerson');
+    Route::middleware('can:training')->group(function () {
+        Route::controller(TrainingController::class)->group(function () {
+            Route::get('training','training')->name('training');
+            Route::post('save/result','saveResult')->name('saveResult');
+        });
+    });
 
     Route::middleware('can:ships')->group(function () {
         Route::controller(ShipController::class)->group(function () {
@@ -97,11 +104,12 @@ Route::middleware('auth')->group(function () {
 
         });
         Route::controller(TrainingController::class)->group(function () {
-            Route::get('training', 'index')->name('training');
-            Route::get('training/add', 'add')->name('training.add');
-            Route::get('training/{id}/edit','editTraining')->name('training.edit');
-            Route::post('training/save','trainingSave')->name('training.save');
+            Route::get('trainingsets', 'index')->name('trainingsets');
+            Route::get('trainingsets/add', 'add')->name('trainingsets.add');
+            Route::get('trainingsets/{id}/edit','editTraining')->name('trainingsets.edit');
+            Route::post('trainingsets/save','trainingSave')->name('trainingsets.save');
             Route::post('assigntraining','assigntraining')->name('assigntraining');
+            
 
 
         });

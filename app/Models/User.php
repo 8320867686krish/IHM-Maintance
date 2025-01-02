@@ -70,4 +70,8 @@ class User extends Authenticatable
         return $this->hasOne(Ship::class,'user_id','id');
 
        }
+       public function designatedPerson(){
+        return $this->hasMany(DesignatedPerson::class, 'ship_staff_id', 'id');
+
+       }
 }
