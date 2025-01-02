@@ -7,7 +7,10 @@
     body {
     background-color: #f0f2f5;
 }
-
+.option.incorrect {
+    background-color: #f8d7da;
+    border-color: #dc3545;
+}
 .quiz-container {
     border-radius: 15px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
