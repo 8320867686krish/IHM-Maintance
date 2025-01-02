@@ -209,7 +209,7 @@ function checkAnswer() {
     } else {
         wrong++;
         selectedOption.parentElement.classList.add('incorrect'); // Highlight as incorrect
-        optionsEl.children[question.correct].classList.add('correct');
+       // optionsEl.children[question.correct].classList.add('correct');
     }
     console.log(score,"::",wrong);
     // Disable all options
