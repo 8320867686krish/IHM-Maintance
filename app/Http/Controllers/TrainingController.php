@@ -101,6 +101,8 @@ class TrainingController extends Controller
     }
     public function training(Request $request){
         $hazmat_companies_id= Auth::user()->hazmat_companies_id;
+        $user = Auth::user();
+        $ship_id = $user->shipClient->id;
         $training_sets_id = AssignTarainingSets::where('hazmat_companies_id', $hazmat_companies_id)
         ->inRandomOrder()
         ->limit(2)

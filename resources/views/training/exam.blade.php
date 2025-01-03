@@ -90,12 +90,18 @@
     }
 </style>
 @section('content')
-<div class="container mt-5">
-<div class="col-xl-12  col-lg-12 col-md-12 col-sm-12 col-12 mb-5">
-      
+<div id="preview">
+    <div class="container" style="height: 750px; overflow-y: auto;">
+        <pdf-viewer src="{{ asset('uploads//Hazardous_Materials.pdf')}}"></pdf-viewer>
 
-      <pdf-viewer src="{{ asset('uploads/clentcompanymaterial/Hazardous_Materials.pdf')}}"></pdf-viewer>
-      </div>
+    </div>
+    <div class="container mt-2" style="z-index: 999999999">
+
+        <button class="btn btn-primary float-right mb-4" id="examstart">Exam Start</button>
+    </div>
+</div>
+
+<div id="examLoad" style="display:none">
     <div class="quiz-container mt-5" id="quiz">
         <div class="quiz-header">
             <h2>Exam</h2>
@@ -120,6 +126,12 @@
 <script src="{{ asset('assets/libs/js/pdfview.js') }}"></script>
 
 <script>
+    $("#examstart").click(function(){
+        $("#examLoad").show();
+        $("#preview").hide();
+
+        
+    });
     var iteamQuestion = "{{ isset($training->questions) ? count($training->questions) : 0 }}";
     const quizData = @json($quizData);
     console.log(quizData);
@@ -151,12 +163,12 @@
             span.classList.add('custom-control-label');
             if (question.answer_type === 'file') {
                 const img = document.createElement('img');
-                img.src = `{{ url('uploads/trainingRecored/') }}/${option}`;
+                img.src = `{{ url('public/uploads/trainingRecored/') }}/${option}`;
                 img.alt = `Option ${index}`;
-                img.height = 100; 
+                img.height = 100;
                 img.width = 100;
                 span.appendChild(img);
-            }else{
+            } else {
                 span.textContent = option;
             }
             label.appendChild(input);
