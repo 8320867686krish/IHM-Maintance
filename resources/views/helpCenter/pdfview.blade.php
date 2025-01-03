@@ -6,7 +6,7 @@
 <div class="col-xl-12  col-lg-12 col-md-12 col-sm-12 col-12 mb-5">
       
 
-<pdf-viewer src="{{ asset('assets/tet.pdf')}}"></pdf-viewer>
+<pdf-viewer src="{{ asset('assets/uploads/clentcompanymaterial/Hazardous_Materials.pdf')}}"></pdf-viewer>
 </div>
 </div>
 @endsection
