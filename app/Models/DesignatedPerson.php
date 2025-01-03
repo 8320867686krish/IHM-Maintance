@@ -18,4 +18,9 @@ class DesignatedPerson extends Model
         'ship_id',
         'ship_staff_id'
     ];
+
+    public function designatedPersionShips()
+    {
+        return $this->hasMany(DesignatedPersionShip::class, 'designated_person_id');
+    }
 }

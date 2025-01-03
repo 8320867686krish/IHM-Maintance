@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\assignTraining;
 use App\Http\Requests\TrainingRequest;
 use App\Models\AssignTarainingSets;
+use App\Models\Exam;
 use App\Models\hazmatCompany;
 use App\Models\QuestionSets;
 use App\Models\Training;
@@ -111,6 +112,7 @@ class TrainingController extends Controller
         $quizData = $questionSets->map(function ($question) {
             return [
                 'question' => $question->question_name,
+                'answer_type' => $question->answer_type,
                 'options' => [
                     $question->option_a,
                     $question->option_b,
@@ -129,6 +131,15 @@ class TrainingController extends Controller
         return view('training.exam',['quizData'=>$quizData]);
     }
     public function saveResult(Request $request){
-     print_r($request->input());
+     $post = $request->input();
+     $user = Auth::user();
+     $inputData['ship_id'] = $user->shipClient->id;
+     $inputData['ship_staff_id'] = $user->id;
+     $inputData['correct_ans'] = $post['correct_ans'];
+     $inputData['wrong_ans'] = $post['wrong_ans'];
+     $inputData['total_ans'] = $post['total_ans'];
+     Exam::create($inputData);
+     return response()->json(['isStatus' => true, 'message' => 'submit successfully!!']);
+
     }
 }

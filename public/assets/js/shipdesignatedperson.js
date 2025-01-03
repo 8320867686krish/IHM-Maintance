@@ -21,7 +21,6 @@ $("#designatedSave").click(function(){
                 $submitButton.html(originalText);
                 $submitButton.prop('disabled', false);
                 $("#DesignatedModel").modal('hide');
-                window.location.href = response.url;
                 
             } else {
                 $.each(response.message, function (field, messages) {
@@ -38,8 +37,22 @@ $("#designatedSave").click(function(){
         }
     });
 })
+
 $(".editdesignatedPerson").click(function(){
     var data = $(this).data('designated');
+    var currentUserRoleLevel = $("#currentUserRoleLevel").val();
+    if(currentUserRoleLevel == 5){
+        $.ajax({
+            type: 'GET',
+            url: `${baseUrl}/designatedPersonShip/${data.id}`,
+            contentType: false,
+            processData: false,
+            success: function (response) {
+                $('#designatedForm #designatedpersionships').selectpicker('val', response.shipIds);
+                $('#designatedForm #designatedpersionships').selectpicker('refresh');
+            }
+        });
+    }
     let form = $(`#designatedForm`);    
     form.find("#name").val(data.name);
     form.find("#id").val(data.id);
@@ -48,9 +61,6 @@ $(".editdesignatedPerson").click(function(){
     form.find("#sign_off_date").val(data.sign_off_date);
     form.find("#sign_on_date").val(data.sign_on_date);
     form.find("#ship_id").val(data.ship_id);
-
     form.find("#position").val(data.position);
-
-    
     $("#DesignatedModel").modal('show');
 });

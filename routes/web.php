@@ -86,6 +86,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/portal-guide', [ShipController::class, 'portalGuide'])->name('portal.guide');
     Route::get('/summeryReport/{ship_id}', [VscpController::class, 'summeryReport'])->name('summeryReport');
     Route::post('designatedPerson',[DesignatedPersonController::class,'store'])->name('designatedPerson');
+    Route::get('designatedPersonShip/{designated_person_id}',[DesignatedPersonController::class,'designatedPersonShip'])->name('designatedPersonShip');
+
     Route::middleware('can:training')->group(function () {
         Route::controller(TrainingController::class)->group(function () {
             Route::get('training','training')->name('training');

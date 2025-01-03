@@ -5,90 +5,97 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 <style>
     body {
-    background-color: #f0f2f5;
-}
-.option.incorrect {
-    background-color: #f8d7da;
-    border-color: #dc3545;
-}
-.quiz-container {
-    border-radius: 15px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-    padding: 30px;
-    max-width: 600px;
-    width: 100%;
-    margin: auto;
-}
+        background-color: #f0f2f5;
+    }
 
-.quiz-header {
-    text-align: center;
-    margin-bottom: 30px;
-}
+    .option.incorrect {
+        background-color: #f8d7da;
+        border-color: #dc3545;
+    }
 
-.question {
-    font-size: 1.2rem;
-    margin-bottom: 20px;
-}
+    .quiz-container {
+        border-radius: 15px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        padding: 30px;
+        max-width: 600px;
+        width: 100%;
+        margin: auto;
+    }
 
-.options {
-    display: grid;
-    gap: 10px;
-}
+    .quiz-header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
 
-.option {
-    background-color: #f8f9fa;
-    border: 2px solid #dee2e6;
-    border-radius: 10px;
-    padding: 15px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
+    .question {
+        font-size: 1.2rem;
+        margin-bottom: 20px;
+    }
 
-.option:hover {
-    background-color: #e9ecef;
-}
+    .options {
+        display: grid;
+        gap: 10px;
+    }
 
-.option.selected {
-    background-color: #cfe2ff;
-    border-color: #0d6efd;
-}
+    .option {
+        background-color: #f8f9fa;
+        border: 2px solid #dee2e6;
+        border-radius: 10px;
+        padding: 15px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
 
-.option.correct {
-    background-color: #d4edda;
-    border-color: #28a745;
-}
+    .option:hover {
+        background-color: #e9ecef;
+    }
 
+    .option.selected {
+        background-color: #cfe2ff;
+        border-color: #0d6efd;
+    }
 
-
-.quiz-footer {
-    padding-top: 30px;
-    padding-bottom: 30px;
-}
+    .option.correct {
+        background-color: #d4edda;
+        border-color: #28a745;
+    }
 
 
 
-.progress {
-    height: 10px;
-    margin-bottom: 20px;
-}
+    .quiz-footer {
+        padding-top: 30px;
+        padding-bottom: 30px;
+    }
 
-.results {
-    text-align: center;
-}
 
-.result-icon {
-    font-size: 4rem;
-    margin-bottom: 20px;
-}
 
-.score {
-    font-size: 2rem;
-    font-weight: bold;
-    margin-bottom: 20px;
-}
+    .progress {
+        height: 10px;
+        margin-bottom: 20px;
+    }
+
+    .results {
+        text-align: center;
+    }
+
+    .result-icon {
+        font-size: 4rem;
+        margin-bottom: 20px;
+    }
+
+    .score {
+        font-size: 2rem;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
 </style>
 @section('content')
 <div class="container mt-5">
+<div class="col-xl-12  col-lg-12 col-md-12 col-sm-12 col-12 mb-5">
+      
+
+      <pdf-viewer src="{{ asset('uploads/clentcompanymaterial/Hazardous_Materials.pdf')}}"></pdf-viewer>
+      </div>
     <div class="quiz-container mt-5" id="quiz">
         <div class="quiz-header">
             <h2>Exam</h2>
@@ -102,7 +109,7 @@
             <div class="options" id="options"></div>
         </div>
         <div class="quiz-footer">
-            
+
             <button class="btn btn-primary float-right" id="next-btn">Next</button>
         </div>
     </div>
@@ -110,185 +117,165 @@
 @endsection
 
 @push('js')
+<script src="{{ asset('assets/libs/js/pdfview.js') }}"></script>
+
 <script>
     var iteamQuestion = "{{ isset($training->questions) ? count($training->questions) : 0 }}";
     const quizData = @json($quizData);
-console.log(quizData);
+    console.log(quizData);
 
-let currentQuestion = 0;
-let score = 0;
-let wrong = 0;
+    let currentQuestion = 0;
+    let score = 0;
+    let wrong = 0;
+    const questionEl = document.getElementById('question');
+    const optionsEl = document.getElementById('options');
+    const nextBtn = document.getElementById('next-btn');
+    const progressBar = document.querySelector('.progress-bar');
+    const quizContainer = document.getElementById('quiz');
 
+    function loadQuestion() {
+        const question = quizData[currentQuestion];
+        questionEl.textContent = question.question;
+        optionsEl.innerHTML = '';
 
-const questionEl = document.getElementById('question');
-const optionsEl = document.getElementById('options');
-const nextBtn = document.getElementById('next-btn');
-const progressBar = document.querySelector('.progress-bar');
-const quizContainer = document.getElementById('quiz');
-
-function loadQuestion() {
-    const question = quizData[currentQuestion];
-    questionEl.textContent = question.question;
-    optionsEl.innerHTML = '';
-    // Assuming `question.options` contains the options array and `optionsEl` is the parent container.
-question.options.forEach((option, index) => {
-    // Create the label element with the necessary classes
-    const label = document.createElement('label');
-    label.classList.add('custom-control', 'custom-radio', 'custom-control-inline');
-
-    // Create the input element
-    const input = document.createElement('input');
-    input.type = 'radio';
-    input.name = 'option';
-    input.id = `option-${index}`;
-    input.value = index;
-    input.classList.add('custom-control-input');
-
-    // Create the span element for the label text
-    const span = document.createElement('span');
-    span.classList.add('custom-control-label');
-    span.textContent = option;
-
-    // Append input and span to the label
-    label.appendChild(input);
-    label.appendChild(span);
-
-    // Append the label to the container
-    optionsEl.appendChild(label);
-});
-
-    // question.options.forEach((option, index) => {
-    //     console.log(index);
-    //     const div = document.createElement('div');
-    //     div.classList.add('form-check');
-
-    //     const input = document.createElement('input');
-    //     input.type = 'radio';
-    //     input.name = 'option';
-    //     input.id = `option-${index}`;
-    //     input.value = index;
-    //     input.classList.add('form-check-input');
-
-    //     const label = document.createElement('label');
-    //     label.textContent = option;
-    //     label.htmlFor = `option-${index}`;
-    //     label.classList.add('form-check-label');
-
-    //     div.appendChild(input);
-    //     div.appendChild(label);
-    //     optionsEl.appendChild(div);
-    // });
-    nextBtn.style.display = 'none';
-    updateProgress();
-}
-
-
-function selectOption() {
-    const selectedOption = document.querySelector('input[name="option"]:checked');
-    if (selectedOption) {
-        nextBtn.style.display = 'block';
-    } else {
+        question.options.forEach((option, index) => {
+            const label = document.createElement('label');
+            label.classList.add('custom-control', 'custom-radio', 'custom-control-inline');
+            const input = document.createElement('input');
+            input.type = 'radio';
+            input.name = 'option';
+            input.id = `option-${index}`;
+            input.value = index;
+            input.classList.add('custom-control-input');
+            const span = document.createElement('span');
+            span.classList.add('custom-control-label');
+            if (question.answer_type === 'file') {
+                const img = document.createElement('img');
+                img.src = `{{ url('uploads/trainingRecored/') }}/${option}`;
+                img.alt = `Option ${index}`;
+                img.height = 100; 
+                img.width = 100;
+                span.appendChild(img);
+            }else{
+                span.textContent = option;
+            }
+            label.appendChild(input);
+            label.appendChild(span);
+            optionsEl.appendChild(label);
+        });
         nextBtn.style.display = 'none';
+        updateProgress();
     }
-}
-
-// Add event listener for changes in radio selection
-optionsEl.addEventListener('change', selectOption);
 
 
-function checkAnswer() {
-    const selectedOption = document.querySelector('input[name="option"]:checked');
-    if (!selectedOption) return;
-
-    const selectedAnswer = parseInt(selectedOption.value, 10);
-    const question = quizData[currentQuestion];
-
-    if (selectedAnswer === question.correct) {
-        score++;
-        selectedOption.parentElement.classList.add('correct'); // Highlight as correct
-    } else {
-        wrong++;
-        selectedOption.parentElement.classList.add('incorrect'); // Highlight as incorrect
-       // optionsEl.children[question.correct].classList.add('correct');
+    function selectOption() {
+        const selectedOption = document.querySelector('input[name="option"]:checked');
+        if (selectedOption) {
+            nextBtn.style.display = 'block';
+        } else {
+            nextBtn.style.display = 'none';
+        }
     }
-    console.log(score,"::",wrong);
-    // Disable all options
-    Array.from(optionsEl.children).forEach(div => {
-        div.querySelector('input').disabled = true;
-    });
-}
 
-function updateProgress() {
-    const progress = ((currentQuestion + 1) / quizData.length) * 100;
-    progressBar.style.width = `${progress}%`;
-    progressBar.setAttribute('aria-valuenow', progress);
-}
-function saveResult(){
-    var quizFormData = {
-        'total_ans':quizData.length,
-        'correct_ans' : score,
-        'wrong_ans' : wrong,
-        '_token':$('meta[name="csrf-token"]').attr('content')
+    // Add event listener for changes in radio selection
+    optionsEl.addEventListener('change', selectOption);
+
+
+    function checkAnswer() {
+        const selectedOption = document.querySelector('input[name="option"]:checked');
+        if (!selectedOption) return;
+
+        const selectedAnswer = parseInt(selectedOption.value, 10);
+        const question = quizData[currentQuestion];
+
+        if (selectedAnswer === question.correct) {
+            score++;
+            selectedOption.parentElement.classList.add('correct'); // Highlight as correct
+        } else {
+            wrong++;
+            selectedOption.parentElement.classList.add('incorrect'); // Highlight as incorrect
+            // optionsEl.children[question.correct].classList.add('correct');
+        }
+        console.log(score, "::", wrong);
+        // Disable all options
+        Array.from(optionsEl.children).forEach(div => {
+            div.querySelector('input').disabled = true;
+        });
     }
-    $.ajax({
-        type: 'POST',
-        url: "{{url('save/result')}}",
-        data: quizFormData,
-        success: function (response) {
-            console.log(response);
-            if (response.isStatus) {
-                
-                successMsg(response.message);
-                let form = document.getElementById('addPartManualForm');
-                $("#documentshow").html();
-                form.reset()
-                $submitButton.html(originalText);
-                $submitButton.prop('disabled', false);
-                $("#partmanuelModel").modal('hide');
-                
-                $(".partmanullist").html(response.html);
-                
-                
-            } else {
-                $.each(response.message, function (field, messages) {
-                    $('#' + field + 'Error').text(messages[0]).show();
-                    $('[name="' + field + '"]').addClass('is-invalid');
-                });
+
+    function updateProgress() {
+        const progress = ((currentQuestion + 1) / quizData.length) * 100;
+        progressBar.style.width = `${progress}%`;
+        progressBar.setAttribute('aria-valuenow', progress);
+    }
+
+    function saveResult() {
+        var quizFormData = {
+            'total_ans': quizData.length,
+            'correct_ans': score,
+            'wrong_ans': wrong,
+            '_token': $('meta[name="csrf-token"]').attr('content')
+        }
+        $.ajax({
+            type: 'POST',
+            url: "{{url('save/result')}}",
+            data: quizFormData,
+            success: function(response) {
+                console.log(response);
+                if (response.isStatus) {
+
+                    successMsg(response.message);
+                    let form = document.getElementById('addPartManualForm');
+                    $("#documentshow").html();
+                    form.reset()
+                    $submitButton.html(originalText);
+                    $submitButton.prop('disabled', false);
+                    $("#partmanuelModel").modal('hide');
+
+                    $(".partmanullist").html(response.html);
+
+
+                } else {
+                    $.each(response.message, function(field, messages) {
+                        $('#' + field + 'Error').text(messages[0]).show();
+                        $('[name="' + field + '"]').addClass('is-invalid');
+                    });
+                    $submitButton.html(originalText);
+                    $submitButton.prop('disabled', false);
+                }
+            },
+            error: function(xhr, status, error) {
                 $submitButton.html(originalText);
                 $submitButton.prop('disabled', false);
             }
-        },
-        error: function (xhr, status, error) {
-            $submitButton.html(originalText);
-            $submitButton.prop('disabled', false);
-        }
-    });
-}
-function showResults() {
-    quizContainer.innerHTML = `
+        });
+    }
+
+    function showResults() {
+        quizContainer.innerHTML = `
                 <div class="results">
                     <div class="result-icon">
-                        <i class="fas ${score > quizData.length / 2 ? 'fa-trophy text-success' : 'fa-times-circle text-danger'}"></i>
+                        <i class="fas ${score > quizData.length / 2 ? 'fa-trophy text-success' : 'fa-trophy text-success'}"></i>
                     </div>
                     <div class="score">Your score: ${score}/${quizData.length}</div>
                     <p>${score > quizData.length / 2 ? 'Great job!' : 'Better luck next time!'}</p>
                     <button class="btn btn-primary" onclick="location.reload()">Restart Quiz</button>
                 </div>
             `;
-}
-
-nextBtn.addEventListener('click', () => {
-    checkAnswer();
-    currentQuestion++;
-    if (currentQuestion < quizData.length) {
-        loadQuestion();
-    } else {
-      //  saveResult();
-        showResults();
     }
-});
 
-loadQuestion();
+    nextBtn.addEventListener('click', () => {
+        checkAnswer();
+        currentQuestion++;
+        if (currentQuestion < quizData.length) {
+            loadQuestion();
+        } else {
+            saveResult();
+            showResults();
+        }
+    });
+
+    loadQuestion();
 </script>
 <script src="{{ asset('assets/js/training.js') }}"></script>
 

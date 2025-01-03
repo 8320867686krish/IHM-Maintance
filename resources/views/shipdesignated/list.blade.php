@@ -4,14 +4,14 @@
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                 @if($currentUserRoleLevel == 6)
                 <li class="nav-item">
-                    <a class="nav-link active show" id="overall-tab" data-toggle="tab" href="#overallIncharge" role="tab" aria-controls="overallIncharge" aria-selected="true">Overall-incharge</a>
+                    <a class="nav-link active show" id="overall-tab" data-toggle="tab" href="#overallIncharge" role="tab" aria-controls="overallIncharge" aria-selected="true">Overall-incharge (Captain)</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" id="responsible-tab" data-toggle="tab" href="#responsiblePerson" role="tab" aria-controls="responsiblePerson" aria-selected="false">Responsible Person</a>
                 </li>
                 @elseif($currentUserRoleLevel == 5)
                 <li class="nav-item">
-                    <a class="nav-link active show" id="overall-tab" data-toggle="tab" href="#overall-tab" role="tab" aria-controls="overall-tab" aria-selected="true">Super Dp</a>
+                    <a class="nav-link active show" id="overall-tab" data-toggle="tab" href="#overall-tab" role="tab" aria-controls="overall-tab" aria-selected="true">ShoreDP</a>
                 </li>
                 @endif
             </ul>
@@ -19,7 +19,8 @@
                 <button class="btn btn-primary float-right mb-4" type="button" id="addDesignated" data-target="#DesignatedModel" data-toggle="modal">
                     <i class="fas fa-plus"></i> Add
                 </button>
-                <div class="tab-pane fade" id="overallIncharge" role="tabpanel" aria-labelledby="overall-tab">
+                @if($currentUserRoleLevel == 6)
+                <div class="tab-pane fade active show" id="overallIncharge" role="tabpanel" aria-labelledby="overall-tab">
                     <table class="table table-striped table-bordered first">
                         <thead>
                             <tr>
@@ -57,7 +58,7 @@
                         </tbody>
                     </table>
                 </div>
-
+                @elseif($currentUserRoleLevel == 5)
                 <div class="tab-pane fade  active show" id="overall-tab" role="tabpanel" aria-labelledby="overall-tab">
                     <table class="table table-striped table-bordered first">
                         <thead>
@@ -77,6 +78,7 @@
                         </tbody>
                     </table>
                 </div>
+                @endif
             </div>
         </div>
     </div>

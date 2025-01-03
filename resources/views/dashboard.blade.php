@@ -1,6 +1,7 @@
 @extends('layouts.app')
 @section('css')
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/vendor/charts/chartist-bundle/chartist.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('assets/vendor/bootstrap-select/css/bootstrap-select.css') }}">
 @endsection
 @section('shiptitle','Dashboard')
 @section('content')
@@ -82,6 +83,13 @@
 
 @stop
 @push('js')
+<script>
+    var shipsPo = @json($shipsPo);
+    var nonRelevantCounts = @json($nonRelevantCounts);
+    var relevantCounts = @json($relevantCounts);
+    // Initialize the chart
+</script>
+<script src="{{ asset('assets/vendor/bootstrap-select/js/bootstrap-select.js') }}"></script>
 
 <script src="{{ asset('assets/js/shipdesignatedperson.js') }}"></script>
 
@@ -92,11 +100,5 @@
 <script src="{{ asset('assets/vendor/charts/c3charts/C3chartjs.js') }}"></script>
 <script src="{{ asset('assets/js/dashbord.js') }}"></script>
 
-<script>
-    var shipsPo = @json($shipsPo);
-    var nonRelevantCounts = @json($nonRelevantCounts);
-    var relevantCounts = @json($relevantCounts);
 
-    // Initialize the chart
-</script>
 @endpush
