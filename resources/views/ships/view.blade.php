@@ -569,17 +569,13 @@ var hazmatSummeryName = @json($hazmatSummeryName);
 $(document).ready(function() {
 
     if (window.location.hash) {
-        // Use the hash to find the section
         var target = $(window.location.hash);
         var subsection = window.location.href.split("#").pop();
         var section = subsection;
         if (subsection == 'po-records' || subsection == 'onbaord-training') {
             section = "ihm_maintenance";
         }
-
-        // Scroll to the section smoothly
         if (target.length) {
-            console.log(section);
             $('.aside-nav .nav li').removeClass('active');
             $(`.${section}`).parent('li').addClass('active');
             $('.main-content').hide();
@@ -594,7 +590,6 @@ $(document).ready(function() {
         }
     }
     const url = window.location.href;
-
     const segments = url.split('/');
     const projectId = segments[segments.length - 1];
     let sidebar = $("#mainSidebar");
@@ -625,21 +620,12 @@ $(document).ready(function() {
         }
     });
 
-
-
-
-
     $('.aside-nav .nav li a').click(function() {
-
-console.log("dddd");
         $('.aside-nav .nav li').removeClass('active');
         $(this).parent('li').addClass('active');
         $('.main-content').hide();
-
         let targetId = $(this).attr('href');
-        console.log(targetId);
         $(targetId).show();
-
         return false;
     });
 
@@ -652,12 +638,6 @@ console.log("dddd");
     setTimeout(function() {
         $('.alert-success').fadeOut();
     }, 15000);
-
-
-
-
-
-
 });
 </script>
 @endpush

@@ -27,4 +27,5 @@ class poOrderItem extends Model
     public function poOrder(){
         return $this->belongsTo(poOrder::class,'po_order_id','id');
     }
+  
 }

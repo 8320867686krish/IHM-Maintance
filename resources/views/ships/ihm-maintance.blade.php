@@ -40,72 +40,17 @@
                             <thead>
                                 <tr>
                                     <th width="15%">SR NO</th>
-                                    <th>Training Date</th>
-                                    <th width="10%">Training Duration</th>
-                                    <th width="20%">Number of People Attended</th>
+                                    <th>Name</th>
+                                    <th width="20%">Designation</th>
+
+                                    <th width="10%">Rank</th>
+                                    <th width="20%">Passport Numbr</th>
+                                    <th width="20%">Sign Of Date</th>
+                                    <th width="20%">Sign Of Date</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>2024-01-05</td>
-                                    <td>2 hours</td>
-                                    <td>15</td>
-                                </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>2024-02-12</td>
-                                    <td>3 hours</td>
-                                    <td>10</td>
-                                </tr>
-                                <tr>
-                                    <td>3</td>
-                                    <td>2024-03-18</td>
-                                    <td>1.5 hours</td>
-                                    <td>20</td>
-                                </tr>
-                                <tr>
-                                    <td>4</td>
-                                    <td>2024-04-10</td>
-                                    <td>4 hours</td>
-                                    <td>25</td>
-                                </tr>
-                                <tr>
-                                    <td>5</td>
-                                    <td>2024-05-22</td>
-                                    <td>3.5 hours</td>
-                                    <td>18</td>
-                                </tr>
-                                <tr>
-                                    <td>6</td>
-                                    <td>2024-06-15</td>
-                                    <td>2.5 hours</td>
-                                    <td>12</td>
-                                </tr>
-                                <tr>
-                                    <td>7</td>
-                                    <td>2024-07-07</td>
-                                    <td>3 hours</td>
-                                    <td>14</td>
-                                </tr>
-                                <tr>
-                                    <td>8</td>
-                                    <td>2024-08-30</td>
-                                    <td>2 hours</td>
-                                    <td>19</td>
-                                </tr>
-                                <tr>
-                                    <td>9</td>
-                                    <td>2024-09-11</td>
-                                    <td>4 hours</td>
-                                    <td>22</td>
-                                </tr>
-                                <tr>
-                                    <td>10</td>
-                                    <td>2024-10-01</td>
-                                    <td>1 hour</td>
-                                    <td>16</td>
-                                </tr>
+                                <x-trainning-record :trainingRecoreds="$trainingRecoreds"></x-trainning-record>
                             </tbody>
                         </table>
                     </div>
@@ -124,7 +69,21 @@
                 </div>
                 <div id="collapsema3" class="collapse" aria-labelledby="headingma3" data-parent="#accordion">
                     <div class="card-body mb-4">
-                        MD & SDoc data goes here.
+                    <table class="table table-striped table-bordered first">
+                            <thead>
+                                <tr>
+                                    <th width="15%">SR NO</th>
+                                    <th>Issue Date</th>
+                                    <th width="20%">MD-ID-No</th>
+                                    <th width="10%">Supplier Information</th>
+                                    <th width="20%">Product Information</th>
+                                    <th width="20%">Contained Material Information</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <x-md-records :mdnoresults="$mdnoresults"></x-trainning-record>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>

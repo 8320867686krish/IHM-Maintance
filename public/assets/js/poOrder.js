@@ -68,6 +68,7 @@ $(document).ready(function () {
             success: function (response) {
                 if (response.isStatus) {
                     successMsg(response.message);
+                    location.reload();
                 } else {
                     errorMsg(response.message);
                 }

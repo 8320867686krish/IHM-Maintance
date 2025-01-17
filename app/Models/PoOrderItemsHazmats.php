@@ -41,7 +41,7 @@ class PoOrderItemsHazmats extends Model
         'ihm_previous_unit',
         'ihm_last_date',
         'ihm_date',
-        'modelMakePart',
+        'model_make_part_id',
         'hazmet_manufacturer',
         'hazmet_equipment',
         'doc1',
@@ -124,6 +124,15 @@ class PoOrderItemsHazmats extends Model
             $model->previous_hazmat_type = $model->getOriginal('hazmat_type'); // Store the old value
         });
     }
+
+    public function makeModel(){
+    return $this->belongsTo(MakeModel::class, 'model_make_part_id', 'id');
+}
+    public function poOrderItem(){
+        return $this->belongsTo(poOrderItem::class);
+
+    }
+    
     public function emailHistory(){
         return $this->hasMany(emailHistory::class, 'po_order_item_hazmat_id', 'id');
 

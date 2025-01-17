@@ -216,6 +216,8 @@ class POOrderController extends Controller
                 $value['po_order_id'] = $post['po_order_id'];
                 $value['po_order_item_id'] = $post['po_order_item_id'];
                 $value['hazmat_id'] = $key;
+
+                $value['model_make_part_id'] = @$value['modelMakePart'] ?? NULL;
              //   $getModel = MakeModel::find($value['modelMakePart']);
                 // $value['doc1'] = @$getModel['document1']['name'] ?? '';
                 // $value['doc2'] = @$getModel['document2']['name'] ?? '';
