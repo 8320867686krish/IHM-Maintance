@@ -92,7 +92,7 @@
 @section('content')
 <div id="preview">
     <div class="container mb-3 mt-2">
-        <h2 class="pageheader-title text-center">Material Details</h2>
+        <h2 class="pageheader-title text-center mb-4">Material Details</h2>
         <div style="height: 500px; overflow-y: auto;">
             <pdf-viewer src="{{$material}}"></pdf-viewer>
         </div>
@@ -100,7 +100,7 @@
     </div>
 
     <div class="container mb-3">
-    <h2 class="pageheader-title text-center">Ship Details</h2>
+    <h2 class="pageheader-title text-center mb-4">Ship Details</h2>
         <div style="height: 500px; overflow-y: auto;">
             <pdf-viewer src="{{$shipReport}}"></pdf-viewer>
         </div>
