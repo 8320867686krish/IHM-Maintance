@@ -25,7 +25,7 @@ use Illuminate\Support\Facades\DB;
 class ShipController extends Controller
 {
     //
-    use ImageUpload,ShipData;
+    use ImageUpload, ShipData;
 
     public function index($client_id = null)
     {
@@ -204,7 +204,7 @@ class ShipController extends Controller
         $hazmatSummeryName = Hazmat::withSum(['checkHazmats as qty_sum' => function ($query) use ($ship_id) {
             $query->where('ship_id', $ship_id); // Filter by ship_id
         }], 'qty')->get()->toArray();
-       
+
         $isBack = 0;
         if (session('back') == 1) {
             $isBack = 1;
@@ -219,16 +219,16 @@ class ShipController extends Controller
 
         $shipId = $ship_id; // Set the ship ID you're filtering by
 
-   
-      
+
+
         $managers =  User::whereHas('roles', function ($query) {
             $query->where('level', 3)->orderBy('level', 'asc');
         })->where('hazmat_companies_id', $user->hazmat_companies_id)->get(['id', 'name']);
-      
+
         $ship = Ship::with(['shipTeams', 'client'])->find($ship_id);
-       
+
         $poOrders = poOrder::withCount(['poOrderItems'])->where('ship_id', $ship_id)->get();
-       
+
         $users = $ship->shipTeams->pluck('user_id')->toArray();
         if (!Gate::allows('ships.add')) {
             $readonly = "readonly";
@@ -248,26 +248,18 @@ class ShipController extends Controller
             return $query->where('hazmat_companies_id', $user->hazmat_companies_id);
         })->get(['id', 'name']);
         $hazmat_companies_id = $ship->hazmat_companies_id;
-        $partMenual = partManuel::where('ship_id',$ship_id)->where('hazmat_companies_id',$hazmat_companies_id)->get(); 
-        $summary = Summary::where('ship_id',$ship_id)->where('hazmat_companies_id',$hazmat_companies_id)->get();
+        $partMenual = partManuel::where('ship_id', $ship_id)->where('hazmat_companies_id', $hazmat_companies_id)->get();
+        $summary = Summary::where('ship_id', $ship_id)->where('hazmat_companies_id', $hazmat_companies_id)->get();
 
-        $checkHazmatIHMPart = CheckHazmat::with(relations: 'hazmat')->where('ship_id',$ship_id)->get();
+        $checkHazmatIHMPart = CheckHazmat::with(relations: 'hazmat')->where('ship_id', $ship_id)->get();
 
-        $trainingRecoreds = DesignatedPerson::where('ship_id',$ship_id)->get();
-       
-        $mdnoresults = DB::select('
-    SELECT p.po_order_item_id, p.doc1 AS md_no, m.md_date, m.coumpany_name, po_order_items.description, 
-           GROUP_CONCAT(DISTINCT h.short_name) AS hazmat_names
-    FROM po_order_items_hazmats p
-    JOIN hazmats h ON p.hazmat_id = h.id
-    JOIN make_models m ON p.model_make_part_id = m.id
-    JOIN po_order_items po_order_items ON p.po_order_item_id = po_order_items.id
-    GROUP BY p.po_order_item_id, p.doc1, m.md_date, m.coumpany_name, po_order_items.description
-');
+        $trainingRecoreds = DesignatedPerson::where('ship_id', $ship_id)->get();
 
-      
-    
-        return view('ships.view', compact('experts', 'managers', 'isBack', 'ship', 'readonly', 'users', 'poOrders', 'ship_id','poSummeryGraph','checkHazmatIHMPart','hazmatSummeryName','hazmat_companies_id','partMenual','summary','trainingRecoreds','mdnoresults'));
+        $mdnoresults = DB::select('SELECT p.po_order_item_id, p.doc1 AS md_no, m.md_date, m.coumpany_name, po_order_items.description,GROUP_CONCAT(DISTINCT h.short_name) AS hazmat_names FROM po_order_items_hazmats p JOIN hazmats h ON p.hazmat_id = h.id JOIN make_models m ON p.model_make_part_id = m.id JOIN po_order_items po_order_items ON p.po_order_item_id = po_order_items.id GROUP BY p.po_order_item_id, p.doc1, m.md_date, m.coumpany_name, po_order_items.description');
+
+
+
+        return view('ships.view', compact('experts', 'managers', 'isBack', 'ship', 'readonly', 'users', 'poOrders', 'ship_id', 'poSummeryGraph', 'checkHazmatIHMPart', 'hazmatSummeryName', 'hazmat_companies_id', 'partMenual', 'summary', 'trainingRecoreds', 'mdnoresults'));
     }
 
     public function assignShip(Request $request)
@@ -300,5 +292,4 @@ class ShipController extends Controller
         }
         return response()->json(['isStatus' => true, 'message' => 'Ship assign successfully!!']);
     }
-    
 }

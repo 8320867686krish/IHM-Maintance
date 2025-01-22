@@ -91,13 +91,25 @@
 </style>
 @section('content')
 <div id="preview">
-    <div class="container" style="height: 750px; overflow-y: auto;">
-        <pdf-viewer src="{{ asset('uploads//Hazardous_Materials.pdf')}}"></pdf-viewer>
+    <div class="container mb-3 mt-2">
+        <h4>Material Details</h4>
+        <div style="height: 330px; overflow-y: auto;">
+            <pdf-viewer src="{{ asset('uploads//Hazardous_Materials.pdf')}}"></pdf-viewer>
+        </div>
 
     </div>
-    <div class="container mt-2" style="z-index: 999999999">
 
-        <button class="btn btn-primary float-right mb-4" id="examstart">Exam Start</button>
+    <div class="container mb-3">
+        <h4>Ship Details</h4>
+        <div style="height: 330px; overflow-y: auto;">
+            <pdf-viewer src="{{ asset('uploads//Hazardous_Materials.pdf')}}"></pdf-viewer>
+        </div>
+
+    </div>
+
+    <div class="container mt-2 mb-2" style="z-index: 999999999">
+
+        <button class="btn btn-primary float-right mb-2" id="examstart">Exam Start</button>
     </div>
 </div>
 
@@ -126,11 +138,11 @@
 <script src="{{ asset('assets/libs/js/pdfview.js') }}"></script>
 
 <script>
-    $("#examstart").click(function(){
+    $("#examstart").click(function() {
         $("#examLoad").show();
         $("#preview").hide();
 
-        
+
     });
     var iteamQuestion = "{{ isset($training->questions) ? count($training->questions) : 0 }}";
     const quizData = @json($quizData);
