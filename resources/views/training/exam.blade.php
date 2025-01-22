@@ -94,7 +94,7 @@
     <div class="container mb-3 mt-2">
         <h4>Material Details</h4>
         <div style="height: 330px; overflow-y: auto;">
-            <pdf-viewer src="{{ asset('uploads//Hazardous_Materials.pdf')}}"></pdf-viewer>
+            <pdf-viewer src="{{$material}}"></pdf-viewer>
         </div>
 
     </div>

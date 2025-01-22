@@ -72,15 +72,25 @@ class ClientCompanyController extends Controller
                 'password' => $inputData['password'],
                 'hazmat_companies_id' => $inputData['hazmat_companies_id']
             ];
+            $clicntCompany = ClientCompany::find($inputData['id']);
+
             if ($request->hasFile('client_image')) {
                 if ($inputData['id'] != 0) {
-                    $clicntCompany = ClientCompany::find($inputData['id']);
                     if ($clicntCompany && $clicntCompany->client_image) {
                         $oldImagePath = $this->deleteImage('uploads/clientcompany/', $clicntCompany->client_image);
                     }
                 }
                 $image = $this->upload($request, 'client_image', 'uploads/clientcompany');
                 $inputData['client_image'] = $image;
+            }
+            if ($request->hasFile('material')) {
+                if ($inputData['id'] != 0) {
+                    if ($clicntCompany && $clicntCompany->client_image) {
+                        $oldImagePath = $this->deleteImage('uploads/clientcompany/training_materials/', $clicntCompany->material);
+                    }
+                }
+                $image = $this->upload($request, 'material', 'uploads/clientcompany/training_materials');
+                $inputData['material'] = $image;
             }
 
             if ($id == 0) {

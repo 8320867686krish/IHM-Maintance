@@ -111,6 +111,7 @@ class TrainingController extends Controller
         $hazmat_companies_id= Auth::user()->hazmat_companies_id;
         $user = Auth::user();
         $ship_id = $user->shipClient->id;
+        $material = asset('uploads/clientcompany/training_materials/'.$user->shipClient->client->material);
         $shipReport = $this->genrateSummeryReport($ship_id);
         
         $training_sets_id = AssignTarainingSets::where('hazmat_companies_id', $hazmat_companies_id)
@@ -140,7 +141,7 @@ class TrainingController extends Controller
                 },
             ];
         });
-        return view('training.exam',[ 'quizData'=>$quizData, 'shipReport' => $shipReport ]);
+        return view('training.exam',[ 'quizData'=>$quizData, 'shipReport' => $shipReport,'material'=>$material]);
     }
     public function genrateSummeryReport($ship_id){
         $shipDetail = Ship::with('client')->find($ship_id);

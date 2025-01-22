@@ -142,6 +142,15 @@
                                 </div>
 
                             </div>
+
+                            <div class="col-sm-12 col-md-6 col-lg-4">
+                                <div class="form-group mb-3">
+                                    <label for="level">Training Materials<span class="text-danger">*</span></label>
+                                    <input type="file" name="material" id="material"
+                                        class="form-control @error('material') is-invalid @enderror"
+                                        onchange="removeInvalidClass(this)" autocomplete="off" accept="application/pdf">
+                                </div>
+                            </div>
                         </div>
 
 
