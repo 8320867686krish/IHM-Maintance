@@ -111,7 +111,8 @@ class TrainingController extends Controller
         $hazmat_companies_id= Auth::user()->hazmat_companies_id;
         $user = Auth::user();
         $ship_id = $user->shipClient->id;
-        $this->genrateSummeryReport($ship_id);
+        $filePath = $this->genrateSummeryReport($ship_id);
+        echo $filePath;
         $training_sets_id = AssignTarainingSets::where('hazmat_companies_id', $hazmat_companies_id)
         ->inRandomOrder()
         ->limit(2)
@@ -258,11 +259,10 @@ class TrainingController extends Controller
             $safeProjectNo = str_replace('/', '_', $shipDetail['project_no']);
             $fileName = "summary_" . $safeProjectNo . '.pdf';
 
-            $filePath = public_path('pdfs1/' . $fileName); // Adjust the directory and file name as needed
+            $filePath = public_path('training/' . $fileName); // Adjust the directory and file name as needed
             $mpdf->Output($filePath, \Mpdf\Output\Destination::FILE);
-            $response = response()->download($filePath, $fileName)->deleteFileAfterSend(true);
-            $response->headers->set('X-File-Name', $fileName);
-            return $response;
+           
+            return $filePath;
         } catch (\Mpdf\MpdfException $e) {
             // Handle mPDF exception
             echo $e->getMessage();
