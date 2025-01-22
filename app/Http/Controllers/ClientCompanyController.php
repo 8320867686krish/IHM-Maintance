@@ -85,7 +85,7 @@ class ClientCompanyController extends Controller
             }
             if ($request->hasFile('material')) {
                 if ($inputData['id'] != 0) {
-                    if ($clicntCompany && $clicntCompany->client_image) {
+                    if ($clicntCompany && $clicntCompany->material) {
                         $oldImagePath = $this->deleteImage('uploads/clientcompany/training_materials/', $clicntCompany->material);
                     }
                 }
