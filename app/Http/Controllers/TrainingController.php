@@ -111,8 +111,8 @@ class TrainingController extends Controller
         $hazmat_companies_id= Auth::user()->hazmat_companies_id;
         $user = Auth::user();
         $ship_id = $user->shipClient->id;
-        $filePath = $this->genrateSummeryReport($ship_id);
-        echo $filePath;
+        $shipReport = $this->genrateSummeryReport($ship_id);
+        
         $training_sets_id = AssignTarainingSets::where('hazmat_companies_id', $hazmat_companies_id)
         ->inRandomOrder()
         ->limit(2)
@@ -140,7 +140,7 @@ class TrainingController extends Controller
                 },
             ];
         });
-      //  return view('training.exam',['quizData'=>$quizData]);
+        return view('training.exam',[ 'quizData'=>$quizData, 'shipReport' => $shipReport ]);
     }
     public function genrateSummeryReport($ship_id){
         $shipDetail = Ship::with('client')->find($ship_id);
@@ -261,7 +261,7 @@ class TrainingController extends Controller
 
             $filePath = public_path('training/' . $fileName); // Adjust the directory and file name as needed
             $mpdf->Output($filePath, \Mpdf\Output\Destination::FILE);
-             $genrate_name = url('training/'.$fileName);
+            $genrate_name = url('public/training/'.$fileName);
             return $genrate_name;
         } catch (\Mpdf\MpdfException $e) {
             // Handle mPDF exception
