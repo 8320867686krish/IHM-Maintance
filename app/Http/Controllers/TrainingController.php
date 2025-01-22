@@ -257,12 +257,12 @@ class TrainingController extends Controller
             }
        
             $safeProjectNo = str_replace('/', '_', $shipDetail['project_no']);
-            $fileName = "summary_" . $safeProjectNo . '.pdf';
+            $fileName = "summary_" . $ship_id . '.pdf';
 
             $filePath = public_path('training/' . $fileName); // Adjust the directory and file name as needed
             $mpdf->Output($filePath, \Mpdf\Output\Destination::FILE);
-           
-            return $filePath;
+             $genrate_name = url('training/'.$fileName);
+            return $genrate_name;
         } catch (\Mpdf\MpdfException $e) {
             // Handle mPDF exception
             echo $e->getMessage();
