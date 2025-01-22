@@ -93,21 +93,18 @@
 <div id="preview">
     <div class="container-fluid mb-3 mt-2">
         <h2 class="pageheader-title text-center mb-4">Material Details</h2>
-        <div style="height: 500px; overflow-y: auto;">
             <pdf-viewer src="{{$material}}"></pdf-viewer>
-        </div>
 
     </div>
 
     <div class="container-fluid mb-3">
     <h2 class="pageheader-title text-center mb-4">Ship Details</h2>
-        <div style="height: 500px; overflow-y: auto;">
+      
             <pdf-viewer src="{{$shipReport}}"></pdf-viewer>
-        </div>
 
     </div>
     </div>
-    <div class="container-fluid" style="z-index: 999999999">
+    <div class="container-fluid">
 
         <button class="btn btn-primary float-right mb-2" id="examstart">Exam Start</button>
     </div>
