@@ -106,12 +106,12 @@
         </div>
 
     </div>
-
-    <div class="container mt-2 mb-2" style="z-index: 999999999">
+    </div>
+    <div class="container-fluid" style="z-index: 999999999">
 
         <button class="btn btn-primary float-right mb-2" id="examstart">Exam Start</button>
     </div>
-</div>
+
 
 <div id="examLoad" style="display:none">
     <div class="quiz-container mt-5" id="quiz">
