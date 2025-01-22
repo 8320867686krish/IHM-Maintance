@@ -102,7 +102,7 @@
     <div class="container mb-3">
         <h4>Ship Details</h4>
         <div style="height: 330px; overflow-y: auto;">
-            <pdf-viewer src="{{$shipreport}}"></pdf-viewer>
+            <pdf-viewer src="{{$shipReport}}"></pdf-viewer>
         </div>
 
     </div>
