@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('assign_taraning_sets', function (Blueprint $table) {
+        Schema::create('assign_taraining_sets', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('training_sets_id')->nullable();  // Same data type as hazmat_companies.id
             $table->foreign('training_sets_id')->references('id')->on('training_sets')->onDelete('cascade');
