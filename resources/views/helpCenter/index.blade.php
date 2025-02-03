@@ -106,8 +106,8 @@
 </div>
 </div>
 @include('ships.models.remarksModel')
-@include('helpcenter.models.credentialModel')
-@include('helpcenter.models.smsModel')
+@include('helpCenter.models.credentialModel')
+@include('helpCenter.models.smsModel')
 
 @endsection
 @push('js')
