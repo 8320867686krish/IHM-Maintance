@@ -190,7 +190,7 @@ class TrainingController extends Controller
         $user = Auth::user();
         $trainingRecoredHistory = Exam::where('ship_staff_id', $user->id)->get();
         $brifingHistory = Brifing::with('DesignatedPersonDetail:id,name')->where('ship_staff_id', $user->id)->get();
-        $designatedPerson = DesignatedPerson::select('id', 'name')->where('ship_staff_id', $user->id)->get()->toArray();
+        $designatedPerson = DesignatedPerson::select('id', 'name')->where('ship_staff_id', $user->id)->whereNull('sign_off_date')->get()->toArray();
         return view('training.history', compact('trainingRecoredHistory', 'designatedPerson', 'brifingHistory'));
     }
     public function saveBrifing(BriefingRequest $request)
