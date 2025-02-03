@@ -199,11 +199,17 @@ class ShipController extends Controller
         $currentUserRoleLevel = $user->roles->first()->level;
         $configration = configration::first();
         if ($currentUserRoleLevel == 2 ||   $currentUserRoleLevel == 3 ||   $currentUserRoleLevel == 4) {
-            $showurl = asset('uploads/configration/' . $configration['hazmat_company']);
+            $showurl = $configration['hazmat_company'] ?? null
+                ? asset('uploads/configration/' . $configration['hazmat_company'])
+                : null;
         } else if ($currentUserRoleLevel == 5) {
-            $showurl = asset('uploads/configration/' . $configration['client_company']);
+            $showurl = $configration['client_company'] ?? null
+                ? asset('uploads/configration/' . $configration['client_company'])
+                : null;
         } else if ($currentUserRoleLevel == 6) {
-            $showurl = asset('uploads/configration/' . $configration['ship_staff']);
+            $showurl = $configration['ship_staff'] ?? null
+                ? asset('uploads/configration/' . $configration['ship_staff'])
+                : null;
         }
 
         return view('helpCenter.pdfview', compact('showurl'));
@@ -276,16 +282,16 @@ class ShipController extends Controller
         $checkHazmatIHMPart = CheckHazmat::with(relations: 'hazmat')->where('ship_id', $ship_id)->get();
 
         $trainingRecoreds = DesignatedPerson::where('ship_id', $ship_id)->get();
-        
-        $dpsore = DesignatedPersionShip::with('designatedPersonDetail')->where('ship_id',$ship_id)->get();
-        
-        $trainingRecoredHistory = Exam::where('ship_id',$ship_id)->get();
+
+        $dpsore = DesignatedPersionShip::with('designatedPersonDetail')->where('ship_id', $ship_id)->get();
+
+        $trainingRecoredHistory = Exam::where('ship_id', $ship_id)->get();
         $mdnoresults = DB::select('SELECT p.po_order_item_id, p.doc1 AS md_no, m.md_date, m.coumpany_name, po_order_items.description,GROUP_CONCAT(DISTINCT h.short_name) AS hazmat_names FROM po_order_items_hazmats p JOIN hazmats h ON p.hazmat_id = h.id JOIN make_models m ON p.model_make_part_id = m.id JOIN po_order_items po_order_items ON p.po_order_item_id = po_order_items.id GROUP BY p.po_order_item_id, p.doc1, m.md_date, m.coumpany_name, po_order_items.description');
 
         $currentUserRoleLevel = $user->roles->first()->level;
 
         $ships = Ship::get();
-        return view('ships.view', compact('experts', 'managers', 'isBack', 'ship', 'readonly', 'users', 'poOrders', 'ship_id', 'poSummeryGraph', 'checkHazmatIHMPart', 'hazmatSummeryName', 'hazmat_companies_id', 'partMenual', 'summary', 'trainingRecoreds', 'mdnoresults','dpsore','trainingRecoredHistory','currentUserRoleLevel','ships'));
+        return view('ships.view', compact('experts', 'managers', 'isBack', 'ship', 'readonly', 'users', 'poOrders', 'ship_id', 'poSummeryGraph', 'checkHazmatIHMPart', 'hazmatSummeryName', 'hazmat_companies_id', 'partMenual', 'summary', 'trainingRecoreds', 'mdnoresults', 'dpsore', 'trainingRecoredHistory', 'currentUserRoleLevel', 'ships'));
     }
 
     public function assignShip(Request $request)
