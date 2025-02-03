@@ -28,20 +28,20 @@
                             <div class="row">
                                 <div class="col-sm-12 col-md-6">
                                     <div class="form-group">
-                                        <label for="client_id">Client <span class="text-danger">*</span></label>
-                                        <select name="client_id" id="client_id" class="form-control @error('client_id') is-invalid @enderror" onchange="removeInvalidClass(this)">
+                                        <label for="client_company_id">Client <span class="text-danger">*</span></label>
+                                        <select name="client_company_id" id="client_company_id" class="form-control @error('client_company_id') is-invalid @enderror" onchange="removeInvalidClass(this)">
                                             <option value="">Select Client</option>
                                             @if (isset($clients) && $clients->count() > 0)
                                                 @foreach ($clients as $client)
                                                     <option value="{{ $client->id }}"
                                                         data-identi="{{ $client->manager_initials }}"
-                                                        {{ old('client_id') == $client->id || (isset($ship) && $ship->client_id == $client->id) ? 'selected' : '' }}>
+                                                        {{ old('client_company_id') == $client->id || (isset($ship) && $ship->client_company_id == $client->id) ? 'selected' : '' }}>
                                                         {{ $client->name }}
                                                     </option>
                                                 @endforeach
                                             @endif
                                         </select>
-                                        @error('client_id')
+                                        @error('client_company_id')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>

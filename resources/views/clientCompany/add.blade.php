@@ -143,14 +143,59 @@
 
                             </div>
 
-                            <div class="col-sm-12 col-md-6 col-lg-4">
+                            <div class="col-sm-12 col-md-6 col-lg-4 mt-1">
                                 <div class="form-group mb-3">
-                                    <label for="level">Training Materials<span class="text-danger">*</span></label>
-                                    <input type="file" name="material" id="material"
-                                        class="form-control @error('material') is-invalid @enderror"
-                                        onchange="removeInvalidClass(this)" autocomplete="off" accept="application/pdf">
+                                    <label for="level">Responsible Person<span class="text-danger">*</span></label>
+
+                                    <input type="text" name="responsible_person" id="responsible_person"
+                                        class="form-control @error('responsible_person') is-invalid @enderror"
+                                        placeholder="Responsible Person..."
+                                        value="{{ old('responsible_person', $clientCompany->responsible_person ?? '') }}"
+                                        onchange="removeInvalidClass(this)" autocomplete="off">
                                 </div>
+
                             </div>
+
+                            <div class="col-sm-12 col-md-6 col-lg-4 mt-1">
+                                <div class="form-group mb-3">
+                                    <label for="level">Overall Incharge<span class="text-danger">*</span></label>
+
+                                    <input type="text" name="overall_incharge" id="overall_incharge"
+                                        class="form-control @error('overall_incharge') is-invalid @enderror"
+                                        placeholder="Overall Incharge..."
+                                        value="{{ old('overall_incharge', $clientCompany->overall_incharge ?? '') }}"
+                                        onchange="removeInvalidClass(this)" autocomplete="off">
+                                </div>
+
+                            </div>
+
+                            <div class="col-sm-12 col-md-6 col-lg-4 mt-1">
+                                <div class="form-group mb-3">
+                                    <label for="level">Training Requirement Overall Incharge<span class="text-danger">*</span></label>
+
+                                    <input type="text" name="training_requirement_overall_incharge" id="training_requirement_overall_incharge"
+                                        class="form-control @error('training_requirement_overall_incharge') is-invalid @enderror"
+                                        placeholder="Training Requirement Overall Incharge"
+                                        value="{{ old('tax_details', $clientCompany->training_requirement_overall_incharge ?? '') }}"
+                                        onchange="removeInvalidClass(this)" autocomplete="off">
+                                </div>
+
+                            </div>
+
+                            <div class="col-sm-12 col-md-6 col-lg-4 mt-1">
+                                <div class="form-group mb-3">
+                                    <label for="level">Crew Briefing Requiremet<span class="text-danger">*</span></label>
+
+                                    <input type="text" name="crew_briefing_requiremet" id="crew_briefing_requiremet"
+                                        class="form-control @error('crew_briefing_requiremet') is-invalid @enderror"
+                                        placeholder="Crew Briefing Requiremet..."
+                                        value="{{ old('tax_details', $clientCompany->crew_briefing_requiremet ?? '') }}"
+                                        onchange="removeInvalidClass(this)" autocomplete="off">
+                                </div>
+
+                            </div>
+
+                          
                         </div>
 
 

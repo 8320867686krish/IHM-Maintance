@@ -11,7 +11,7 @@
                 </li>
                 @elseif($currentUserRoleLevel == 5)
                 <li class="nav-item">
-                    <a class="nav-link active show" id="overall-tab" data-toggle="tab" href="#overall-tab" role="tab" aria-controls="overall-tab" aria-selected="true">ShoreDP</a>
+                    <a class="nav-link active show" id="overall-tab" data-toggle="tab" href="#overall-tab" role="tab" aria-controls="overall-tab" aria-selected="true">Shore DP</a>
                 </li>
                 @endif
             </ul>
@@ -29,7 +29,7 @@
                                 <th>Rank</th>
                                 <th>Passport Number</th>
                                 <th>Sign On Date</th>
-                                <th>Sign Of Date</th>
+                                <th>Sign Off Date</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -48,7 +48,7 @@
                                 <th>Passport Number</th>
 
                                 <th>Sign On Date</th>
-                                <th>Sign Of Date</th>
+                                <th>Sign Off Date</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -63,12 +63,12 @@
                     <table class="table table-striped table-bordered first">
                         <thead>
                             <tr>
-                                <th>SR NO55</th>
+                                <th>SR No</th>
                                 <th>Name</th>
                                 <th>Rank</th>
                                 <th>Passport Number</th>
-                                <th>Sign On Date</th>
-                                <th>Sign Of Date</th>
+                                <th>Start Date</th>
+                                <th>End Date</th>
                                 <th>Action</th>
                             </tr>
                         </thead>

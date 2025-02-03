@@ -106,7 +106,25 @@
                                     <div class="invalid-feedback error" id="passwordError"></div>
                                 </div>
                             </div>
+                            <div class="col-12 col-md-6">
+                                <div class="form-group">
+                                    <label for="level">Briefing Plan <span class="text-danger">*</span></label>
+                                    <input type="file" class="form-control @error('briefing_plan') is-invalid @enderror"
+                                        id="logo" accept="application/pdf" name="briefing_plan"
+                                        onchange="removeInvalidClass(this)">
+                                    <div class="invalid-feedback error" id="briefing_planError"></div>
+                                </div>
+                            </div>
 
+                            <div class="col-12 col-md-6">
+                                <div class="form-group">
+                                    <label for="level">Training Material <span class="text-danger">*</span></label>
+                                    <input type="file" class="form-control @error('training_material') is-invalid @enderror"
+                                        id="logo" accept="application/pdf" name="training_material"
+                                        onchange="removeInvalidClass(this)">
+                                    <div class="invalid-feedback error" id="training_materialError"></div>
+                                </div>
+                            </div>
 
                         </div>
 

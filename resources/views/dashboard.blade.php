@@ -3,7 +3,9 @@
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/vendor/charts/chartist-bundle/chartist.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/vendor/bootstrap-select/css/bootstrap-select.css') }}">
 @endsection
-@section('shiptitle','Dashboard')
+
+@section('shiptitle', ucFirst($currentUserRoleName) . ' Dashboard')
+
 @section('content')
 
 <div class="container-fluid dashboard-content">

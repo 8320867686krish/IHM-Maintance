@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Requests;
 
 use App\Rules\AtLeastOnePermissionRule;
@@ -13,7 +14,7 @@ class hazmatCompanyRequest extends FormRequest
     {
         return true;
     }
-   
+
 
     /**
      * Get the validation rules that apply to the request.
@@ -27,6 +28,16 @@ class hazmatCompanyRequest extends FormRequest
             'email' => $this->id ? 'unique:hazmat_companies,email,' . $this->id : 'required|unique:hazmat_companies,email',
             'logo' => $this->id ? 'image|mimes:jpeg,png,jpg,gif|max:2048,' . $this->id : 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'password' => $this->id ? 'nullable' : 'required',
+            'training_material' => $this->id
+                ? 'mimes:jpeg,png,jpg,gif,pdf|max:2048'
+                : 'required|mimes:jpeg,png,jpg,gif,pdf|max:2048',
+
+                'briefing_plan' => $this->id
+                ? 'mimes:jpeg,png,jpg,gif,pdf|max:2048'
+                : 'required|mimes:jpeg,png,jpg,gif,pdf|max:2048',
+
+
+
 
         ];
     }
@@ -38,6 +49,9 @@ class hazmatCompanyRequest extends FormRequest
             'email.required' => 'Please enter a email.',
             'email.unique' => 'The email already exists.',
             'password.required' => 'Please enter a password.',
+            'training_material.required' => 'Please choose trainingMaterial.',
+            'briefing_plan.required' => 'Please choose Briefing Plan.',
+
         ];
     }
 }

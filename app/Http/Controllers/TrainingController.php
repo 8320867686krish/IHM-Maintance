@@ -3,26 +3,35 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\assignTraining;
+use App\Http\Requests\BriefingRequest;
 use App\Http\Requests\TrainingRequest;
+use App\Http\Requests\TrainingSet;
 use App\Models\AssignTarainingSets;
+use App\Models\Brifing;
 use App\Models\CheckHazmat;
 use App\Models\Deck;
+use App\Models\DesignatedPerson;
 use App\Models\Exam;
 use App\Models\hazmatCompany;
 use App\Models\QuestionSets;
 use App\Models\Ship;
 use App\Models\Training;
 use App\Models\TrainingSets;
+use App\Traits\ImageUpload;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Traits\PdfGenerator;
+use Dompdf\Dompdf;
+use Dompdf\Options;
+use Illuminate\Support\Facades\Session;
 use Mpdf\Mpdf;
+
 ini_set("pcre.backtrack_limit", "1000000");
 ini_set('exif.decode_jpeg', '0');
 class TrainingController extends Controller
 {
     //
-    use PdfGenerator;
+    use PdfGenerator, ImageUpload;
     public function index(Request $requet)
     {
         try {
@@ -33,7 +42,7 @@ class TrainingController extends Controller
 
 
 
-            return view('training.list', ['training' => $training,'hazmatCompany'=>$hazmatCompany]);
+            return view('training.list', ['training' => $training, 'hazmatCompany' => $hazmatCompany]);
         } catch (\Throwable $th) {
             return back()->withError($th->getMessage())->withInput();
         }
@@ -44,10 +53,10 @@ class TrainingController extends Controller
     }
     public function editTraining($id)
     {
-        $training = TrainingSets::with(['questions','assignsethzmatCompany.hazmatCompaniesName'])->find($id);
+        $training = TrainingSets::with(['questions', 'assignsethzmatCompany.hazmatCompaniesName'])->find($id);
         return view('training.add', compact('training'));
     }
-    public function trainingSave(Request $request)
+    public function trainingSave(TrainingSet $request)
     {
         $post = $request->input();
         $training = TrainingSets::updateOrCreate(
@@ -86,42 +95,47 @@ class TrainingController extends Controller
         return response()->json(['isStatus' => true, 'message' => 'Questions save successfully!!']);
     }
 
-    public function assigntraining(TrainingRequest $request){
+    public function assigntraining(TrainingRequest $request)
+    {
         $post = $request->input();
-        if(@$post['training_sets_id']){
-            $explode = explode(',',$post['training_sets_id']);
-            foreach($explode as $value){
-                $fetchData = AssignTarainingSets::where('training_sets_id',$value)->where('hazmat_companies_id',$post['hazmat_companies_id'])->first();
+        if (@$post['training_sets_id']) {
+            $explode = explode(',', $post['training_sets_id']);
+            foreach ($explode as $value) {
+                $fetchData = AssignTarainingSets::where('training_sets_id', $value)->where('hazmat_companies_id', $post['hazmat_companies_id'])->first();
                 $data_add['training_sets_id'] = $value;
                 $data_add['hazmat_companies_id'] = $post['hazmat_companies_id'];
-                if($fetchData){
-                    AssignTarainingSets::where('id',$fetchData['id'])->update($data_add);
-
-                }else{
+                if ($fetchData) {
+                    AssignTarainingSets::where('id', $fetchData['id'])->update($data_add);
+                } else {
                     AssignTarainingSets::create($data_add);
-
                 }
             }
         }
         return response()->json(['isStatus' => true, 'message' => 'Assign successfully!!']);
-
     }
-    public function training(Request $request){
-        
-        $hazmat_companies_id= Auth::user()->hazmat_companies_id;
-        $user = Auth::user();
-        $ship_id = $user->shipClient->id;
-        $material = asset('uploads/clientcompany/training_materials/'.$user->shipClient->client->material);
-        $shipReport = $this->genrateSummeryReport($ship_id);
-        
-        $training_sets_id = AssignTarainingSets::where('hazmat_companies_id', $hazmat_companies_id)
-        ->inRandomOrder()
-        ->limit(2)
-        ->pluck('training_sets_id')
-        ->toArray();
-        shuffle($training_sets_id);
+    public function savedesignated(Request $request)
+    {
+        $post = $request->input();
+        Session::put('designated_people_id', $post['designated_people_id']);
+        return redirect(url('training/start'));
+    }
+    public function startExam()
+    {
+        $designated_people_id = Session::get('designated_people_id');
 
-        $questionSets = QuestionSets::whereIn('training_sets_id',$training_sets_id )->get();
+        if (!@$designated_people_id) {
+            session()->flash('success','Plese start training');
+            return redirect(url('training'));
+        } 
+        $user =  Auth::user();
+        $hazmat_companies_id =  $user->hazmat_companies_id;
+        $training_sets_id = AssignTarainingSets::where('hazmat_companies_id', $hazmat_companies_id)
+            ->inRandomOrder()
+            ->limit(2)
+            ->pluck('training_sets_id')
+            ->toArray();
+        shuffle($training_sets_id);
+        $questionSets = QuestionSets::whereIn('training_sets_id', $training_sets_id)->get();
         $quizData = $questionSets->map(function ($question) {
             return [
                 'question' => $question->question_name,
@@ -141,9 +155,125 @@ class TrainingController extends Controller
                 },
             ];
         });
-        return view('training.exam',[ 'quizData'=>$quizData, 'shipReport' => $shipReport,'material'=>$material]);
+        return view('training.exam', ['quizData' => $quizData]);
     }
-    public function genrateSummeryReport($ship_id){
+    public function startTraining(Request $request)
+    {
+        $user =  Auth::user();
+        $designatedPerson = DesignatedPerson::select('id', 'name')->where('ship_staff_id', $user->id)->get()->toArray();
+        $designated_people_id = Session::get('designated_people_id');
+        if (!@$designated_people_id) {
+            session()->flash('success','Plese start training');
+            return redirect(url('training'));
+        } 
+
+        $designatedPersonDetail = DesignatedPerson::select('name')->where('id', $designated_people_id)->first();
+        Session::put('designated_name',@$designatedPersonDetail['name']);
+
+        $hazmat_companies_id =  $user->hazmat_companies_id;
+        $training_material =   $user->hazmatCompany->training_material;
+
+        $ship_id = $user->shipClient->id;
+        $trainingRecoredHistory = Exam::where('ship_staff_id', $user->id)->get();
+        $material = asset('uploads/training_material/' . $training_material);
+        //   $shipReport = $this->genrateSummeryReport($ship_id);
+        $shipReport = '';
+
+
+
+        return view('training.material', compact('designatedPerson', 'material', 'designatedPersonDetail'));
+        //  return view('training.exam', ['quizData' => $quizData, 'shipReport' => $shipReport, 'material' => $material,'designatedPerson'=>$designatedPerson]);
+    }
+    public function Traininglist(Request $request)
+    {
+        Session::forget('designated_people_id');
+        $user = Auth::user();
+        $trainingRecoredHistory = Exam::where('ship_staff_id', $user->id)->get();
+        $brifingHistory = Brifing::with('DesignatedPersonDetail:id,name')->where('ship_staff_id', $user->id)->get();
+        $designatedPerson = DesignatedPerson::select('id', 'name')->where('ship_staff_id', $user->id)->get()->toArray();
+        return view('training.history', compact('trainingRecoredHistory', 'designatedPerson', 'brifingHistory'));
+    }
+    public function saveBrifing(BriefingRequest $request)
+    {
+        $post = $request->input();
+        $hazmat_companies_id = Auth::user()->hazmat_companies_id;
+        $user = Auth::user();
+        $post['ship_staff_id'] = $user->id;
+        $post['hazmat_companies_id'] = $hazmat_companies_id;
+        Brifing::updateOrcreate(['id' => $post['id']], $post);
+
+        $brifingHistory = Brifing::with('DesignatedPersonDetail:id,name')->where('ship_staff_id', $user->id)->get();
+        $html = view('components.brifing-history', compact('brifingHistory'))->render();
+        return response()->json(['isStatus' => true, 'message' => 'save successfully', 'html' => $html]);
+    }
+    public function brifingDoc(Request $request)
+    {
+        $post = $request->input();
+        $Brifing = Brifing::find($post['brief_id']);
+        if ($Brifing && $Brifing->brifing_document) {
+            $oldImagePath = $this->deleteImage('uploads/brifing_document/', $Brifing->brifing_document);
+        }
+
+        if ($request->hasFile('brifing_document')) {
+            $image = $this->upload($request, 'brifing_document', 'uploads/brifing_document');
+            $Brifing->brifing_document = $image;
+        }
+        $Brifing->save();
+
+        return response()->json(['isStatus' => true, 'message' => 'save successfully']);
+    }
+    public function briefingDownload($id)
+    {
+        $brifingPlan = Auth::user()->hazmatCompany->briefing_plan;
+        $briefingPdfPath = public_path('uploads/briefing_plan/' . $brifingPlan); // Make sure to adjust the path
+
+        $briefing =  Brifing::with('DesignatedPersonDetail:id,name')->find($id);
+        $template = view('training.briefingTemplate', compact('briefing'));
+        $options = new Options();
+        $options->set('defaultFont', 'Arial');
+        $dompdf = new Dompdf($options);
+
+        // Load HTML content
+        $dompdf->loadHtml($template);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+        $briefingPdfContent = $dompdf->output();
+        $filename = "project" . uniqid() . "ab.pdf";
+        $filePath = storage_path('app/briefingPlan') . "/" . $filename;
+
+        file_put_contents($filePath, $briefingPdfContent);
+        $mpdf = new \Mpdf\Mpdf();
+
+        // Add the existing briefing plan PDF (briefing_plan)
+        if (file_exists($briefingPdfPath)) {
+
+            $mpdf->SetSourceFile($briefingPdfPath);
+            $pageCount = $mpdf->SetSourceFile($briefingPdfPath);
+
+            // Import all pages from the briefing plan PDF
+            for ($i = 1; $i <= $pageCount; $i++) {
+                $mpdf->AddPage();
+                $mpdf->UseTemplate($mpdf->ImportPage($i));
+            }
+        }
+        $mpdf->SetSourceFile($filePath); // Add generated file
+        $pageCount = $mpdf->SetSourceFile($filePath);
+
+        for ($i = 1; $i <= $pageCount; $i++) {
+            $mpdf->AddPage();
+            $mpdf->UseTemplate($mpdf->ImportPage($i));
+        }
+        unlink($filePath);
+
+        $pdfOutput = $mpdf->Output('', 'S');
+
+        return response($pdfOutput, 200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'attachment; filename="merged_briefing_report_' . $briefing['brifing_date'] . '.pdf"',
+        ]);
+    }
+    public function genrateSummeryReport($ship_id)
+    {
         $shipDetail = Ship::with('client')->find($ship_id);
         if (!$shipDetail) {
             die('Project details not found');
@@ -172,7 +302,7 @@ class TrainingController extends Controller
             $query->whereHas('hazmats', function ($query) {
                 $query->where('hazmat_type', 'PCHM')->orWhere('hazmat_type', 'Contained');
             });
-        }])->where('ship_id',$ship_id)->get();
+        }])->where('ship_id', $ship_id)->get();
 
         try {
             // Create an instance of mPDF with specified margins
@@ -256,29 +386,31 @@ class TrainingController extends Controller
                     unlink($fileNameDiagram);
                 }
             }
-       
+
             $safeProjectNo = str_replace('/', '_', $shipDetail['project_no']);
             $fileName = "summary_" . $ship_id . '.pdf';
 
             $filePath = public_path('training/' . $fileName); // Adjust the directory and file name as needed
             $mpdf->Output($filePath, \Mpdf\Output\Destination::FILE);
-            $genrate_name = url('public/training/'.$fileName);
+            $genrate_name = url('public/training/' . $fileName);
             return $genrate_name;
         } catch (\Mpdf\MpdfException $e) {
             // Handle mPDF exception
             echo $e->getMessage();
         }
     }
-    public function saveResult(Request $request){
-     $post = $request->input();
-     $user = Auth::user();
-     $inputData['ship_id'] = $user->shipClient->id;
-     $inputData['ship_staff_id'] = $user->id;
-     $inputData['correct_ans'] = $post['correct_ans'];
-     $inputData['wrong_ans'] = $post['wrong_ans'];
-     $inputData['total_ans'] = $post['total_ans'];
-     Exam::create($inputData);
-     return response()->json(['isStatus' => true, 'message' => 'submit successfully!!']);
-
+    public function saveResult(Request $request)
+    {
+        $post = $request->input();
+        $user = Auth::user();
+        $inputData['ship_id'] = $user->shipClient->id;
+        $inputData['ship_staff_id'] = $user->id;
+        $inputData['correct_ans'] = $post['correct_ans'];
+        $inputData['wrong_ans'] = $post['wrong_ans'];
+        $inputData['total_ans'] = $post['total_ans'];
+        $inputData['designated_person_id']= Session::get('designated_people_id');
+        $inputData['designated_name']=Session::get('designated_name');
+        Exam::create($inputData);
+        return response()->json(['isStatus' => true, 'message' => 'submit successfully!!']);
     }
 }

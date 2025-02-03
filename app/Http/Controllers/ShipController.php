@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\CheckHazmat;
 use App\Models\ClientCompany;
+use App\Models\configration;
+use App\Models\DesignatedPersionShip;
 use App\Models\DesignatedPerson;
+use App\Models\Exam;
 use App\Models\Hazmat;
 use App\Models\partManuel;
 use App\Models\poOrder;
@@ -62,6 +65,7 @@ class ShipController extends Controller
     }
     public function create()
     {
+
         $role_level = Auth::user()->roles->first()->level;
         $user =  Auth::user();
         $hazmat_companies_id  = $user['hazmat_companies_id'];
@@ -100,11 +104,12 @@ class ShipController extends Controller
     public function store(Request $request)
     {
         try {
+            DB::beginTransaction(); // Start a transaction
 
             $id = $request->input('id');
             $inputData = $request->input();
-            if (@$inputData['client_id']) {
-                $client_user = ClientCompany::where('id', $inputData['client_id'])->select('user_id', 'hazmat_companies_id')->first();
+            if (@$inputData['client_company_id']) {
+                $client_user = ClientCompany::where('id', $inputData['client_company_id'])->select('user_id', 'hazmat_companies_id')->first();
                 $userdata = [
                     'name' =>   $inputData['ship_name'],
                     'email' =>   $inputData['email'],
@@ -176,16 +181,32 @@ class ShipController extends Controller
             }
 
             $message = empty($id) ? "Ship added successfully" : "Ship updated successfully";
+            DB::commit(); // Commit the transaction
+
             return response()->json(['isStatus' => true, 'message' => $message]);
         } catch (\Throwable $th) {
+            DB::rollBack(); // Rollback the transaction on error
+
             print_r($th->getMessage());
+            exit();
             //  return back()->withError($th->getMessage())->withInput();
         }
     }
 
     public function portalGuide()
     {
-        return view('helpCenter.pdfview');
+        $user = Auth::user();
+        $currentUserRoleLevel = $user->roles->first()->level;
+        $configration = configration::first();
+        if ($currentUserRoleLevel == 2 ||   $currentUserRoleLevel == 3 ||   $currentUserRoleLevel == 4) {
+            $showurl = asset('uploads/configration/' . $configration['hazmat_company']);
+        } else if ($currentUserRoleLevel == 5) {
+            $showurl = asset('uploads/configration/' . $configration['client_company']);
+        } else if ($currentUserRoleLevel == 6) {
+            $showurl = asset('uploads/configration/' . $configration['ship_staff']);
+        }
+
+        return view('helpCenter.pdfview', compact('showurl'));
     }
     public function destroy(string $id)
     {
@@ -201,6 +222,8 @@ class ShipController extends Controller
     }
     public function shipView($ship_id)
     {
+        $ship = Ship::with(['shipTeams', 'client'])->findOrFail($ship_id);
+
         $hazmatSummeryName = Hazmat::withSum(['checkHazmats as qty_sum' => function ($query) use ($ship_id) {
             $query->where('ship_id', $ship_id); // Filter by ship_id
         }], 'qty')->get()->toArray();
@@ -225,7 +248,6 @@ class ShipController extends Controller
             $query->where('level', 3)->orderBy('level', 'asc');
         })->where('hazmat_companies_id', $user->hazmat_companies_id)->get(['id', 'name']);
 
-        $ship = Ship::with(['shipTeams', 'client'])->find($ship_id);
 
         $poOrders = poOrder::withCount(['poOrderItems'])->where('ship_id', $ship_id)->get();
 
@@ -254,12 +276,16 @@ class ShipController extends Controller
         $checkHazmatIHMPart = CheckHazmat::with(relations: 'hazmat')->where('ship_id', $ship_id)->get();
 
         $trainingRecoreds = DesignatedPerson::where('ship_id', $ship_id)->get();
-
+        
+        $dpsore = DesignatedPersionShip::with('designatedPersonDetail')->where('ship_id',$ship_id)->get();
+        
+        $trainingRecoredHistory = Exam::where('ship_id',$ship_id)->get();
         $mdnoresults = DB::select('SELECT p.po_order_item_id, p.doc1 AS md_no, m.md_date, m.coumpany_name, po_order_items.description,GROUP_CONCAT(DISTINCT h.short_name) AS hazmat_names FROM po_order_items_hazmats p JOIN hazmats h ON p.hazmat_id = h.id JOIN make_models m ON p.model_make_part_id = m.id JOIN po_order_items po_order_items ON p.po_order_item_id = po_order_items.id GROUP BY p.po_order_item_id, p.doc1, m.md_date, m.coumpany_name, po_order_items.description');
 
+        $currentUserRoleLevel = $user->roles->first()->level;
 
-
-        return view('ships.view', compact('experts', 'managers', 'isBack', 'ship', 'readonly', 'users', 'poOrders', 'ship_id', 'poSummeryGraph', 'checkHazmatIHMPart', 'hazmatSummeryName', 'hazmat_companies_id', 'partMenual', 'summary', 'trainingRecoreds', 'mdnoresults'));
+        $ships = Ship::get();
+        return view('ships.view', compact('experts', 'managers', 'isBack', 'ship', 'readonly', 'users', 'poOrders', 'ship_id', 'poSummeryGraph', 'checkHazmatIHMPart', 'hazmatSummeryName', 'hazmat_companies_id', 'partMenual', 'summary', 'trainingRecoreds', 'mdnoresults','dpsore','trainingRecoredHistory','currentUserRoleLevel','ships'));
     }
 
     public function assignShip(Request $request)

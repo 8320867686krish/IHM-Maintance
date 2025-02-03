@@ -221,7 +221,7 @@ button.btn.btn-link .fas.fa-angle-down {
                                         </div>
                                         <div class="col-sm-12 col-md-6 col-lg-4">
                                             <div class="form-group">
-                                                <label for="client_id">Ship Owner</label>
+                                                <label for="client_company_id">Ship Owner</label>
 
                                                 <input type="text" class="form-control" id="owner_name"
                                                     value="{{ old('owner_name', $ship->client->ship_owner_name ?? '') }}"

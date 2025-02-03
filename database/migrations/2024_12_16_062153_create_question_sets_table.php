@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('question_name')->nullable();
             $table->unsignedBigInteger('training_sets_id')->nullable();  // Same data type as hazmat_companies.id
-            $table->foreign('training_sets_id')->references('id')->on('training_sets')->onDelete('cascade');
+           $table->foreign('training_sets_id')->references('id')->on('training_sets')->onDelete('cascade');
             $table->string('answer_type')->nullable();
             $table->string('option_a')->nullable();
             $table->string('option_b')->nullable();

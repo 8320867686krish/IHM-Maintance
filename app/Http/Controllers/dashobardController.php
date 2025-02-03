@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\configration;
 use App\Models\Ship;
+use App\Traits\ImageUpload;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -12,11 +14,13 @@ class dashobardController extends Controller
 {
     //
     use ShipData;
+    use ImageUpload;
     public function index()
     {
         $user = Auth::user();
         $designatePerson = $user->designatedPerson;
         $currentUserRoleLevel = $user->roles->first()->level;
+        $currentUserRoleName = $user->roles->first()->name;
         // Initialize the query for ships
         if ($currentUserRoleLevel == 3 || $currentUserRoleLevel == 4) {
             $ships = $user->ships->load('client');
@@ -52,7 +56,44 @@ class dashobardController extends Controller
 
         $shipsPo = $ships->pluck('ship_name')->toArray();
 
-        return view('dashboard', compact('ships', 'shipsPo', 'relevantCounts', 'nonRelevantCounts', 'currentUserRoleLevel', 'designatePerson'));
+        return view('dashboard', compact('ships', 'shipsPo', 'relevantCounts', 'nonRelevantCounts', 'currentUserRoleLevel', 'designatePerson', 'currentUserRoleName'));
+    }
+    public function configration(Request $request)
+    {
+        $configration = Configration::first();
+        return view('configration', compact('configration'));
+    }
+    public function configrationSave(Request $request)
+    {
+        $post = $request->input();
+        $configration = configration::find($post['id']);
+        if ($request->has('ship_staff')) {
+
+            if (@$configration && @$configration->ship_staff) {
+                $oldImagePath = $this->deleteImage('uploads/configration/', $configration->ship_staff);
+            }
+
+            $image = $this->upload($request, 'ship_staff', 'uploads/configration');
+            $post['ship_staff'] =  $image;
+        }
+        if ($request->has('client_company')) {
+            if (@$configration && @$configration->client_company) {
+                $oldImagePath = $this->deleteImage('uploads/configration/', $configration->client_company);
+            }
+
+            $image = $this->upload($request, 'client_company', 'uploads/configration');
+            $post['client_company'] =  $image;
+        }
+        if ($request->has('hazmat_company')) {
+            if (@$configration && @$configration->hazmat_company) {
+                $oldImagePath = $this->deleteImage('uploads/configration/', $configration->hazmat_company);
+            }
+            $image = $this->upload($request, 'hazmat_company', 'uploads/configration');
+            $post['hazmat_company'] =  $image;
+        }
+        $configration = configration::updateOrCreate(['id' => $request->input('id')], $post);
+
+        return response()->json(['isStatus' => true, 'message' => 'save successfully']);
     }
     public function shipwiseData($shipId)
     {

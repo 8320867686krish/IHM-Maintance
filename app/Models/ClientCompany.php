@@ -26,7 +26,11 @@ class ClientCompany extends Model
         'owner_contact_person_email',
         'client_image',
         'accounting_team_email',
-        'material'
+        'overall_incharge',
+        'responsible_person',
+        'training_requirement_overall_incharge',
+        'crew_briefing_requiremet'
+
     ];
     public function hazmatCompaniesId()
     {

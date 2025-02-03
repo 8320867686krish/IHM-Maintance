@@ -20,17 +20,18 @@ return new class extends Migration
             $table->string('project_no')->nullable();
             $table->string('imo_number')->nullable()->unique();
             $table->string('call_sign')->nullable();
-            $table->string('port_of_registry')->nullable('');
-            $table->string('vessel_class')->nullable('');
-            $table->string('ihm_class')->nullable('');
+            $table->string('port_of_registry')->nullable();
+            $table->string('ship_image')->nullable();
+            $table->string('vessel_class')->nullable();
+            $table->string('ihm_class')->nullable();
             $table->string('flag_of_ship')->nullable();
             $table->date('delivery_date')->nullable();
-            $table->string('building_details')->nullable('');
+            $table->string('building_details')->nullable();
             $table->string('x_breadth_depth')->nullable();
             $table->string('gross_tonnage')->nullable();
-            $table->string('vessel_previous_name')->nullable('');
-            $table->string('ga_plan_pdf')->nullable('');
-            $table->string(column: 'ga_plan_image')->nullable('');
+            $table->string('vessel_previous_name')->nullable();
+            $table->string('ga_plan_pdf')->nullable();
+            $table->string(column: 'ga_plan_image')->nullable();
             $table->boolean(column: 'is_unlock')->default(0);
 
 
@@ -41,8 +42,8 @@ return new class extends Migration
             $table->string('current_ihm_version',20)->nullable();
             $table->date('ihm_version_updated_date')->nullable();
 
-            $table->unsignedBigInteger('client_id')->nullable();  // Same data type as hazmat_companies.id
-            $table->foreign('client_id')->references('id')->on('client_companies')->onDelete('cascade');
+            $table->unsignedBigInteger('client_company_id')->nullable();  // Same data type as hazmat_companies.id
+            $table->foreign('client_company_id')->references('id')->on('client_companies')->onDelete('cascade');
             $table->unsignedBigInteger('client_user_id')->nullable();  // Same data type as hazmat_companies.id
             $table->foreign('client_user_id')->references('id')->on('users')->onDelete('cascade');
           

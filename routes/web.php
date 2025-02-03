@@ -9,6 +9,7 @@ use App\Http\Controllers\HelpCenterController;
 use App\Http\Controllers\MakeModelContoller;
 use App\Http\Controllers\POOrderController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReportController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\ShipController;
@@ -34,11 +35,14 @@ Route::get('/', function () {
     }
     return view('auth.login');
 });
+Route::get('/configration', [dashobardController::class, 'configration'])->middleware(['auth', 'verified'])->name('configration');
+Route::post('configration/save', [dashobardController::class, 'configrationSave'])->name('configration.save');
 
 Route::get('/dashboard', [dashobardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 Route::get('/shipwisepo/{ship_id}', [dashobardController::class, 'shipwiseData'])->middleware(['auth', 'verified'])->name('shipwiseData');
 
 Route::middleware('auth')->group(function () {
+    Route::post('report',[ReportController::class,'genrateReport'])->name('report');
     Route::post('/import', [POOrderController::class, 'import'])->name('import');
     Route::get('poOrderSample',[POOrderController::class,'poOrderSample'])->name('poOrderSample');
     Route::get('ships/po-order/add/{ship_id}/{po_order_id?}', [POOrderController::class, 'add'])->name('po.add');
@@ -53,6 +57,12 @@ Route::middleware('auth')->group(function () {
     Route::post('send/mail',[POOrderController::class, 'sendMail'])->name('send.mail');
 
     Route::get('/helpcenter', [HelpCenterController::class, 'index'])->name('helpcenter.list');
+    Route::post('/correspondence/save', [HelpCenterController::class, 'correspondenceSave'])->name('correspondence.save');
+    Route::post('/credential/save', [HelpCenterController::class, 'credentialSave'])->name('credential.save');
+    Route::get('/credential/delete/{id}', [HelpCenterController::class, 'deleteCredential'])->name('credential.remove');
+    Route::post('/sms/save', [HelpCenterController::class, 'smsSave'])->name('sms.save');
+    Route::get('/sms/remove/{id}', [HelpCenterController::class, 'smsRemove'])->name('sms.remove');
+
     Route::middleware('can:roles')->group(function () {
         Route::controller(RoleController::class)->group(function () {
             Route::get('roles', 'index')->name('roles')->middleware('can:roles');
@@ -86,13 +96,26 @@ Route::middleware('auth')->group(function () {
     Route::get('/portal-guide', [ShipController::class, 'portalGuide'])->name('portal.guide');
     Route::get('/summeryReport/{ship_id}', [VscpController::class, 'summeryReport'])->name('summeryReport');
     Route::post('designatedPerson',[DesignatedPersonController::class,'store'])->name('designatedPerson');
+    Route::post('admindesignatedPerson',[DesignatedPersonController::class,'saveAdminDesignatedPerson'])->name('designatedPerson.admin');
+
     Route::get('designatedPersonShip/{designated_person_id}',[DesignatedPersonController::class,'designatedPersonShip'])->name('designatedPersonShip');
 
     Route::middleware('can:training')->group(function () {
         Route::controller(TrainingController::class)->group(function () {
-            Route::get('training','training')->name('training');
+            Route::get('training','Traininglist')->name('training');
             Route::post('save/result','saveResult')->name('saveResult');
-        });
+            Route::post('save/brifing','saveBrifing')->name('brifing.save');
+            Route::get('briefing/download/{id}','briefingDownload')->name('briefing.download');
+            Route::post('briefing/upload','brifingDoc')->name('brifingDoc');
+            Route::post('training/savedesignated','savedesignated')->name('training.savedesignated');
+
+            Route::get('training/start','startTraining')->name('training.start');
+            Route::post('start/exam','startExam')->name('start.exam');
+            Route::get('start/exam', function () {
+                return redirect()->route('training.start'); // Change 'exam.page' to your actual GET route
+            });
+            
+         });
     });
 
     Route::middleware('can:ships')->group(function () {

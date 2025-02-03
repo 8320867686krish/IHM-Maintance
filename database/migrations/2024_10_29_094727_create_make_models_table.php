@@ -26,20 +26,20 @@ return new class extends Migration
             $table->string('document2')->nullable();
             $table->string('md_no')->nullable();
             $table->string('sdoc_no')->nullable();
-            $table->string('sdoc_id_no')->nullable()->after('sdoc_no');
-            $table->date('md_date')->nullable()->after('sdoc_id_no');
-            $table->date('sdoc_date')->nullable()->after('md_date');
-            $table->string('issuer_name')->nullable()->after('sdoc_date');
-            $table->text('sdoc_objects')->nullable()->after('issuer_name');
-            $table->text('other_information')->nullable()->after('issuer_name');
+            $table->string('sdoc_id_no')->nullable();
+            $table->date('md_date')->nullable();
+            $table->date('sdoc_date')->nullable();
+            $table->string('issuer_name')->nullable();
+            $table->text('sdoc_objects')->nullable();
+            $table->text('other_information')->nullable();
 
-            $table->string('coumpany_name')->nullable()->after('sdoc_objects');
-            $table->string('division_name')->nullable()->after('coumpany_name');
-            $table->string('address')->nullable()->after('division_name');
-            $table->string('contact_person')->nullable()->after('address');
-            $table->string('telephone_number', 25)->nullable()->after('contact_person');
-            $table->string('fax_number')->nullable()->after('telephone_number');
-            $table->string('email_address')->nullable()->after('fax_number');
+            $table->string('coumpany_name')->nullable();
+            $table->string('division_name')->nullable();
+            $table->string('address')->nullable();
+            $table->string('contact_person')->nullable();
+            $table->string('telephone_number', 25)->nullable();
+            $table->string('fax_number')->nullable();
+            $table->string('email_address')->nullable();
             $table->timestamps();
         });
     }

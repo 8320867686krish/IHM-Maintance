@@ -15,7 +15,7 @@ class Ship extends Model
         'ship_type',
         'project_no',
         'imo_number',
-        'client_id',
+        'client_company_id',
         'client_user_id',
         'user_id',
         'hazmat_companies_id',
@@ -46,7 +46,11 @@ class Ship extends Model
     }
     public function client()
     {
-        return $this->belongsTo(ClientCompany::class, 'client_id', 'id');
+        return $this->belongsTo(ClientCompany::class, 'client_company_id', 'id');
+    }
+    public function shipStaff()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
     public function pOOrderItems()
     {
@@ -56,4 +60,5 @@ class Ship extends Model
     {
         return $this->hasMany(Deck::class);
     }
+   
 }

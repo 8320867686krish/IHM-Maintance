@@ -2,7 +2,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="DesignatedModellLabel">Summary</h5>
+                <h5 class="modal-title" id="DesignatedModellLabel">Designated Person Details</h5>
                 <button type="button" class="close DesignatedModelClose" data-dismiss="modal" aria-label="Close">
                     <span>&times;</span>
                 </button>
@@ -17,28 +17,34 @@
 
                         <div class="col-12 col-md-12 col-lg-12 mb-2">
                             <div class="form-group">
-                                <label for="name">Name</label>
-                                <input type="text" id="name" name="name" class="form-control">
+                                <label for="name">Name <span class="text-danger">*</span></label>
+                                <input type="text" id="name" name="name" class="form-control @error('name') is-invalid @enderror">
+                                <div class="invalid-feedback error" id="nameError"></div>
+
                             </div>
                         </div>
                         <div class="col-12 col-md-12 col-lg-12 mb-2">
                             <div class="form-group">
-                                <label for="name">Rank</label>
+                                <label for="name">Rank <span class="text-danger">*</span></label>
                                 <input type="text" id="rank" name="rank" class="form-control">
+                                <div class="invalid-feedback error" id="rankError"></div>
+
                             </div>
                         </div>
                         @if(@$currentUserRoleLevel == 6)
                         <div class="col-12 col-md-12 col-lg-12 mb-2">
                             <div class="form-group">
-                                <label for="name">Passport Number</label>
+                                <label for="name">Passport Number <span class="text-danger">*</span></label>
                                 <input type="text" id="passport_number" name="passport_number" class="form-control">
+                                <div class="invalid-feedback error" id="passport_numberError"></div>
+
                             </div>
                         </div>
                         @endif
                         @if(@$currentUserRoleLevel == 6)
                         <div class="col-12 col-md-12 col-lg-12 mb-2">
                             <div class="form-group">
-                                <label for="name">Position</label>
+                                <label for="name">Position <span class="text-danger">*</span></label>
 
 
                                 <select class="form-control" name="position" id="position">
@@ -46,6 +52,7 @@
                                     <option value="responsible">Responsible Person</option>
                                     <option value="incharge">Incharge Person</option>
                                 </select>
+                                <div class="invalid-feedback error" id="positionError"></div>
 
 
                             </div>
@@ -54,7 +61,7 @@
                         <input type="hidden" name="position" value="SuperDp">
                         <div class="col-12 col-md-12 col-lg-12 mb-2">
                             <div class="form-group">
-                                <label for="name">Ship</label>
+                                <label for="name">Ship <span class="text-danger">*</span></label>
 
 
                                 <select class="form-control selectpicker" name="ship_id[]" id="designatedpersionships" multiple>
@@ -63,6 +70,8 @@
                                         <option value="{{$value['id']}}">{{$value['ship_name']}}</option>
                                     @endforeach
                                 </select>
+                                <div class="invalid-feedback error" id="ship_idError"></div>
+
 
 
                             </div>
@@ -71,8 +80,9 @@
                         <div class="col-12 col-md-12 col-lg-12 mb-2">
                             <div class="form-group">
                                 <label for="name">{{$currentUserRoleLevel == 6 ? 'Sign On Date
-                                    ' : 'Start Date'}}</label>
+                                    ' : 'Start Date'}} <span class="text-danger">*</span></label>
                                 <input type="date" id="sign_on_date" name="sign_on_date" class="form-control">
+                                <div class="invalid-feedback error" id="sign_on_dateError"></div>
 
                             </div>
                         </div>
@@ -81,6 +91,8 @@
                                 <label for="name">{{$currentUserRoleLevel == 6 ? 'Sign Off Date
                                 ' : 'End Date'}}</label>
                                 <input type="date" id="sign_off_date" name="sign_off_date" class="form-control">
+                                <div class="invalid-feedback error" id="sign_off_dateError"></div>
+
                             </div>
                         </div>
                     </div>

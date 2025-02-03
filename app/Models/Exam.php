@@ -13,6 +13,8 @@ class Exam extends Model
         'ship_staff_id',
         'correct_ans',
         'wrong_ans',
-        'total_ans'
+        'total_ans',
+        'designated_person_id',
+        'designated_name'
     ];
 }

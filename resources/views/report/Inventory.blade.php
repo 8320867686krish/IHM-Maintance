@@ -55,7 +55,7 @@
                     <td>{{ $value->hazmat->name ?? '' }}</td>
                     <td>{{ $value->qty }}</td>
                     <td>{{ $value->unit }}</td>
-                    <td>Check No:1;{{ $value->remarks }}</td>
+                    <td>Check No:{{ $value->remarks }}</td>
                 </tr>
                 @endforeach
                 @endif

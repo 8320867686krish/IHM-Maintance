@@ -18,7 +18,7 @@
         <!-- end pageheader -->
         <!-- ============================================================== -->
         <div class="row">
-            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mb-2">
                 @include('layouts.message')
                 <div id="showSucessMsg" style="display: none;"></div>
                 <div class="card">
@@ -35,7 +35,7 @@
                             @endcan
                         </div>
                     </h5>
-                    <div class="card-body">
+                    <div class="card-body mb-4">
                         <div>
                             <table class="table table-striped table-bordered first">
                                 <thead>

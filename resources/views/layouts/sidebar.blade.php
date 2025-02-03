@@ -15,8 +15,13 @@
                     <li class="nav-item">
                         <a class="nav-link {{ @$isActive ? 'active' : '' }}" href="{{ route('dashboard') }}"><i class="fa fa-fw fa-user-circle"></i>Dashboard</a>
                     </li>
+                    @if(@\Auth()->user()->roles()->first()->level == 1)
+                    <li class="nav-item">
+                        <a class="nav-link {{ @$isActive ? 'active' : '' }}" href="{{ route('configration') }}"><i class="fa fa-fw fa-user-circle"></i>Configration</a>
+                    </li>
+                    @endif
                     @php
-                    if (request()->routeIs('dashboard')) {
+                    if (request()->routeIs('dashboard') || request()->routeIs('configration')) {
                     $isActive = true;
                     }
                     @endphp

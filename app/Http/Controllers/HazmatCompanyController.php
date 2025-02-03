@@ -47,6 +47,8 @@ class HazmatCompanyController extends Controller
                 'password' => $post['password']
             ];
             unset($post['password']);
+            $hazmatCompany = hazmatCompany::find($post['id']);
+
             if( $request->hasFile('logo' ) ) {
                 if($post['id'] != 0){
                     $hazmatCompany = hazmatCompany::find($post['id']);
@@ -56,6 +58,26 @@ class HazmatCompanyController extends Controller
                 }
                 $image = $this->upload($request,'logo', 'uploads/hazmatCompany');
                 $post['logo'] = $image;
+            }
+
+            if( $request->hasFile('training_material' ) ) {
+                if($post['id'] != 0){
+                    if ($hazmatCompany && $hazmatCompany->training_material) {
+                        $oldImagePath = $this->deleteImage('uploads/training_material/',$hazmatCompany->training_material);
+                    }
+                }
+                $image = $this->upload($request,'training_material', 'uploads/training_material');
+                $post['training_material'] = $image;
+            }
+
+            if( $request->hasFile('briefing_plan' ) ) {
+                if($post['id'] != 0){
+                    if ($hazmatCompany && $hazmatCompany->briefing_plan) {
+                        $oldImagePath = $this->deleteImage('uploads/briefing_plan/',$hazmatCompany->briefing_plan);
+                    }
+                }
+                $image = $this->upload($request,'briefing_plan', 'uploads/briefing_plan');
+                $post['briefing_plan'] = $image;
             }
            
             $hazmatCompany = hazmatCompany::updateOrCreate(['id' => $request->input('id')],$post);
@@ -70,6 +92,7 @@ class HazmatCompanyController extends Controller
                 $userData['hazmat_companies_id'] = $hazmatCompany->id;
                 $user = User::create($userData);
                 $role_id = Role::where('level',2)->pluck('id')->first();
+               
                 $user->assignRole([$role_id]);
             }else{
                 if(@!$userData['password']){

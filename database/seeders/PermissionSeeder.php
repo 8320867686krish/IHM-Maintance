@@ -57,7 +57,8 @@ class PermissionSeeder extends Seeder
             ],
             'assign_team' => [
                 'actions' => ['add' => 0],
-                "is_show" => 0
+                "is_show" => 0,
+                'full_name' => 'Assign Team'
             ],
 
          

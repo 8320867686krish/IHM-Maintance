@@ -90,27 +90,11 @@
     }
 </style>
 @section('content')
-<div id="preview">
-    <div class="container-fluid mb-3 mt-2">
-        <h2 class="pageheader-title text-center mb-4">Material Details</h2>
-            <pdf-viewer src="{{$material}}"></pdf-viewer>
-
-    </div>
-
-    <div class="container-fluid mb-3">
-    <h2 class="pageheader-title text-center mb-4">Ship Details</h2>
-      
-            <pdf-viewer src="{{$shipReport}}"></pdf-viewer>
-
-    </div>
-    </div>
-    <div class="container-fluid">
-
-        <button class="btn btn-primary float-right mb-2" id="examstart">Exam Start</button>
-    </div>
 
 
-<div id="examLoad" style="display:none">
+
+
+<div id="examLoad">
     <div class="quiz-container mt-5" id="quiz">
         <div class="quiz-header">
             <h2>Exam</h2>
@@ -132,15 +116,8 @@
 @endsection
 
 @push('js')
-<script src="{{ asset('assets/libs/js/pdfview.js') }}"></script>
 
 <script>
-    $("#examstart").click(function() {
-        $("#examLoad").show();
-        $("#preview").hide();
-
-
-    });
     var iteamQuestion = "{{ isset($training->questions) ? count($training->questions) : 0 }}";
     const quizData = @json($quizData);
     console.log(quizData);
@@ -279,8 +256,8 @@
                         <i class="fas ${score > quizData.length / 2 ? 'fa-trophy text-success' : 'fa-trophy text-success'}"></i>
                     </div>
                     <div class="score">Your score: ${score}/${quizData.length}</div>
-                    <p>${score > quizData.length / 2 ? 'Great job!' : 'Better luck next time!'}</p>
-                    <button class="btn btn-primary" onclick="location.reload()">Restart Quiz</button>
+                    <p>Congratulations for completing the exam! 🎉</p>
+                    <button class="btn btn-primary" onclick="window.location.href = baseUrl + '/training';">Go to Training Records</button>
                 </div>
             `;
     }

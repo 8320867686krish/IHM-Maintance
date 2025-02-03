@@ -12,4 +12,8 @@ class DesignatedPersionShip extends Model
         'ship_id',
         'designated_person_id'
     ];
+    public function designatedPersonDetail(){
+        return $this->belongsTo(DesignatedPerson::class,'designated_person_id','id');
+
+    }
 }
