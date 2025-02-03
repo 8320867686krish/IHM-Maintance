@@ -32,7 +32,8 @@ class CorrespondenceMail extends Mailable
 
     // Attach file if provided
     if (!empty($this->mailData['attachment'])) {
-        $email->attach('https://sosindi.com/IHMM/public/uploads/clientcompany/training_materials/173761316210.pdf');
+        $email->attach(asset('uploads/corospondance_attachment/' . $this->mailData['attachment']));
+
     }
 
     return $email;
