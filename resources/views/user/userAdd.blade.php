@@ -105,7 +105,7 @@
                     <div class="row">
                         <div class="col-sm-12 col-md-6">
                             <div class="form-group">
-                                <label for="phone">Phone <span class="text-danger">*</span></label>
+                                <label for="phone">Phone</label>
                                 <input type="number" class="form-control @error('phone') is-invalid @enderror"
                                     id="phone" name="phone" value="{{ old('phone', $user->phone ?? '') }}"
                                     placeholder="User Phone..." autocomplete="off"
