@@ -26,7 +26,7 @@
                                         name="ship_staff" placeholder="Comapny Name..." autocomplete="off"
                                         onchange="removeInvalidClass(this)">
                                         @if(@$configration['ship_staff'])
-                                        <a href="{{url('uploads/configration/'.$configration['ship_staff'])}}" target="_blank">Attachment</a>
+                                        <a href="{{asset('uploads/configration/'.$configration['ship_staff'])}}" target="_blank">Attachment</a>
 
                                         @endif
                                     <div class="invalid-feedback error" id="ship_staffError"></div>
@@ -56,7 +56,7 @@
                                         placeholder="Client Email..." autocomplete="off"
                                         onchange="removeInvalidClass(this)">
                                         @if(@$configration['hazmat_company'])
-                                        <a href="{{url('uploads/configration/'.$configration['hazmat_company'])}}" target="_blank">Attachment</a>
+                                        <a href="{{asset('uploads/configration/'.$configration['hazmat_company'])}}" target="_blank">Attachment</a>
 
                                         @endif
                                     <div class="invalid-feedback error" id="hazmat_companyError"></div>
