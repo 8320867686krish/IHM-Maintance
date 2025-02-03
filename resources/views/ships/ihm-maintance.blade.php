@@ -152,7 +152,6 @@
                                     <th width="10%">Supplier Information</th>
                                     <th width="20%">Product Information</th>
                                     <th width="20%">Contained Material Information</th>
-                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
