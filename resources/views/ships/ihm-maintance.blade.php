@@ -202,25 +202,25 @@
         left: 35%;
         transform: translate(-50%, -50%);z-index:999999"></span>
                             <div class="row">
-                                <div class="form-group col-4 mb-3">
-                                    <label for="assign_date">
-                                        To Date<span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control form-control-lg" id="to_date" value="" name="to_date" autocomplete="off" onchange="removeInvalidClass(this)">
-                                    <div class="invalid-feedback error" id="po_noError"></div>
-                                </div>
+                               
 
                                 <div class="form-group col-4 mb-3">
                                     <label for="assign_date">
                                         From Date<span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control form-control-lg" id="from_date" value="" name="from_date" autocomplete="off" onchange="removeInvalidClass(this)">
+                                    <input type="date" class="form-control form-control-lg" id="from_date" value="" name="from_date" autocomplete="off" onchange="updateToDate()" required>
                                     <div class="invalid-feedback error" id="po_noError"></div>
                                 </div>
 
-
+                                <div class="form-group col-4 mb-3">
+                                    <label for="assign_date">
+                                        To Date<span class="text-danger">*</span></label>
+                                    <input type="date" class="form-control form-control-lg" id="to_date" value="" name="to_date" autocomplete="off" onchange="removeInvalidClass(this)" required>
+                                    <div class="invalid-feedback error" id="po_noError"></div>
+                                </div>
                                 <div class="form-group col-4 mb-3">
                                     <label for="assign_date">
                                         Version<span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control form-control-lg" id="version" value="" name="version" autocomplete="off" onchange="removeInvalidClass(this)">
+                                    <input type="text" class="form-control form-control-lg" id="version" value="" name="version" autocomplete="off" onchange="removeInvalidClass(this)" required> 
                                     <div class="invalid-feedback error" id="po_noError"></div>
                                 </div>
 
@@ -250,7 +250,15 @@
     document.getElementById('excel_file').addEventListener('change', function() {
         document.getElementById('uploadForm').submit();
     });
+    function updateToDate() {
+        var fromDate = document.getElementById("from_date").value;
+        var toDate = document.getElementById("to_date");
 
+        if (fromDate) {
+            toDate.min = fromDate; // Set 'To Date' min value to 'From Date'
+            toDate.value = ""; // Reset 'To Date' if already selected before
+        }
+    }
     $('#generatePdfForm').submit(function(event) {
         $(".bg-overlay").show();
         var ship_id = "{{$ship_id}}";
