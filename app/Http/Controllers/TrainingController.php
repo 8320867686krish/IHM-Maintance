@@ -402,6 +402,12 @@ class TrainingController extends Controller
     {
         $post = $request->input();
         $user = Auth::user();
+        $fileName = "summary_" . $user->shipClient->id . '.pdf';
+
+        $filePath = public_path('training/' . $fileName); // Adjust the directory and file name as needed
+        if (file_exists($filePath)) {
+            unlink($filePath);
+        }
         $inputData['ship_id'] = $user->shipClient->id;
         $inputData['ship_staff_id'] = $user->id;
         $inputData['correct_ans'] = $post['correct_ans'];
