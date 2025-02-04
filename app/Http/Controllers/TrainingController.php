@@ -279,8 +279,9 @@ class TrainingController extends Controller
         $version  =  $shipDetail['current_ihm_version'];
         $date = $shipDetail['ihm_version_updated_date'];
         $html = '';
-        $logo = 'https://sosindi.com/IHM/public/assets/images/logo.png';
-        // $checkHazmatIHMPart = CheckHazmat::with(relations: 'hazmat')->where('ship_id',$ship_id)->get();
+        $logoPath = public_path('assets/images/logo.png');
+        $logoData = base64_encode(file_get_contents($logoPath));
+        $logo = 'data:image/png;base64,' . $logoData;
 
         $checkHazmatIHMPart = CheckHazmat::with(relations: 'hazmat')->where('ship_id', $ship_id)->get();
         $filteredResults1 = $checkHazmatIHMPart->filter(function ($item) {
@@ -355,7 +356,7 @@ class TrainingController extends Controller
             $mpdf->SetHTMLHeader($header);
             $mpdf->SetHTMLFooter($footer);
 
-            $stylesheet = file_get_contents('public/assets/mpdf.css');
+            $stylesheet = file_get_contents('assets/mpdf.css');
             $mpdf->WriteHTML($stylesheet, \Mpdf\HTMLParserMode::HEADER_CSS);
             $mpdf->WriteHTML(view('report.cover', compact('shipDetail')));
             $mpdf->WriteHTML(view('report.shipParticular', compact('shipDetail')));

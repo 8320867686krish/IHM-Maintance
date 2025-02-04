@@ -35,7 +35,7 @@
                         <a class="nav-link active show" id="material-tab" data-toggle="tab" href="#material_details" role="tab" aria-controls="material_details" aria-selected="true">Material Details</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="brif-tab" data-toggle="tab" href="#ship_detai" role="tab" aria-controls="brifPlan" aria-selected="false">Ship Details</a>
+                        <a class="nav-link" id="brif-tab" data-toggle="tab" href="#ship_detais" role="tab" aria-controls="ship_detais" aria-selected="false">Ship Details</a>
                     </li>
 
 
@@ -49,8 +49,7 @@
                         <pdf-viewer src="{{$material}}"></pdf-viewer>
 
                     </div>
-                    <div class="tab-pane fade" id="brifPlan" role="tabpanel" aria-labelledby="brif-tab">
-                       
+                    <div class="tab-pane fade" id="ship_detais" role="tabpanel" aria-labelledby="brif-tab">
                         <pdf-viewer src="{{$shipReport}}"></pdf-viewer>
                     </div>
 
