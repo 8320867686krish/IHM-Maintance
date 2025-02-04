@@ -51,7 +51,7 @@
                     </div>
                     <div class="tab-pane fade" id="brifPlan" role="tabpanel" aria-labelledby="brif-tab">
                        
-                        <pdf-viewer src="{{$material}}"></pdf-viewer>
+                        <pdf-viewer src="{{$shipReport}}"></pdf-viewer>
                     </div>
 
                 </div>
