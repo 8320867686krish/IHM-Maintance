@@ -63,8 +63,11 @@ class ClientCompanyController extends Controller
     {
         try {
             $id = $request->input('id');
+            
 
             $inputData = $request->all();
+            $inputData['isSameAsManager'] = $request->has('isSameAsManager') ? 1 : 0;
+
             $userdata = [
                 'name' =>   $inputData['name'],
                 'email' =>   $inputData['email'],
@@ -79,9 +82,28 @@ class ClientCompanyController extends Controller
                     if ($clicntCompany && $clicntCompany->client_image) {
                         $oldImagePath = $this->deleteImage('uploads/clientcompany/', $clicntCompany->client_image);
                     }
+                 
                 }
                 $image = $this->upload($request, 'client_image', 'uploads/clientcompany');
                 $inputData['client_image'] = $image;
+                if ($inputData['isSameAsManager']) {
+                    $inputData['owner_logo'] = $inputData['client_image'];
+                }
+            }
+            
+            if ($request->hasFile('owner_logo')) {
+                if ($inputData['id'] != 0) {
+                    if ($clicntCompany && $clicntCompany->owner_logo) {
+                        $oldImagePath = $this->deleteImage('uploads/clientcompany/', $clicntCompany->owner_logo);
+                    }
+                 
+                }
+                $image = $this->upload($request, 'owner_logo', 'uploads/clientcompany');
+                $inputData['owner_logo'] = $image;
+               
+            }
+            elseif ($inputData['isSameAsManager'] && $id) {
+                $inputData['owner_logo'] = ClientCompany::where('id', $id)->value('client_image');
             }
           
 

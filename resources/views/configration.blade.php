@@ -13,7 +13,7 @@
                     <form method="post" class="needs-validation" novalidate id="configrationForm"
                         enctype="multipart/form-data">
                         @csrf
-                        <input type="hidden" name="id" value="{{@$configration['id']}}}">
+                        <input type="hidden" name="id" value="{{@$configration['id']}}">
 
                         <div class="row">
 

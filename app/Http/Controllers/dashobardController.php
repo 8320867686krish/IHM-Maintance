@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\configrationRequest;
 use App\Models\configration;
 use App\Models\Ship;
 use App\Traits\ImageUpload;
@@ -63,7 +64,7 @@ class dashobardController extends Controller
         $configration = Configration::first();
         return view('configration', compact('configration'));
     }
-    public function configrationSave(Request $request)
+    public function configrationSave(configrationRequest $request)
     {
         $post = $request->input();
         $configration = configration::find($post['id']);

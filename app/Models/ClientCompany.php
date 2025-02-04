@@ -29,7 +29,12 @@ class ClientCompany extends Model
         'overall_incharge',
         'responsible_person',
         'training_requirement_overall_incharge',
-        'crew_briefing_requiremet'
+        'crew_briefing_requiremet',
+        'isSameAsManager',
+        'manager_address',
+        'manager_contact_person_email',
+        'manager_contact_person_name',
+        'manager_contact_person_phone'
 
     ];
     public function hazmatCompaniesId()

@@ -176,13 +176,11 @@ class TrainingController extends Controller
         $ship_id = $user->shipClient->id;
         $trainingRecoredHistory = Exam::where('ship_staff_id', $user->id)->get();
         $material = asset('uploads/training_material/' . $training_material);
-        //   $shipReport = $this->genrateSummeryReport($ship_id);
-        $shipReport = '';
+       $shipReport = $this->genrateSummeryReport($ship_id);
 
 
 
         return view('training.material', compact('designatedPerson', 'material', 'designatedPersonDetail'));
-        //  return view('training.exam', ['quizData' => $quizData, 'shipReport' => $shipReport, 'material' => $material,'designatedPerson'=>$designatedPerson]);
     }
     public function Traininglist(Request $request)
     {
