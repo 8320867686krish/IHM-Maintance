@@ -180,7 +180,7 @@ class TrainingController extends Controller
 
 
 
-        return view('training.material', compact('designatedPerson', 'material', 'designatedPersonDetail'));
+        return view('training.material', compact('designatedPerson', 'material', 'designatedPersonDetail','shipReport'));
     }
     public function Traininglist(Request $request)
     {
