@@ -32,7 +32,7 @@ class HelpCenterController extends Controller
 
                 $correspondence->where('hazmat_companies_id', $user['hazmat_companies_id']);
             }
-            $correspondence = $correspondence->get();
+            $correspondence = $correspondence->orderBy('id','desc')->get();
         }else{
             $correspondence = [];
         }

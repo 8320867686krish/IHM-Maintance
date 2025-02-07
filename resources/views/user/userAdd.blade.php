@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 
-@section('shiptitle','User Management')
 
 @section('content')
 <div class="container-fluid dashboard-content">

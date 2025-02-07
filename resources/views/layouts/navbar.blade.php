@@ -9,7 +9,7 @@
           
         <ul class="navbar-center mx-auto">
                 <li class="pageheader-title">
-                    @yield('shiptitle')
+                  {{$shiptitle}}
                 </li>
             </ul>
 

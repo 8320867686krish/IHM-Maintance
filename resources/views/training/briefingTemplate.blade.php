@@ -10,6 +10,7 @@
                 <tr>
                     <th width="8%">SR NO.</th>
                     <th>Name</th>
+                    <th>Designation</th>
                     <th>Signature</th>
                 </tr>
             </thead>
@@ -17,6 +18,7 @@
                 @for($i = 1; $i <= $briefing['number_of_attendance']; $i++)
                     <tr>
                         <td style="text-align: center;">{{ $i }}</td>
+                        <td style="text-align: center;">&nbsp;</td>
                         <td style="text-align: center;">&nbsp;</td>
                         <td style="text-align: center;">&nbsp;</td>
                     </tr>

@@ -163,7 +163,7 @@ class ReportController extends Controller
         }
 
         //shipstaff recored
-        $exam = Exam::where('ship_id',$ship_id)->get();
+        $exam = Exam::where('ship_id',$ship_id)->orderBy('id','desc')->get();
         $html = view('main-report.trainingRecored',compact('exam'))->render();
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
 

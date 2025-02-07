@@ -14,7 +14,8 @@ class Brifing extends Model
         'brifing_document',
         'designated_people_id',
         'hazmat_companies_id',
-        'ship_staff_id'
+        'ship_staff_id',
+        'ship_id'
     ];
     public function DesignatedPersonDetail(){
         return $this->belongsTo(DesignatedPerson::class,'designated_people_id','id');

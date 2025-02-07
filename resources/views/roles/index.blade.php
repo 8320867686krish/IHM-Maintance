@@ -1,5 +1,4 @@
 @extends('layouts.app')
-@section('shiptitle','Role Managemen')
 
 @section('css')
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/vendor/datatables/css/dataTables.bootstrap4.css') }}">
@@ -10,13 +9,8 @@
 
 @section('content')
     <div class="container-fluid dashboard-content">
-        <!-- ============================================================== -->
-        <!-- pageheader -->
-        <!-- ============================================================== -->
-      
-        <!-- ============================================================== -->
-        <!-- end pageheader -->
-        <!-- ============================================================== -->
+    <x-page-header title="Role Management"></x-page-header>
+
         <div class="row">
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mb-2">
                 @include('layouts.message')

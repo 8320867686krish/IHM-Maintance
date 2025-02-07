@@ -174,7 +174,7 @@ class TrainingController extends Controller
         $training_material =   $user->hazmatCompany->training_material;
 
         $ship_id = $user->shipClient->id;
-        $trainingRecoredHistory = Exam::where('ship_staff_id', $user->id)->get();
+        $trainingRecoredHistory = Exam::where('ship_staff_id', $user->id)->orderBy('id','desc')->get();
         $material = asset('uploads/training_material/' . $training_material);
        $shipReport = $this->genrateSummeryReport($ship_id);
 
@@ -186,8 +186,11 @@ class TrainingController extends Controller
     {
         Session::forget('designated_people_id');
         $user = Auth::user();
-        $trainingRecoredHistory = Exam::where('ship_staff_id', $user->id)->get();
-        $brifingHistory = Brifing::with('DesignatedPersonDetail:id,name')->where('ship_staff_id', $user->id)->get();
+        $trainingRecoredHistory = Exam::where('ship_staff_id', $user->id)->orderBy('id','desc')->get();
+        $brifingHistory = Brifing::with('DesignatedPersonDetail:id,name')
+        ->where('ship_staff_id', $user->id)
+        ->orderBy('id', 'desc') // Correct placement of orderBy
+        ->get();
         $designatedPerson = DesignatedPerson::select('id', 'name')->where('ship_staff_id', $user->id)->whereNull('sign_off_date')->get()->toArray();
         return view('training.history', compact('trainingRecoredHistory', 'designatedPerson', 'brifingHistory'));
     }
@@ -195,12 +198,18 @@ class TrainingController extends Controller
     {
         $post = $request->input();
         $hazmat_companies_id = Auth::user()->hazmat_companies_id;
+
         $user = Auth::user();
+        $post['ship_id'] = $user->shipClient->id;
+
         $post['ship_staff_id'] = $user->id;
         $post['hazmat_companies_id'] = $hazmat_companies_id;
         Brifing::updateOrcreate(['id' => $post['id']], $post);
 
-        $brifingHistory = Brifing::with('DesignatedPersonDetail:id,name')->where('ship_staff_id', $user->id)->get();
+        $brifingHistory = Brifing::with('DesignatedPersonDetail:id,name')->where('ship_staff_id', $user->id)
+        ->orderBy('id', 'desc')->get();
+
+        
         $html = view('components.brifing-history', compact('brifingHistory'))->render();
         return response()->json(['isStatus' => true, 'message' => 'save successfully', 'html' => $html]);
     }
@@ -356,7 +365,7 @@ class TrainingController extends Controller
             $mpdf->SetHTMLHeader($header);
             $mpdf->SetHTMLFooter($footer);
 
-            $stylesheet = file_get_contents('public/assets/mpdf.css');
+            $stylesheet = file_get_contents('assets/mpdf.css');
             $mpdf->WriteHTML($stylesheet, \Mpdf\HTMLParserMode::HEADER_CSS);
             $mpdf->WriteHTML(view('report.cover', compact('shipDetail')));
             $mpdf->WriteHTML(view('report.shipParticular', compact('shipDetail')));

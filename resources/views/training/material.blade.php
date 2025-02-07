@@ -32,10 +32,10 @@
             <div class="tab-regular">
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                     <li class="nav-item">
-                        <a class="nav-link active show" id="material-tab" data-toggle="tab" href="#material_details" role="tab" aria-controls="material_details" aria-selected="true">Material Details</a>
+                        <a class="nav-link active show" id="material-tab" data-toggle="tab" href="#material_details" role="tab" aria-controls="material_details" aria-selected="true">Hazmat Awareness Traing</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="brif-tab" data-toggle="tab" href="#ship_detais" role="tab" aria-controls="ship_detais" aria-selected="false">Ship Details</a>
+                        <a class="nav-link" id="brif-tab" data-toggle="tab" href="#ship_detais" role="tab" aria-controls="ship_detais" aria-selected="false">Ship IHM part-1 summary</a>
                     </li>
 
 

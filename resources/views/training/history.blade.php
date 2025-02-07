@@ -61,7 +61,7 @@
 
                                         <th>Correct Answer</th>
                                         <th>Wrong Answer</th>
-                                        <th>Total Ans</th>
+                                        <th>Total Questions</th>
                                     </tr>
                                 </thead>
                                 <tbody>

@@ -8,20 +8,14 @@
 {{-- <link rel="stylesheet" type="text/css" href="{{ asset('assets/libs/css/bootstrap4-toggle.min.css') }}"> --}}
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/libs/css/switchButton.css') }}">
 @endsection
-@section('shiptitle','Training Management')
 
 @section('content')
 <div class="container-fluid dashboard-content">
     <!-- ============================================================== -->
     <!-- pageheader -->
     <!-- ============================================================== -->
-    <div class="row">
-        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-            <div class="page-header">
-                <h2 class="pageheader-title">Training Management</h2>
-            </div>
-        </div>
-    </div>
+    <x-page-header title="Training Management"></x-page-header>
+
     <!-- ============================================================== -->
     <!-- end pageheader -->
     <!-- ============================================================== -->

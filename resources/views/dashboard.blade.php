@@ -4,7 +4,6 @@
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/vendor/bootstrap-select/css/bootstrap-select.css') }}">
 @endsection
 
-@section('shiptitle', ucFirst($currentUserRoleName) . ' Dashboard')
 
 @section('content')
 

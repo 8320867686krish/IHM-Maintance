@@ -3,10 +3,11 @@
 {{-- Add Bootstrap JS --}}
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-@section('shiptitle', 'Ships Management')
 
 @section('content')
 <div class="container-fluid dashboard-content">
+    <x-page-header title="Ships Management"></x-page-header>
+
     <!-- ============================================================== -->
     <!-- Page Header -->
     <!-- ============================================================== -->

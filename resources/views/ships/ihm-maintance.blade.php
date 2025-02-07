@@ -27,7 +27,7 @@
                 <div class="card-header" id="TrainingRecoreds">
                     <h5 class="mb-0">
                         <button class="btn btn-link collapsed d-flex justify-content-between w-100" data-toggle="collapse" data-target="#traing-records" aria-expanded="false" aria-controls="soreDpRecoreds">
-                            Training Recoreds
+                            OnBoard Training Recoreds
                             <span class="fas fa-angle-down mr-3"></span>
 
                         </button>
@@ -44,7 +44,7 @@
                                     <th>Date</th>
                                     <th>Correct Answer</th>
                                     <th>Wrong Answer</th>
-                                    <th>Total Ans</th>
+                                    <th>Total Questions</th>
 
                                 </tr>
                             </thead>
@@ -100,7 +100,7 @@
                 <div class="card-header" id="OnbaordTraining">
                     <h5 class="mb-0">
                         <button class="btn btn-link collapsed d-flex justify-content-between w-100" data-toggle="collapse" data-target="#onbaord-training" aria-expanded="false" aria-controls="onbaord-training">
-                            Designated Person Records
+                           OnBoard  Designated Person Records
                             <span class="fas fa-angle-down mr-3"></span>
 
                         </button>

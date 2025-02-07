@@ -25,10 +25,25 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
        
+        view()->composer('*', function($view)
+        {
+            if (Auth::check()) {
+                $user = auth()->user();
+                $currentUserRoleName = $user->roles->first()->name;
+                View::share('shiptitle', $currentUserRoleName." Dashboard");
+
+            }else {
+                $view->with('shiptitle', null);
+            }
+        });
         if (Schema::hasTable('permissions')) {
             $allPermissions = Permission::select('id','group_type','name','is_show','full_name')->get()->toArray();
             // Share permissions with all views
             View::share('allPermissions', $allPermissions);
         }
+       
+
+        
+
     }
 }

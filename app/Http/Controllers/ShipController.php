@@ -211,8 +211,11 @@ class ShipController extends Controller
                 ? asset('uploads/configration/' . $configration['ship_staff'])
                 : null;
         }
+        else{
+            $showurl = '';
 
-        return view('helpCenter.pdfview', compact('showurl'));
+        }
+        return view('helpCenter.pdfview', compact('showurl','configration'));
     }
     public function destroy(string $id)
     {
@@ -285,7 +288,7 @@ class ShipController extends Controller
 
         $dpsore = DesignatedPersionShip::with('designatedPersonDetail')->where('ship_id', $ship_id)->get();
 
-        $trainingRecoredHistory = Exam::where('ship_id', $ship_id)->get();
+        $trainingRecoredHistory = Exam::where('ship_id', $ship_id)->orderBy('id','desc')->get();
         $mdnoresults = DB::select('SELECT p.po_order_item_id, p.doc1 AS md_no, m.md_date, m.coumpany_name, po_order_items.description,GROUP_CONCAT(DISTINCT h.short_name) AS hazmat_names FROM po_order_items_hazmats p JOIN hazmats h ON p.hazmat_id = h.id JOIN make_models m ON p.model_make_part_id = m.id JOIN po_order_items po_order_items ON p.po_order_item_id = po_order_items.id GROUP BY p.po_order_item_id, p.doc1, m.md_date, m.coumpany_name, po_order_items.description');
 
         $currentUserRoleLevel = $user->roles->first()->level;

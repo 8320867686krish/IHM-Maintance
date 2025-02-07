@@ -1,5 +1,4 @@
 @extends('layouts.app')
-@section('shiptitle','Client Company Management')
 
 @section('css')
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/vendor/datatables/css/dataTables.bootstrap4.css') }}">
@@ -12,7 +11,9 @@
 
 @section('content')
 <div class="container-fluid dashboard-content">
+    <x-page-header title="Client Company Management"></x-page-header>
 
+   
     <div class="row">
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
             @include('layouts.message')

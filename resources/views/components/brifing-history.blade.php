@@ -8,10 +8,11 @@
         <a href="javascript:void(0);" class="editBrif" data-brief='{{$historyValue}}' title="Edit">
             <i class="fas fa-edit text-primary" style="font-size: 1rem"></i>
         </a>
-
+        &nbsp;
         <a href="{{ url('briefing/download/' . $historyValue['id']) }}" title="Download">
             <i class="fas fa-download text-primary" style="font-size: 1rem"></i>
         </a>
+        &nbsp;
         <a href="javascript:void(0);" class="uploadBrief" data-briefId='{{$historyValue->id}}' title="Upload">
             <i class="fas fa-upload text-primary" style="font-size: 1rem"></i>
         </a>

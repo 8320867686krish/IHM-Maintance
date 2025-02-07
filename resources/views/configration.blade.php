@@ -1,5 +1,4 @@
 @extends('layouts.app')
-@section('shiptitle','Configration')
 
 @section('content')
 <div class="container-fluid dashboard-content">
@@ -21,12 +20,12 @@
                                 <div class="form-group mb-3">
                                     <label for="name">Ship Staff <span class="text-danger">*</span></label>
                                     <input type="file"
-                                        class="form-control @error('ship_staff') is-invalid @enderror"
+                                        class="form-control mb-2 @error('ship_staff') is-invalid @enderror"
                                         id="name" value="{{ old('ship_staff', $clientCompany->name ?? '') }}"
                                         name="ship_staff" placeholder="Comapny Name..." autocomplete="off"
                                         onchange="removeInvalidClass(this)">
                                         @if(@$configration['ship_staff'])
-                                        <a href="{{asset('uploads/configration/'.$configration['ship_staff'])}}" target="_blank">Attachment</a>
+                                        <a href="{{asset('uploads/configration/'.$configration['ship_staff'])}}" target="_blank">View Attachment</a>
 
                                         @endif
                                     <div class="invalid-feedback error" id="ship_staffError"></div>
@@ -36,12 +35,12 @@
                                 <div class="form-group mb-3">
                                     <label for="name">Client Company <span class="text-danger">*</span></label>
                                     <input type="file"
-                                        class="form-control @error('client_company') is-invalid @enderror"
+                                        class="form-control mb-2 @error('client_company') is-invalid @enderror"
                                         id="client_company" value="{{ old('client_company', $clientCompany->client_company ?? '') }}"
                                         name="client_company" placeholder="Comapny Name..." autocomplete="off"
                                         onchange="removeInvalidClass(this)">
                                         @if(@$configration['client_company'])
-                                        <a href="{{asset('uploads/configration/'.$configration['client_company'])}}" target="_blank">Attachment</a>
+                                        <a href="{{asset('uploads/configration/'.$configration['client_company'])}}" target="_blank">View Attachment</a>
                                         @endif
                                     <div class="invalid-feedback error" id="client_companyError"></div>
                                 </div>
@@ -50,13 +49,13 @@
                                 <div class="form-group mb-3">
                                     <label for="client_email">Hazmat Company<span class="text-danger">*</span></label>
                                     <input type="file"
-                                        class="form-control @error('hazmat_company') is-invalid @enderror"
+                                        class="form-control mb-2 @error('hazmat_company') is-invalid @enderror"
                                         id="hazmat_company" name="hazmat_company"
                                       
                                         placeholder="Client Email..." autocomplete="off"
                                         onchange="removeInvalidClass(this)">
                                         @if(@$configration['hazmat_company'])
-                                        <a href="{{asset('uploads/configration/'.$configration['hazmat_company'])}}" target="_blank">Attachment</a>
+                                        <a href="{{asset('uploads/configration/'.$configration['hazmat_company'])}}" target="_blank">View Attachment</a>
 
                                         @endif
                                     <div class="invalid-feedback error" id="hazmat_companyError"></div>
