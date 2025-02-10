@@ -213,12 +213,10 @@ class ShipController extends Controller
             $showurl = $configration['ship_staff'] ?? null
                 ? asset('uploads/configration/' . $configration['ship_staff'])
                 : null;
-        }
-        else{
+        } else {
             $showurl = '';
-
         }
-        return view('helpCenter.pdfview', compact('showurl','configration'));
+        return view('helpCenter.pdfview', compact('showurl', 'configration'));
     }
     public function destroy(string $id)
     {
@@ -291,29 +289,49 @@ class ShipController extends Controller
 
         $dpsore = DesignatedPersionShip::with('designatedPersonDetail')->where('ship_id', $ship_id)->get();
 
-        $trainingRecoredHistory = Exam::where('ship_id', $ship_id)->orderBy('id','desc')->get();
+        $trainingRecoredHistory = Exam::where('ship_id', $ship_id)->orderBy('id', 'desc')->get();
         // $mdnoresults = DB::select('SELECT p.po_order_item_id, p.doc1 AS md_no, m.md_date, m.coumpany_name, po_order_items.description,GROUP_CONCAT(DISTINCT h.short_name) AS hazmat_names FROM po_order_items_hazmats p JOIN hazmats h ON p.hazmat_id = h.id JOIN make_models m ON p.model_make_part_id = m.id JOIN po_order_items po_order_items ON p.po_order_item_id = po_order_items.id GROUP BY p.po_order_item_id, p.doc1, m.md_date, m.coumpany_name, po_order_items.description');
 
         $mdnoresults = DB::table('po_order_items_hazmats as p')
-        ->join('make_models as m', 'm.id', '=', 'p.model_make_part_id')
-        ->join('hazmats as h', 'h.id', '=', 'p.hazmat_id')
-        ->select('m.*', DB::raw('GROUP_CONCAT(DISTINCT h.short_name ORDER BY h.short_name ASC) AS hazmat_names'))
-        ->groupBy('m.id')
-        ->get();
-    
+            ->join('make_models as m', 'm.id', '=', 'p.model_make_part_id')
+            ->join('hazmats as h', 'h.id', '=', 'p.hazmat_id')
+            ->select(
+                'm.id',
+                'm.md_date',
+                'm.md_no',
+                'm.coumpany_name',
+                'm.sdoc_date',
+                'm.sdoc_no',
+                'm.issuer_name',
+                'm.sdoc_objects',
+                DB::raw('GROUP_CONCAT(DISTINCT h.short_name ORDER BY h.short_name ASC) AS hazmat_names') // Use DB::raw only for the grouped column
+            )
+            ->groupBy(
+                'm.id',
+                'm.md_date',
+                'm.md_no',
+                'm.coumpany_name',
+                'm.sdoc_date',
+                'm.sdoc_no',
+                'm.issuer_name',
+                'm.sdoc_objects'
+            ) // Include all non-aggregated columns
+            ->get();
 
-       
+
+
+
 
         $currentUserRoleLevel = $user->roles->first()->level;
 
-    
-        $ships = Ship::get();
-        $majorrepair = Majorrepair::where('ship_id',$ship_id)->orderBy('id','desc')->get();
 
-        $brifingHistory = Brifing::where('ship_id',$ship_id)->get();
+        $ships = Ship::get();
+        $majorrepair = Majorrepair::where('ship_id', $ship_id)->orderBy('id', 'desc')->get();
+
+        $brifingHistory = Brifing::where('ship_id', $ship_id)->get();
         $designatedPerson = DesignatedPerson::select('id', 'name')->where('ship_staff_id', $user->id)->get()->toArray();
 
-        return view('ships.view', compact('experts', 'managers', 'isBack', 'ship', 'readonly', 'users', 'poOrders', 'ship_id', 'poSummeryGraph', 'checkHazmatIHMPart', 'hazmatSummeryName', 'hazmat_companies_id', 'partMenual', 'summary', 'trainingRecoreds', 'mdnoresults', 'dpsore', 'trainingRecoredHistory', 'currentUserRoleLevel', 'ships','majorrepair','brifingHistory','designatedPerson'));
+        return view('ships.view', compact('experts', 'managers', 'isBack', 'ship', 'readonly', 'users', 'poOrders', 'ship_id', 'poSummeryGraph', 'checkHazmatIHMPart', 'hazmatSummeryName', 'hazmat_companies_id', 'partMenual', 'summary', 'trainingRecoreds', 'mdnoresults', 'dpsore', 'trainingRecoredHistory', 'currentUserRoleLevel', 'ships', 'majorrepair', 'brifingHistory', 'designatedPerson'));
     }
 
     public function assignShip(Request $request)
