@@ -4,7 +4,6 @@
     </div>
 
 
-
     <div class="accrodion-regular">
         <div id="accordion">
             <div class="card">
@@ -135,7 +134,7 @@
                 <div class="card-header" id="headingma3">
                     <h5 class="mb-0">
                         <button class="btn btn-link collapsed d-flex justify-content-between w-100" data-toggle="collapse" data-target="#collapsema3" aria-expanded="false" aria-controls="collapsema3">
-                            MD & SDoc
+                            MD Records
                             <span class="fas fa-angle-down mr-3"></span>
 
                         </button>
@@ -162,6 +161,39 @@
                 </div>
             </div>
 
+            <div class="card">
+                <div class="card-header" id="headingmasd">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link collapsed d-flex justify-content-between w-100" data-toggle="collapse" data-target="#collapsemasd" aria-expanded="false" aria-controls="collapsemasd">
+                             SDoc Records
+                            <span class="fas fa-angle-down mr-3"></span>
+
+                        </button>
+                    </h5>
+                </div>
+                <div id="collapsemasd" class="collapse" aria-labelledby="headingmasd" data-parent="#accordion">
+                    <div class="card-body mb-4">
+                        <table class="table table-striped table-bordered first">
+                            <thead>
+                                <tr>
+                                    <th width="15%">SR NO</th>
+                                    <th>Issue Date</th>
+                                    <th width="20%">SDoC No.</th>
+                                    
+                                    <th width="10%">Issuer’s Name</th>
+                                    
+                                    <th width="20%">Object(s) of Declaration</th>
+                                    <th width="20%">Supplier’s Declaration of Conformity</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <x-sd-records :mdnoresults="$mdnoresults"></x-trainning-record>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
 
 
             <div class="card">
@@ -176,10 +208,57 @@
                 </div>
                 <div id="collapsema4" class="collapse" aria-labelledby="headingma4" data-parent="#accordion">
                     <div class="card-body">
-                        Major Repair / Retrofit / Dry Doc / Conversion data goes here.
+                    <table class="table table-striped table-bordered first">
+                            <thead>
+                                <tr>
+                                    <th width="5%">Sr.No</th>
+                                    <th>Name</th>
+                                    <th width="15%">Date</th>
+                                    <th width="15%">Location Name</th>
+                                    <th width="18%">Document Upload By</th>
+                                    <th width="15%">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="majorList">
+                              <x-majorrepair-list :majorrepair=$majorrepair></x-majorrepair-list>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
+
+
+            <div class="card">
+                <div class="card-header" id="headingmacrew">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link collapsed d-flex justify-content-between w-100" data-toggle="collapse" data-target="#collapsemacrew" aria-expanded="false" aria-controls="collapsemacrew">
+                            OnBoard Crew Brifing
+                            <span class="fas fa-angle-down mr-3"></span>
+
+                        </button>
+                    </h5>
+                </div>
+                <div id="collapsemacrew" class="collapse" aria-labelledby="headingmacrew" data-parent="#accordion">
+                    <div class="card-body">
+                    <table class="table table-striped table-bordered first">
+                            <thead>
+                                <tr>
+                                <th>SR NO</th>
+                                        <th>Number Of Attendance</th>
+                                        <th>Briefing Date</th>
+                                        <th>Briefing By</th>
+                                        <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="majorList">
+                            <x-brifing-history :brifingHistory=$brifingHistory></x-brifing-history>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
 
 
             <div class="card">
@@ -242,8 +321,13 @@
 </div>
 @include('shipdesignated.AdminDesignatedModel')
 @include('shipdesignated.AdminShoreDp')
+@include('majorRepair.majorRepairModel')
+@include('training.model.startBrifing')
+
 @push('js')
 <script src="{{ asset('assets/js/shipdesignatedperson.js') }}"></script>
+<script src="{{ asset('assets/js/majorRepair.js')}}"></script>
+<script src="{{ asset('assets/js/training.js') }}"></script>
 
 <script>
     document.getElementById('excel_file').addEventListener('change', function() {

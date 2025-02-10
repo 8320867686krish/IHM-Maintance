@@ -11,10 +11,20 @@
         <form method="post" action="{{route('majorrepair.save')}}" id="majorRepairForm"
           enctype="multipart/form-data">
           @csrf
+          <input type="hidden" name="id" id="id"/>
+          <div class="col-12 col-md-12 col-lg-12 mb-2">
+              <div class="form-group">
+
+                <input type="hidden" id="ship_id" name="ship_id" value="{{@$ship_id}}" >
+
+              </div>
+            </div>
+
           <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 row">
-            <input type="hidden" name="id" id="id">
+
             <div class="col-12 col-md-12 col-lg-12 mb-2">
               <div class="form-group">
+
                 <label for="name">Name</label>
                 <input type="text" id="name" name="name" class="form-control @error('name') is-invalid @enderror" onchange="removeInvalidClass(this)">
                 <div class="invalid-feedback error" id="nameError"></div>

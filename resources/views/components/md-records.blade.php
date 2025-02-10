@@ -4,7 +4,7 @@
     <td>{{$value->md_date}}</td>
     <td>{{$value->md_no}}</td>
     <td>{{$value->coumpany_name}}</td>
-    <td>{{$value->description}}</td>
+    <td>&nbsp;</td>
     <td>{{$value->hazmat_names}}</td>
 
 

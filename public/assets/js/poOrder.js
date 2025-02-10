@@ -269,7 +269,7 @@ $('#suspected_hazmat').on('changed.bs.select', function (e, clickedIndex, isSele
 
                       <div class="col-4 modelMakePart mb-1" id="modelMakePart${selectedValue}">
                         <div class="form-group">
-                           <select class="form-control  modelMakePartSelect" data-id="${selectedValue}" id="modelMakePartselect_${selectedValue}" name="hazmats[${selectedValue}][modelMakePart]"  data-findTable="${tableType[0]}" data-divValue="${selectedValue}">
+                           <select class="form-control  modelMakePartSelect" data-id="${selectedValue}" id="modelMakePartselect_${selectedValue}" name="hazmats[${selectedValue}][model_make_part_id]"  data-findTable="${tableType[0]}" data-divValue="${selectedValue}">
                                 <option value="">Select Model Make and Part
                                 </option>
                               

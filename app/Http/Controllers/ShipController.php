@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ShipRequest;
+use App\Models\Brifing;
 use App\Models\CheckHazmat;
 use App\Models\ClientCompany;
 use App\Models\configration;
@@ -9,6 +11,7 @@ use App\Models\DesignatedPersionShip;
 use App\Models\DesignatedPerson;
 use App\Models\Exam;
 use App\Models\Hazmat;
+use App\Models\Majorrepair;
 use App\Models\partManuel;
 use App\Models\poOrder;
 use App\Models\PoOrderItemsHazmats;
@@ -101,7 +104,7 @@ class ShipController extends Controller
         $clients = $clientsQuery->orderBy('id', 'desc')->get(['id', 'name', 'manager_initials']);
         return view('ships.add', ['head_title' => 'Add', 'button' => 'Save', 'clients' => $clients, 'hazmat_companies_id' => $hazmat_companies_id, 'managers' => $managers, 'experts' => $experts]);
     }
-    public function store(Request $request)
+    public function store(ShipRequest $request)
     {
         try {
             DB::beginTransaction(); // Start a transaction
@@ -289,12 +292,28 @@ class ShipController extends Controller
         $dpsore = DesignatedPersionShip::with('designatedPersonDetail')->where('ship_id', $ship_id)->get();
 
         $trainingRecoredHistory = Exam::where('ship_id', $ship_id)->orderBy('id','desc')->get();
-        $mdnoresults = DB::select('SELECT p.po_order_item_id, p.doc1 AS md_no, m.md_date, m.coumpany_name, po_order_items.description,GROUP_CONCAT(DISTINCT h.short_name) AS hazmat_names FROM po_order_items_hazmats p JOIN hazmats h ON p.hazmat_id = h.id JOIN make_models m ON p.model_make_part_id = m.id JOIN po_order_items po_order_items ON p.po_order_item_id = po_order_items.id GROUP BY p.po_order_item_id, p.doc1, m.md_date, m.coumpany_name, po_order_items.description');
+        // $mdnoresults = DB::select('SELECT p.po_order_item_id, p.doc1 AS md_no, m.md_date, m.coumpany_name, po_order_items.description,GROUP_CONCAT(DISTINCT h.short_name) AS hazmat_names FROM po_order_items_hazmats p JOIN hazmats h ON p.hazmat_id = h.id JOIN make_models m ON p.model_make_part_id = m.id JOIN po_order_items po_order_items ON p.po_order_item_id = po_order_items.id GROUP BY p.po_order_item_id, p.doc1, m.md_date, m.coumpany_name, po_order_items.description');
+
+        $mdnoresults = DB::table('po_order_items_hazmats as p')
+        ->join('make_models as m', 'm.id', '=', 'p.model_make_part_id')
+        ->join('hazmats as h', 'h.id', '=', 'p.hazmat_id')
+        ->select('m.*', DB::raw('GROUP_CONCAT(DISTINCT h.short_name ORDER BY h.short_name ASC) AS hazmat_names'))
+        ->groupBy('m.id')
+        ->get();
+    
+
+       
 
         $currentUserRoleLevel = $user->roles->first()->level;
 
+    
         $ships = Ship::get();
-        return view('ships.view', compact('experts', 'managers', 'isBack', 'ship', 'readonly', 'users', 'poOrders', 'ship_id', 'poSummeryGraph', 'checkHazmatIHMPart', 'hazmatSummeryName', 'hazmat_companies_id', 'partMenual', 'summary', 'trainingRecoreds', 'mdnoresults', 'dpsore', 'trainingRecoredHistory', 'currentUserRoleLevel', 'ships'));
+        $majorrepair = Majorrepair::where('ship_id',$ship_id)->orderBy('id','desc')->get();
+
+        $brifingHistory = Brifing::where('ship_id',$ship_id)->get();
+        $designatedPerson = DesignatedPerson::select('id', 'name')->where('ship_staff_id', $user->id)->get()->toArray();
+
+        return view('ships.view', compact('experts', 'managers', 'isBack', 'ship', 'readonly', 'users', 'poOrders', 'ship_id', 'poSummeryGraph', 'checkHazmatIHMPart', 'hazmatSummeryName', 'hazmat_companies_id', 'partMenual', 'summary', 'trainingRecoreds', 'mdnoresults', 'dpsore', 'trainingRecoredHistory', 'currentUserRoleLevel', 'ships','majorrepair','brifingHistory','designatedPerson'));
     }
 
     public function assignShip(Request $request)

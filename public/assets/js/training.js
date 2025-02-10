@@ -135,7 +135,9 @@ $(document).on("click", "#startTraining", function () {
 });
 
 $(document).on("click", ".editBrif", function () {
+
     var data = $(this).data('brief'); 
+    console.log(data.designated_people_id);
     $("#startBrifingForm").find('#id').val(data.id);
     $("#startBrifingForm").find('#number_of_attendance').val(data.number_of_attendance);
     $("#startBrifingForm").find('#brifing_date').val(data.brifing_date);

@@ -53,9 +53,7 @@
                                             id="ship_name" value="{{ old('ship_name', $ship->ship_name ?? '') }}"
                                             name="ship_name" placeholder="Ship Name..." autocomplete="off"
                                             onchange="removeInvalidClass(this)">
-                                        @error('ship_name')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
+                                            <div class="invalid-feedback error" id="ship_nameError" style="display: block;"></div>
                                     </div>
                                 </div>
                             </div>

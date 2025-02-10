@@ -80,7 +80,10 @@ class POOrderController extends Controller
     public function viewReleventItem($poiteam_id)
     {
         $poItem = poOrderItem::with(['poOrder:id,po_no', 'poOrderItemsHazmets.hazmat.equipment','poOrderItemsHazmets.emailHistory'])->find($poiteam_id);
-       
+
+        $equipments = MakeModel::selectRaw('MIN(id) as id, equipment')
+        ->groupBy('equipment')
+        ->get();
         $backurl = 'ships/po-order/add/' . $poItem['ship_id'] . "/" . $poItem['po_order_id'];
         $table_type = Hazmat::select('table_type')->distinct()->pluck('table_type');
         $hazmats = [];
@@ -89,7 +92,7 @@ class POOrderController extends Controller
         foreach ($table_type as $type) {
             $hazmats[$type] = Hazmat::where('table_type', $type)->get(['id', 'name', 'table_type']);
         }
-        return view('ships.po.releventItem', compact('poItem', 'backurl', 'hazmats', 'hazmatIds'));
+        return view('ships.po.releventItem', compact('poItem', 'backurl', 'hazmats', 'hazmatIds','equipments'));
     }
     public function import(Request $request)
     {
@@ -216,8 +219,8 @@ class POOrderController extends Controller
                 $value['po_order_id'] = $post['po_order_id'];
                 $value['po_order_item_id'] = $post['po_order_item_id'];
                 $value['hazmat_id'] = $key;
-
-                $value['model_make_part_id'] = @$value['modelMakePart'] ?? NULL;
+                $PoOrderItemsHazmat = PoOrderItemsHazmats::find($value['id']);
+                $value['model_make_part_id'] = @$value['model_make_part_id'] ?? @$PoOrderItemsHazmat['model_make_part_id'];
              //   $getModel = MakeModel::find($value['modelMakePart']);
                 // $value['doc1'] = @$getModel['document1']['name'] ?? '';
                 // $value['doc2'] = @$getModel['document2']['name'] ?? '';
@@ -260,8 +263,9 @@ class POOrderController extends Controller
     public function getEquipMent($hazmat_id)
     {
         try {
-            $equipments = MakeModel::select('id','hazmat_id','equipment')->distinct()->get();
-
+            $equipments = MakeModel::selectRaw('MIN(id) as id, equipment')
+            ->groupBy('equipment')
+            ->get();
            
             return response()->json(['isStatus' => true, 'message' => 'Equipment retrieved successfully.', 'equipments' => $equipments]);
         } catch (Throwable $th) {

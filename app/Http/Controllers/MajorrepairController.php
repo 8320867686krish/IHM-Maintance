@@ -21,9 +21,11 @@ class MajorrepairController extends Controller
         $post = $request->input();
         unset($post['_token']);
         $user = Auth::user();
-        $post['hazmat_companies_id'] = $user['hazmat_companies_id'];
-        $post['ship_staff_id'] = $user->id;
-        $post['ship_id'] = $user->shipClient->id;
+        if($post['id'] == 0){
+            $post['hazmat_companies_id'] = $user['hazmat_companies_id'];
+            $post['ship_staff_id'] = $user->id;
+            $post['ship_id'] = $user->shipClient->id;
+        }
         $majrrecoerds = Majorrepair::where('ship_staff_id',$post['id'])->first();
         if($request->has('document')){
             if($post['id'] !=0){
@@ -39,8 +41,11 @@ class MajorrepairController extends Controller
             $post['document'] = $image;
         }
         Majorrepair::updateOrCreate(['id' => $post['id']], $post);
-
-        $majorrepair = Majorrepair::where('ship_staff_id',$user->id)->orderBy('id','desc')->get();
+        if($post['ship_id']){
+            $majorrepair = Majorrepair::where('ship_id',$post['ship_id'])->orderBy('id','desc')->get();
+        }else{
+            $majorrepair = Majorrepair::where('ship_staff_id',$user->id)->orderBy('id','desc')->get();
+        }
         $html =  view('components.majorrepair-list',compact('majorrepair'))->render();
         return response()->json(['isStatus' => true, 'message' => 'save successfully','html'=>$html ]);
     }

@@ -140,8 +140,8 @@
 																		<select class="form-control  equipmentSelectTag" id="equipmentselect_{{$value['hazmat_id']}}" name="hazmats[{{$value['hazmat_id']}}][hazmet_equipment]" data-id="{{$value['hazmat_id']}}" data-findtable="{{$hazmetTable}}" data-divvalue="{{$value['hazmat_id']}}">
 																			<option value="">Select Equipment
 																			</option>
-																			@foreach($value->hazmat->equipment as $equipment)
-																			<option value="{{$equipment['equipment']}}" @if($equipment['equipment']==$value['hazmet_equipment']) selected @endif>
+																			@foreach($equipments as $equipment)
+																			<option value="{{$equipment['equipment']}}">
 																				{{$equipment['equipment']}}
 																			</option>
 																			@endforeach
@@ -156,9 +156,9 @@
 																		<select class="form-control  manufacturerselect" id="manufacturerselect_{{$value['hazmat_id']}}" name="hazmats[{{$value['hazmat_id']}}][hazmet_manufacturer]" data-id="{{$value['hazmat_id']}}" data-findtable="{{$hazmetTable}}" data-divvalue="{{$value['hazmat_id']}}">
 																			<option value="">Select Manufacturer
 																			</option>
-																			@foreach($value->hazmat->equipment as $equipment)
+																			<!-- @foreach($value->hazmat->equipment as $equipment)
 																			<option value="{{$equipment['manufacturer']}}" @if($equipment['manufacturer']==$value['hazmet_manufacturer']) selected @endif>{{$equipment['manufacturer']}}</option>
-																			@endforeach
+																			@endforeach -->
 																		</select>
 																	</div>
 
@@ -166,12 +166,12 @@
 
 																<div class="col-4 modelMakePart mb-1" id="modelMakePart{{$value['hazmat_id']}}">
 																	<div class="form-group">
-																		<select class="form-control  modelMakePartSelect" data-id="{{$value['hazmat_id']}}" id="modelMakePartselect_{{$value['hazmat_id']}}" name="hazmats[{{$value['hazmat_id']}}][modelMakePart]" data-findtable="{{$hazmetTable}}" data-divvalue="{{$value['hazmat_id']}}">
+																		<select class="form-control  modelMakePartSelect" data-id="{{$value['hazmat_id']}}" id="modelMakePartselect_{{$value['hazmat_id']}}" name="hazmats[{{$value['hazmat_id']}}][model_make_part_id]" data-findtable="{{$hazmetTable}}" data-divvalue="{{$value['hazmat_id']}}">
 																			<option value="">Select Model Make and Part
 																			</option>
-																			@foreach($value->hazmat->equipment as $equipment)
-																			<option value="{{$equipment->id}}" @if($equipment['id']==$value['modelMakePart']) selected @endif>{{$equipment->model}}-{{$equipment->make}}-{{$equipment->part}}</option>
-																			@endforeach
+																			<!-- @foreach($value->hazmat->equipment as $equipment)
+																			<option value="{{$equipment->id}}" @if($equipment['id']==$value['model_make_part_id']) selected @endif>{{$equipment->model}}-{{$equipment->make}}-{{$equipment->part}}</option>
+																			@endforeach -->
 																		</select>
 																	</div>
 
@@ -557,6 +557,7 @@
 <script src="{{ asset('assets/js/poOrder.js') }}"></script>
 <script>
 	var hazmatIdsvalue = @json($hazmatIds);
+	
 	var itemIndex = "{{ isset($poData->poOrderItems) ? count($poData->poOrderItems) : 0 }}";
 	console.log(itemIndex);
 	$(document).ready(function() {

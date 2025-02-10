@@ -90,7 +90,7 @@
                                         <th>SR NO</th>
                                         <th>Number Of Attendance</th>
                                         <th>Briefing Date</th>
-                                        <th>Briefing Byr</th>
+                                        <th>Briefing By</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
