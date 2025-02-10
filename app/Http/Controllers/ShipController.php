@@ -318,10 +318,6 @@ class ShipController extends Controller
             ) // Include all non-aggregated columns
             ->get();
 
-
-
-
-
         $currentUserRoleLevel = $user->roles->first()->level;
 
 
