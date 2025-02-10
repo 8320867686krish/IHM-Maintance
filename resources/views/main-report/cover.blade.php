@@ -4,6 +4,7 @@
             IHM Maintenance report of : {{$projectDetail['ship_name']}}
         </h1>
 
+        <img src="{{$shipImage}}" alt="Your Imagezz">
 
 
         <h4 style="padding-top: 1px;">IMO No: {{$projectDetail['imo_number']}}</h4>
