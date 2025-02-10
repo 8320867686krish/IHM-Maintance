@@ -92,7 +92,7 @@ class ReportController extends Controller
         $shipImageData = base64_encode(file_get_contents($shipImagePath));
         $shipImage = 'data:image/png;base64,' . $shipImageData;
 
-        $html = view('main-report.cover', compact('projectDetail','shipImage'))->render();
+        $html = view('main-report.cover', compact('projectDetail','shipImage','shipImagePath'))->render();
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
 
         $hazmats = Hazmat::get();

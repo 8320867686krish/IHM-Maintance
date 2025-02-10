@@ -4,7 +4,7 @@
             IHM Maintenance report of : {{$projectDetail['ship_name']}}
         </h1>
 
-        <img src="{{$shipImage}}" alt="Your Imagezz">
+        <img src="{{$shipImagePath}}" alt="Your Imagezz">
 
 
         <h4 style="padding-top: 1px;">IMO No: {{$projectDetail['imo_number']}}</h4>
@@ -13,7 +13,7 @@
         <h4 style="padding-top: 1px;">Report Duration From: 20/05/2025 To 30/05/2025</h4>
     </div>
     <div style="margin-auto:0;text-align:center">
-        <img src="{{  $shipImage }}" alt="Your Image">
+        <img src="{{  $shipImagePath }}" alt="Your Image">
     </div>
     <div style="pading-top:30px;margin-top: 50px;">
         <h4>Reports Prepared with refrence from:</h4>
