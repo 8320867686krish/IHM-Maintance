@@ -87,7 +87,9 @@ class ReportController extends Controller
         $stylesheet = file_get_contents('public/assets/mpdf.css');
 
         $mpdf->WriteHTML($stylesheet, \Mpdf\HTMLParserMode::HEADER_CSS);
-        $shipImage = public_path('uploads/ship/'.$projectDetail['ship_image']);
+        $shipImage = asset('uploads/ship/'.$projectDetail['ship_image']);
+        echo  $shipImage;
+        exit();
         $shipImage = base64_encode(file_get_contents($shipImage));
         $shipImage = 'data:image/png;base64,' . $shipImage;
 
