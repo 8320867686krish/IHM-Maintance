@@ -200,7 +200,7 @@
 
     .emotions-slider-item__author-name {
         font-family: var(--font-poppins);
-        font-size: 14px;
+        font-size: 18px;
         line-height: calc(20 / 14);
         color: #101010;
     }

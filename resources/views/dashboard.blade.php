@@ -56,11 +56,52 @@
         </div>
     </div>
 
+    <div class="row  mb-4 mt-4">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <div class="page-header">
+                <h2 class="pageheader-title text-center">Help Center</h2>
+            </div>
+        </div>
+    </div>
+    <div class="container mb-4 mt-4">
+            <div class="row container">
+                <div class="col-xl-4 col-lg-3 col-md-6 col-sm-12 col-12">
+                    <div class="card border-3 border-top border-top-primary">
+                        <div class="card-body">
+                            <h4 class="text-muted text-center"><a href="{{url('helpcenter')}}">Correspondence</a></h4>
 
 
+                        </div>
+                    </div>
+                </div>
 
-    @stop
-    @push('js')
-    <script src="{{ asset('assets/js/sliderswiper.js') }}"></script>
+                <div class="col-xl-4 col-lg-3 col-md-6 col-sm-12 col-12">
+                    <div class="card border-3 border-top border-top-primary">
+                        <div class="card-body">
+                            <h4 class="text-muted text-center"><a href="{{url('helpcenter')}}">Credentials</a></h4>
 
-    @endpush
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-4 col-lg-3 col-md-6 col-sm-12 col-12">
+                    <div class="card border-3 border-top border-top-primary">
+                        <div class="card-body">
+                            <h4 class="text-muted text-center"><a href="{{url('helpcenter')}}">Extract From SM</a></h4>
+
+
+                        </div>
+                    </div>
+                </div>
+
+             
+        </div>
+    </div>
+</div>
+
+
+@stop
+@push('js')
+<script src="{{ asset('assets/js/sliderswiper.js') }}"></script>
+
+@endpush
