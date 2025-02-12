@@ -14,6 +14,7 @@ use App\Http\Controllers\ReportController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\ShipController;
+use App\Http\Controllers\ShoredpCotroller;
 use App\Http\Controllers\TrainingController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VscpController;
@@ -43,6 +44,10 @@ Route::get('/dashboard', [dashobardController::class, 'index'])->middleware(['au
 Route::get('/shipwisepo/{ship_id}', [dashobardController::class, 'shipwiseData'])->middleware(['auth', 'verified'])->name('shipwiseData');
 
 Route::middleware('auth')->group(function () {
+    Route::get('client-company/{id}', [DashobardController::class, 'clientcompany'])->name('clientcompany');
+    Route::get('client-company/ships/{id}', [DashobardController::class, 'clientcompanyShips'])->name('clientcompany.ships');
+    Route::get('ship-dashboard/{id}', [DashobardController::class, 'shipDashboard'])->name('ship.dashboard');
+
     Route::post('report', [ReportController::class, 'genrateReport'])->name('report');
     Route::post('/import', [POOrderController::class, 'import'])->name('import');
     Route::get('poOrderSample', [POOrderController::class, 'poOrderSample'])->name('poOrderSample');
@@ -125,6 +130,16 @@ Route::middleware('auth')->group(function () {
         });
     });
 
+    Route::middleware('can:shoredp')->group(function () {
+        Route::controller(ShoredpCotroller::class)->group(function () {
+            Route::get('shoredp', 'shoredp')->name('shoredp')->middleware('can:shoredp');
+        });
+    });
+    Route::middleware('can:responsibleperson')->group(function () {
+        Route::controller(ShoredpCotroller::class)->group(function () {
+            Route::get('responsibleperson', 'responsibleperson')->name('responsibleperson')->middleware('can:responsibleperson');
+        });
+    });
     Route::middleware('can:ships')->group(function () {
         Route::controller(ShipController::class)->group(function () {
             Route::get('ships', 'index')->name('ships')->middleware('can:ships');

@@ -3,13 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\configrationRequest;
+use App\Models\ClientCompany;
 use App\Models\configration;
+use App\Models\Hazmat;
+use App\Models\hazmatCompany;
 use App\Models\Ship;
 use App\Traits\ImageUpload;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use  App\Traits\ShipData;
+use Illuminate\Support\Facades\DB;
 
 class dashobardController extends Controller
 {
@@ -19,45 +23,94 @@ class dashobardController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $designatePerson = $user->designatedPerson;
         $currentUserRoleLevel = $user->roles->first()->level;
         $currentUserRoleName = $user->roles->first()->name;
-        // Initialize the query for ships
-        if ($currentUserRoleLevel == 3 || $currentUserRoleLevel == 4) {
-            $ships = $user->ships->load('client');
-        } else {
-            // Otherwise, start with a query builder
-            $shipsQuery = Ship::select('id', 'ship_name')->with('pOOrderItems');
 
-            $shipsQuery->when($currentUserRoleLevel == 2, function ($query) use ($user) {
-                return $query->where('hazmat_companies_id', $user['hazmat_companies_id']);
-            });
 
-            $shipsQuery->when($currentUserRoleLevel == 5, function ($query) use ($user) {
-                return $query->where('hazmat_companies_id', $user['hazmat_companies_id'])
-                    ->where('client_user_id', $user['id']);
-            });
+        if ($currentUserRoleLevel == 2 || $currentUserRoleLevel == 3 || $currentUserRoleLevel == 4) {
+            $hazmatCompany = ClientCompany::where('hazmat_companies_id', $user->hazmat_companies_id)->get();
+            $imagekey = 'client_image';
+            $title = "Client Company";
+            $routename = 'clientcompany.ships';
+            $path = asset('uploads/clientcompany');
+        } else if ($currentUserRoleLevel == 1) {
+            $hazmatCompany = hazmatCompany::get();
 
-            $shipsQuery->when($currentUserRoleLevel == 6, function ($query) use ($user) {
-                return $query->where('hazmat_companies_id', $user['hazmat_companies_id'])
-                    ->where('user_id', $user['id']);
-            });
-
-            // Execute the query and get the ships
-            $ships = $shipsQuery->get();
+            $path = asset('uploads/hazmatCompany');
+            $imagekey = 'logo';
+            $title = "Hazmat Company";
+            $routename = "clientcompany";
+        } else if ($currentUserRoleLevel == 5) {
+            $hazmatCompany = Ship::where('client_user_id', $user->id)->get();
+            $path = asset('uploads/ship');
+            $imagekey = 'ship_image';
+            $title = "Ships";
+            $routename = "ship.dashboard";
+        }else{
+           return  $this->shipDashboard($user->shipClient->id);
         }
+        return view('dashboard', compact('hazmatCompany', 'path', 'imagekey', 'title', 'routename','currentUserRoleLevel'));
+    }
+    public function clientcompany($id)
+    {
+        $user = Auth::user();
+        $currentUserRoleLevel = $user->roles->first()->level;
+        $hazmatCompany = ClientCompany::where('hazmat_companies_id', $id)->get();
+        $imagekey = 'client_image';
+        $title = "Client Company";
+        $routename = 'clientcompany.ships';
+        $path = asset('uploads/clientcompany');
 
-        $relevantCounts = $ships->map(function ($ship) {
-            return $ship->pOOrderItems()->where('type_category', 'Relevant')->count();
-        })->toArray();
+        return view('dashboard', compact('hazmatCompany', 'path', 'imagekey', 'title', 'routename','currentUserRoleLevel'));
+    }
+    public function clientcompanyShips($id)
+    {
+        $user = Auth::user();
+        $currentUserRoleLevel = $user->roles->first()->level;
+        $hazmatCompany = Ship::where('client_company_id', $id)->get();
+        $imagekey = 'ship_image';
+        $title = "Ships";
+        $routename = "ship.dashboard";
 
-        $nonRelevantCounts = $ships->map(function ($ship) {
-            return $ship->pOOrderItems()->where('type_category', 'Non relevant')->count();
-        })->toArray();
+        $path = asset('uploads/ship');
 
-        $shipsPo = $ships->pluck('ship_name')->toArray();
+        return view('dashboard', compact('hazmatCompany', 'path', 'imagekey', 'title', 'routename','currentUserRoleLevel'));
+    }
+    public function shipDashboard($id)
+    {
+        $user = Auth::user();
+        $currentUserRoleLevel = $user->roles->first()->level;
+        $anyliticsdata = $this->getShipData($id);
+        $hazmatSummeryName = Hazmat::withSum(['checkHazmats as qty_sum' => function ($query) use ($id) {
+            $query->where('ship_id', $id);
+        }], 'qty')->get()->toArray();
 
-        return view('dashboard', compact('ships', 'shipsPo', 'relevantCounts', 'nonRelevantCounts', 'currentUserRoleLevel', 'designatePerson', 'currentUserRoleName'));
+     $months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+     $trainingverview = DB::table('exams')
+     ->select(DB::raw("DATE_FORMAT(created_at, '%b') as month"), DB::raw('COUNT(*) as count'))
+     ->groupBy('month')
+     ->orderBy(DB::raw("STR_TO_DATE(month, '%b')")) // Ensures proper month order
+     ->where('ship_id',$id)
+     ->get()
+     ->pluck('count', 'month')
+     ->toArray();
+
+     $trainingverviewData = array_map(fn($month) => [$month, $trainingverview[$month] ?? 2], $months);
+
+     $brifingsRecoreds = DB::table('brifings')
+     ->select(DB::raw("DATE_FORMAT(created_at, '%b') as month"), DB::raw('COUNT(*) as count'))
+     ->groupBy('month')
+     ->orderBy(DB::raw("STR_TO_DATE(month, '%b')")) // Ensures proper month order
+     ->where('ship_id',$id)
+     ->get()
+     ->pluck('count', 'month')
+     ->toArray();
+
+     $brifingViewData = array_map(fn($month) => [$month, $brifingsRecoreds[$month] ?? 2], $months);
+
+
+        return view('ship-dashboard', compact('anyliticsdata', 'hazmatSummeryName','trainingverviewData','brifingViewData'));
     }
     public function configration(Request $request)
     {

@@ -1,5 +1,10 @@
 @extends('layouts.app')
 @section('css')
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/11.0.5/swiper-bundle.css" integrity="sha512-pmAAV1X4Nh5jA9m+jcvwJXFQvCBi3T17aZ1KWkqXr7g/O2YMvO8rfaa5ETWDuBvRq6fbDjlw4jHL44jNTScaKg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/11.0.5/swiper-bundle.min.js" integrity="sha512-Ysw1DcK1P+uYLqprEAzNQJP+J4hTx4t/3X2nbVwszao8wD+9afLjBQYjz7Uk4ADP+Er++mJoScI42ueGtQOzEA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" type="text/css" href="{{ asset('assets\libs\css\swiper.css') }}">
+
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/vendor/charts/chartist-bundle/chartist.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/vendor/bootstrap-select/css/bootstrap-select.css') }}">
 @endsection
@@ -7,10 +12,10 @@
 
 @section('content')
 
+
+
 <div class="container-fluid dashboard-content">
-    <!-- ============================================================== -->
-    <!-- pageheader -->
-    <!-- ============================================================== -->
+
     <div class="row">
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
             <div class="page-header">
@@ -18,88 +23,44 @@
             </div>
         </div>
     </div>
-    <!-- For ship Login -->
     @if($currentUserRoleLevel == 6 || $currentUserRoleLevel == 5)
 
     <div class="row">
         <div class="col-12">
-        <div class="alert alert-info card" role="alert">
-            All The designated personnel of IHM must do their familiarization Training within 15 days of joining as per company SMS Manual and crew brifing every 3 months.
-        </div>
-        </div>
-    </div>
-    @include('shipdesignated.list')
-    @endif
-    <!-- end -->
-    <div class="row">
-
-        <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12">
-            <div class="card">
-                <h5 class="card-header text-center">PO Overview</h5>
-                <div class="card-body">
-                    <canvas id="chartjs_bar"></canvas>
-                </div>
-            </div>
-        </div>
-        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
-            <div class="card">
-                <h5 class="card-header  text-center">Training Overview</h5>
-                <div class="card-body">
-                    <div id="c3chart_pie"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-    @if($currentUserRoleLevel != 6)
-    <div class="row">
-        <div class="col-xl-4 offset-4  col-lg-4   col-md-4  col-sm-12 col-12 mb-3 ">
-            <div class="chartSelect">
-                <label><span>Ships</span></label>
-                <select class="form-control shipswisePo">
-                    <option>Select Ship</option>
-                    @foreach($ships as $value)
-                    <option value="{{$value['id']}}" {{ $loop->first ? 'selected' : '' }}>
-                        {{$value['ship_name']}}
-                    </option>
-                    @endforeach
-
-                </select>
-            </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-xl-12  col-lg-12 col-md-12 col-sm-12 col-12">
-            <div class="card">
-                <h5 class="card-header text-center">Ship PO Overview</h5>
-                <div class="card-body">
-                    <canvas id="chartjs_bar_ship"></canvas>
-                </div>
+            <div class="alert alert-info card" role="alert">
+                All The designated personnel of IHM must do their familiarization Training within 15 days of joining as per company SMS Manual and crew brifing every 3 months.
             </div>
         </div>
     </div>
     @endif
-</div>
-@include('shipdesignated.DesignatedModel')
+    <div class="row  mb-4 mt-4">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <div class="page-header">
+                <h2 class="pageheader-title text-center">{{$title}}</h2>
+            </div>
+        </div>
+    </div>
 
-@stop
-@push('js')
-<script>
-    var shipsPo = @json($shipsPo);
-    var nonRelevantCounts = @json($nonRelevantCounts);
-    var relevantCounts = @json($relevantCounts);
-    // Initialize the chart
-</script>
-<script src="{{ asset('assets/vendor/bootstrap-select/js/bootstrap-select.js') }}"></script>
+    <div class="base-template__content mt-4">
 
-<script src="{{ asset('assets/js/shipdesignatedperson.js') }}"></script>
+        <div class="row ">
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 
-<script src="{{ asset('assets/vendor/charts/charts-bundle/Chart.bundle.js') }}"></script>
-<script src="{{ asset('assets/vendor/charts/charts-bundle/chartjs.js') }}"></script>
-<script src="{{ asset('assets/vendor/charts/c3charts/c3.min.js') }}"></script>
-<script src="{{ asset('assets/vendor/charts/c3charts/d3-5.4.0.min.js') }}"></script>
-<script src="{{ asset('assets/vendor/charts/c3charts/C3chartjs.js') }}"></script>
-<script src="{{ asset('assets/js/dashbord.js') }}"></script>
+                    <x-swiper-slide :data=$hazmatCompany :path=$path :imagekey=$imagekey :routename=$routename></x-swiper-slide>
+                </div>
+
+            </div>
 
 
-@endpush
+        </div>
+    </div>
+
+
+
+
+    @stop
+    @push('js')
+    <script src="{{ asset('assets/js/sliderswiper.js') }}"></script>
+
+    @endpush

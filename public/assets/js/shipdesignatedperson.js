@@ -100,6 +100,8 @@ $("#shoredpSave").click(function(){
     });
 });
 $("#addDesignated").click(function(){
+    $("#designatedpersionships").val([]).trigger('change'); // Reset multiple select
+
     $("#designatedForm")[0].reset();
 });
 $("#admindesignatedSave").click(function(){

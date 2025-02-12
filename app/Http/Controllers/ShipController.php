@@ -73,9 +73,6 @@ class ShipController extends Controller
         $user =  Auth::user();
         $hazmat_companies_id  = $user['hazmat_companies_id'];
         $clientsQuery = ClientCompany::query();
-
-
-
         $clientsQuery->when($role_level == 2, function ($query) use ($user) {
             return $query->where('hazmat_companies_id', $user['hazmat_companies_id']);
         });
@@ -237,7 +234,6 @@ class ShipController extends Controller
         $hazmatSummeryName = Hazmat::withSum(['checkHazmats as qty_sum' => function ($query) use ($ship_id) {
             $query->where('ship_id', $ship_id); // Filter by ship_id
         }], 'qty')->get()->toArray();
-
         $isBack = 0;
         if (session('back') == 1) {
             $isBack = 1;

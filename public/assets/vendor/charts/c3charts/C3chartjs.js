@@ -271,23 +271,32 @@
             var chart = c3.generate({
                 bindto: "#c3chart_pie",
                 data: {
-                    columns: [
-                        ['Ship1', 5],
-                        ['Ship2', 10],
-                        ['Ship3', 15],
-                        ['Ship4', 7],
-                        ['Ship5', 9],
-                    ],
+                    columns:trainingverviewData,
                     type: 'pie',
 
                     colors: {
-                        ship1: '#7040fa',
-                        ship2: '#ff407b',
-                        ship3: '#25d5f2',
-                        ship4: '#ffc750',
-                        ship5: '#ff004e',
+                        Jan: '#5969ff',
+                        Feb: '#ff407b',
+                        Mar: '#665191',
+                        Apr: '#a05195',
+                        May: '#d45087',
+                        Jun: '#f95d6a',
+                        Jul: '#ff7c43',
+                        Aug: '#ffa600',
+                        Sep: '#ffa600',
+                        Oct: '#0bb4ff',
+                        Nov: '#ffb55a',
+                        Dec: '#8bd3c7'
                     }
                 },
+                
+                // pie: {
+                //     label: {
+                //         format: function(value, ratio, id) {
+                //             return value;
+                //         }
+                //     }
+                // }
                 pie: {
                     label: {
                         format: function(value, ratio, id) {
@@ -302,49 +311,89 @@
             var chart = c3.generate({
                 bindto: "#c3chart_donut",
                 data: {
-                    columns: [
-                        ['data1', 30],
-                        ['data2', 120],
-                    ],
+                    columns: trainingverviewData,
                     type: 'donut',
                     onclick: function(d, i) { console.log("onclick", d, i); },
                     onmouseover: function(d, i) { console.log("onmouseover", d, i); },
                     onmouseout: function(d, i) { console.log("onmouseout", d, i); },
 
                     colors: {
-                         data1: '#5969ff',
-                        data2: '#ff407b'
-
-
+                        Jan: '#4A90E2',   // A refined blue for better aesthetics
+                        Feb: '#ff407b',   // Vibrant pink
+                        Mar: '#25d5f2',   // Bright cyan
+                        Apr: '#ffc750',   // Warm yellow-orange
+                        May: '#d45087',   // Deep magenta
+                        Jun: '#f95d6a',   // Reddish-orange
+                        Jul: '#ff7c43',   // Soft orange
+                        Aug: '#ffa600',   // Golden yellow
+                        Sep: '#ff8c00',   // Orange-red (better contrast)
+                        Oct: '#0bb4ff',   // Sky blue
+                        Nov: '#ffb55a',   // Light orange
+                        Dec: '#8bd3c7'    // Soft teal
                     }
+                    
                 },
+              
                 donut: {
-                    title: "Iris Petal Width"
-
+                    title: "Training Records",
+                    label: {
+                        format: function(value, ratio, id) {
+                            return value; // Show only value, no percentage
+                        },
+                        show: true // Ensure labels are displayed
+                    }
 
                 }
 
 
             });
 
-            setTimeout(function() {
-                chart.load({
-                    columns: [
-                        ["setosa", 0.2, 0.2, 0.2, 0.2, 0.2, 0.4, 0.3, 0.2, 0.2, 0.1, 0.2, 0.2, 0.1, 0.1, 0.2, 0.4, 0.4, 0.3, 0.3, 0.3, 0.2, 0.4, 0.2, 0.5, 0.2, 0.2, 0.4, 0.2, 0.2, 0.2, 0.2, 0.4, 0.1, 0.2, 0.2, 0.2, 0.2, 0.1, 0.2, 0.2, 0.3, 0.3, 0.2, 0.6, 0.4, 0.3, 0.2, 0.2, 0.2, 0.2],
-                        ["versicolor", 1.4, 1.5, 1.5, 1.3, 1.5, 1.3, 1.6, 1.0, 1.3, 1.4, 1.0, 1.5, 1.0, 1.4, 1.3, 1.4, 1.5, 1.0, 1.5, 1.1, 1.8, 1.3, 1.5, 1.2, 1.3, 1.4, 1.4, 1.7, 1.5, 1.0, 1.1, 1.0, 1.2, 1.6, 1.5, 1.6, 1.5, 1.3, 1.3, 1.3, 1.2, 1.4, 1.2, 1.0, 1.3, 1.2, 1.3, 1.3, 1.1, 1.3],
-                        ["virginica", 2.5, 1.9, 2.1, 1.8, 2.2, 2.1, 1.7, 1.8, 1.8, 2.5, 2.0, 1.9, 2.1, 2.0, 2.4, 2.3, 1.8, 2.2, 2.3, 1.5, 2.3, 2.0, 2.0, 1.8, 2.1, 1.8, 1.8, 1.8, 2.1, 1.6, 1.9, 2.0, 2.2, 1.5, 1.4, 2.3, 2.4, 1.8, 1.8, 2.1, 2.4, 2.3, 1.9, 2.3, 2.5, 2.3, 1.9, 2.0, 2.3, 1.8],
-                    ]
-                });
-            }, 1500);
+            
+          
+        }
+        if ($('#c3chart_donut_brifing').length) {
+            var chart = c3.generate({
+                bindto: "#c3chart_donut_brifing",
+                data: {
+                    columns: brifingViewData,
+                    type: 'donut',
+                    onclick: function(d, i) { console.log("onclick", d, i); },
+                    onmouseover: function(d, i) { console.log("onmouseover", d, i); },
+                    onmouseout: function(d, i) { console.log("onmouseout", d, i); },
 
-            setTimeout(function() {
-                chart.unload({
-                    ids: 'data1'
-                });
-                chart.unload({
-                    ids: 'data2'
-                });
-            }, 2500);
+                    colors: {
+                        Jan: '#4A90E2',   // A refined blue for better aesthetics
+                        Feb: '#ff407b',   // Vibrant pink
+                        Mar: '#25d5f2',   // Bright cyan
+                        Apr: '#ffc750',   // Warm yellow-orange
+                        May: '#d45087',   // Deep magenta
+                        Jun: '#f95d6a',   // Reddish-orange
+                        Jul: '#ff7c43',   // Soft orange
+                        Aug: '#ffa600',   // Golden yellow
+                        Sep: '#ff8c00',   // Orange-red (better contrast)
+                        Oct: '#0bb4ff',   // Sky blue
+                        Nov: '#ffb55a',   // Light orange
+                        Dec: '#8bd3c7'    // Soft teal
+                    }
+                    
+                },
+              
+                donut: {
+                    title: "Brifing Records",
+                    label: {
+                        format: function(value, ratio, id) {
+                            return value; // Show only value, no percentage
+                        },
+                        show: true // Ensure labels are displayed
+                    }
+
+                }
+
+
+            });
+
+            
+          
         }
 
         if ($('#c3chart_gauge').length) {

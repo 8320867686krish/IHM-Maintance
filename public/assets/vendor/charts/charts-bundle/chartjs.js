@@ -192,19 +192,20 @@
         
         if ($('#chartjs_bar_ship').length) {
             var ctx = document.getElementById("chartjs_bar_ship").getContext('2d');
+
             myChart = new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    labels: [],
+                    labels: anyliticsdata.labels,
                     datasets: [{
                         label: 'Relevant PO',
-                        data: [], // Updated data to fit the axis
+                        data: anyliticsdata.monthrelevantCounts, // Updated data to fit the axis
                         backgroundColor: "rgba(255, 64, 123,0.5)",
                         borderColor: "rgba(255, 64, 123,0.5)",
                         borderWidth: 2
                     }, {
                         label: 'NON Relevant PO',
-                        data: [], // Updated data to fit the axis
+                        data: anyliticsdata.monthnonRelevantCounts, 
                         backgroundColor: "#B5DFB2",
                         borderColor: "#B5DFB2",
                         borderWidth: 2

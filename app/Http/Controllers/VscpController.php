@@ -229,7 +229,7 @@ class VscpController extends Controller
                     $file->move($imagePath, $strike_document);
                     $value['strike_document'] = $strike_document;
                 }
-                CheckHazmat::updateOrCreate(['id' => $key], $value);
+                CheckHazmat::updateOrCreate(['id' => $key,'check_id'=>$id], $value);
             }
         }
         if (@$inputData['check_deleted_id']) {

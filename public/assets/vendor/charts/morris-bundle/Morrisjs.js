@@ -138,7 +138,7 @@
 
 
         if ($('#morris_donut').length) {
-            Morris.Donut({
+            var chart = Morris.Donut({
                 element: 'morris_donut',
                 data: [
                     { value: 70, label: 'foo' },
@@ -146,22 +146,34 @@
                     { value: 10, label: 'baz' },
                     { value: 5, label: 'A really really long label' }
                 ],
-             
                 labelColor: '#2e2f39',
-                   gridTextSize: '14px',
+                gridTextSize: '14px',
                 colors: [
-                     "#5969ff",
-                                "#ff407b",
-                                "#25d5f2",
-                                "#ffc750"
-                               
+                    "#5969ff",
+                    "#ff407b",
+                    "#25d5f2",
+                    "#ffc750"
                 ],
-
                 formatter: function(x) { return x + "%" },
-                  resize: true
+                resize: true
             });
+        
+            // Append text labels after rendering
+            setTimeout(function () {
+                $('#morris_donut svg text').each(function () {
+                    var text = $(this).text();
+                    var parent = $(this).parent();
+                    
+                    // Check if text is a percentage (avoid duplicating labels)
+                    if (text.includes('%')) {
+                        // Append a new text label
+                        var bbox = this.getBBox();
+                        parent.append('<text x="' + (bbox.x + bbox.width / 2) + '" y="' + (bbox.y + bbox.height / 2) + '" text-anchor="middle" font-size="14px" fill="#000">' + text + '</text>');
+                    }
+                });
+            }, 500);
         }
-
+        
 
 
 

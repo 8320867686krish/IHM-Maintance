@@ -63,7 +63,6 @@
                             <div class="form-group">
                                 <label for="name">Ship <span class="text-danger">*</span></label>
 
-
                                 <select class="form-control selectpicker" name="ship_id[]" id="designatedpersionships" multiple>
                                     <option value="">Select Ship</option>
                                     @foreach($ships as $value)
