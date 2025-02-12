@@ -22,6 +22,9 @@ class HelpCenterController extends Controller
     {
         $user = Auth::user();
         $currentUserRoleLevel = $user->roles->first()->level;
+        $correspondence = Correspondence::query();
+
+       
         if ($currentUserRoleLevel <= 4) {
             $correspondence = Correspondence::query();
             if($currentUserRoleLevel == 1){
