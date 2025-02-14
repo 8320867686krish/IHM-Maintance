@@ -25,7 +25,7 @@ class dashobardController extends Controller
         $user = Auth::user();
         $currentUserRoleLevel = $user->roles->first()->level;
         $currentUserRoleName = $user->roles->first()->name;
-        $months = DB::table('pO_order_items')
+        $months = DB::table('po_order_items')
         ->selectRaw('DATE_FORMAT(created_at, "%b") as month, DATE_FORMAT(created_at, "%Y-%m") as full_month')
         ->groupBy('full_month', 'month')
         ->orderBy('full_month')

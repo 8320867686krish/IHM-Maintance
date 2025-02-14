@@ -57,14 +57,7 @@
             </div>
         </div>
     </div>
-    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-        <div class="card">
-            <h5 class="card-header">Spline Chart</h5>
-            <div class="card-body">
-                <div id="c3chart_spline"></div>
-            </div>
-        </div>
-    </div>
+  
     <div class="base-template__content mt-4">
 
         <div class="row ">
@@ -79,6 +72,16 @@
 
         </div>
     </div>
+   @if($currentUserRoleLevel == 5)
+    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        <div class="card">
+            <h5 class="card-header">Spline Chart</h5>
+            <div class="card-body">
+                <div id="c3chart_spline"></div>
+            </div>
+        </div>
+    </div>
+    @endif
 
     <div class="row  mb-4 mt-4">
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
