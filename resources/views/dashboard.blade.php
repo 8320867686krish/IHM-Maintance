@@ -131,7 +131,7 @@
 @stop
 @push('js')
 <script>
-    var chartData = @json($chartData);
+    var chartData = @json(@$chartData);
 </script>
 <script src="{{ asset('assets/js/sliderswiper.js') }}"></script>
 <script src="{{ asset('assets/vendor/charts/charts-bundle/Chart.bundle.js') }}"></script>
