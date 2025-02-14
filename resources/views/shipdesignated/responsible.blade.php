@@ -11,6 +11,16 @@
 
 @section('content')
 <div class="row">
+@if($currentUserRoleLevel == 6 || $currentUserRoleLevel == 5)
+
+<div class="row">
+    <div class="col-12">
+        <div class="alert alert-info card" role="alert">
+            All The designated personnel of IHM must do their familiarization Training within 15 days of joining as per company SMS Manual and crew brifing every 3 months.
+        </div>
+    </div>
+</div>
+@endif
     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mb-5">
         <div class="tab-regular">
             <ul class="nav nav-tabs" id="myTab" role="tablist">

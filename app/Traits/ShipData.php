@@ -1,28 +1,32 @@
 <?php
+
 namespace App\Traits;
 
 use Illuminate\Http\Request;
 use App\Models\Ship;
 use Carbon\Carbon;
-trait ShipData {
+
+trait ShipData
+{
 
     /**
      * @param Request $request
      * @return $this|false|string
      */
-    public function getShipData($shipId,$year=null) {
+    public function getShipData($shipId, $year = null)
+    {
         $year = $year ?? Carbon::now()->year;
 
-        $ship = Ship::with(['pOOrderItems','pOOrderItemsHazmats'])->find($shipId);
+        $ship = Ship::with(['pOOrderItems', 'pOOrderItemsHazmats', 'exams','brifings'])->find($shipId);
         $monthrelevantCounts = [];
         $monthnonRelevantCounts = [];
         $start = Carbon::createFromDate($year, 1, 1);  // January 1 of the selected year or current year
 
         $end = Carbon::createFromDate($year, 12, 31);  // December 31 of the selected year
 
-    
+
         $labels = [];
-        
+
         // Loop from start to end, pushing each month into the $months array
         while ($start <= $end) {
             // Format the month for labeling
@@ -34,33 +38,58 @@ trait ShipData {
                 ->whereYear('created_at', $start->year)
                 ->whereMonth('created_at', $start->month)
                 ->count();
-    
+
             $monthnonRelevantCounts[] = $ship->pOOrderItems()
                 ->where('type_category', 'Non relevant')
                 ->whereYear('created_at', $start->year)
                 ->whereMonth('created_at', $start->month)
                 ->count();
 
-            $mdSdRecoreds[]=$ship->pOOrderItemsHazmats()
-            ->whereYear('created_at', $start->year)
-            ->whereMonth('created_at', $start->month)
-            ->groupBy('model_make_part_id')
-            ->count();
-              
-    
+            $mdSdRecoreds[] = $ship->pOOrderItemsHazmats()
+                ->whereYear('created_at', $start->year)
+                ->whereMonth('created_at', $start->month)
+                ->groupBy('model_make_part_id')
+                ->count();
+
+            $trainingOverview = $ship->exams()
+                ->selectRaw('MONTH(created_at) as month, COUNT(*) as count')
+                ->whereYear('created_at', $start->year) // Filter by the current year
+                ->groupBy('month')
+                ->pluck('count', 'month')
+                ->toArray();
+
+            // Generate a full month-wise dataset with zero as the default count
+            $months = collect($trainingOverview)->map(function ($count, $monthNum) {
+                return [date('M', mktime(0, 0, 0, $monthNum, 1)), $count];
+            })->values()->toArray();
+
+            $brifingOverview = $ship->brifings()
+            ->selectRaw('MONTH(created_at) as month, COUNT(*) as count')
+            ->whereYear('created_at', $start->year) // Filter by the current year
+            ->groupBy('month')
+            ->pluck('count', 'month')
+            ->toArray();
+
+        // Generate a full month-wise dataset with zero as the default count
+        $brfingmonths = collect($brifingOverview)->map(function ($count, $monthNum) {
+            return [date('M', mktime(0, 0, 0, $monthNum, 1)), $count];
+        })->values()->toArray();
+
+
+
             // Move to the next month
             $start->addMonth();
         }
-    
+
         return ([
-            'isStatus' => true, 
+            'isStatus' => true,
             'labels' => $labels,
             'monthrelevantCounts' => $monthrelevantCounts,
-            'monthnonRelevantCounts'=>$monthnonRelevantCounts,
-            'mdSdRecoreds'=>$mdSdRecoreds,
+            'monthnonRelevantCounts' => $monthnonRelevantCounts,
+            'mdSdRecoreds' => $mdSdRecoreds,
+            'trainingverview' => $months,
+            'brifingoverview' => $brfingmonths,
             'ship' => $ship['ship_name']
         ]);
     }
-
-  
 }

@@ -18,13 +18,7 @@
 
 <div class="container-fluid dashboard-content">
 
-    <div class="row">
-        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-            <div class="page-header">
-                <h3 style="color:#6c757d;font-size:14px;">Welcome {{Auth()->user()->name}}, everything looks great.</h3>
-            </div>
-        </div>
-    </div>
+    @if($currentUserRoleLevel == 5)
     <div class="row mr-1">
         <div class="col-md-12">
             <div class="form-group text-right"> <!-- Aligning to right -->
@@ -37,27 +31,40 @@
             </div>
         </div>
     </div>
+    @endif
 
-
-
-    @if($currentUserRoleLevel == 6 || $currentUserRoleLevel == 5)
-
+    @if($currentUserRoleLevel == 5)
     <div class="row">
-        <div class="col-12">
-            <div class="alert alert-info card" role="alert">
-                All The designated personnel of IHM must do their familiarization Training within 15 days of joining as per company SMS Manual and crew brifing every 3 months.
+        <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10 col-10">
+
+            <div class="card">
+                <h5 class="card-header">Ships Overview</h5>
+
+                <div class="card-body">
+                    <div id="c3chart_spline"></div>
+                </div>
             </div>
+
+        </div>
+        <div class="col-md-2 float-right">
+        <div class="card">
+            <a href="#" class="btn btn-outline-primary">OnBoard Training</a>
+            <a href="#" class="btn btn-outline-primary">Ship Crew Brifing</a>
+            <a href="#" class="btn btn-outline-primary">MD Records</a>
+            <a href="#" class="btn btn-outline-primary">SDOC Records</a>
+        </div>
         </div>
     </div>
     @endif
-    <div class="row  mb-4 mt-4">
+
+    <div class="row  mb-4 mt-2">
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
             <div class="page-header">
                 <h2 class="pageheader-title text-center">{{$title}}</h2>
             </div>
         </div>
     </div>
-  
+
     <div class="base-template__content mt-4">
 
         <div class="row ">
@@ -72,16 +79,7 @@
 
         </div>
     </div>
-   @if($currentUserRoleLevel == 5)
-    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-        <div class="card">
-            <h5 class="card-header">Spline Chart</h5>
-            <div class="card-body">
-                <div id="c3chart_spline"></div>
-            </div>
-        </div>
-    </div>
-    @endif
+
 
     <div class="row  mb-4 mt-4">
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
@@ -92,35 +90,59 @@
     </div>
 
     <div class="container mb-4 mt-4">
-        <div class="row container">
+        <div class="row ">
             <div class="col-xl-4 col-lg-3 col-md-6 col-sm-12 col-12">
                 <div class="card border-3 border-top border-top-primary">
                     <div class="card-body">
-                        <h4 class="text-muted text-center"><a href="{{url('helpcenter')}}">Correspondence</a></h4>
+                        <h4 class="text-muted text-center"><a href="{{url('helpcenter')}}">Correspondence With Ship / Client</a></h4>
 
 
                     </div>
                 </div>
             </div>
-
+            @if($currentUserRoleLevel != 1)
             <div class="col-xl-4 col-lg-3 col-md-6 col-sm-12 col-12">
                 <div class="card border-3 border-top border-top-primary">
                     <div class="card-body">
-                        <h4 class="text-muted text-center"><a href="{{url('helpcenter')}}">Credentials</a></h4>
+                        <h4 class="text-muted text-center"><a href="{{url('helpcenter')}}">Hazmat Company Credentials</a></h4>
+                    </div>
+                </div>
+            </div>
+            @endif
+
+            @if($currentUserRoleLevel == 5 ||$currentUserRoleLevel == 2 || $currentUserRoleLevel == 3 || $currentUserRoleLevel==4)
+            <div class="col-xl-4 col-lg-3 col-md-6 col-sm-12 col-12">
+                <div class="card border-3 border-top border-top-primary">
+                    <div class="card-body">
+                        <h4 class="text-muted text-center"><a href="{{url('helpcenter')}}">Extract For Clientt SMS</a></h4>
+
 
                     </div>
                 </div>
             </div>
+            @endif
 
+            @if( $currentUserRoleLevel == 2)
             <div class="col-xl-4 col-lg-3 col-md-6 col-sm-12 col-12">
                 <div class="card border-3 border-top border-top-primary">
                     <div class="card-body">
-                        <h4 class="text-muted text-center"><a href="{{url('helpcenter')}}">Extract From SMS</a></h4>
+                        <h4 class="text-muted text-center"><a href="{{url('helpcenter')}}">SuperAdmin Correspondence</a></h4>
+                    </div>
+                </div>
+            </div>
+            @endif
+
+            @if($currentUserRoleLevel == 1 || $currentUserRoleLevel == 2)
+            <div class="col-xl-4 col-lg-3 col-md-6 col-sm-12 col-12">
+                <div class="card border-3 border-top border-top-primary">
+                    <div class="card-body">
+                        <h4 class="text-muted text-center"><a href="{{url('helpcenter')}}">Available Template</a></h4>
 
 
                     </div>
                 </div>
             </div>
+            @endif
 
 
         </div>

@@ -64,4 +64,12 @@ class Ship extends Model
     {
         return $this->hasMany(PoOrderItemsHazmats::class, 'ship_id', 'id');
     }
+    public function exams(){
+        return $this->hasMany(Exam::class, 'ship_id', 'id');
+
+    }
+    public function brifings(){
+        return $this->hasMany(Brifing::class, 'ship_id', 'id');
+
+    }
 }

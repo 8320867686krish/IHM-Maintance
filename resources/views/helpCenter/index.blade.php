@@ -17,26 +17,27 @@
         <div class="tab-regular">
             <ul class="nav nav-tabs " id="myTab" role="tablist">
                 <li class="nav-item">
-                    <a class="nav-link active show" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Correspondence</a>
+                    <a class="nav-link active show" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Correspondence With Ship / Client</a>
                 </li>
-                @if($currentUserRoleLevel == 1 || $currentUserRoleLevel == 2)
-                <li class="nav-item">
-                    <a class="nav-link" id="avilabletemplate-tab" data-toggle="tab" href="#avilabletemplate" role="tab" aria-controls="avilabletemplate" aria-selected="true">Available Template</a>
-                </li>
-                @endif
+             
                 @if($currentUserRoleLevel != 1)
                 <li class="nav-item">
-                    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Credentials</a>
+                    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Hazmat Company Credentials</a>
                 </li>
                 @endif
                 @if($currentUserRoleLevel == 5 ||$currentUserRoleLevel == 2 || $currentUserRoleLevel == 3 || $currentUserRoleLevel==4)
                 <li class="nav-item">
-                    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Extract From SMS</a>
+                    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Extract For Client SMS</a>
                 </li>
                 @endif
                 @if( $currentUserRoleLevel == 2)
                 <li class="nav-item">
                     <a class="nav-link" id="superadmincorrespondence-tab" data-toggle="tab" href="#superadmincorrespondence" role="tab" aria-controls="superadmincorrespondence" aria-selected="true">SuperAdmin Correspondence</a>
+                </li>
+                @endif
+                @if($currentUserRoleLevel == 1 || $currentUserRoleLevel == 2)
+                <li class="nav-item">
+                    <a class="nav-link" id="avilabletemplate-tab" data-toggle="tab" href="#avilabletemplate" role="tab" aria-controls="avilabletemplate" aria-selected="true">Available Template</a>
                 </li>
                 @endif
             </ul>

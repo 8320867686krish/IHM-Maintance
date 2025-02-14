@@ -104,7 +104,6 @@
         var anyliticsdata = @json($anyliticsdata);
         var ship_id = "{{$ship_id}}";
         var hazmatSummeryName = @json($hazmatSummeryName);
-        var trainingverviewData = @json($trainingverviewData);
         var brifingViewData = @json($brifingViewData);
     </script>
     <script src="{{ asset('assets/vendor/bootstrap-select/js/bootstrap-select.js') }}"></script>

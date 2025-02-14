@@ -54,7 +54,6 @@
                     <p style="line-height: 2rem;">
                         <strong>IMO Number:</strong> {{ $ship->imo_number }}<br>
                         <strong>Client Name:</strong> {{ $ship->client->name }}<br>
-                        <strong>Project No.:</strong> {{ $ship->project_no }}
                     </p>
                 </div>
             </div>

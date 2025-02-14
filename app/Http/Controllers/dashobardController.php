@@ -123,17 +123,7 @@ class dashobardController extends Controller
 
         $months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
-        $trainingverview = DB::table('exams')
-            ->select(DB::raw("DATE_FORMAT(created_at, '%b') as month"), DB::raw('COUNT(*) as count'))
-            ->groupBy('month')
-            ->orderBy(DB::raw("STR_TO_DATE(month, '%b')")) // Ensures proper month order
-            ->where('ship_id', $id)
-            ->get()
-            ->pluck('count', 'month')
-            ->toArray();
-
-        $trainingverviewData = array_map(fn($month) => [$month, $trainingverview[$month] ?? 2], $months);
-
+      
         $brifingsRecoreds = DB::table('brifings')
             ->select(DB::raw("DATE_FORMAT(created_at, '%b') as month"), DB::raw('COUNT(*) as count'))
             ->groupBy('month')
@@ -146,7 +136,7 @@ class dashobardController extends Controller
         $brifingViewData = array_map(fn($month) => [$month, $brifingsRecoreds[$month] ?? 2], $months);
 
 
-        return view('ship-dashboard', compact('anyliticsdata', 'hazmatSummeryName', 'trainingverviewData', 'brifingViewData', 'ship_id'));
+        return view('ship-dashboard', compact('anyliticsdata', 'hazmatSummeryName', 'brifingViewData', 'ship_id'));
     }
     public function configration(Request $request)
     {

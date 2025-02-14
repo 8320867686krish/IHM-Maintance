@@ -267,7 +267,7 @@
             var chart = c3.generate({
                 bindto: "#c3chart_pie",
                 data: {
-                    columns:trainingverviewData,
+                    columns:trainingverview,
                     type: 'pie',
 
                     colors: {
@@ -303,94 +303,7 @@
             });
         }
 
-        if ($('#c3chart_donut').length) {
-            var chart = c3.generate({
-                bindto: "#c3chart_donut",
-                data: {
-                    columns: trainingverviewData,
-                    type: 'donut',
-                    onclick: function(d, i) { console.log("onclick", d, i); },
-                    onmouseover: function(d, i) { console.log("onmouseover", d, i); },
-                    onmouseout: function(d, i) { console.log("onmouseout", d, i); },
-
-                    colors: {
-                        Jan: '#4A90E2',   // A refined blue for better aesthetics
-                        Feb: '#ff407b',   // Vibrant pink
-                        Mar: '#25d5f2',   // Bright cyan
-                        Apr: '#ffc750',   // Warm yellow-orange
-                        May: '#d45087',   // Deep magenta
-                        Jun: '#f95d6a',   // Reddish-orange
-                        Jul: '#ff7c43',   // Soft orange
-                        Aug: '#ffa600',   // Golden yellow
-                        Sep: '#ff8c00',   // Orange-red (better contrast)
-                        Oct: '#0bb4ff',   // Sky blue
-                        Nov: '#ffb55a',   // Light orange
-                        Dec: '#8bd3c7'    // Soft teal
-                    }
-                    
-                },
-              
-                donut: {
-                    title: "Training Records",
-                    label: {
-                        format: function(value, ratio, id) {
-                            return value; // Show only value, no percentage
-                        },
-                        show: true // Ensure labels are displayed
-                    }
-
-                }
-
-
-            });
-
-            
-          
-        }
-        if ($('#c3chart_donut_brifing').length) {
-            var chart = c3.generate({
-                bindto: "#c3chart_donut_brifing",
-                data: {
-                    columns: brifingViewData,
-                    type: 'donut',
-                    onclick: function(d, i) { console.log("onclick", d, i); },
-                    onmouseover: function(d, i) { console.log("onmouseover", d, i); },
-                    onmouseout: function(d, i) { console.log("onmouseout", d, i); },
-
-                    colors: {
-                        Jan: '#4A90E2',   // A refined blue for better aesthetics
-                        Feb: '#ff407b',   // Vibrant pink
-                        Mar: '#25d5f2',   // Bright cyan
-                        Apr: '#ffc750',   // Warm yellow-orange
-                        May: '#d45087',   // Deep magenta
-                        Jun: '#f95d6a',   // Reddish-orange
-                        Jul: '#ff7c43',   // Soft orange
-                        Aug: '#ffa600',   // Golden yellow
-                        Sep: '#ff8c00',   // Orange-red (better contrast)
-                        Oct: '#0bb4ff',   // Sky blue
-                        Nov: '#ffb55a',   // Light orange
-                        Dec: '#8bd3c7'    // Soft teal
-                    }
-                    
-                },
-              
-                donut: {
-                    title: "Brifing Records",
-                    label: {
-                        format: function(value, ratio, id) {
-                            return value; // Show only value, no percentage
-                        },
-                        show: true // Ensure labels are displayed
-                    }
-
-                }
-
-
-            });
-
-            
-          
-        }
+      
 
         if ($('#c3chart_gauge').length) {
             var chart = c3.generate({

@@ -102,7 +102,9 @@ jQuery(document).ready(function($) {
     if ($("#datetimepicker11").length) {
         $('#datetimepicker11').datetimepicker({
             viewMode: 'years',
-            format: 'YYYY'
+            format: 'YYYY',
+            maxDate: new Date(2025, 11, 31) // Disable dates after 2025
+
         });
     }
    
