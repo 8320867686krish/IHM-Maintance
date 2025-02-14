@@ -57,7 +57,8 @@ trait ShipData {
             'labels' => $labels,
             'monthrelevantCounts' => $monthrelevantCounts,
             'monthnonRelevantCounts'=>$monthnonRelevantCounts,
-            'mdSdRecoreds'=>$mdSdRecoreds
+            'mdSdRecoreds'=>$mdSdRecoreds,
+            'ship' => $ship['ship_name']
         ]);
     }
 
