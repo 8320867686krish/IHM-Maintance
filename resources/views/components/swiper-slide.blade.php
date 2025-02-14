@@ -34,7 +34,7 @@
                                             @if($imagekey == 'ship_image')
                                             <img src="{{asset($path.'/'.$value[$imagekey])}}" alt="Andrew Kelman" class="card-img-top" />
                                             @else
-                                            <div class="text-center mt-4">
+                                            <div class="text-center mt-2">
                                                 <img src="{{asset($path.'/'.$value[$imagekey])}}" alt="Andrew Kelman" class="rounded-circle user-avatar-xxl" />
                                             </div>
                                             @endif

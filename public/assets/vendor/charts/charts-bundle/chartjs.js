@@ -80,12 +80,6 @@
                         backgroundColor: "#B5DFB2",
                         borderColor: "#B5DFB2",
                         borderWidth: 2
-                    }, {
-                        label: 'MD & SDOC',
-                        data: [2, 5, 4, 3, 20, 5],
-                        backgroundColor: "rgba(89, 105, 255,0.5)",
-                        borderColor: "rgba(89, 105, 255,0.5)",
-                        borderWidth: 2
                     }]
                 },
                 options: {
@@ -144,12 +138,6 @@
                         backgroundColor: "#B5DFB2",
                         borderColor: "#B5DFB2",
                         borderWidth: 2
-                    }, {
-                        label: 'MD & SDOC',
-                        data: [7, 10, 13, 16, 19, 22, 25, 28, 31, 34, 37], // Updated data to fit the axis
-                        backgroundColor: "rgba(89, 105, 255,0.5)",
-                        borderColor: "rgba(89, 105, 255,0.5)",
-                        borderWidth: 2
                     }]
                 },
                 options: {
@@ -188,12 +176,12 @@
                 }
             });
         }
-        var myChart; // Define chart variable globally
+        var my_chartchartjs_bar_ship; // Define chart variable globally
         
         if ($('#chartjs_bar_ship').length) {
             var ctx = document.getElementById("chartjs_bar_ship").getContext('2d');
 
-            myChart = new Chart(ctx, {
+            my_chartchartjs_bar_ship = new Chart(ctx, {
                 type: 'bar',
                 data: {
                     labels: anyliticsdata.labels,
@@ -209,11 +197,57 @@
                         backgroundColor: "#B5DFB2",
                         borderColor: "#B5DFB2",
                         borderWidth: 2
-                    }, {
+                    }]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true,   // Start the Y-axis from 0
+                                stepSize: 5,         // Control the step size
+                                min: 0,              // Minimum value of Y-axis
+                                max: 40,             // Maximum value of Y-axis
+                                fontSize: 14,
+                                fontFamily: 'Circular Std Book',
+                                fontColor: '#71748d'
+                            },
+                            gridLines: {            // Customize grid lines
+                                color: "#e0e0e0"
+                            }
+                        }],
+                        xAxes: [{
+                            ticks: {
+                                fontSize: 14,
+                                fontFamily: 'Circular Std Book',
+                                fontColor: '#71748d'
+                            }
+                        }]
+                    },
+                    legend: {
+                        display: true,
+                        position: 'bottom',
+                        labels: {
+                            fontColor: '#71748d',
+                            fontFamily: 'Circular Std Book',
+                            fontSize: 14
+                        }
+                    }
+                }
+            });
+        }
+        var my_chart_chartjs_bar_md;
+        if ($('#chartjs_bar_md').length) {
+            var ctx = document.getElementById("chartjs_bar_md").getContext('2d');
+
+            my_chart_chartjs_bar_md = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: anyliticsdata.labels,
+                    datasets: [{
                         label: 'MD & SDOC',
-                        data: [7, 10, 13, 16, 19, 22, 25, 28, 31, 34, 37], // Updated data to fit the axis
-                        backgroundColor: "rgba(89, 105, 255,0.5)",
-                        borderColor: "rgba(89, 105, 255,0.5)",
+                        data: anyliticsdata.mdSdRecoreds, // Updated data to fit the axis
+                        backgroundColor: "rgba(255, 64, 123,0.5)",
+                        borderColor: "rgba(255, 64, 123,0.5)",
                         borderWidth: 2
                     }]
                 },
@@ -253,28 +287,39 @@
                 }
             });
         }
-        function updateChartData(newLabels, relevantData, nonRelevantData, mdSDOCData) {
-            if (myChart) {
-                myChart.data.labels = newLabels; // Update labels
-                myChart.data.datasets[0].data = relevantData; // Update Relevant PO data
-                myChart.data.datasets[1].data = nonRelevantData; // Update NON Relevant PO data
-                myChart.update(); // Refresh chart
+        function updateChartData(newLabels, relevantData, nonRelevantData,updatedmdSdData) {
+            if (my_chartchartjs_bar_ship) {
+                console.log("ddddd");
+                my_chartchartjs_bar_ship.data.labels = newLabels; // Update labels
+                my_chartchartjs_bar_ship.data.datasets[0].data = relevantData; // Update Relevant PO data
+                my_chartchartjs_bar_ship.data.datasets[1].data = nonRelevantData; // Update NON Relevant PO data
+                my_chartchartjs_bar_ship.update(); // Refresh chart
             }
+            if (my_chart_chartjs_bar_md) {
+                my_chart_chartjs_bar_md.data.labels = newLabels; // Update labels
+                my_chart_chartjs_bar_md.data.datasets[0].data = updatedmdSdData; // Update Relevant PO data
+                my_chart_chartjs_bar_md.update(); // Refresh chart
+            }
+            
         }
         const firstShipId = $('.shipswisePo option:selected').val();
        
         if (firstShipId && firstShipId !== "Select Ship") {
-            getshipwisepo(firstShipId);
+            getshipwisepo(ship_id);
         }
-        $('.shipswisePo').change(function (e) {
-            var id = $(this).val();
-            getshipwisepo(id);
+        // $('.shipswisePo').change(function (e) {
+        //     var id = $(this).val();
+        //     getshipwisepo(id);
 
+        // });
+        $('#datetimepicker11').on("change.datetimepicker", function (e) {
+            let selectedDate = e.date ? e.date.format('YYYY') : ''; // Get the selected date
+            getshipwisepo(ship_id,selectedDate);
         });
 
-        function getshipwisepo(id) {
+        function getshipwisepo(id,selectedDate=null) {
             $.ajax({
-                url: `${baseUrl}/shipwisepo/${id}`,
+                url: `${baseUrl}/shipwisepo/${id}/${selectedDate}`,
                 method: 'Get',
 
                 dataType: 'json',
@@ -284,7 +329,8 @@
                     var updatedLabels = response.labels;
                     var updatedRelevantData = response.monthrelevantCounts;
                     var updatedNonRelevantData = response.monthnonRelevantCounts;
-                    updateChartData(updatedLabels, updatedRelevantData, updatedNonRelevantData, []);
+                    var updatedmdSdData = response.mdSdRecoreds;
+                    updateChartData(updatedLabels, updatedRelevantData, updatedNonRelevantData,updatedmdSdData);
 
 
                 }

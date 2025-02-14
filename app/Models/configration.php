@@ -11,6 +11,10 @@ class configration extends Model
     protected $fillable = [
         'client_company',
         'ship_staff',
-        'hazmat_company'
+        'hazmat_company',
+        'training_material',
+        'briefing_material',
+        'sms_extract',
+        'operation_manual'
     ];
 }

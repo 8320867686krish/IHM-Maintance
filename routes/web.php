@@ -41,7 +41,7 @@ Route::get('/configration', [dashobardController::class, 'configration'])->middl
 Route::post('configration/save', [dashobardController::class, 'configrationSave'])->name('configration.save');
 
 Route::get('/dashboard', [dashobardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
-Route::get('/shipwisepo/{ship_id}', [dashobardController::class, 'shipwiseData'])->middleware(['auth', 'verified'])->name('shipwiseData');
+Route::get('/shipwisepo/{ship_id}/{selectedDate}', [dashobardController::class, 'shipwiseData'])->middleware(['auth', 'verified'])->name('shipwiseData');
 
 Route::middleware('auth')->group(function () {
     Route::get('client-company/{id}', [DashobardController::class, 'clientcompany'])->name('clientcompany');
@@ -61,6 +61,8 @@ Route::middleware('auth')->group(function () {
     Route::get('model/{hazmat_id}/{equipment}/{manufacturer}', [POOrderController::class, 'getmodel'])->name('getmodel');
     Route::get('document/{id}', [POOrderController::class, 'getPartBasedDocumentFile'])->name('getPartBasedDocumentFile');
     Route::post('send/mail', [POOrderController::class, 'sendMail'])->name('send.mail');
+    
+    Route::post('/avilabletemplate/save', [HelpCenterController::class, 'avilabletemplateeSave'])->name('avilabletemplate.save');
 
     Route::get('/helpcenter', [HelpCenterController::class, 'index'])->name('helpcenter.list');
     Route::post('/correspondence/save', [HelpCenterController::class, 'correspondenceSave'])->name('correspondence.save');

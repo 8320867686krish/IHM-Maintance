@@ -10,7 +10,7 @@
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/libs/css/switchButton.css') }}">
 @endsection
 <div class="container-fluid dashboard-content">
-<x-page-header title="Help Management"></x-page-header>
+    <x-page-header title="Help Management"></x-page-header>
 
     <div class="col-xl-12  col-lg-12 col-md-12 col-sm-12 col-12 mb-5">
 
@@ -19,58 +19,100 @@
                 <li class="nav-item">
                     <a class="nav-link active show" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Correspondence</a>
                 </li>
+                @if($currentUserRoleLevel == 1 || $currentUserRoleLevel == 2)
+                <li class="nav-item">
+                    <a class="nav-link" id="avilabletemplate-tab" data-toggle="tab" href="#avilabletemplate" role="tab" aria-controls="avilabletemplate" aria-selected="true">Available Template</a>
+                </li>
+                @endif
+                @if($currentUserRoleLevel != 1)
                 <li class="nav-item">
                     <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Credentials</a>
                 </li>
+                @endif
                 @if($currentUserRoleLevel == 5 ||$currentUserRoleLevel == 2 || $currentUserRoleLevel == 3 || $currentUserRoleLevel==4)
                 <li class="nav-item">
                     <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Extract From SMS</a>
                 </li>
                 @endif
+                @if( $currentUserRoleLevel == 2)
+                <li class="nav-item">
+                    <a class="nav-link" id="superadmincorrespondence-tab" data-toggle="tab" href="#superadmincorrespondence" role="tab" aria-controls="superadmincorrespondence" aria-selected="true">SuperAdmin Correspondence</a>
+                </li>
+                @endif
             </ul>
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade active show" id="home" role="tabpanel" aria-labelledby="home-tab">
-                    @if($currentUserRoleLevel == 5 || $currentUserRoleLevel == 6)
-                    <form id="correspondencesForm" action="{{route('correspondence.save')}}" method="POST" enctype="multipart/form-data">
-                        @csrf
-                        <div class="row">
-                            @if($ships)
-                            <div class="form-group col-12 mb-3">
-                                <select name="ship_id" id="ship_id" class="form-control form-control-lg">
-                                    @foreach($ships as $ship)
-                                    <option value="{{$ship['id']}}">{{$ship['ship_name']}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            @endif
-                            <div class="form-group col-12 mb-3">
-                                <label for="assign_date">Subject<span class="text-danger">*</span></label>
-                                <input type="text" class="form-control form-control-lg" id="subject" value="" name="subject" autocomplete="off" onchange="removeInvalidClass(this)">
-                                <div class="invalid-feedback error" id="subjectError"></div>
-                            </div>
 
-                            <div class="form-group col-12 mt-3">
-                                <label for="attachment">Content</label>
-                                <textarea id="mytextarea" value=""></textarea>
-
-                            </div>
-                            <div class="form-group col-12 mb-3">
-                                <label for="attachment">Attachment</label>
-                                <input type="file" class="form-control form-control-lg" id="attachment" name="attachment" autocomplete="off" onchange="removeInvalidClass(this)">
-                                <div class="invalid-feedback error" id="fileError"></div>
-                            </div>
-
-
-                            <div class="col-12">
-                                <div class="form-group">
-                                    <button class="btn btn-primary float-right" type="button" id="correspondencesSave">Save</button>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
+                    @if($currentUserRoleLevel == 1)
+                    <table class="table table-striped table-bordered first">
+                        <thead>
+                            <tr>
+                                <th>SR NO.</th>
+                                <th>Subject</th>
+                                @if($currentUserRoleLevel == 1)
+                                <th>Hazmat Company</th>
+                                @endif
+                                <th>Attachment</th>
+                                <th>Content</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admincorospondanceList">
+                            <x-super-admin-corospondance :admincorrespondence=$admincorrespondence :currentUserRoleLevel=$currentUserRoleLevel></x-super-admin-corospondance>
+                        </tbody>
+                    </table>
                     @else
-                    <x-correspondence-history :correspondence=$correspondence :currentUserRoleLevel=$currentUserRoleLevel></x-correspondence-history>
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <a href="#" class="btn btn-primary float-right addcorospondence">Add </a>
+
+                        </div>
+                    </div>
+                    <table class="table table-striped table-bordered first">
+                        <thead>
+                            <tr>
+                                <th>SR NO.</th>
+                                <th>Subject</th>
+                                <th>Ship Name</th>
+                                <th>Client Name</th>
+                                @if($currentUserRoleLevel == 1)
+                                <th>Hazmat Company</th>
+                                @endif
+                                <th>Attachment</th>
+                                <th>Content</th>
+                            </tr>
+                        </thead>
+                        <tbody id="corospondenceList">
+                            <x-correspondence-history :correspondence=$correspondence :currentUserRoleLevel=$currentUserRoleLevel></x-correspondence-history>
+                        </tbody>
+                    </table>
                     @endif
+                </div>
+                <div class="tab-pane fade" id="superadmincorrespondence" role="tabpanel" aria-labelledby="superadmincorrespondence-tab">
+
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <a href="#" class="btn btn-primary float-right addadmincorospondence">Add </a>
+
+                        </div>
+                    </div>
+
+                    <table class="table table-striped table-bordered first">
+                        <thead>
+                            <tr>
+                                <th>SR NO.</th>
+                                <th>Subject</th>
+                                @if($currentUserRoleLevel == 1)
+                                <th>Hazmat Company</th>
+                                @endif
+                                <th>Attachment</th>
+                                <th>Content</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admincorospondanceList">
+                            <x-super-admin-corospondance :admincorrespondence=$admincorrespondence :currentUserRoleLevel=$currentUserRoleLevel></x-super-admin-corospondance>
+                        </tbody>
+                    </table>
+
                 </div>
                 <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                     @if($currentUserRoleLevel == 2 || $currentUserRoleLevel == 3 || $currentUserRoleLevel == 4)
@@ -96,17 +138,30 @@
                     </div>
                     @endif
                     <div class="row mt-4 smsList">
-                    <x-extract-sms :extractSsms=$extractSsms :currentUserRoleLevel=$currentUserRoleLevel></x-extract-sms>
+                        <x-extract-sms :extractSsms=$extractSsms :currentUserRoleLevel=$currentUserRoleLevel></x-extract-sms>
 
                     </div>
+                </div>
+
+                <div class="tab-pane fade" id="avilabletemplate" role="tabpanel" aria-labelledby="avilabletemplate-tab">
+                    @if($currentUserRoleLevel == 1)
+                    <x-avilable-templete-form :configration=$configration></x-avilable-templete-form>
+                    @else
+                    <div class="row mt-4">
+                        <x-avilable-templete :configration=$configration></x-avilable-templete>
+                    </div>
+                    @endif
+                </div>
             </div>
         </div>
     </div>
 </div>
-</div>
 @include('ships.models.remarksModel')
 @include('helpCenter.models.credentialModel')
 @include('helpCenter.models.smsModel')
+@include('helpCenter.models.admincorospondanceModel')
+@include('helpCenter.models.addcorospondence')
+
 
 @endsection
 @push('js')
@@ -127,7 +182,9 @@
                 versionCheck: false,
             });
         }
-
+        CKEDITOR.replace('mytextareasuperadmin', {
+            versionCheck: false,
+        });
 
     });
 </script>

@@ -1,10 +1,51 @@
 $("#correspondencesSave").click(function(){
-    let checkFormData = new FormData($("#correspondencesForm")[0]);
+    let checkFormData = new FormData($("#addcorrespondencesForm")[0]);
     let $submitButton = $(this);
     let originalText = $submitButton.html();
     $submitButton.text('Wait...');
     $submitButton.prop('disabled', true);
     var editorData= CKEDITOR.instances['mytextarea'].getData();
+    checkFormData.append('content', editorData);
+    $.ajax({
+        type: 'POST',
+        url: $("#addcorrespondencesForm").attr('action'),
+        data: checkFormData,
+        contentType: false,
+        processData: false,
+        success: function (response) {
+            if (response.isStatus) {
+                successMsg(response.message);
+                let form = document.getElementById('addcorrespondencesForm');
+                form.reset()
+                $submitButton.html(originalText);
+                $submitButton.prop('disabled', false);
+                
+                $("#corospondenceModel").modal('hide');
+
+                $("#corospondenceList").html("");         
+                $("#corospondenceList").html(response.html);          
+            } else {
+                $.each(response.message, function (field, messages) {
+                    $('#' + field + 'Error').text(messages[0]).show();
+                    $('[name="' + field + '"]').addClass('is-invalid');
+                });
+                $submitButton.html(originalText);
+                $submitButton.prop('disabled', false);
+            }
+        },
+        error: function (xhr, status, error) {
+            $submitButton.html(originalText);
+            $submitButton.prop('disabled', false);
+        }
+    });
+});
+$("#saveadmincorospondence").click(function(){
+    let checkFormData = new FormData($("#correspondencesForm")[0]);
+    let $submitButton = $(this);
+    let originalText = $submitButton.html();
+    $submitButton.text('Wait...');
+    $submitButton.prop('disabled', true);
+    var editorData= CKEDITOR.instances['mytextareasuperadmin'].getData();
     checkFormData.append('content', editorData);
     $.ajax({
         type: 'POST',
@@ -16,6 +57,46 @@ $("#correspondencesSave").click(function(){
             if (response.isStatus) {
                 successMsg(response.message);
                 let form = document.getElementById('correspondencesForm');
+                form.reset()
+                $submitButton.html(originalText);
+                $submitButton.prop('disabled', false);
+                $("#admincorospondenceModel").modal('hide');
+
+                $("#admincorospondanceList").html();
+                $("#admincorospondanceList").html(response.html);
+
+               // window.location.reload();                
+            } else {
+                $.each(response.message, function (field, messages) {
+                    $('#' + field + 'Error').text(messages[0]).show();
+                    $('[name="' + field + '"]').addClass('is-invalid');
+                });
+                $submitButton.html(originalText);
+                $submitButton.prop('disabled', false);
+            }
+        },
+        error: function (xhr, status, error) {
+            $submitButton.html(originalText);
+            $submitButton.prop('disabled', false);
+        }
+    });
+});
+$("#avilableTemplateSave").click(function(){
+    let checkFormData = new FormData($("#avilabletemplateForm")[0]);
+    let $submitButton = $(this);
+    let originalText = $submitButton.html();
+    $submitButton.text('Wait...');
+    $submitButton.prop('disabled', true);
+    $.ajax({
+        type: 'POST',
+        url: $("#avilabletemplateForm").attr('action'),
+        data: checkFormData,
+        contentType: false,
+        processData: false,
+        success: function (response) {
+            if (response.isStatus) {
+                successMsg(response.message);
+                let form = document.getElementById('avilabletemplateForm');
                 form.reset()
                 $submitButton.html(originalText);
                 $submitButton.prop('disabled', false);
@@ -34,6 +115,15 @@ $("#correspondencesSave").click(function(){
             $submitButton.prop('disabled', false);
         }
     });
+})
+
+$(document).on('click', '.addcorospondence', function (e) {
+    $("#corospondenceModel").modal('show');
+
+});
+$(document).on('click', '.addadmincorospondence', function (e) {
+    $("#admincorospondenceModel").modal('show');
+
 });
 $(document).on('click', '#viewRemarks', function (e) {
     var remarks = $(this).attr('data-remarks');

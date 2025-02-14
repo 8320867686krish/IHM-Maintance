@@ -40,31 +40,27 @@
 
 
         if ($('#c3chart_spline').length) {
-            var chart = c3.generate({
-                bindto: "#c3chart_spline",
-                data: {
-                    columns: [
-                        ['data1', 30, 200, 100, 400, 150, 250],
-                        ['data2', 130, 100, 140, 200, 150, 50]
-                    ],
-                    type: 'spline',
-                    colors: {
-                         data1: '#5969ff',
-                        data2: '#ff407b',
-
-                    }
-                },
-                axis: {
-                    y: {
-                        show: true,
-
-
-                    },
-                    x: {
-                        show: true,
-                    }
+            console.log(chartData);
+    var chart = c3.generate({
+        bindto: "#c3chart_spline",
+        data: {
+            x: "x", // Explicitly set x-axis reference
+            columns: chartData.columns,
+            type: 'spline',
+            colors: chartData.colors
+        },
+        axis: {
+            x: {
+                type: "category", // Force categorical x-axis
+                tick: {
+                    multiline: false
                 }
-            });
+            },
+            y: {
+                show: true
+            }
+        }
+    });
         }
 
         if ($('#c3chart_zoom').length) {

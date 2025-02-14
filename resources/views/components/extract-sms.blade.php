@@ -11,7 +11,7 @@
             <div class="d-inline-block">
                 <h4 class="" style="display: flex;align-items: center;height: 75px;">{{$value['title']}}</h4>
             </div>
-            <a href='{{asset("uploads/extractSms/")."/".$value["document"]}}' download="{$value['document']}}" class="float-right">
+            <a href='{{asset("uploads/extractSms/")."/".$value["document"]}}' download="{{$value['document']}}" class="float-right">
                 <div class="icon-circle-medium icon-box-lg bg-primary-light mt-1">
                     <i class="fa fa-download fa-fw fa-sm text-primary"></i>
                 </div>

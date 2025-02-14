@@ -1,11 +1,8 @@
 
-  
-            @foreach($correspondence as $value)
+            @foreach($admincorrespondence as $value)
             <tr>
                 <td>{{$loop->iteration}}</td>
                 <td>{{$value->subject}}</td>
-                <td>{{$value->shipDetail->ship_name}}</td>
-                <td>{{$value->clientDetail->name}}</td>
                 @if($currentUserRoleLevel == 1)
                     <td>{{$value->hmatCompanyDetail->name}}</td>
                 @endif

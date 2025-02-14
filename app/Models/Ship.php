@@ -60,5 +60,8 @@ class Ship extends Model
     {
         return $this->hasMany(Deck::class);
     }
-   
+    public function pOOrderItemsHazmats()
+    {
+        return $this->hasMany(PoOrderItemsHazmats::class, 'ship_id', 'id');
+    }
 }

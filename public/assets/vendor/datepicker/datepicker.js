@@ -102,9 +102,10 @@ jQuery(document).ready(function($) {
     if ($("#datetimepicker11").length) {
         $('#datetimepicker11').datetimepicker({
             viewMode: 'years',
-            format: 'MM/YYYY'
+            format: 'YYYY'
         });
     }
+   
 
 if ($("#datetimepicker13").length) {
      $('#datetimepicker13').datetimepicker({
