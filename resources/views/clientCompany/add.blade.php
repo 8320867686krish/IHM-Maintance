@@ -188,10 +188,12 @@
                                     <label for="level">Accounting Team Email<span class="text-danger"> *</span></label>
 
                                     <input type="text" name="accounting_team_email" id="accounting_team_email"
-                                        class="form-control @error('tax_details') is-invalid @enderror"
+                                        class="form-control @error('accounting_team_email') is-invalid @enderror"
                                         placeholder="Accounting Team Email..."
-                                        value="{{ old('tax_details', $clientCompany->accounting_team_email ?? '') }}"
+                                        value="{{ old('accounting_team_email', $clientCompany->accounting_team_email ?? '') }}"
                                         onchange="removeInvalidClass(this)" autocomplete="off">
+                                        <div class="invalid-feedback error" id="accounting_team_emailError"></div>
+
                                 </div>
 
                             </div>

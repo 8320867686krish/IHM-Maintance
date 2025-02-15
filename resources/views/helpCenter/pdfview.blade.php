@@ -22,8 +22,8 @@
         <div class="card">
             <h5 class="card-header">User Guide Configration</h5>
             <div class="card-body  mb-4">
-                <form method="post" class="needs-validation" novalidate id="configrationForm"
-                    enctype="multipart/form-data">
+            <form method="post" class="needs-validation"  id="configrationForm"
+            enctype="multipart/form-data">
                     @csrf
                     <input type="hidden" name="id" value="{{@$configration['id']}}">
 
@@ -100,5 +100,60 @@
 @push('js')
 <script src="{{ asset('assets/libs/js/pdfview.js') }}"></script>
 
+<script>
+    $(document).ready(function() {
 
+
+        $('#configrationForm').submit(function(e) {
+            e.preventDefault();
+
+            var $submitButton = $(this).find('button[type="submit"]');
+            var originalText = $submitButton.html();
+            $submitButton.text('Wait...');
+            $submitButton.prop('disabled', true);
+
+            // Clear previous error messages and invalid classes
+            $('.error').empty().hide();
+            $('input').removeClass('is-invalid');
+            $('select').removeClass('is-invalid');
+
+            var formData = new FormData(this);
+
+            $.ajax({
+                url: "{{ route('configration.save') }}", // Change this to the URL where you handle the form submission
+                type: 'POST',
+                data: formData,
+                dataType: 'json',
+                contentType: false,
+                processData: false,
+                success: function(response) {
+                    // Handle success response
+                    if (response.isStatus) {
+                        successMsgWithRedirect(response.message, "{{ route('configration') }}");
+                    } else {
+                        errorMsgWithRedirect(response.message, "{{ route('configration') }}");
+                    }
+                },
+                error: function(xhr, status, error) {
+                    // If there are errors, display them
+                    var errors = xhr.responseJSON.errors;
+                    if (errors) {
+                        // Loop through errors and display them
+                        $.each(errors, function(field, messages) {
+                            // Display error message for each field
+                            $('#' + field + 'Error').text(messages[0]).show();
+                            // Add is-invalid class to input or select field
+                            $('[name="' + field + '"]').addClass('is-invalid');
+                        });
+                    } else {
+                        console.error('Error submitting form:', error);
+                    }
+
+                    $submitButton.html(originalText);
+                    $submitButton.prop('disabled', false);
+                },
+            });
+        });
+    });
+</script>
 @endpush

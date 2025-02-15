@@ -30,11 +30,11 @@ class hazmatCompanyRequest extends FormRequest
             'password' => $this->id ? 'nullable' : 'required',
             'training_material' => $this->id
                 ? 'mimes:jpeg,png,jpg,gif,pdf|max:2048'
-                : 'required|mimes:jpeg,png,jpg,gif,pdf|max:2048',
+                : 'required|mimes:jpeg,png,jpg,gif,pdf',
 
                 'briefing_plan' => $this->id
                 ? 'mimes:jpeg,png,jpg,gif,pdf|max:2048'
-                : 'required|mimes:jpeg,png,jpg,gif,pdf|max:2048',
+                : 'required|mimes:jpeg,png,jpg,gif,pdf',
 
 
 

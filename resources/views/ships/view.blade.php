@@ -10,18 +10,18 @@
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/vendor/datatables/css/buttons.bootstrap4.css')}}">
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/vendor/datatables/css/select.bootstrap4.css')}}">
 <style>
-button.btn.btn-link:not(.collapsed) .fas.fa-angle-down {
-    transform: rotate(180deg);
-    /* Arrow rotates upwards */
-    transition: transform 0.3s ease-out;
-    /* Smooth transition */
-}
+    button.btn.btn-link:not(.collapsed) .fas.fa-angle-down {
+        transform: rotate(180deg);
+        /* Arrow rotates upwards */
+        transition: transform 0.3s ease-out;
+        /* Smooth transition */
+    }
 
-/* Default state for the arrow when collapsed */
-button.btn.btn-link .fas.fa-angle-down {
-    transition: transform 0.3s ease-out;
-    /* Smooth transition */
-}
+    /* Default state for the arrow when collapsed */
+    button.btn.btn-link .fas.fa-angle-down {
+        transition: transform 0.3s ease-out;
+        /* Smooth transition */
+    }
 </style>
 @endsection
 @section('shiptitle', $ship->ship_name)
@@ -69,12 +69,74 @@ button.btn.btn-link .fas.fa-angle-down {
                                     class="fas fa-fw fa-briefcase"></i></span>IHM Maintenance</a>
                     </li>
 
+                    <li>
+                        <a href="#report_center" class="report_center"><span class="icon"><i
+                                    class="fas fa-fw fa-briefcase"></i></span>Report Center</a>
+                    </li>
+
 
 
                 </ul>
             </div>
         </div>
     </aside>
+    <div class="main-content container-fluid p-0" id="report_center" style="display: none;">
+        <div class="row card-body">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="page-header">
+
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header" id="headinginitial5">
+                <h5 class="mb-0">
+                    Report Center
+
+                </h5>
+            </div>
+
+            <div class="card-body">
+                <form id="generatePdfForm" action="{{route('report')}}">
+                    @csrf
+                    <span class="dashboard-spinner spinner-sm" id="spinShow" style="display: none;  position: absolute;
+        top: 50%;
+        left: 35%;
+        transform: translate(-50%, -50%);z-index:999999"></span>
+                    <div class="row">
+
+
+                        <div class="form-group col-4 mb-3">
+                            <label for="assign_date">
+                                From Date<span class="text-danger">*</span></label>
+                            <input type="date" class="form-control form-control-lg" id="from_date" value="" name="from_date" autocomplete="off" onchange="updateToDate()" required>
+                            <div class="invalid-feedback error" id="po_noError"></div>
+                        </div>
+
+                        <div class="form-group col-4 mb-3">
+                            <label for="assign_date">
+                                To Date<span class="text-danger">*</span></label>
+                            <input type="date" class="form-control form-control-lg" id="to_date" value="" name="to_date" autocomplete="off" onchange="removeInvalidClass(this)" required>
+                            <div class="invalid-feedback error" id="po_noError"></div>
+                        </div>
+                        <div class="form-group col-4 mb-3">
+                            <label for="assign_date">
+                                Version<span class="text-danger">*</span></label>
+                            <input type="text" class="form-control form-control-lg" id="version" value="" name="version" autocomplete="off" onchange="removeInvalidClass(this)" required>
+                            <div class="invalid-feedback error" id="po_noError"></div>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="form-group">
+                                <button class="btn btn-primary float-right mb-3" type="submit" id="genratereportbtn">Genrate Report</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
     <div class="main-content container-fluid p-0" id="assign_project" style="display: none;">
 
         <div class="email-head-subject">
@@ -88,6 +150,7 @@ button.btn.btn-link .fas.fa-angle-down {
         </div>
 
     </div>
+
 
 
     <div class="main-content container-fluid p-0" id="ship_particulars"
@@ -149,7 +212,7 @@ button.btn.btn-link .fas.fa-angle-down {
                             </h5>
                         </div>
                         <div id="collapseThree" class="collapse" aria-labelledby="headingThree">
-                            <div class="card-body">
+                            <div class="card-body mb-4">
                                 <div class="alert alert-success sucessMsg" role="alert" style="display: none;">
                                     Save Successfully!!<a href="#" class="close" data-dismiss="alert"
                                         aria-label="Close">
@@ -394,7 +457,7 @@ button.btn.btn-link .fas.fa-angle-down {
                                                 <input type="date"
                                                     class="form-control @error('initial_ihm_date') is-invalid @enderror"
                                                     id="initial_ihm_date" name="initial_ihm_date" autocomplete="off"
-                                                    onchange="removeInvalidClass(this)"   value="{{ old('initial_ihm_date', $ship->initial_ihm_date ?? '') }}">
+                                                    onchange="removeInvalidClass(this)" value="{{ old('initial_ihm_date', $ship->initial_ihm_date ?? '') }}">
                                                 @error('initial_ihm_date')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror
@@ -427,7 +490,7 @@ button.btn.btn-link .fas.fa-angle-down {
                                             </div>
                                         </div>
 
-																				<div class="col-sm-12 col-md-6 col-lg-4 mt-1">
+                                        <div class="col-sm-12 col-md-6 col-lg-4 mt-1">
                                             <div class="form-group">
                                                 <label for="project_name">Approved By</label>
                                                 <input type="text"
@@ -440,7 +503,7 @@ button.btn.btn-link .fas.fa-angle-down {
                                             </div>
                                         </div>
 
-																				<div class="col-sm-12 col-md-6 col-lg-4 mt-1">
+                                        <div class="col-sm-12 col-md-6 col-lg-4 mt-1">
                                             <div class="form-group">
                                                 <label for="project_name">Current IHM Version</label>
                                                 <input type="text"
@@ -452,7 +515,7 @@ button.btn.btn-link .fas.fa-angle-down {
                                                 @enderror
                                             </div>
                                         </div>
-																				<div class="col-sm-12 col-md-6 col-lg-4 mt-2">
+                                        <div class="col-sm-12 col-md-6 col-lg-4 mt-2">
                                             <div class="form-group">
                                                 <label for="project_name">Ihm Version Updated Date</label>
                                                 <input type="date"
@@ -474,7 +537,7 @@ button.btn.btn-link .fas.fa-angle-down {
                                         <div class="col-sm-12 col-md-6">
                                             <div class="form-group">
                                                 @can('ships.edit')
-                                                <button class="btn btn-primary float-right btn-rounded formSubmitBtn"
+                                                <button class="btn btn-primary float-right  formSubmitBtn"
                                                     type="submit">Save</button>
                                                 @endcan
                                             </div>
@@ -549,9 +612,9 @@ button.btn.btn-link .fas.fa-angle-down {
 
 @push('js')
 <script>
-var shipSave = "{{ route('ships.store') }}";
-var poSummeryGraph = @json($poSummeryGraph);
-var hazmatSummeryName = @json($hazmatSummeryName);
+    var shipSave = "{{ route('ships.store') }}";
+    var poSummeryGraph = @json($poSummeryGraph);
+    var hazmatSummeryName = @json($hazmatSummeryName);
 </script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
 
@@ -567,78 +630,78 @@ var hazmatSummeryName = @json($hazmatSummeryName);
 <script src="{{ asset('assets/vendor/charts/charts-bundle/Chart.bundle.js') }}"></script>
 <script src="{{ asset('assets/vendor/charts/charts-bundle/chartjs.js') }}"></script>
 <script>
-$(document).ready(function() {
+    $(document).ready(function() {
 
-    if (window.location.hash) {
-        var target = $(window.location.hash);
-        var subsection = window.location.href.split("#").pop();
-        var section = subsection;
-        if (subsection == 'po-records' || subsection == 'onbaord-training') {
-            section = "ihm_maintenance";
-        }
-        if (target.length) {
-            $('.aside-nav .nav li').removeClass('active');
-            $(`.${section}`).parent('li').addClass('active');
-            $('.main-content').hide();
-            $(`#${section}`).show();
-            let targetId = $(this).attr('href');
-            $(`#${subsection}`).addClass('show');
-            $(targetId).show();
-
-            $('html, body').animate({
-                scrollTop: target.offset().top
-            }, 1000);
-        }
-    }
-    const url = window.location.href;
-    const segments = url.split('/');
-    const projectId = segments[segments.length - 1];
-    let sidebar = $("#mainSidebar");
-    let isSidebarVisible = true;
-
-    if ($(window).width() >= 768) {
-        $("#sidebarCollapse").show();
-        $("#sidebarCollapse").find('span').css({
-            "height": "1em",
-            "width": "1em"
-        });
-    } else {
-        $("#sidebarCollapse").hide();
-    }
-
-    $(document).on("click", "#sidebarCollapse", function() {
-        if ($(window).width() >= 768) {
-            if (isSidebarVisible) {
-                sidebar.css("left", "-188px"); //250
-                $('#page-aside').css("left", "78px"); //8
-                $('.dashboard-wrapper').css("margin-left", "78px"); //8
-            } else {
-                sidebar.css("left", "0");
-                $('#page-aside').css("left", "265px");
-                $('.dashboard-wrapper').css("margin-left", "264px");
+        if (window.location.hash) {
+            var target = $(window.location.hash);
+            var subsection = window.location.href.split("#").pop();
+            var section = subsection;
+            if (subsection == 'po-records' || subsection == 'onbaord-training') {
+                section = "ihm_maintenance";
             }
-            isSidebarVisible = !isSidebarVisible;
+            if (target.length) {
+                $('.aside-nav .nav li').removeClass('active');
+                $(`.${section}`).parent('li').addClass('active');
+                $('.main-content').hide();
+                $(`#${section}`).show();
+                let targetId = $(this).attr('href');
+                $(`#${subsection}`).addClass('show');
+                $(targetId).show();
+
+                $('html, body').animate({
+                    scrollTop: target.offset().top
+                }, 1000);
+            }
         }
-    });
+        const url = window.location.href;
+        const segments = url.split('/');
+        const projectId = segments[segments.length - 1];
+        let sidebar = $("#mainSidebar");
+        let isSidebarVisible = true;
 
-    $('.aside-nav .nav li a').click(function() {
-        $('.aside-nav .nav li').removeClass('active');
-        $(this).parent('li').addClass('active');
-        $('.main-content').hide();
-        let targetId = $(this).attr('href');
-        $(targetId).show();
-        return false;
-    });
+        if ($(window).width() >= 768) {
+            $("#sidebarCollapse").show();
+            $("#sidebarCollapse").find('span').css({
+                "height": "1em",
+                "width": "1em"
+            });
+        } else {
+            $("#sidebarCollapse").hide();
+        }
 
-    $('.aside-nav .nav li a[href="#assign_project"]').click(function() {
-        $('.main-content').hide();
-        $('#assign_project').show();
-        return false;
-    });
+        $(document).on("click", "#sidebarCollapse", function() {
+            if ($(window).width() >= 768) {
+                if (isSidebarVisible) {
+                    sidebar.css("left", "-188px"); //250
+                    $('#page-aside').css("left", "78px"); //8
+                    $('.dashboard-wrapper').css("margin-left", "78px"); //8
+                } else {
+                    sidebar.css("left", "0");
+                    $('#page-aside').css("left", "265px");
+                    $('.dashboard-wrapper').css("margin-left", "264px");
+                }
+                isSidebarVisible = !isSidebarVisible;
+            }
+        });
 
-    setTimeout(function() {
-        $('.alert-success').fadeOut();
-    }, 15000);
-});
+        $('.aside-nav .nav li a').click(function() {
+            $('.aside-nav .nav li').removeClass('active');
+            $(this).parent('li').addClass('active');
+            $('.main-content').hide();
+            let targetId = $(this).attr('href');
+            $(targetId).show();
+            return false;
+        });
+
+        $('.aside-nav .nav li a[href="#assign_project"]').click(function() {
+            $('.main-content').hide();
+            $('#assign_project').show();
+            return false;
+        });
+
+        setTimeout(function() {
+            $('.alert-success').fadeOut();
+        }, 15000);
+    });
 </script>
 @endpush

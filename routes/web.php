@@ -107,13 +107,13 @@ Route::middleware('auth')->group(function () {
     Route::post('admindesignatedPerson', [DesignatedPersonController::class, 'saveAdminDesignatedPerson'])->name('designatedPerson.admin');
 
     Route::get('designatedPersonShip/{designated_person_id}', [DesignatedPersonController::class, 'designatedPersonShip'])->name('designatedPersonShip');
-    Route::middleware('can:majorrepair')->group(function () {
+   // Route::middleware('can:majorrepair')->group(function () {
         Route::controller(MajorrepairController::class)->group(function () {
             Route::get('majorrepair', 'index')->name('majorrepair');
             Route::post('/majorrepair/save', 'majorrepairSave')->name('majorrepair.save');
             Route::get('majorrepair/{id}', 'majorrepairDelete')->name('majorrepair.remove');
         });
-    });
+   // });
 
     Route::middleware('can:training')->group(function () {
         Route::controller(TrainingController::class)->group(function () {

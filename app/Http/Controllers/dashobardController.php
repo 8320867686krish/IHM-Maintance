@@ -143,7 +143,7 @@ class dashobardController extends Controller
         $configration = Configration::first();
         return view('configration', compact('configration'));
     }
-    public function configrationSave(configrationRequest $request)
+    public function configrationSave(Request $request)
     {
         $post = $request->input();
         $configration = configration::find($post['id']);

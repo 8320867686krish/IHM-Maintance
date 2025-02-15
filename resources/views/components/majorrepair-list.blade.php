@@ -6,11 +6,11 @@
     <td>{{$value->location_name}}</td>
     <td>{{$value->document_uploaded_by}}</td>
     <td>
-        @can('majorrepair.edit')
+    @if(auth()->user()->can('majorrepair.edit') || auth()->user()->can('ships.edit'))
         <a href="#" rel="noopener noreferrer" data-major="{{$value}}" title="Edit" class="text-center majorrepairEdit">
             <i class="fas fa-edit text-primary" style="font-size: 1rem"></i>
         </a>
-        @endcan
+        @endif
         @can('majorrepair.remove')
         
         <a href="{{route('majorrepair.remove', ['id' => $value->id])}}" class="ml-2 major-delete">

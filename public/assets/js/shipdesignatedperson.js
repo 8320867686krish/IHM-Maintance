@@ -156,6 +156,10 @@ var $form = $("#admindesignatedForm");
         }
     });
 })
+$(document).on("click", ".addadmineditdesignatedPerson", function () {
+    $("#adminDesignatedModel").modal('show');
+
+});
 $(document).on("click", ".admineditdesignatedPerson", function () {
     var data = $(this).data('designated');
     let form = $(`#admindesignatedForm`);    
@@ -168,6 +172,11 @@ $(document).on("click", ".admineditdesignatedPerson", function () {
     form.find("#ship_id").val(data.ship_id);
     form.find("#position").val(data.position);
     $("#adminDesignatedModel").modal('show');
+});
+$(document).on("click", ".addadminShoreDp", function () {
+    $("#shipshowing").hide();
+    $("#AdminShoreDpModel").modal('show');
+
 });
 
 $(document).on("click", ".adminShoreDp", function () {

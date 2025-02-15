@@ -12,9 +12,12 @@
                     enctype="multipart/form-data">
                     @csrf
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 row">
+                        
                         <input type="hidden" id="id" name="id" class="form-control">
                         <input type="hidden" name="type" id="type" value="shore">
                         <input type="hidden" name="main_ship_id" id="main_ship_id" value="{{$ship_id}}">
+                        <input type="hidden" name="ship_staff_id" id="ship_staff_id" value="{{$ship->client_user_id}}">
+
                         <input type="hidden" id="currentUserRoleLevel" name="currentUserRoleLevel" value="{{$currentUserRoleLevel}}">
 
                         <div class="col-12 col-md-12 col-lg-12 mb-2">
@@ -35,7 +38,7 @@
                         </div>
                       
                       
-                        <div class="col-12 col-md-12 col-lg-12 mb-2">
+                        <div class="col-12 col-md-12 col-lg-12 mb-2" id="shipshowing">
                             <div class="form-group">
                                 <label for="name">Ship <span class="text-danger">*</span></label>
 

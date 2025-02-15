@@ -56,51 +56,70 @@ class DesignatedPersonController extends Controller
         $shipIds = $designatedPersonShip->designatedPersionShips->pluck('ship_id');
         return response()->json(["isStatus" => true, 'shipIds' => $shipIds]);
     }
-    public function saveAdminDesignatedPerson(Request $request){
+    public function saveAdminDesignatedPerson(Request $request)
+    {
         $post = $request->input();
         $inputData = $post;
         $inputData = $request->input();
-        if(@$inputData['type']){
+        if (@$inputData['type']) {
             unset($inputData['ship_id']);
         }
-        if(@$inputData['main_ship_id']){
+        if (@$inputData['main_ship_id']) {
             $ship_id = $inputData['main_ship_id'];
-        }else{
+        } else {
             $ship_id = $inputData['ship_id'];
             unset($post['ship_id']);
         }
+        if ($inputData['id']) {
+            unset($post['ship_staff_id']);
+        } else {
+            if (@$inputData['isDesignated']) {
+                $inputData['ship_id'] = $inputData['main_ship_id'];
+            }
+            $inputData['position'] = $inputData['position'] ?? 'SuperDp';
+        }
         $insert = DesignatedPerson::updateOrCreate(['id' => $inputData['id']], $inputData);
-        if (@$post['ship_id']) {
-            $currentShipIds = DesignatedPersionShip::where('designated_person_id', $inputData['id'])->pluck('ship_id')->toArray();
-            $shipIdsToRemove = array_diff($currentShipIds, $post['ship_id']);
-            DesignatedPersionShip::whereIn('ship_id', $shipIdsToRemove)
-                ->where('designated_person_id', $inputData['id'])
-                ->delete();
-            foreach ($post['ship_id'] as $shipId) {
-                DesignatedPersionShip::updateOrCreate(
+        if (!@$inputData['id']) {
+            if (!@$inputData['isDesignated']) {
+                DesignatedPersionShip::create(
                     [
-                        'ship_id' => $shipId,
-                        'designated_person_id' => $inputData['id'], // Unique combination to check
-                    ],
-                    [
-                        'ship_id' => $shipId,
-                        'designated_person_id' => $inputData['id']
+                        'ship_id' => $inputData['main_ship_id'],
+                        'designated_person_id' => $insert->id
                     ]
                 );
             }
         }
-     
-        if(@$inputData['main_ship_id']){
-            $dpsore = DesignatedPersionShip::with('designatedPersonDetail')->where('ship_id',$ship_id)->get();
-            $html = view('components.soredp-list', compact('dpsore'))->render();
+        if (!@$inputData['isDesignated']) {
+            if (@$post['ship_id']) {
+                $currentShipIds = DesignatedPersionShip::where('designated_person_id', $inputData['id'])->pluck('ship_id')->toArray();
+                $shipIdsToRemove = array_diff($currentShipIds, $post['ship_id']);
+                DesignatedPersionShip::whereIn('ship_id', $shipIdsToRemove)
+                    ->where('designated_person_id', $inputData['id'])
+                    ->delete();
+                foreach ($post['ship_id'] as $shipId) {
 
-        }else{
-         
-            $trainingRecoreds = DesignatedPerson::where('ship_id',$ship_id)->get();
-            $html = view('components.trainning-record', compact('trainingRecoreds'))->render();
+                    DesignatedPersionShip::updateOrCreate(
+                        [
+                            'ship_id' => $shipId,
+                            'designated_person_id' => $inputData['id'], // Use inputData['id'] if it's set, otherwise fall back to $insert->id
+                        ],
+                        [
+                            'ship_id' => $shipId,
+                            'designated_person_id' =>  $inputData['id'] ?? $insert->id
+                        ]
+                    );
+                }
+            }
         }
 
-        return response()->json(["isStatus" => true, "message" => "save successfully",'html'=>$html]);
+        if (@$inputData['isDesignated']) {
+            $trainingRecoreds = DesignatedPerson::where('ship_id', $ship_id)->get();
+            $html = view('components.trainning-record', compact('trainingRecoreds'))->render();
+        } else {
+            $dpsore = DesignatedPersionShip::with('designatedPersonDetail')->where('ship_id', $ship_id)->get();
+            $html = view('components.soredp-list', compact('dpsore'))->render();
+        }
 
+        return response()->json(["isStatus" => true, "message" => "save successfully", 'html' => $html]);
     }
 }

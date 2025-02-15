@@ -1,3 +1,4 @@
+@can('ships.edit')
   <a href="{{ url('poOrderSample') }}" class="btn btn-primary float-right btn-rounded addNewBtn mb-3 ml-2" download>Download Sample</a>
                         <form method="POST" action="{{route('import')}}" enctype="multipart/form-data" id="uploadForm">
                             @csrf
@@ -6,6 +7,7 @@
                             <input type="hidden" name="ship_id" id="ship_id" value="{{$ship_id}}">
                         </form>
                         <a href="{{route('po.add',['ship_id'=>$ship_id])}}" class="btn btn-primary float-right btn-rounded addNewBtn mb-3">Add PO</a>
+@endcan
 
                         <div class="table-responsive">
                             <table class="table table-striped table-bordered first">

@@ -33,7 +33,7 @@ class ShipController extends Controller
     //
     use ImageUpload, ShipData;
 
-    public function index($client_id = null)
+    public function index(request $request)
     {
         $user = Auth::user();
 
@@ -44,8 +44,15 @@ class ShipController extends Controller
             $ships = $user->ships->load('client');
         } else {
             // Otherwise, start with a query builder
-            $shipsQuery = Ship::with('client');
 
+            $shipsQuery = Ship::with('client');
+   if ($request->has('search')) {
+        $search = $request->search;
+        $shipsQuery->where(function($query) use ($search) {
+            $query->where('ship_name', 'like', '%'.$search.'%')
+                  ->orWhere('imo_number', 'like', '%'.$search.'%');
+        });
+    }
             $shipsQuery->when($currentUserRoleLevel == 2, function ($query) use ($user) {
                 return $query->where('hazmat_companies_id', $user['hazmat_companies_id']);
             });
@@ -61,7 +68,10 @@ class ShipController extends Controller
             });
 
             // Execute the query and get the ships
-            $ships = $shipsQuery->get();
+            $ships = $shipsQuery->paginate(1);
+            if ($request->has('search')) {
+                $ships->appends(['search' => $request->search]);
+            }
         }
         // Return the view with the ships data
         return view('ships.list', compact('ships'));

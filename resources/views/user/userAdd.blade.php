@@ -86,12 +86,12 @@
                                     <option value="">Select Role</option>
                                     @if (isset($roles) && $roles->count() > 0)
                                     @foreach ($roles as $role)
-                                    @if ($role->level == 5 || $role->level == 6 || $role->level == 2)
+                                    @if (@$role->level == 5 || @$role->level == 6 || @$role->level == 2)
                                     @continue
                                     @endif
-                                    <option value="{{ $role->level }}"
-                                        {{ old('roles') == $role->name || (isset($user) && $role->name == $user->role) ? 'selected' : '' }}>
-                                        {{ $role->name }}
+                                    <option value="{{ @$role->level }}"
+                                        {{ old('roles') == @$role->name || (isset($user) && @$role->name == @$user->role) ? 'selected' : '' }}>
+                                        {{ @$role->name }}
                                     </option>
 
                                     @endforeach

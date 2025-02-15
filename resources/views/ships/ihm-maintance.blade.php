@@ -75,23 +75,35 @@
                     </h5>
                 </div>
                 <div id="sordp" class="collapse" aria-labelledby="soreDpRecoreds" data-parent="#accordion">
-                    <div class="card-body mb-4">
-                        <table class="table table-striped table-bordered first">
-                            <thead>
-                                <tr>
-                                    <th width="15%">SR NO</th>
-                                    <th>Name</th>
-                                    <th width="20%">Designation</th>
-                                    <th width="20%">Start Date</th>
-                                    <th width="20%">End Date</th>
-                                    <th>Action</th>
 
-                                </tr>
-                            </thead>
-                            <tbody class="shoredplist">
-                                <x-soredp-list :dpsore="$dpsore"></x-soredp-list>
-                            </tbody>
-                        </table>
+                    <div class="card-body mb-4">
+                        @can('ships.edit')
+
+                        <a href="#" class="btn btn-primary float-right addadminShoreDp mb-3 ml-2">Add</a>
+                        @endcan
+                        <div class="table-responsive">
+
+                            <table class="table table-striped table-bordered first">
+                                <thead>
+                                    <tr>
+                                        <th width="15%">SR NO</th>
+                                        <th>Name</th>
+                                        <th width="20%">Designation</th>
+                                        <th width="20%">Start Date</th>
+                                        <th width="20%">End Date</th>
+                                        @can('ships.edit')
+
+                                        <th>Action</th>
+                                        @endcan
+
+                                    </tr>
+                                </thead>
+                                <tbody class="shoredplist">
+                                    <x-soredp-list :dpsore="$dpsore"></x-soredp-list>
+                                </tbody>
+                            </table>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -99,7 +111,7 @@
                 <div class="card-header" id="OnbaordTraining">
                     <h5 class="mb-0">
                         <button class="btn btn-link collapsed d-flex justify-content-between w-100" data-toggle="collapse" data-target="#onbaord-training" aria-expanded="false" aria-controls="onbaord-training">
-                           OnBoard  Designated Person Records
+                            OnBoard Designated Person Records
                             <span class="fas fa-angle-down mr-3"></span>
 
                         </button>
@@ -107,25 +119,32 @@
                 </div>
                 <div id="onbaord-training" class="collapse" aria-labelledby="OnbaordTraining" data-parent="#accordion">
                     <div class="card-body mb-4">
-                        <table class="table table-striped table-bordered first">
-                            <thead>
-                                <tr>
-                                    <th width="15%">SR NO</th>
-                                    <th>Name</th>
-                                    <th width="20%">Designation</th>
+                        @can('ships.edit')
 
-                                    <th width="10%">Rank</th>
-                                    <th width="20%">Passport Numbr</th>
-                                    <th width="20%">Sign On Date</th>
-                                    <th width="20%">Sign Off Date</th>
-                                    <th>Action</th>
+                        <a href="#" class="btn btn-primary float-right addadmineditdesignatedPerson mb-3 ml-2">Add</a>
+                        @endcan
+                        <div class="table-responsive">
+                            <table class="table table-striped table-bordered first">
+                                <thead>
+                                    <tr>
+                                        <th width="15%">SR NO</th>
+                                        <th>Name</th>
+                                        <th width="20%">Designation</th>
 
-                                </tr>
-                            </thead>
-                            <tbody class="admindprecoreds">
-                                <x-trainning-record :trainingRecoreds="$trainingRecoreds"></x-trainning-record>
-                            </tbody>
-                        </table>
+                                        <th width="10%">Rank</th>
+                                        <th width="20%">Passport Numbr</th>
+                                        <th width="20%">Sign On Date</th>
+                                        <th width="20%">Sign Off Date</th>
+                                        <th>Action</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody class="admindprecoreds">
+                                    <x-trainning-record :trainingRecoreds="$trainingRecoreds"></x-trainning-record>
+                                </tbody>
+                            </table>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -142,21 +161,25 @@
                 </div>
                 <div id="collapsema3" class="collapse" aria-labelledby="headingma3" data-parent="#accordion">
                     <div class="card-body mb-4">
-                        <table class="table table-striped table-bordered first">
-                            <thead>
-                                <tr>
-                                    <th width="15%">SR NO</th>
-                                    <th>Issue Date</th>
-                                    <th width="20%">MD-ID-No</th>
-                                    <th width="10%">Supplier Information</th>
-                                    <th width="20%">Product Information</th>
-                                    <th width="20%">Contained Material Information</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <x-md-records :mdnoresults="$mdnoresults"></x-trainning-record>
-                            </tbody>
-                        </table>
+                        <div class="table-responsive">
+
+                            <table class="table table-striped table-bordered first">
+                                <thead>
+                                    <tr>
+                                        <th width="15%">SR NO</th>
+                                        <th>Issue Date</th>
+                                        <th width="20%">MD-ID-No</th>
+                                        <th width="10%">Supplier Information</th>
+                                        <th width="20%">Product Information</th>
+                                        <th width="20%">Contained Material Information</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <x-md-records :mdnoresults="$mdnoresults"></x-trainning-record>
+                                </tbody>
+                            </table>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -165,7 +188,7 @@
                 <div class="card-header" id="headingmasd">
                     <h5 class="mb-0">
                         <button class="btn btn-link collapsed d-flex justify-content-between w-100" data-toggle="collapse" data-target="#collapsemasd" aria-expanded="false" aria-controls="collapsemasd">
-                             SDoc Records
+                            SDoc Records
                             <span class="fas fa-angle-down mr-3"></span>
 
                         </button>
@@ -173,23 +196,27 @@
                 </div>
                 <div id="collapsemasd" class="collapse" aria-labelledby="headingmasd" data-parent="#accordion">
                     <div class="card-body mb-4">
-                        <table class="table table-striped table-bordered first">
-                            <thead>
-                                <tr>
-                                    <th width="15%">SR NO</th>
-                                    <th>Issue Date</th>
-                                    <th width="20%">SDoC No.</th>
-                                    
-                                    <th width="10%">Issuer’s Name</th>
-                                    
-                                    <th width="20%">Object(s) of Declaration</th>
-                                    <th width="20%">Supplier’s Declaration of Conformity</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <x-sd-records :mdnoresults="$mdnoresults"></x-trainning-record>
-                            </tbody>
-                        </table>
+                        <div class="table-responsive">
+
+                            <table class="table table-striped table-bordered first">
+                                <thead>
+                                    <tr>
+                                        <th width="15%">SR NO</th>
+                                        <th>Issue Date</th>
+                                        <th width="20%">SDoC No.</th>
+
+                                        <th width="10%">Issuer’s Name</th>
+
+                                        <th width="20%">Object(s) of Declaration</th>
+                                        <th width="20%">Supplier’s Declaration of Conformity</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <x-sd-records :mdnoresults="$mdnoresults"></x-trainning-record>
+                                </tbody>
+                            </table>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -208,21 +235,28 @@
                 </div>
                 <div id="collapsema4" class="collapse" aria-labelledby="headingma4" data-parent="#accordion">
                     <div class="card-body">
-                    <table class="table table-striped table-bordered first">
-                            <thead>
-                                <tr>
-                                    <th width="5%">Sr.No</th>
-                                    <th>Name</th>
-                                    <th width="15%">Date</th>
-                                    <th width="15%">Location Name</th>
-                                    <th width="18%">Document Upload By</th>
-                                    <th width="15%">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody id="majorList">
-                              <x-majorrepair-list :majorrepair=$majorrepair></x-majorrepair-list>
-                            </tbody>
-                        </table>
+                        @can('ships.edit')
+                        <a href="#"
+                            class="btn btn-primary float-right btn addMajorBtn mb-4">Add</a>
+                        @endcan
+                        <div class="table-responsive">
+
+                            <table class="table table-striped table-bordered first">
+                                <thead>
+                                    <tr>
+                                        <th width="5%">Sr.No</th>
+                                        <th>Name</th>
+                                        <th width="15%">Date</th>
+                                        <th width="15%">Location Name</th>
+                                        <th width="18%">Document Upload By</th>
+                                        <th width="15%">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="majorList">
+                                    <x-majorrepair-list :majorrepair=$majorrepair></x-majorrepair-list>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -240,79 +274,29 @@
                 </div>
                 <div id="collapsemacrew" class="collapse" aria-labelledby="headingmacrew" data-parent="#accordion">
                     <div class="card-body">
-                    <table class="table table-striped table-bordered first">
-                            <thead>
-                                <tr>
-                                <th>SR NO</th>
+                        <div class="table-responsive">
+                            <table class="table table-striped table-bordered first">
+                                <thead>
+                                    <tr>
+                                        <th>SR NO</th>
                                         <th>Number Of Attendance</th>
                                         <th>Briefing Date</th>
                                         <th>Briefing By</th>
                                         <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody id="majorList">
-                            <x-brifing-history :brifingHistory=$brifingHistory></x-brifing-history>
+                                    </tr>
+                                </thead>
+                                <tbody id="majorList">
+                                    <x-brifing-history :brifingHistory=$brifingHistory></x-brifing-history>
 
-                            </tbody>
-                        </table>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
 
 
 
-            <div class="card">
-                <div class="card-header" id="headingma5">
-                    <h5 class="mb-0">
-                        <button class="btn btn-link collapsed d-flex justify-content-between w-100" data-toggle="collapse" data-target="#collapsema5" aria-expanded="false" aria-controls="collapsema5">
-                            Report Center
-                            <span class="fas fa-angle-down mr-3"></span>
-
-                        </button>
-                    </h5>
-                </div>
-                <div id="collapsema5" class="collapse" aria-labelledby="headingma5" data-parent="#accordion">
-                    <div class="card-body">
-                        <form id="generatePdfForm" action="{{route('report')}}">
-                            @csrf
-                        <span class="dashboard-spinner spinner-sm" id="spinShow" style="display: none;  position: absolute;
-        top: 50%;
-        left: 35%;
-        transform: translate(-50%, -50%);z-index:999999"></span>
-                            <div class="row">
-                               
-
-                                <div class="form-group col-4 mb-3">
-                                    <label for="assign_date">
-                                        From Date<span class="text-danger">*</span></label>
-                                    <input type="date" class="form-control form-control-lg" id="from_date" value="" name="from_date" autocomplete="off" onchange="updateToDate()" required>
-                                    <div class="invalid-feedback error" id="po_noError"></div>
-                                </div>
-
-                                <div class="form-group col-4 mb-3">
-                                    <label for="assign_date">
-                                        To Date<span class="text-danger">*</span></label>
-                                    <input type="date" class="form-control form-control-lg" id="to_date" value="" name="to_date" autocomplete="off" onchange="removeInvalidClass(this)" required>
-                                    <div class="invalid-feedback error" id="po_noError"></div>
-                                </div>
-                                <div class="form-group col-4 mb-3">
-                                    <label for="assign_date">
-                                        Version<span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control form-control-lg" id="version" value="" name="version" autocomplete="off" onchange="removeInvalidClass(this)" required> 
-                                    <div class="invalid-feedback error" id="po_noError"></div>
-                                </div>
-
-                                <div class="col-12">
-                                    <div class="form-group">
-                                        <button class="btn btn-primary float-right mb-3" type="submit" id="genratereportbtn">Genrate Report</button>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </form>
-                    </div>
-                </div>
-            </div>
 
 
 
@@ -333,6 +317,7 @@
     document.getElementById('excel_file').addEventListener('change', function() {
         document.getElementById('uploadForm').submit();
     });
+
     function updateToDate() {
         var fromDate = document.getElementById("from_date").value;
         var toDate = document.getElementById("to_date");

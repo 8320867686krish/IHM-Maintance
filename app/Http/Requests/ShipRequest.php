@@ -23,12 +23,11 @@ class ShipRequest extends FormRequest
     {
         return [
             //
-            'client_company_id'=>'required',
+            'client_company_id' => $this->id ? '' . $this->id : 'required',
+            'email' => $this->id ? '' . $this->id : 'required',
+            'password' => $this->id ? '' . $this->id : 'required',
             'ship_name' => 'required',
             'imo_number' => 'required',
-            'email' => 'required',
-            'password' => 'required',
-            'ship_image'=>''
         ];
     }
 }

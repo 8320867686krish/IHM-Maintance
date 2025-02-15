@@ -62,7 +62,7 @@ $("#savemajorRepair").click(function(){
                 $submitButton.html(originalText);
                 $submitButton.prop('disabled', false);
                 $("#majorRepairModel").modal('hide');
-                $("#majorList").html("");
+            //  /   $("#majorList").html("");
                 $("#majorList").html(response.html);
             } else {
                 $.each(response.message, function (field, messages) {

@@ -1,4 +1,4 @@
-<div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 col-12">
+<div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12">
 
     <div class="card">
 
@@ -15,7 +15,7 @@
     </div>
 </div>
 
-<div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 col-12">
+<div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12">
 
     <div class="card">
 
@@ -32,7 +32,7 @@
     </div>
 </div>
 
-<div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 col-12">
+<div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12">
 
     <div class="card">
 
@@ -50,7 +50,7 @@
 </div>
 
 
-<div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 col-12">
+<div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12">
 
     <div class="card">
 

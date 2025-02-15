@@ -22,9 +22,13 @@ class MajorrepairController extends Controller
         unset($post['_token']);
         $user = Auth::user();
         if($post['id'] == 0){
-            $post['hazmat_companies_id'] = $user['hazmat_companies_id'];
-            $post['ship_staff_id'] = $user->id;
-            $post['ship_id'] = $user->shipClient->id;
+            if(!@$post['ship_id']){
+               
+                $post['hazmat_companies_id'] = $user['hazmat_companies_id'];
+                $post['ship_staff_id'] = $user->id;
+                $post['ship_id'] = $user->shipClient->id;
+            }
+          
         }
         $majrrecoerds = Majorrepair::where('ship_staff_id',$post['id'])->first();
         if($request->has('document')){

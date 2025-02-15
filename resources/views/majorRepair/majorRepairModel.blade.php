@@ -16,6 +16,8 @@
               <div class="form-group">
 
                 <input type="hidden" id="ship_id" name="ship_id" value="{{@$ship_id}}" >
+                <input type="hidden" id="ship_staff_id" name="ship_staff_id" value="{{@$ship['user_id']}}" >
+                <input type="hidden" id="hazmat_companies_id" name="hazmat_companies_id" value="{{@$ship['hazmat_companies_id']}}" >
 
               </div>
             </div>
