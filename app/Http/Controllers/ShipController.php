@@ -45,7 +45,7 @@ class ShipController extends Controller
         } else {
             // Otherwise, start with a query builder
 
-            $shipsQuery = Ship::with('client');
+            $shipsQuery = Ship::with('client','hazmatComapny');
             if ($request->has('search')) {
                 $search = $request->search;
                 $shipsQuery->where(function ($query) use ($search) {
@@ -75,12 +75,12 @@ class ShipController extends Controller
         }
         if ($request->ajax()) {
             return response()->json([
-                'ships_html' => view('components.ships-list', compact('ships'))->render(),
+                'ships_html' => view('components.ships-list', compact('ships','currentUserRoleLevel'))->render(),
             ]);
         }
-    
+  
         // Return the view with the ships data
-        return view('ships.list', compact('ships'));
+        return view('ships.list', compact('ships','currentUserRoleLevel'));
     }
     public function create()
     {

@@ -29,7 +29,7 @@
 
     </div>
     <div class="row equal-height" id="shipslist">
-        <x-ships-list :ships=$ships></x-ships-list>
+        <x-ships-list :ships=$ships :currentUserRoleLevel=$currentUserRoleLevel></x-ships-list>
     </div>
 </div>
 @endsection

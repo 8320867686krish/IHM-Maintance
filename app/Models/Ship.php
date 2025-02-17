@@ -48,6 +48,11 @@ class Ship extends Model
     {
         return $this->belongsTo(ClientCompany::class, 'client_company_id', 'id');
     }
+    public function hazmatComapny()
+    {
+        return $this->belongsTo(hazmatCompany::class, 'hazmat_companies_id','id');
+    }
+   
     public function shipStaff()
     {
         return $this->belongsTo(User::class, 'user_id', 'id');

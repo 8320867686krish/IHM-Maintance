@@ -1,27 +1,20 @@
 @if($ships->count() > 0)
 @foreach($ships as $ship)
 <div class="col-12 col-md-6 col-lg-3" id="shipid{{ $ship->id }}">
+   
     <a href="{{ route('ships.view', ['ship_id' => $ship->id]) }}" style="color: inherit; text-decoration: none;">
         <div class="card">
             <img src="{{ asset('uploads/ship/' . $ship->ship_image) }}" alt="Ship Image" class="card-img-top">
-            <div class="card-header px-4 pt-4">
-                <div class="card-actions float-end">
-                    @can('ships.remove')
-                    <a href="{{ route('ships.delete', ['id' => $ship->id]) }}"
-                        class="deleteship"
-                        data-id="{{ $ship->id }}"
-                        title="Delete">
-                        <i class="fas fa-trash-alt text-danger" style="font-size: 1rem"></i>
-                    </a>
-                    @endcan
-                </div>
-                <h5 class="card-title mb-0">{{ ucfirst($ship->ship_name) }}</h5>
-            </div>
-            <div class="card-body px-4 pt-2">
-                <p style="line-height: 2rem;">
-                    <strong>IMO Number:</strong> {{ $ship->imo_number }}<br>
-                    <strong>Client Name:</strong> {{ $ship->client->name }}<br>
-                </p>
+            
+            <div class="card-body px-4 pt-2 pb-4 text-center">
+                <h3 class="product-title mb-3 mt-3">{{ ucfirst($ship->ship_name) }}</h3>
+                <p class="card-text mb-2">IMO Number :  {{ $ship->imo_number }}</p>
+                <p class="card-text mb-2">Client Company : {{ $ship->client->name }}</p>
+                @if($currentUserRoleLevel == 1)
+                <p class="card-text mb-2">Hazmat Company : {{$ship->hazmatComapny->name}}</p>
+                @endif
+                <a href="{{ route('ships.view', ['ship_id' => $ship->id]) }}" class="btn btn-outline-light mt-2"><i class="fas fa-eye text-primery"></i></a>
+                <a href="{{ route('ships.delete', ['id' => $ship->id]) }}" class="btn btn-outline-light deleteship mt-2"><i class="fas fa-trash-alt text-danger"></i></a>
             </div>
         </div>
     </a>
