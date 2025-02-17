@@ -244,10 +244,17 @@
                 data: {
                     labels: anyliticsdata.labels,
                     datasets: [{
-                        label: 'MD & SDOC',
+                        label: 'MD',
                         data: anyliticsdata.mdSdRecoreds, // Updated data to fit the axis
-                        backgroundColor: "rgba(255, 64, 123,0.5)",
-                        borderColor: "rgba(255, 64, 123,0.5)",
+                        backgroundColor: "#732E00",
+                        borderColor: "#732E00",
+                        borderWidth: 2
+                    },
+                    {
+                        label: 'SDOC',
+                        data: anyliticsdata.sdocRecoreds, // Updated data to fit the axis
+                        backgroundColor: "#0066CC",
+                        borderColor: "#0066CC",
                         borderWidth: 2
                     }]
                 },
@@ -332,110 +339,21 @@
             
           
         }
-        var my_chart_brifing_md;
-        if ($('#c3chart_donut_brifing').length) {
-            my_chart_brifing_md = c3.generate({
-                bindto: "#c3chart_donut_brifing",
-                data: {
-                    columns: anyliticsdata.brifingoverview,
-                    type: 'donut',
-                    onclick: function(d, i) { console.log("onclick", d, i); },
-                    onmouseover: function(d, i) { console.log("onmouseover", d, i); },
-                    onmouseout: function(d, i) { console.log("onmouseout", d, i); },
-                    colors: {
-                        Jan: '#4A90E2', Feb: '#ff407b', Mar: '#25d5f2',
-                        Apr: '#ffc750', May: '#d45087', Jun: '#f95d6a',
-                        Jul: '#ff7c43', Aug: '#ffa600', Sep: '#ff8c00',
-                        Oct: '#0bb4ff', Nov: '#ffb55a', Dec: '#8bd3c7'
-                    }
-                },
-                donut: {
-                    title: "Brifing Records",
-                    label: {
-                        format: function(value) { return value; },
-                        show: true
-                    }
-                }
-            });
-        }
-        function updateChartData(newLabels, relevantData, nonRelevantData,updatedmdSdData,brifingoverview,trainingverview) {
-            if (my_chartchartjs_bar_ship) {
-                console.log("ddddd");
-                my_chartchartjs_bar_ship.data.labels = newLabels; // Update labels
-                my_chartchartjs_bar_ship.data.datasets[0].data = relevantData; // Update Relevant PO data
-                my_chartchartjs_bar_ship.data.datasets[1].data = nonRelevantData; // Update NON Relevant PO data
-                my_chartchartjs_bar_ship.update(); // Refresh chart
-            }
-            if (my_chart_chartjs_bar_md) {
-                my_chart_chartjs_bar_md.data.labels = newLabels; // Update labels
-                my_chart_chartjs_bar_md.data.datasets[0].data = updatedmdSdData; // Update Relevant PO data
-                my_chart_chartjs_bar_md.update(); // Refresh chart
-            }
-            if(my_chart_brifing_md){
-                console.log(brifingoverview);
-                my_chart_brifing_md.load({
-                    columns: brifingoverview,
-                    unload:true,
-                });
-            }
-            if(my_chart_training_md){
-                my_chart_training_md.load({
-                    columns: trainingverview,
-                    unload:true,
-                });
-            }
-            
-        }
-        const firstShipId = $('.shipswisePo option:selected').val();
-       
-        if (firstShipId && firstShipId !== "Select Ship") {
-            getshipwisepo(ship_id);
-        }
-        // $('.shipswisePo').change(function (e) {
-        //     var id = $(this).val();
-        //     getshipwisepo(id);
-
-        // });
-        $('#datetimepicker11').on("change.datetimepicker", function (e) {
-            let selectedDate = e.date ? e.date.format('YYYY') : ''; // Get the selected date
-            getshipwisepo(ship_id,selectedDate);
-        });
-
-        function getshipwisepo(id,selectedDate=null) {
-            $.ajax({
-                url: `${baseUrl}/shipwisepo/${id}/${selectedDate}`,
-                method: 'Get',
-
-                dataType: 'json',
-                contentType: false,
-                processData: false,
-                success: function (response) {
-                    var updatedLabels = response.labels;
-                    var updatedRelevantData = response.monthrelevantCounts;
-                    var updatedNonRelevantData = response.monthnonRelevantCounts;
-                    var updatedmdSdData = response.mdSdRecoreds;
-                    var brifingoverview = response.brifingoverview;
-                    var trainingverview = response.trainingverview;
-                    updateChartData(updatedLabels, updatedRelevantData, updatedNonRelevantData,updatedmdSdData,brifingoverview,trainingverview);
-
-
-                }
-
-            });
-        }
+        var hazmet_history_chart = '';
         if ($('#chartjs_bar_ihm_summery').length) {
+            
             var ctx = document.getElementById("chartjs_bar_ihm_summery").getContext('2d');
-            const maxQty = Math.max(...hazmatSummeryName.map(hazmat => hazmat.qty_sum || 0));
-            const stepSize = Math.ceil(maxQty / 10);  // Example: Divide the max value by 5, and round up to the nearest integer
+            const maxQty = Math.max(...anyliticsdata.hazmatSummeryName.map(hazmat => hazmat.qty_sum || 0));
+            const stepSize = Math.ceil(maxQty / 15);  // Example: Divide the max value by 5, and round up to the nearest integer
 
-            const datasets = hazmatSummeryName.map(hazmat => ({
+            const datasets = anyliticsdata.hazmatSummeryName.map(hazmat => ({
                 label: hazmat.short_name,
                 data: [hazmat.qty_sum || 0], // Use qty or 0 if it's undefined
                 backgroundColor: hazmat.color,
                 borderColor: hazmat.color,
                 borderWidth: 2
             }));
-            var myChart = new Chart(ctx, {
+            hazmet_history_chart = new Chart(ctx, {
                 type: 'bar',
                 data: {
                     labels: ['hazmats'],
@@ -478,160 +396,123 @@
             });
         }
 
-        if ($('#chartjs_radar').length) {
-            var ctx = document.getElementById("chartjs_radar");
-            var myChart = new Chart(ctx, {
-                type: 'radar',
-                data: {
-                    labels: ["M", "T", "W", "T", "F", "S", "S"],
-                    datasets: [{
-                        label: 'Almonds',
-                        backgroundColor: "rgba(89, 105, 255,0.5)",
-                        borderColor: "rgba(89, 105, 255,0.7)",
-                        data: [12, 19, 3, 17, 28, 24, 7],
-                        borderWidth: 2
-                    }, {
-                        label: 'Cashew',
-                        backgroundColor: "rgba(255, 64, 123,0.5)",
-                        borderColor: "rgba(255, 64, 123,0.7)",
-                        data: [30, 29, 5, 5, 20, 3, 10],
-                        borderWidth: 2
-                    }]
-                },
-                options: {
-
-                    legend: {
-                        display: true,
-                        position: 'bottom',
-
-                        labels: {
-                            fontColor: '#71748d',
-                            fontFamily: 'Circular Std Book',
-                            fontSize: 14,
-                        }
-                    },
-
-
-                }
-
-            });
-        }
-
-
-        if ($('#chartjs_polar').length) {
-            var ctx = document.getElementById("chartjs_polar").getContext('2d');
-            var myChart = new Chart(ctx, {
-                type: 'polarArea',
-                data: {
-                    labels: ["M", "T", "W", "T", "F", "S", "S"],
-                    datasets: [{
-                        backgroundColor: [
-                            "#5969ff",
-                            "#ff407b",
-                            "#25d5f2",
-                            "#ffc750",
-                            "#2ec551",
-                            "#7040fa",
-                            "#ff004e"
-                        ],
-                        data: [12, 19, 3, 17, 28, 24, 7]
-                    }]
-                },
-                options: {
-
-                    legend: {
-                        display: true,
-                        position: 'bottom',
-
-                        labels: {
-                            fontColor: '#71748d',
-                            fontFamily: 'Circular Std Book',
-                            fontSize: 14,
-                        }
-                    },
-
-
-                }
-            });
-        }
-    
       
-
-        if ($('#chartjs_pie').length) {
-            var ctx = document.getElementById("chartjs_pie").getContext('2d');
-            var myChart = new Chart(ctx, {
-                type: 'pie',
+        var my_chart_brifing_md;
+        if ($('#c3chart_donut_brifing').length) {
+            my_chart_brifing_md = c3.generate({
+                bindto: "#c3chart_donut_brifing",
                 data: {
-                    labels: ["M", "T", "W", "T", "F", "S", "S"],
-                    datasets: [{
-                        backgroundColor: [
-                            "#5969ff",
-                            "#ff407b",
-                            "#25d5f2",
-                            "#ffc750",
-                            "#2ec551",
-                            "#7040fa",
-                            "#ff004e"
-                        ],
-                        data: [12, 19, 3, 17, 28, 24, 7]
-                    }]
+                    columns: anyliticsdata.brifingoverview,
+                    type: 'donut',
+                    onclick: function(d, i) { console.log("onclick", d, i); },
+                    onmouseover: function(d, i) { console.log("onmouseover", d, i); },
+                    onmouseout: function(d, i) { console.log("onmouseout", d, i); },
+                    colors: {
+                        Jan: '#4A90E2', Feb: '#ff407b', Mar: '#25d5f2',
+                        Apr: '#ffc750', May: '#d45087', Jun: '#f95d6a',
+                        Jul: '#ff7c43', Aug: '#ffa600', Sep: '#ff8c00',
+                        Oct: '#0bb4ff', Nov: '#ffb55a', Dec: '#8bd3c7'
+                    }
                 },
-                options: {
-                    legend: {
-                        display: true,
-                        position: 'bottom',
-
-                        labels: {
-                            fontColor: '#71748d',
-                            fontFamily: 'Circular Std Book',
-                            fontSize: 14,
-                        }
-                    },
-
-
+                donut: {
+                    title: "Brifing Records",
+                    label: {
+                        format: function(value) { return value; },
+                        show: true
+                    }
                 }
             });
         }
+        function updateChartData(newLabels, relevantData, nonRelevantData,updatedmdSdData,brifingoverview,trainingverview,sdocRecoreds,hazmatSummeryName) {
+            if (my_chartchartjs_bar_ship) {
+                my_chartchartjs_bar_ship.data.labels = newLabels; // Update labels
+                my_chartchartjs_bar_ship.data.datasets[0].data = relevantData; // Update Relevant PO data
+                my_chartchartjs_bar_ship.data.datasets[1].data = nonRelevantData; // Update NON Relevant PO data
+                my_chartchartjs_bar_ship.update(); // Refresh chart
+            }
+            if (my_chart_chartjs_bar_md) {
+                my_chart_chartjs_bar_md.data.labels = newLabels; // Update labels
+                my_chart_chartjs_bar_md.data.datasets[0].data = updatedmdSdData; // Update Relevant PO data
+                my_chart_chartjs_bar_md.data.datasets[1].data = sdocRecoreds; // Update NON Relevant PO data
 
+                my_chart_chartjs_bar_md.update(); // Refresh chart
+            }
+            if(my_chart_brifing_md){
+                console.log(brifingoverview);
+                my_chart_brifing_md.load({
+                    columns: brifingoverview,
+                    unload:true,
+                });
+            }
+            if(my_chart_training_md){
+                my_chart_training_md.load({
+                    columns: trainingverview,
+                    unload:true,
+                });
+            }
+            if(hazmet_history_chart){
+                const maxQty = Math.max(...hazmatSummeryName.hazmatSummeryName.map(hazmat => hazmat.qty_sum || 0));
+                const stepSize = Math.ceil(maxQty / 15);  // Adjust step size based on max value
+        
+                const datasets = hazmatSummeryName.hazmatSummeryName.map(hazmat => ({
+                    label: hazmat.short_name,
+                    data: [hazmat.qty_sum || 0],
+                    backgroundColor: hazmat.color,
+                    borderColor: hazmat.color,
+                    borderWidth: 2
+                }));
+        
+                hazmet_history_hart.data.labels = ['hazmats']; // You can update the labels if needed
+                hazmet_history_hart.data.datasets = datasets;
+        
+                // Update the Y-axis scale dynamically
+                hazmet_history_hart.options.scales.yAxes[0].ticks.stepSize = stepSize;
+                hazmet_history_hart.options.scales.yAxes[0].ticks.max = maxQty;
+                my_chart_chartjs_bar_md.update(); // Refresh chart
+            }
+            
+        }
+        const firstShipId = $('.shipswisePo option:selected').val();
+       
+        if (firstShipId && firstShipId !== "Select Ship") {
+            getshipwisepo(ship_id);
+        }
+       
+        $("#yearSelect").on("change",function(e){
+            let selectedDate = $("#yearSelect").val();
+            getshipwisepo(ship_id,selectedDate);
 
-        if ($('#chartjs_doughnut').length) {
-            var ctx = document.getElementById("chartjs_doughnut").getContext('2d');
-            var myChart = new Chart(ctx, {
-                type: 'doughnut',
-                data: {
-                    labels: ["M", "T", "W", "T", "F", "S", "S"],
-                    datasets: [{
-                        backgroundColor: [
-                            "#5969ff",
-                            "#ff407b",
-                            "#25d5f2",
-                            "#ffc750",
-                            "#2ec551",
-                            "#7040fa",
-                            "#ff004e"
-                        ],
-                        data: [12, 19, 3, 17, 28, 24, 7]
-                    }]
-                },
-                options: {
+        });
+     
 
-                    legend: {
-                        display: true,
-                        position: 'bottom',
+        function getshipwisepo(id,selectedDate=null) {
+            $.ajax({
+                url: `${baseUrl}/shipwisepo/${id}/${selectedDate}`,
+                method: 'Get',
 
-                        labels: {
-                            fontColor: '#71748d',
-                            fontFamily: 'Circular Std Book',
-                            fontSize: 14,
-                        }
-                    },
+                dataType: 'json',
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    var updatedLabels = response.labels;
+                    var updatedRelevantData = response.monthrelevantCounts;
+                    var updatedNonRelevantData = response.monthnonRelevantCounts;
+                    var updatedmdSdData = response.mdSdRecoreds;
+                    var brifingoverview = response.brifingoverview;
+                    var trainingverview = response.trainingverview;
+                    var sdocRecoreds = response.sdocRecoreds;
+                    var hazmatSummeryName = response.hazmatSummeryName;
+                    updateChartData(updatedLabels, updatedRelevantData, updatedNonRelevantData,updatedmdSdData,brifingoverview,trainingverview,sdocRecoreds,hazmatSummeryName);
 
 
                 }
 
             });
         }
+      
+       
 
+        
 
     });
 

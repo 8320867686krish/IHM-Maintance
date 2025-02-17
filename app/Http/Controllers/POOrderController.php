@@ -79,7 +79,7 @@ class POOrderController extends Controller
     }
     public function viewReleventItem($poiteam_id)
     {
-        $poItem = poOrderItem::with(['poOrder:id,po_no', 'poOrderItemsHazmets.hazmat.equipment','poOrderItemsHazmets.emailHistory'])->find($poiteam_id);
+        $poItem = poOrderItem::with(['poOrder:id,po_no', 'poOrderItemsHazmets.hazmat','poOrderItemsHazmets.makeModel','poOrderItemsHazmets.emailHistory'])->find($poiteam_id);
 
         $equipments = MakeModel::selectRaw('MIN(id) as id, equipment')
         ->groupBy('equipment')
@@ -222,7 +222,8 @@ class POOrderController extends Controller
                 $PoOrderItemsHazmat = PoOrderItemsHazmats::find($value['id']);
                 $value['model_make_part_id'] = @$value['model_make_part_id'] ?? @$PoOrderItemsHazmat['model_make_part_id'];
              //   $getModel = MakeModel::find($value['modelMakePart']);
-                // $value['doc1'] = @$getModel['document1']['name'] ?? '';
+             $value['doc1'] = @$value['doc1'] ?  $value['model_make_part_id'].'M':'' ;
+             $value['doc2'] = @$value['doc2'] ?  $value['model_make_part_id'].'S':'' ;
                 // $value['doc2'] = @$getModel['document2']['name'] ?? '';
                 $sloats = [];
 

@@ -156,9 +156,7 @@
 																		<select class="form-control  manufacturerselect" id="manufacturerselect_{{$value['hazmat_id']}}" name="hazmats[{{$value['hazmat_id']}}][hazmet_manufacturer]" data-id="{{$value['hazmat_id']}}" data-findtable="{{$hazmetTable}}" data-divvalue="{{$value['hazmat_id']}}">
 																			<option value="">Select Manufacturer
 																			</option>
-																			<!-- @foreach($value->hazmat->equipment as $equipment)
-																			<option value="{{$equipment['manufacturer']}}" @if($equipment['manufacturer']==$value['hazmet_manufacturer']) selected @endif>{{$equipment['manufacturer']}}</option>
-																			@endforeach -->
+																		
 																		</select>
 																	</div>
 
@@ -169,9 +167,7 @@
 																		<select class="form-control  modelMakePartSelect" data-id="{{$value['hazmat_id']}}" id="modelMakePartselect_{{$value['hazmat_id']}}" name="hazmats[{{$value['hazmat_id']}}][model_make_part_id]" data-findtable="{{$hazmetTable}}" data-divvalue="{{$value['hazmat_id']}}">
 																			<option value="">Select Model Make and Part
 																			</option>
-																			<!-- @foreach($value->hazmat->equipment as $equipment)
-																			<option value="{{$equipment->id}}" @if($equipment['id']==$value['model_make_part_id']) selected @endif>{{$equipment->model}}-{{$equipment->make}}-{{$equipment->part}}</option>
-																			@endforeach -->
+																			
 																		</select>
 																	</div>
 
@@ -180,7 +176,7 @@
 																<div class=" col-4  documentLoad1 mb-1" id="documentLoad1_{{$value['hazmat_id']}}">
 																	<div class="form-group">
 																		@if(@$value['doc1'])
-																		<input type="hidden" name="hazmats[{{$value['hazmat_id']}}][doc1]" value="{{$value['doc1']}}"><a>MD NO.{{ $value['doc1'] }}</a>
+																		<input type="hidden" name="hazmats[{{$value['hazmat_id']}}][doc1]" value="{{$value['doc1']}}"><a>MD NO.{{$value->makeModel->md_no}}</a>
 
 																		@endif
 																	</div>
@@ -189,7 +185,7 @@
 																<div class=" col-4  documentLoad2 mb-1" id="documentLoad2_{{$value['hazmat_id']}}">
 																	<div class="form-group">
 																		@if(@$value['doc2'])
-																		<input type="hidden" name="hazmats[{{$value['hazmat_id']}}][doc2]" value="{{$value['doc2']}}"><a>SDoC No.{{ $value['doc2'] }}</a>
+																		<input type="hidden" name="hazmats[{{$value['hazmat_id']}}][doc2]" value="{{$value['doc2']}}"><a>SDoC No.{{$value->makeModel->sdoc_no}}</a>
 
 																		@endif
 																	</div>
@@ -540,7 +536,7 @@
 
 					<div class="col-12">
 						<div class="form-group">
-							<button class="btn btn-primary float-right mb-1"
+							<button class="btn btn-primary float-right mb-4"
 								type="submit">Save</button>
 						</div>
 					</div>

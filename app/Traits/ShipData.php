@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use App\Models\Hazmat;
 use Illuminate\Http\Request;
 use App\Models\Ship;
 use Carbon\Carbon;
@@ -45,10 +46,17 @@ trait ShipData
                 ->whereMonth('created_at', $start->month)
                 ->count();
 
-            $mdSdRecoreds[] = $ship->pOOrderItemsHazmats()
+            $mdRecoreds[] = $ship->pOOrderItemsHazmats()
+                ->whereNotNull('doc1')
                 ->whereYear('created_at', $start->year)
                 ->whereMonth('created_at', $start->month)
-                ->groupBy('model_make_part_id')
+                ->count();
+
+            $sdocRecoreds[] = $ship->pOOrderItemsHazmats()
+            ->whereNotNull('doc2')
+
+                ->whereYear('created_at', $start->year)
+                ->whereMonth('created_at', $start->month)
                 ->count();
 
             $trainingOverview = $ship->exams()
@@ -75,7 +83,10 @@ trait ShipData
             return [date('M', mktime(0, 0, 0, $monthNum, 1)), $count];
         })->values()->toArray();
 
-
+        $hazmatSummeryName = Hazmat::withSum(['checkHazmats as qty_sum' => function ($query) use ($shipId,$year) {
+            $query->where('ship_id', $shipId)
+                  ->whereYear('created_at',$year);  // Filter by current year
+        }], 'qty')->get()->toArray();
 
             // Move to the next month
             $start->addMonth();
@@ -86,9 +97,11 @@ trait ShipData
             'labels' => $labels,
             'monthrelevantCounts' => $monthrelevantCounts,
             'monthnonRelevantCounts' => $monthnonRelevantCounts,
-            'mdSdRecoreds' => $mdSdRecoreds,
+            'mdSdRecoreds' => $mdRecoreds,
+            'sdocRecoreds' => $sdocRecoreds,
             'trainingverview' => $months,
             'brifingoverview' => $brfingmonths,
+            'hazmatSummeryName' =>  $hazmatSummeryName,
             'ship' => $ship['ship_name']
         ]);
     }

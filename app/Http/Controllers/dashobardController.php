@@ -117,26 +117,7 @@ class dashobardController extends Controller
         $user = Auth::user();
         $currentUserRoleLevel = $user->roles->first()->level;
         $anyliticsdata = $this->getShipData($id);
-        $hazmatSummeryName = Hazmat::withSum(['checkHazmats as qty_sum' => function ($query) use ($id) {
-            $query->where('ship_id', $id);
-        }], 'qty')->get()->toArray();
-
-        $months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-
-      
-        $brifingsRecoreds = DB::table('brifings')
-            ->select(DB::raw("DATE_FORMAT(created_at, '%b') as month"), DB::raw('COUNT(*) as count'))
-            ->groupBy('month')
-            ->orderBy(DB::raw("STR_TO_DATE(month, '%b')")) // Ensures proper month order
-            ->where('ship_id', $id)
-            ->get()
-            ->pluck('count', 'month')
-            ->toArray();
-
-        $brifingViewData = array_map(fn($month) => [$month, $brifingsRecoreds[$month] ?? 2], $months);
-
-
-        return view('ship-dashboard', compact('anyliticsdata', 'hazmatSummeryName', 'brifingViewData', 'ship_id'));
+        return view('ship-dashboard', compact('anyliticsdata','ship_id'));
     }
     public function configration(Request $request)
     {

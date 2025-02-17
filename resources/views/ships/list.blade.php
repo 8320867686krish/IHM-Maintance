@@ -12,7 +12,7 @@
     @endcan
 
 
-    <div class="row">
+    <div class="row mb-4">
         <!-- Search Form on the Right -->
         <div class="col-3 offset-9 mb-4 text-right">
             <!-- Search Form with Search Icon Inside Button -->

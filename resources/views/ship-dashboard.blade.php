@@ -3,7 +3,6 @@
 
 
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/vendor/charts/chartist-bundle/chartist.css') }}">
-<link rel="stylesheet" href="{{ asset('assets/vendor/datepicker/tempusdominus-bootstrap-4.css')}}">
 
 @endsection
 
@@ -23,20 +22,30 @@
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-md-12">
-            <div class="form-group text-right"> <!-- Aligning to right -->
-                <div class="input-group date  d-inline-flex " id="datetimepicker11" data-target-input="nearest" style="max-width: 250px;">
-                    <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker11">
-                    <div class="input-group-append" data-target="#datetimepicker11" data-toggle="datetimepicker">
-                        <div class="input-group-text"><i class="fa fa-calendar-alt"></i></div>
-                    </div>
-                </div>
-                <a href="{{url('ship/view/'.$ship_id)}}" class="btn btn-primary ml-3 mr-1 addNewBtn">IHM Maintenance</a>
+    <div class="row mb-4">
+    <div class="col-md-12">
+        <div class="d-flex justify-content-end align-items-center"> <!-- Flexbox for alignment -->
+            <select name="year" id="yearSelect" class="form-control w-25">
+                @php
+                    $currentYear = date('Y');
+                    $startYear = $currentYear - 3;
+                    $endYear = $currentYear + 3;
+                @endphp
+                <option value="" disabled>Select Year</option>
+                @for ($year = $startYear; $year <= $endYear; $year++)
+                    <option value="{{ $year }}" {{ $year == $currentYear ? 'selected' : '' }}>
+                        {{ $year }}
+                    </option>
+                @endfor
+            </select>
 
-            </div>
+            <a href="{{ url('ship/view/'.$ship_id) }}" class="btn btn-primary ml-3 addNewBtn">
+                IHM Maintenance
+            </a>
         </div>
     </div>
+</div>
+
 
     <div class="row">
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
@@ -100,11 +109,8 @@
     @stop
     @push('js')
     <script>
-       
         var anyliticsdata = @json($anyliticsdata);
         var ship_id = "{{$ship_id}}";
-        var hazmatSummeryName = @json($hazmatSummeryName);
-        var brifingViewData = @json($brifingViewData);
     </script>
     <script src="{{ asset('assets/vendor/bootstrap-select/js/bootstrap-select.js') }}"></script>
 
@@ -113,7 +119,4 @@
     <script src="{{ asset('assets/vendor/charts/c3charts/c3.min.js') }}"></script>
     <script src="{{ asset('assets/vendor/charts/c3charts/d3-5.4.0.min.js') }}"></script>
     <script src="{{ asset('assets/vendor/charts/c3charts/C3chartjs.js') }}"></script>
-    <script src="{{ asset('assets/vendor/datepicker/moment.js')}}"></script>
-    <script src="{{ asset('assets/vendor/datepicker/tempusdominus-bootstrap-4.js')}}"></script>
-    <script src="{{ asset('assets/vendor/datepicker/datepicker.js')}}"></script>
     @endpush
