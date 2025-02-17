@@ -46,13 +46,13 @@ class ShipController extends Controller
             // Otherwise, start with a query builder
 
             $shipsQuery = Ship::with('client');
-   if ($request->has('search')) {
-        $search = $request->search;
-        $shipsQuery->where(function($query) use ($search) {
-            $query->where('ship_name', 'like', '%'.$search.'%')
-                  ->orWhere('imo_number', 'like', '%'.$search.'%');
-        });
-    }
+            if ($request->has('search')) {
+                $search = $request->search;
+                $shipsQuery->where(function ($query) use ($search) {
+                    $query->where('ship_name', 'like', '%' . $search . '%')
+                        ->orWhere('imo_number', 'like', '%' . $search . '%');
+                });
+            }
             $shipsQuery->when($currentUserRoleLevel == 2, function ($query) use ($user) {
                 return $query->where('hazmat_companies_id', $user['hazmat_companies_id']);
             });
@@ -68,11 +68,17 @@ class ShipController extends Controller
             });
 
             // Execute the query and get the ships
-            $ships = $shipsQuery->paginate(1);
+            $ships = $shipsQuery->paginate(8);
             if ($request->has('search')) {
                 $ships->appends(['search' => $request->search]);
             }
         }
+        if ($request->ajax()) {
+            return response()->json([
+                'ships_html' => view('components.ships-list', compact('ships'))->render(),
+            ]);
+        }
+    
         // Return the view with the ships data
         return view('ships.list', compact('ships'));
     }

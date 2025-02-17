@@ -148,9 +148,11 @@ Route::middleware('auth')->group(function () {
             Route::get('ships/add', 'create')->name('ships.add')->middleware('can:ships.add');
             Route::post('ships', 'store')->name('ships.store');
             Route::get('ships/{id}/delete', 'destroy')->name('ships.delete')->middleware('can:ships.remove');
-            Route::get('ship/view/{ship_id}', 'shipView')->name('ships.view');
             Route::post('ship/assignProject', 'assignShip')->name('ships.assign');
         });
+
+        Route::get('ship/view/{ship_id}',[ShipController::class,'shipView'])->name('ships.view');
+
         Route::controller(TrainingController::class)->group(function () {
             Route::get('trainingsets', 'index')->name('trainingsets');
             Route::get('trainingsets/add', 'add')->name('trainingsets.add');
