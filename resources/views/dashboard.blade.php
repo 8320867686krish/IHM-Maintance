@@ -67,17 +67,13 @@
 
     <div class="base-template__content mt-4">
 
-        <div class="row ">
-            <div class="row">
                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 
                     <x-swiper-slide :data=$hazmatCompany :path=$path :imagekey=$imagekey :routename=$routename></x-swiper-slide>
                 </div>
 
-            </div>
 
-
-        </div>
+       
     </div>
 
 
