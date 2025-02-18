@@ -9,6 +9,7 @@ use App\Models\DesignatedPerson;
 use App\Models\Exam;
 use App\Models\Hazmat;
 use App\Models\Ship;
+use App\Traits\PdfGenerator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Mpdf\Mpdf;
@@ -19,6 +20,7 @@ ini_set('exif.decode_jpeg', '0');
 class ReportController extends Controller
 {
     //
+    use PdfGenerator;
     public function genrateReport(Request $request){
         $version = 1;
         $post = $request->input();
