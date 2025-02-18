@@ -12,7 +12,7 @@
                 </tr>
             </thead>
             <tbody>
-                @if(count($exam) == 0)
+                @if(count($crewBrifing) == 0)
                 <tr>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
