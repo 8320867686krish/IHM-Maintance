@@ -370,7 +370,7 @@ class TrainingController extends Controller
             $shipImagePath = asset('uploads/ship/'.$shipDetail['ship_image']);
             $shipImageData = base64_encode(file_get_contents($shipImagePath));
             $shipImage = 'data:image/png;base64,' . $shipImageData;
-            $html = view('report.cover', compact('shipDetail'))->render();
+            $html = view('report.cover', compact('shipDetail','shipImage'))->render();
             $mpdf->WriteHTML(view('report.shipParticular', compact('shipDetail','shipImage')));
             $mpdf->AddPage('L'); // Set landscape mode for the inventory page
             $mpdf->WriteHTML(view('report.Inventory', compact('filteredResults1', 'filteredResults2', 'filteredResults3')));
