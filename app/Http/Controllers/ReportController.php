@@ -172,7 +172,7 @@ class ReportController extends Controller
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
 
         $crewBrifing = Brifing::where('ship_id',$ship_id)->orderBy('id','desc')->get();
-        $html = view('main-report.creBriefing',compact('crewBrifing'))->render();
+        $html = view('main-report.cre-briefing',compact('crewBrifing'))->render();
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
 
         // $sdresults = DB::select('SELECT p.po_order_item_id, p.doc2 AS sd_no, m.sdoc_date, m.issuer_name,m.sdoc_objects,m.sdoc_no, m.coumpany_name,po_order_items.description,GROUP_CONCAT(DISTINCT h.short_name) AS hazmat_names FROM po_order_items_hazmats p JOIN hazmats h ON p.hazmat_id = h.id JOIN make_models m ON p.model_make_part_id = m.id JOIN po_order_items po_order_items ON p.po_order_item_id = po_order_items.id where p.ship_id = '.$ship_id.' GROUP BY p.po_order_item_id, p.doc2, m.sdoc_date, m.coumpany_name, m.issuer_name, ,m.sdoc_objects,po_order_items.description,m.sdoc_no');
