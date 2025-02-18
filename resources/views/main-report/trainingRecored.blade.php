@@ -1,6 +1,6 @@
 <div class="container next">
     <div class="section-1-1">
-        <h3> 4. Recored Of Training </h3>
+        <h3> 4. OnBoard Training Records </h3>
         <table>
             <thead>
                 <tr>
