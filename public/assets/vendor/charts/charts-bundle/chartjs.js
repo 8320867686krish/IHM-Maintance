@@ -451,10 +451,10 @@
                 });
             }
             if(hazmet_history_chart){
-                const maxQty = Math.max(...hazmatSummeryName.hazmatSummeryName.map(hazmat => hazmat.qty_sum || 0));
+                const maxQty = Math.max(...hazmatSummeryName.map(hazmat => hazmat.qty_sum || 0));
                 const stepSize = Math.ceil(maxQty / 15);  // Adjust step size based on max value
         
-                const datasets = hazmatSummeryName.hazmatSummeryName.map(hazmat => ({
+                const datasets = hazmatSummeryName.map(hazmat => ({
                     label: hazmat.short_name,
                     data: [hazmat.qty_sum || 0],
                     backgroundColor: hazmat.color,
