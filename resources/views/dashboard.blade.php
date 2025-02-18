@@ -19,145 +19,162 @@
 <div class="container-fluid dashboard-content">
 
     @if($currentUserRoleLevel == 5)
-    <div class="row mr-1">
+    <div class="row mb-4">
         <div class="col-md-12">
-            <div class="form-group text-right"> <!-- Aligning to right -->
-                <div class="input-group date  d-inline-flex" id="datetimepicker11" data-target-input="nearest" style="max-width: 250px;">
-                    <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker11">
-                    <div class="input-group-append" data-target="#datetimepicker11" data-toggle="datetimepicker">
-                        <div class="input-group-text"><i class="fa fa-calendar-alt"></i></div>
-                    </div>
-                </div>
+            <div class="d-flex justify-content-end align-items-center"> <!-- Flexbox for alignment -->
+                <select name="allships" id="allships" class="form-control w-25">
+                    @php
+                    $currentYear = date('Y');
+                    $startYear = $currentYear - 3;
+                    $endYear = $currentYear + 3;
+                    @endphp
+                    <option value="" disabled>Select Year</option>
+                    @for ($year = $startYear; $year <= $endYear; $year++)
+                        <option value="{{ $year }}" {{ $year == $currentYear ? 'selected' : '' }}>
+                        {{ $year }}
+                        </option>
+                        @endfor
+                </select>
+
+
             </div>
         </div>
     </div>
+
     @endif
 
     @if($currentUserRoleLevel == 5)
     <div class="row">
-        <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10 col-10">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 
             <div class="card">
                 <h5 class="card-header">Ships Overview</h5>
+                <div class="row">
+                <div class="col-xl-10 col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+                    <a href="#" class="btn btn-outline-primary chartBtn active" data-type="porecords">Po Records</a>
 
-                <div class="card-body">
-                    <div id="c3chart_spline"></div>
+                    <a href="#" class="btn btn-outline-primary chartBtn" data-type="onboard">OnBoard Training</a>
+                    <a href="#" class="btn btn-outline-primary chartBtn"  data-type="brifings">Ship Crew Brifing</a>
+                    <a href="#" class="btn btn-outline-primary chartBtn">MD Records</a>
+                    <a href="#" class="btn btn-outline-primary chartBtn">SDOC Records</a>
                 </div>
-            </div>
-
-        </div>
-        <div class="col-md-2 float-right">
-        <div class="card">
-            <a href="#" class="btn btn-outline-primary">OnBoard Training</a>
-            <a href="#" class="btn btn-outline-primary">Ship Crew Brifing</a>
-            <a href="#" class="btn btn-outline-primary">MD Records</a>
-            <a href="#" class="btn btn-outline-primary">SDOC Records</a>
-        </div>
-        </div>
-    </div>
-    @endif
-
-    <div class="row  mb-4 mt-2">
-        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-            <div class="page-header">
-                <h2 class="pageheader-title text-center">{{$title}}</h2>
-            </div>
-        </div>
-    </div>
-
-    <div class="base-template__content mt-4">
-
-                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-
-                    <x-swiper-slide :data=$hazmatCompany :path=$path :imagekey=$imagekey :routename=$routename></x-swiper-slide>
                 </div>
-
-
-       
-    </div>
-
-
-    <div class="row  mb-4 mt-4">
-        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-            <div class="page-header">
-                <h2 class="pageheader-title text-center">Help Center</h2>
-            </div>
-        </div>
-    </div>
-
-    <div class="container mb-4 mt-4">
-        <div class="row ">
-            <div class="col-xl-4 col-lg-3 col-md-6 col-sm-12 col-12">
-                <div class="card border-3 border-top border-top-primary">
                     <div class="card-body">
-                        <h4 class="text-muted text-center"><a href="{{url('helpcenter')}}">Correspondence With Ship / Client</a></h4>
 
-
+                        <div id="c3chart_spline"></div>
                     </div>
                 </div>
+
             </div>
-            @if($currentUserRoleLevel != 1)
-            <div class="col-xl-4 col-lg-3 col-md-6 col-sm-12 col-12">
-                <div class="card border-3 border-top border-top-primary">
-                    <div class="card-body">
-                        <h4 class="text-muted text-center"><a href="{{url('helpcenter')}}">Hazmat Company Credentials</a></h4>
-                    </div>
+            <div class="col-md-2 float-right">
+                <div class="card">
+
                 </div>
             </div>
-            @endif
+        </div>
+        @endif
 
-            @if($currentUserRoleLevel == 5 ||$currentUserRoleLevel == 2 || $currentUserRoleLevel == 3 || $currentUserRoleLevel==4)
-            <div class="col-xl-4 col-lg-3 col-md-6 col-sm-12 col-12">
-                <div class="card border-3 border-top border-top-primary">
-                    <div class="card-body">
-                        <h4 class="text-muted text-center"><a href="{{url('helpcenter')}}">Extract For Clientt SMS</a></h4>
-
-
-                    </div>
+        <div class="row  mb-4 mt-2">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="page-header">
+                    <h2 class="pageheader-title text-center">{{$title}}</h2>
                 </div>
             </div>
-            @endif
+        </div>
 
-            @if( $currentUserRoleLevel == 2)
-            <div class="col-xl-4 col-lg-3 col-md-6 col-sm-12 col-12">
-                <div class="card border-3 border-top border-top-primary">
-                    <div class="card-body">
-                        <h4 class="text-muted text-center"><a href="{{url('helpcenter')}}">SuperAdmin Correspondence</a></h4>
-                    </div>
-                </div>
+        <div class="base-template__content mt-4">
+
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+
+                <x-swiper-slide :data=$hazmatCompany :path=$path :imagekey=$imagekey :routename=$routename></x-swiper-slide>
             </div>
-            @endif
 
-            @if($currentUserRoleLevel == 1 || $currentUserRoleLevel == 2)
-            <div class="col-xl-4 col-lg-3 col-md-6 col-sm-12 col-12">
-                <div class="card border-3 border-top border-top-primary">
-                    <div class="card-body">
-                        <h4 class="text-muted text-center"><a href="{{url('helpcenter')}}">Available Template</a></h4>
-
-
-                    </div>
-                </div>
-            </div>
-            @endif
 
 
         </div>
+
+
+        <div class="row  mb-4 mt-4">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="page-header">
+                    <h2 class="pageheader-title text-center">Help Center</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="container mb-4 mt-4">
+            <div class="row ">
+                <div class="col-xl-4 col-lg-3 col-md-6 col-sm-12 col-12">
+                    <div class="card border-3 border-top border-top-primary">
+                        <div class="card-body">
+                            <h4 class="text-muted text-center"><a href="{{url('helpcenter')}}">Correspondence With Ship / Client</a></h4>
+
+
+                        </div>
+                    </div>
+                </div>
+                @if($currentUserRoleLevel != 1)
+                <div class="col-xl-4 col-lg-3 col-md-6 col-sm-12 col-12">
+                    <div class="card border-3 border-top border-top-primary">
+                        <div class="card-body">
+                            <h4 class="text-muted text-center"><a href="{{url('helpcenter')}}">Hazmat Company Credentials</a></h4>
+                        </div>
+                    </div>
+                </div>
+                @endif
+
+                @if($currentUserRoleLevel == 5 ||$currentUserRoleLevel == 2 || $currentUserRoleLevel == 3 || $currentUserRoleLevel==4)
+                <div class="col-xl-4 col-lg-3 col-md-6 col-sm-12 col-12">
+                    <div class="card border-3 border-top border-top-primary">
+                        <div class="card-body">
+                            <h4 class="text-muted text-center"><a href="{{url('helpcenter')}}">Extract For Clientt SMS</a></h4>
+
+
+                        </div>
+                    </div>
+                </div>
+                @endif
+
+                @if( $currentUserRoleLevel == 2)
+                <div class="col-xl-4 col-lg-3 col-md-6 col-sm-12 col-12">
+                    <div class="card border-3 border-top border-top-primary">
+                        <div class="card-body">
+                            <h4 class="text-muted text-center"><a href="{{url('helpcenter')}}">SuperAdmin Correspondence</a></h4>
+                        </div>
+                    </div>
+                </div>
+                @endif
+
+                @if($currentUserRoleLevel == 1 || $currentUserRoleLevel == 2)
+                <div class="col-xl-4 col-lg-3 col-md-6 col-sm-12 col-12">
+                    <div class="card border-3 border-top border-top-primary">
+                        <div class="card-body">
+                            <h4 class="text-muted text-center"><a href="{{url('helpcenter')}}">Available Template</a></h4>
+
+
+                        </div>
+                    </div>
+                </div>
+                @endif
+
+
+            </div>
+        </div>
     </div>
-</div>
 
 
-@stop
-@push('js')
-<script>
-    var chartData = @json(@$chartData);
-</script>
-<script src="{{ asset('assets/js/sliderswiper.js') }}"></script>
-<script src="{{ asset('assets/vendor/charts/charts-bundle/Chart.bundle.js') }}"></script>
-<script src="{{ asset('assets/vendor/charts/charts-bundle/chartjs.js') }}"></script>
-<script src="{{ asset('assets/vendor/charts/c3charts/c3.min.js') }}"></script>
-<script src="{{ asset('assets/vendor/charts/c3charts/d3-5.4.0.min.js') }}"></script>
-<script src="{{ asset('assets/vendor/charts/c3charts/C3chartjs.js') }}"></script>
-<script src="{{ asset('assets/vendor/datepicker/moment.js')}}"></script>
-<script src="{{ asset('assets/vendor/datepicker/tempusdominus-bootstrap-4.js')}}"></script>
-<script src="{{ asset('assets/vendor/datepicker/datepicker.js')}}"></script>
-@endpush
+    @stop
+    @push('js')
+    <script>
+        var chartData = @json(@$chartData);
+    </script>
+    <script src="{{ asset('assets/js/sliderswiper.js') }}"></script>
+    <script src="{{ asset('assets/vendor/charts/charts-bundle/Chart.bundle.js') }}"></script>
+    <script src="{{ asset('assets/vendor/charts/charts-bundle/chartjs.js') }}"></script>
+    <script src="{{ asset('assets/vendor/charts/c3charts/c3.min.js') }}"></script>
+    <script src="{{ asset('assets/vendor/charts/c3charts/d3-5.4.0.min.js') }}"></script>
+    <script src="{{ asset('assets/vendor/charts/c3charts/C3chartjs.js') }}"></script>
+    <script src="{{ asset('assets/vendor/datepicker/moment.js')}}"></script>
+    <script src="{{ asset('assets/vendor/datepicker/tempusdominus-bootstrap-4.js')}}"></script>
+    <script src="{{ asset('assets/vendor/datepicker/datepicker.js')}}"></script>
+    @endpush

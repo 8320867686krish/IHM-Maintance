@@ -25,39 +25,12 @@ class dashobardController extends Controller
         $user = Auth::user();
         $currentUserRoleLevel = $user->roles->first()->level;
         $currentUserRoleName = $user->roles->first()->name;
-        $months = DB::table('po_order_items')
-            ->selectRaw('DATE_FORMAT(created_at, "%b") as month, DATE_FORMAT(created_at, "%Y-%m") as full_month')
-            ->groupBy('full_month', 'month')
-            ->orderBy('full_month')
-            ->pluck('month')
-            ->toArray();
-
-        $ships = Ship::with(['pOOrderItems' => function ($query) {
-            $query->selectRaw('ship_id, DATE_FORMAT(created_at, "%b") as month, COUNT(*) as count')
-                ->groupBy('ship_id', 'month');
-        }])->get();
-
-        $chartData = [
-            'columns' => [],
-            'colors' => []
-        ];
-
-        $chartData['columns'][] = array_merge(["x"], $months); // X-axis (Months)
-
-        $shipColors = ['#5969ff', '#ff407b', '#28a745']; // Define colors for ships
-
-        foreach ($ships as $index => $ship) {
-            $data = [$ship->ship_name]; // Ship name as series
-            $monthData = array_fill_keys($months, 0); // Ensure all months exist
-
-            foreach ($ship->pOOrderItems as $item) {
-                $monthData[$item->month] = $item->count; // Fill in actual count
-            }
-
-            $data = array_merge($data, array_values($monthData)); // Ensure correct order
-            $chartData['columns'][] = $data;
-            $chartData['colors'][$ship->ship_name] = $shipColors[$index % count($shipColors)];
+        if ($currentUserRoleLevel == 5) {
+            $chartData = $this->getAllhip('2025');
+        }else{
+            $chartData = [];
         }
+
 
 
         if ($currentUserRoleLevel == 2 || $currentUserRoleLevel == 3 || $currentUserRoleLevel == 4) {
@@ -117,7 +90,7 @@ class dashobardController extends Controller
         $user = Auth::user();
         $currentUserRoleLevel = $user->roles->first()->level;
         $anyliticsdata = $this->getShipData($id);
-        return view('ship-dashboard', compact('anyliticsdata','ship_id'));
+        return view('ship-dashboard', compact('anyliticsdata', 'ship_id'));
     }
     public function configration(Request $request)
     {
@@ -159,6 +132,10 @@ class dashobardController extends Controller
     public function shipwiseData($shipId, $selectedDate)
     {
         $data = $this->getShipData($shipId, $selectedDate);
+        return $data;
+    }
+    public function allshipsData($type,$date){
+        $data = $this->getAllhip($type,$date);    
         return $data;
     }
 }

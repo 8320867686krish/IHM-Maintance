@@ -23,28 +23,28 @@
         </div>
     </div>
     <div class="row mb-4">
-    <div class="col-md-12">
-        <div class="d-flex justify-content-end align-items-center"> <!-- Flexbox for alignment -->
-            <select name="year" id="yearSelect" class="form-control w-25">
-                @php
+        <div class="col-md-12">
+            <div class="d-flex justify-content-end align-items-center"> <!-- Flexbox for alignment -->
+                <select name="year" id="yearSelect" class="form-control w-25">
+                    @php
                     $currentYear = date('Y');
                     $startYear = $currentYear - 3;
                     $endYear = $currentYear + 3;
-                @endphp
-                <option value="" disabled>Select Year</option>
-                @for ($year = $startYear; $year <= $endYear; $year++)
-                    <option value="{{ $year }}" {{ $year == $currentYear ? 'selected' : '' }}>
+                    @endphp
+                    <option value="" disabled>Select Year</option>
+                    @for ($year = $startYear; $year <= $endYear; $year++)
+                        <option value="{{ $year }}" {{ $year == $currentYear ? 'selected' : '' }}>
                         {{ $year }}
-                    </option>
-                @endfor
-            </select>
+                        </option>
+                        @endfor
+                </select>
 
-            <a href="{{ url('ship/view/'.$ship_id) }}" class="btn btn-primary ml-3 addNewBtn">
-                IHM Maintenance
-            </a>
+                <a href="{{ url('ship/view/'.$ship_id) }}" class="btn btn-primary ml-3 addNewBtn">
+                    IHM Maintenance
+                </a>
+            </div>
         </div>
     </div>
-</div>
 
 
     <div class="row">
