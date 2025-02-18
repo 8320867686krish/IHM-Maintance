@@ -26,7 +26,7 @@ class dashobardController extends Controller
         $currentUserRoleLevel = $user->roles->first()->level;
         $currentUserRoleName = $user->roles->first()->name;
         if ($currentUserRoleLevel == 5) {
-            $chartData = $this->getAllhip('2025');
+            $chartData = $this->getAllhip();
         }else{
             $chartData = [];
         }

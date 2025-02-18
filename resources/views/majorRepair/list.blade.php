@@ -11,7 +11,7 @@
 
 @section('content')
 <div class="container-fluid dashboard-content">
-    <x-page-header title="Major Repair Management"></x-page-header>
+    <x-page-header title="Repair Management"></x-page-header>
 
    
     <div class="row">
@@ -22,7 +22,7 @@
                 <h4 class="card-header">
                     @can('majorrepair.add')
                     <a href="#"
-                        class="btn btn-primary float-right btn addMajorBtn">Add Major Repaair</a>
+                        class="btn btn-primary float-right btn addMajorBtn">Add Repaair</a>
                     @endcan
                 </h4>
                 <div class="card-body mb-4">

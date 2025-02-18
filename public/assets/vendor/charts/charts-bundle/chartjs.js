@@ -415,7 +415,7 @@
                     }
                 },
                 donut: {
-                    title: "Brifing Records",
+                    title: "Briefing Records",
                     label: {
                         format: function(value) { return value; },
                         show: true

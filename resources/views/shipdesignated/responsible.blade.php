@@ -10,7 +10,8 @@
 @endsection
 
 @section('content')
-<div class="row">
+<div class="container-fluid dashboard-content">
+<x-page-header title="Onboard Designated Person"></x-page-header>
 @if($currentUserRoleLevel == 6 || $currentUserRoleLevel == 5)
 
 <div class="row">
@@ -21,6 +22,8 @@
     </div>
 </div>
 @endif
+<div class="row">
+
     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mb-5">
         <div class="tab-regular">
             <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -37,6 +40,7 @@
                     <i class="fas fa-plus"></i> Add
                 </button>
                 <div class="tab-pane fade active show" id="overallIncharge" role="tabpanel" aria-labelledby="overall-tab">
+                <div class="table-responsive">
                     <table class="table table-striped table-bordered first">
                         <thead>
                             <tr>
@@ -54,7 +58,9 @@
                         </tbody>
                     </table>
                 </div>
+                </div>
                 <div class="tab-pane fade" id="responsiblePerson" role="tabpanel" aria-labelledby="responsible-tab">
+                <div class="table-responsive">
                     <table class="table table-striped table-bordered first">
                         <thead>
                             <tr>
@@ -74,13 +80,14 @@
                         </tbody>
                     </table>
                 </div>
+                </div>
               
             </div>
         </div>
     </div>
 </div>
 @include('shipdesignated.DesignatedModel')
-
+</div>
 @stop
 
 @push('js')

@@ -135,7 +135,9 @@
                                         <th width="20%">Passport Numbr</th>
                                         <th width="20%">Sign On Date</th>
                                         <th width="20%">Sign Off Date</th>
+                                        @can('ships.edit')
                                         <th>Action</th>
+                                        @endcan
 
                                     </tr>
                                 </thead>
@@ -148,6 +150,39 @@
                     </div>
                 </div>
             </div>
+            <div class="card">
+                <div class="card-header" id="headingmacrew">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link collapsed d-flex justify-content-between w-100" data-toggle="collapse" data-target="#collapsemacrew" aria-expanded="false" aria-controls="collapsemacrew">
+                            OnBoard Crew Briefing
+                            <span class="fas fa-angle-down mr-3"></span>
+
+                        </button>
+                    </h5>
+                </div>
+                <div id="collapsemacrew" class="collapse" aria-labelledby="headingmacrew" data-parent="#accordion">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-bordered first">
+                                <thead>
+                                    <tr>
+                                        <th>SR NO</th>
+                                        <th>Number Of Attendance</th>
+                                        <th>Briefing Date</th>
+                                        <th>Briefing By</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="majorList">
+                                    <x-brifing-history :brifingHistory=$brifingHistory></x-brifing-history>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
 
             <div class="card">
                 <div class="card-header" id="headingma3">
@@ -188,7 +223,7 @@
                 <div class="card-header" id="headingmasd">
                     <h5 class="mb-0">
                         <button class="btn btn-link collapsed d-flex justify-content-between w-100" data-toggle="collapse" data-target="#collapsemasd" aria-expanded="false" aria-controls="collapsemasd">
-                            SDoc Records
+                            SDoC Records
                             <span class="fas fa-angle-down mr-3"></span>
 
                         </button>
@@ -212,7 +247,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <x-sd-records :mdnoresults="$mdnoresults"></x-trainning-record>
+                                    <x-sd-records :mdnoresults="$sdocresults"></x-trainning-record>
                                 </tbody>
                             </table>
                         </div>
@@ -227,7 +262,7 @@
                 <div class="card-header" id="headingma4">
                     <h5 class="mb-0">
                         <button class="btn btn-link collapsed d-flex justify-content-between w-100" data-toggle="collapse" data-target="#collapsema4" aria-expanded="false" aria-controls="collapsema4">
-                            Major Repair / Retrofit / Dry Doc / Conversion
+                            Repair / Retrofit / Dry Dock / Conversion
                             <span class="fas fa-angle-down mr-3"></span>
 
                         </button>
@@ -262,39 +297,7 @@
             </div>
 
 
-            <div class="card">
-                <div class="card-header" id="headingmacrew">
-                    <h5 class="mb-0">
-                        <button class="btn btn-link collapsed d-flex justify-content-between w-100" data-toggle="collapse" data-target="#collapsemacrew" aria-expanded="false" aria-controls="collapsemacrew">
-                            OnBoard Crew Brifing
-                            <span class="fas fa-angle-down mr-3"></span>
-
-                        </button>
-                    </h5>
-                </div>
-                <div id="collapsemacrew" class="collapse" aria-labelledby="headingmacrew" data-parent="#accordion">
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-striped table-bordered first">
-                                <thead>
-                                    <tr>
-                                        <th>SR NO</th>
-                                        <th>Number Of Attendance</th>
-                                        <th>Briefing Date</th>
-                                        <th>Briefing By</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="majorList">
-                                    <x-brifing-history :brifingHistory=$brifingHistory></x-brifing-history>
-
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
+          
 
 
 
@@ -314,9 +317,15 @@
 <script src="{{ asset('assets/js/training.js') }}"></script>
 
 <script>
-    document.getElementById('excel_file').addEventListener('change', function() {
-        document.getElementById('uploadForm').submit();
-    });
+   document.addEventListener("DOMContentLoaded", function() {
+    let fileInput = document.getElementById('excel_file');
+    if (fileInput) {
+        fileInput.addEventListener('change', function() {
+            document.getElementById('uploadForm').submit();
+        });
+    }
+});
+
 
     function updateToDate() {
         var fromDate = document.getElementById("from_date").value;

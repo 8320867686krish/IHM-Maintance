@@ -361,14 +361,17 @@ class TrainingController extends Controller
                     <td width="33%" style="text-align: center;">Revision:' . $version . '</td>
                     <td width="33%" style="text-align: right;">{PAGENO}/{nbpg}</td>
                 </tr>
-            </table>';
+            </table>';  
             $mpdf->SetHTMLHeader($header);
             $mpdf->SetHTMLFooter($footer);
 
             $stylesheet = file_get_contents('assets/mpdf.css');
             $mpdf->WriteHTML($stylesheet, \Mpdf\HTMLParserMode::HEADER_CSS);
-            $mpdf->WriteHTML(view('report.cover', compact('shipDetail')));
-            $mpdf->WriteHTML(view('report.shipParticular', compact('shipDetail')));
+            $shipImagePath = asset('uploads/ship/'.$shipDetail['ship_image']);
+            $shipImageData = base64_encode(file_get_contents($shipImagePath));
+            $shipImage = 'data:image/png;base64,' . $shipImageData;
+            $html = view('report.cover', compact('shipDetail'))->render();
+            $mpdf->WriteHTML(view('report.shipParticular', compact('shipDetail','shipImage')));
             $mpdf->AddPage('L'); // Set landscape mode for the inventory page
             $mpdf->WriteHTML(view('report.Inventory', compact('filteredResults1', 'filteredResults2', 'filteredResults3')));
             foreach ($decks as $key => $value) {

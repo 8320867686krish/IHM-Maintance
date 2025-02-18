@@ -38,7 +38,6 @@
                                     <th>SR No</th>
                                     <th>Name</th>
                                     <th>Rank</th>
-                                    <th>Passport Number</th>
                                     <th>Start Date</th>
                                     <th>End Date</th>
                                     <th>Action</th>

@@ -143,6 +143,8 @@ Route::middleware('auth')->group(function () {
             Route::get('responsibleperson', 'responsibleperson')->name('responsibleperson')->middleware('can:responsibleperson');
         });
     });
+    Route::get('ship/view/{ship_id}',[ShipController::class,'shipView'])->name('ships.view');
+
     Route::middleware('can:ships')->group(function () {
         Route::controller(ShipController::class)->group(function () {
             Route::get('ships', 'index')->name('ships')->middleware('can:ships');
@@ -152,7 +154,6 @@ Route::middleware('auth')->group(function () {
             Route::post('ship/assignProject', 'assignShip')->name('ships.assign');
         });
 
-        Route::get('ship/view/{ship_id}',[ShipController::class,'shipView'])->name('ships.view');
 
         Route::controller(TrainingController::class)->group(function () {
             Route::get('trainingsets', 'index')->name('trainingsets');

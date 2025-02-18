@@ -247,25 +247,19 @@ class ShipController extends Controller
     {
         $ship = Ship::with(['shipTeams', 'client'])->findOrFail($ship_id);
 
-        $hazmatSummeryName = Hazmat::withSum(['checkHazmats as qty_sum' => function ($query) use ($ship_id) {
-            $query->where('ship_id', $ship_id); // Filter by ship_id
-        }], 'qty')->get()->toArray();
+    
         $isBack = 0;
         if (session('back') == 1) {
             $isBack = 1;
         }
         Session::forget('back');
-        $poSummeryGraph = $this->getShipData($ship_id);
         $user =  Auth::user();
 
         $experts =   User::whereHas('roles', function ($query) {
             $query->where('level', 4)->orderBy('level', 'asc');
         })->where('hazmat_companies_id', $user->hazmat_companies_id)->get(['id', 'name']);
 
-        $shipId = $ship_id; // Set the ship ID you're filtering by
-
-
-
+        $shipId = $ship_id; 
         $managers =  User::whereHas('roles', function ($query) {
             $query->where('level', 3)->orderBy('level', 'asc');
         })->where('hazmat_companies_id', $user->hazmat_companies_id)->get(['id', 'name']);
@@ -291,6 +285,7 @@ class ShipController extends Controller
         })->when($user->roles->first()->level != 1, function ($query) use ($user) {
             return $query->where('hazmat_companies_id', $user->hazmat_companies_id);
         })->get(['id', 'name']);
+
         $hazmat_companies_id = $ship->hazmat_companies_id;
         $partMenual = partManuel::where('ship_id', $ship_id)->where('hazmat_companies_id', $hazmat_companies_id)->get();
         $summary = Summary::where('ship_id', $ship_id)->where('hazmat_companies_id', $hazmat_companies_id)->get();
@@ -302,7 +297,6 @@ class ShipController extends Controller
         $dpsore = DesignatedPersionShip::with('designatedPersonDetail')->where('ship_id', $ship_id)->get();
 
         $trainingRecoredHistory = Exam::where('ship_id', $ship_id)->orderBy('id', 'desc')->get();
-        // $mdnoresults = DB::select('SELECT p.po_order_item_id, p.doc1 AS md_no, m.md_date, m.coumpany_name, po_order_items.description,GROUP_CONCAT(DISTINCT h.short_name) AS hazmat_names FROM po_order_items_hazmats p JOIN hazmats h ON p.hazmat_id = h.id JOIN make_models m ON p.model_make_part_id = m.id JOIN po_order_items po_order_items ON p.po_order_item_id = po_order_items.id GROUP BY p.po_order_item_id, p.doc1, m.md_date, m.coumpany_name, po_order_items.description');
 
         $mdnoresults = DB::table('po_order_items_hazmats as p')
             ->join('make_models as m', 'm.id', '=', 'p.model_make_part_id')
@@ -312,6 +306,23 @@ class ShipController extends Controller
                 'm.md_date',
                 'm.md_no',
                 'm.coumpany_name',
+                DB::raw('GROUP_CONCAT(DISTINCT h.short_name ORDER BY h.short_name ASC) AS hazmat_names') // Use DB::raw only for the grouped column
+            )
+            ->groupBy(
+                'm.id',
+                'm.md_date',
+                'm.md_no',
+                'm.coumpany_name'
+            )
+            ->whereNotNull('doc1')
+            ->get();
+
+
+            $sdocresults = DB::table('po_order_items_hazmats as p')
+            ->join('make_models as m', 'm.id', '=', 'p.model_make_part_id')
+            ->join('hazmats as h', 'h.id', '=', 'p.hazmat_id')
+            ->select(
+                'm.id',
                 'm.sdoc_date',
                 'm.sdoc_no',
                 'm.issuer_name',
@@ -320,14 +331,12 @@ class ShipController extends Controller
             )
             ->groupBy(
                 'm.id',
-                'm.md_date',
-                'm.md_no',
-                'm.coumpany_name',
                 'm.sdoc_date',
                 'm.sdoc_no',
                 'm.issuer_name',
                 'm.sdoc_objects'
-            ) // Include all non-aggregated columns
+            )
+            ->whereNotNull('doc2')
             ->get();
 
         $currentUserRoleLevel = $user->roles->first()->level;
@@ -339,7 +348,7 @@ class ShipController extends Controller
         $brifingHistory = Brifing::where('ship_id', $ship_id)->get();
         $designatedPerson = DesignatedPerson::select('id', 'name')->where('ship_staff_id', $user->id)->get()->toArray();
 
-        return view('ships.view', compact('experts', 'managers', 'isBack', 'ship', 'readonly', 'users', 'poOrders', 'ship_id', 'poSummeryGraph', 'checkHazmatIHMPart', 'hazmatSummeryName', 'hazmat_companies_id', 'partMenual', 'summary', 'trainingRecoreds', 'mdnoresults', 'dpsore', 'trainingRecoredHistory', 'currentUserRoleLevel', 'ships', 'majorrepair', 'brifingHistory', 'designatedPerson'));
+        return view('ships.view', compact('experts', 'managers', 'isBack', 'ship', 'readonly', 'users', 'poOrders', 'ship_id', 'checkHazmatIHMPart', 'hazmat_companies_id', 'partMenual', 'summary', 'trainingRecoreds', 'mdnoresults', 'dpsore', 'trainingRecoredHistory', 'currentUserRoleLevel', 'ships', 'majorrepair', 'brifingHistory', 'designatedPerson','sdocresults'));
     }
 
     public function assignShip(Request $request)

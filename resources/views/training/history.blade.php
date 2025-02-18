@@ -36,7 +36,7 @@
             <div class="tab-regular">
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                     <li class="nav-item">
-                        <a class="nav-link active show" id="training-tab" data-toggle="tab" href="#traingRecored" role="tab" aria-controls="traingRecored" aria-selected="true">Training Recored</a>
+                        <a class="nav-link active show" id="training-tab" data-toggle="tab" href="#traingRecored" role="tab" aria-controls="traingRecored" aria-selected="true">Training Records</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" id="brif-tab" data-toggle="tab" href="#brifPlan" role="tab" aria-controls="brifPlan" aria-selected="false">Briefing Plan</a>

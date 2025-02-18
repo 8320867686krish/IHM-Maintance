@@ -15,10 +15,11 @@
 
 
 
-    <div class="row  mb-4 mt-4">
+    <div class="row  mb-1 mt-2">
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
             <div class="page-header">
-                <h2 class="pageheader-title text-center">{{$anyliticsdata['ship']}} Dashbord</h2>
+            <h2 class="pageheader-title text-center">{{ ucfirst($anyliticsdata['ship']) }} Dashboard</h2>
+
             </div>
         </div>
     </div>
@@ -51,7 +52,7 @@
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 
             <div class="card">
-                <h5 class="card-header text-center">IHM Summery Graph</h5>
+                <h5 class="card-header text-center">IHM Summary Graph</h5>
                 <div class="card-body">
                     <canvas id="chartjs_bar_ihm_summery"></canvas>
                 </div>
@@ -76,7 +77,7 @@
         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
 
             <div class="card">
-                <h5 class="card-header text-center">Ship MD-Sdoc Overview</h5>
+                <h5 class="card-header text-center">Ship MD-SDoC Overview</h5>
                 <div class="card-body">
                     <canvas id="chartjs_bar_md"></canvas>
                 </div>
@@ -96,7 +97,7 @@
 
         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
             <div class="card">
-                <h5 class="card-header  text-center">Brifing Overview</h5>
+                <h5 class="card-header  text-center">Briefing Overview</h5>
                 <div class="card-body">
                     <div id="c3chart_donut_brifing"></div>
                 </div>

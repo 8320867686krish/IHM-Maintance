@@ -155,7 +155,7 @@
     <div class="row">
         <div class="col-12">
             <div class="alert alert-info card" role="alert">
-                All The designated personnel of IHM must do their familiarization Training within 15 days of joining as per company SMS Manual and crew brifing every 3 months.
+                All The designated personnel of IHM must do their familiarization Training within 15 days of joining as per company SMS Manual and crew briefing every 3 months.
             </div>
         </div>
     </div>

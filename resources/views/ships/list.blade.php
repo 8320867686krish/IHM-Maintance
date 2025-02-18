@@ -18,7 +18,7 @@
             <!-- Search Form with Search Icon Inside Button -->
             <form method="GET" action="{{ route('ships') }}" id="searchForm">
                 <div class="input-group">
-                    <input type="text" class="form-control" name="search" placeholder="Search ships by name" value="{{ request()->search }}">
+                    <input type="text" id="searchInput" class="form-control" name="search" placeholder="Search ships by name" value="{{ request()->search }}">
                     <button class="btn btn-primary" type="submit">
                         <i class="fas fa-search"></i> Search
                     </button>
@@ -39,7 +39,7 @@
     // Function to handle matchHeight logic
     $(document).ready(matchHeight);
     $(window).resize(matchHeight);
-   
+
     // Handle delete ship button
     $('.deleteship').on('click', function(e) {
         e.preventDefault();
@@ -60,30 +60,42 @@
             }
         );
     });
-       $(document).ready(function () {
-        $(document).on('click', '.pagination-wrapper a', function (e) {
+    $(document).ready(function() {
+        $(document).on('click', '.pagination-wrapper a', function(e) {
             e.preventDefault();
 
             var url = $(this).attr('href');
             fetchShips(url);
         });
-        $(document).on('submit', '#searchForm', function (e) {
-        e.preventDefault();
-        let formData = $(this).serialize();
-        let url = "{{ route('ships') }}?" + formData;
-        fetchShips(url);
-    });
+        $(document).on('keyup', '#searchInput', function(e) {
+            let searchValue = this.value.trim();
+            if (searchValue === "") {
+                e.preventDefault();
+                let formData = $(this).serialize();
+                let url = "{{ route('ships') }}?" + formData;
+                fetchShips(url);
+            }
+        });
+
+        $(document).on('submit', '#searchForm', function(e) {
+
+
+            e.preventDefault();
+            let formData = $(this).serialize();
+            let url = "{{ route('ships') }}?" + formData;
+            fetchShips(url);
+        });
 
         function fetchShips(url) {
             $.ajax({
                 url: url,
                 type: 'GET',
-              
-                success: function (data) {
+
+                success: function(data) {
                     $('#shipslist').html();
                     $('#shipslist').html(data.ships_html);
                 },
-                error: function () {
+                error: function() {
                     console.error("Pagination AJAX request failed.");
                 }
             });

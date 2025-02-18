@@ -29,6 +29,8 @@
                             colors: response.colors,
                             unload:true,
                         });
+                        chart.internal.config.axis_y_min = 0;
+                        chart.flush();
                     }
 
                 }
@@ -38,7 +40,7 @@
 
         var chart = "";
         if ($('#c3chart_spline').length) {
-            console.log(chartData);
+            
              chart = c3.generate({
                 bindto: "#c3chart_spline",
                 data: {
@@ -55,7 +57,12 @@
                         }
                     },
                     y: {
-                        show: true
+                       
+                        min: 0,
+                        padding: { top: 10, bottom: 0 }, // Prevents unwanted negative space
+                        tick: {
+                            format: function (d) { return d < 0 ? 0 : d; } // Prevents negative tick labels
+                        }
                     }
                 }
             });

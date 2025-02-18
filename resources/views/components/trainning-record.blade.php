@@ -8,7 +8,7 @@
     <td>{{$value->passport_number}}</td>
     <td>{{$value->sign_on_date ?? ''}}</td>
     <td>{{$value->sign_off_date ?? ''}}</td>
-
+    @can('ships.edit')
     <td>
         
         <a href="#" class="admineditdesignatedPerson" data-designated="{{$value}}"
@@ -16,5 +16,6 @@
             <i class="fas fa-edit text-primary" style="font-size: 1rem"></i>
         </a>
     </td>
+    @endcan
 </tr>
 @endforeach

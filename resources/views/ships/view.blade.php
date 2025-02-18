@@ -33,11 +33,9 @@
     <aside class="page-aside" id="page-aside">
         <div class="aside-content">
             <div class="aside-header">
-                <span class="title" style="font-size: 20px;">Ship Information</span>
-                <p class="description">{{ $project->ship_name ?? '' }}</p>
-                {{-- <button class="navbar-toggle" type="button"><span class="icon"
-                        style="cursor: pointer; font-size: 16px !important;"><i class="fas fa-bars"
-                            id="pageNavbarToggleBtn"></i></span></button> --}}
+                <span class="title" style="font-size: 20px;">{{ ucFirst($ship->ship_name) ?? '' }} Information</span>
+                <p class="description"></p>
+            
             </div>
             <div class="aside-nav collapse">
                 <ul class="nav">
@@ -47,7 +45,7 @@
                     </li>
                     <li class="active">
                         <a href="#ship_particulars" class="ship_particulars">
-                            <span class="icon"><i class="fas fa-ship"></i></span>IHM Summary Key Details
+                            <span class="icon"><i class="fas fa-ship"></i></span>Ship Particulars
                         </a>
                     </li>
 
@@ -162,43 +160,8 @@
 
             <div class="accrodion-regular">
                 <div id="accordion">
-                    <div class="card">
-                        <div class="card-header" id="headingOne">
-                            <h5 class="mb-0">
-                                <button
-                                    class="btn btn-link collapsed d-flex justify-content-between w-100 align-items-center"
-                                    data-toggle="collapse" data-target="#collapseOne" aria-expanded="false"
-                                    aria-controls="collapseOne">
-                                    IHM Summary Graph
-                                    <span class="fas fa-angle-down mr-3"></span>
-                                </button>
-                            </h5>
-                        </div>
-                        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne">
-                            <div class="card-body">
-                                <canvas id="chartjs_bar_ihm_summery"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-header" id="headingTwo">
-                            <h5 class="mb-0">
-                                <button
-                                    class="btn btn-link collapsed d-flex justify-content-between w-100 align-items-center"
-                                    data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false"
-                                    aria-controls="collapseTwo">
-                                    PO Summary Graph
-                                    <span class="fas fa-angle-down mr-3"></span>
-                                </button>
-
-                            </h5>
-                        </div>
-                        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo">
-                            <div class="card-body">
-                                <canvas id="po_summery_graph"></canvas>
-                            </div>
-                        </div>
-                    </div>
+                   
+                  
                     <div class="card">
                         <div class="card-header" id="headingThree">
                             <h5 class="mb-0">
@@ -211,7 +174,7 @@
                                 </button>
                             </h5>
                         </div>
-                        <div id="collapseThree" class="collapse" aria-labelledby="headingThree">
+                        <div id="collapseThree" class="collapse show" aria-labelledby="headingThree">
                             <div class="card-body mb-4">
                                 <div class="alert alert-success sucessMsg" role="alert" style="display: none;">
                                     Save Successfully!!<a href="#" class="close" data-dismiss="alert"
@@ -571,18 +534,7 @@
         @include('ships.ihm-initial')
 
     </div>
-    <div class="main-content container-fluid p-0" id="ihm_intial1" style="display: none;">
-        <div class="row card-body">
-            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                <div class="page-header">
-                    <h5 class="section-title">IHM Initial Reords11</h5>
-
-                </div>
-            </div>
-        </div>
-        @include('ships.ihm-initial')
-
-    </div>
+   
 
     <div class="main-content container-fluid p-0" id="ihm_maintenance" style="display: none;">
         @if(session('success'))
@@ -613,8 +565,6 @@
 @push('js')
 <script>
     var shipSave = "{{ route('ships.store') }}";
-    var poSummeryGraph = @json($poSummeryGraph);
-    var hazmatSummeryName = @json($hazmatSummeryName);
 </script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
 

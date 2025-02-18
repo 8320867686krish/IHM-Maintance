@@ -2,7 +2,7 @@
 @foreach($ships as $ship)
 <div class="col-12 col-md-6 col-lg-3" id="shipid{{ $ship->id }}">
    
-    <a href="{{ route('ships.view', ['ship_id' => $ship->id]) }}" style="color: inherit; text-decoration: none;">
+    <a href="{{ route('ship.dashboard', ['id' => $ship->id]) }}" style="color: inherit; text-decoration: none;">
         <div class="card">
             <img src="{{ asset('uploads/ship/' . $ship->ship_image) }}" alt="Ship Image" class="card-img-top">
             
