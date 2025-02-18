@@ -462,13 +462,13 @@
                     borderWidth: 2
                 }));
         
-                hazmet_history_hart.data.labels = ['hazmats']; // You can update the labels if needed
-                hazmet_history_hart.data.datasets = datasets;
+                hazmet_history_chart.data.labels = ['hazmats']; // You can update the labels if needed
+                hazmet_history_chart.data.datasets = datasets;
         
                 // Update the Y-axis scale dynamically
-                hazmet_history_hart.options.scales.yAxes[0].ticks.stepSize = stepSize;
-                hazmet_history_hart.options.scales.yAxes[0].ticks.max = maxQty;
-                my_chart_chartjs_bar_md.update(); // Refresh chart
+                hazmet_history_chart.options.scales.yAxes[0].ticks.stepSize = stepSize;
+                hazmet_history_chart.options.scales.yAxes[0].ticks.max = maxQty;
+                hazmet_history_chart.update(); // Refresh chart
             }
             
         }
