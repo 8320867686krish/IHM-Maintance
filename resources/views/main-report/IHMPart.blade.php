@@ -29,9 +29,9 @@
                     <td>&nbsp;</td>
                 </tr>
                 @else
-                @foreach($filteredResults1 as $value)
+                @foreach($filteredResults1 as $key=>$value)
                 <tr>
-                    <td>{{ $loops->iteration}}</td>
+                    <td>{{ $loop->iteration}}</td>
                     <td>{{ $value->application_of_paint ?? '' }}</td>
                     <td>{{ $value->name_of_paint ?? '' }}</td>
                     <td>{{ $value->location ?? '' }}</td>
