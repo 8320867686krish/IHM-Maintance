@@ -257,7 +257,7 @@
                     </div>
                     <div class="score">Your score: ${score}/${quizData.length}</div>
                     <p>Congratulations for completing the exam! 🎉</p>
-                    <button class="btn btn-primary" onclick="window.location.href = baseUrl + '/training';">Go to Training Records</button>
+                    <button class="btn btn-primary" onclick="window.location.href = baseUrl + '/ship/training';">Go to Training Records</button>
                 </div>
             `;
     }

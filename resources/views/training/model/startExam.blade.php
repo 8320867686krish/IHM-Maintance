@@ -13,7 +13,7 @@
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 row">
                             <div class="col-12 col-md-12 col-lg-12 mb-2">
                                 <div class="form-group">
-                                <label class="custom-control custom-checkbox">Have you read the training materials completly
+                                <label class="custom-control custom-checkbox">Have you read the training materials completely
                                 </label>
 
                                 </div>
