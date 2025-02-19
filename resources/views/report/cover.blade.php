@@ -2,7 +2,7 @@
     <div style="text-align: center;">
         <h1 style="padding-top: 10px; font-weight: bold;">Summary Report</h1>
         <div>
-            <img src="{{s$shipImage}}" alt="Your Imagess">
+            <img src="{{$shipImage}}" alt="Your Imagess">
         </div>
         <h4 style="padding-top: 1px;">Report No: {{$shipDetail['project_no']}}</h4>
         <h4 style="padding-top: 1px;">SHIP NAME- {{$shipDetail['ship_name']}}</h4>
