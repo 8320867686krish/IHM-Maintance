@@ -1,6 +1,6 @@
+
 $(".addMajorBtn").click(function(){
     let $form = $("#majorRepairForm"); // Use the form's direct ID
-
     $('#majorRepairForm')[0].reset();
     $form.find('.error').text('');
     $form.find('.is-invalid').removeClass('is-invalid');
@@ -30,7 +30,18 @@ $(document).on('click', '.major-delete', function (e) {
     confirmDelete(deleteUrl, confirmMsg, function(response) {
         $("#majorList").html("");
         if (response.html && response.html.trim() !== '') {
-            $("#majorList").html(response.html);
+            $("#majorlttable").DataTable().destroy();
+
+                // Update table content
+                $("#majorlttable tbody").html(response.html);
+
+                // Reinitialize DataTable
+                $("#majorlttable").DataTable({
+                    lengthChange: false, // Add your options here
+                    responsive: true,
+                    order: [[0, "asc"]],
+                });
+
         }
               
     }, function(response) {
@@ -62,8 +73,19 @@ $("#savemajorRepair").click(function(){
                 $submitButton.html(originalText);
                 $submitButton.prop('disabled', false);
                 $("#majorRepairModel").modal('hide');
-            //  /   $("#majorList").html("");
-                $("#majorList").html(response.html);
+              
+                $("#majorlttable").DataTable().destroy();
+
+                // Update table content
+                $("#majorlttable tbody").html(response.html);
+
+                // Reinitialize DataTable
+                $("#majorlttable").DataTable({
+                    lengthChange: false, // Add your options here
+                    responsive: true,
+                    order: [[0, "desc"]],
+                });
+
             } else {
                 $.each(response.message, function (field, messages) {
                     $form.find('[name="' + field + '"]').addClass('is-invalid');

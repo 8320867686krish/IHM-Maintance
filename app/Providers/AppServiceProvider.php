@@ -30,7 +30,12 @@ class AppServiceProvider extends ServiceProvider
             if (Auth::check()) {
                 $user = auth()->user();
                 $currentUserRoleName = $user->roles->first()->name;
+                $currentUserRoleLevel = $user->roles->first()->level;
+
                 View::share('shiptitle', $currentUserRoleName." Dashboard");
+                View::share('currentUserRoleLevel',$currentUserRoleLevel);
+                session(['currentUserRoleLevel' => $currentUserRoleLevel]);
+
 
             }else {
                 $view->with('shiptitle', null);

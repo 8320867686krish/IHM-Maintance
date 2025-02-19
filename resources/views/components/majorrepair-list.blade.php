@@ -11,7 +11,7 @@
             <i class="fas fa-edit text-primary" style="font-size: 1rem"></i>
         </a>
         @endif
-        @can('majorrepair.remove')
+        @if(auth()->user()->can('majorrepair.remove') || auth()->user()->can('ships.edit'))
         
         <a href="{{route('majorrepair.remove', ['id' => $value->id])}}" class="ml-2 major-delete">
             <i class="fas fa-trash-alt text-danger" style="font-size: 1rem;"></i>

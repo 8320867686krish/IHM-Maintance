@@ -68,6 +68,11 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('helpcenter.list') }}"><i class="fa fa-fw fa-user-circle"></i>Help Center</a>
                     </li>
+                    @if($currentUserRoleLevel == 6)
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('reportCenter') }}"><i class="fa fa-fw fa-user-circle"></i>Report Center</a>
+                    </li>
+                    @endif
                 </ul>
             </div>
         </nav>

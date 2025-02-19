@@ -37,7 +37,7 @@ class ShipController extends Controller
     {
         $user = Auth::user();
 
-        $currentUserRoleLevel = $user->roles->first()->level;
+        $currentUserRoleLevel = session('currentUserRoleLevel');
 
         // Initialize the query for ships
         if ($currentUserRoleLevel == 3 || $currentUserRoleLevel == 4) {
@@ -75,12 +75,12 @@ class ShipController extends Controller
         }
         if ($request->ajax()) {
             return response()->json([
-                'ships_html' => view('components.ships-list', compact('ships','currentUserRoleLevel'))->render(),
+                'ships_html' => view('components.ships-list', compact('ships'))->render(),
             ]);
         }
   
         // Return the view with the ships data
-        return view('ships.list', compact('ships','currentUserRoleLevel'));
+        return view('ships.list', compact('ships'));
     }
     public function create()
     {
@@ -212,7 +212,7 @@ class ShipController extends Controller
     public function portalGuide()
     {
         $user = Auth::user();
-        $currentUserRoleLevel = $user->roles->first()->level;
+        $currentUserRoleLevel =session('currentUserRoleLevel');
         $configration = configration::first();
         if ($currentUserRoleLevel == 2 ||   $currentUserRoleLevel == 3 ||   $currentUserRoleLevel == 4) {
             $showurl = $configration['hazmat_company'] ?? null
@@ -339,7 +339,6 @@ class ShipController extends Controller
             ->whereNotNull('doc2')
             ->get();
 
-        $currentUserRoleLevel = $user->roles->first()->level;
 
 
         $ships = Ship::get();
@@ -348,7 +347,7 @@ class ShipController extends Controller
         $brifingHistory = Brifing::where('ship_id', $ship_id)->get();
         $designatedPerson = DesignatedPerson::select('id', 'name')->where('ship_staff_id', $user->id)->get()->toArray();
 
-        return view('ships.view', compact('experts', 'managers', 'isBack', 'ship', 'readonly', 'users', 'poOrders', 'ship_id', 'checkHazmatIHMPart', 'hazmat_companies_id', 'partMenual', 'summary', 'trainingRecoreds', 'mdnoresults', 'dpsore', 'trainingRecoredHistory', 'currentUserRoleLevel', 'ships', 'majorrepair', 'brifingHistory', 'designatedPerson','sdocresults'));
+        return view('ships.view', compact('experts', 'managers', 'isBack', 'ship', 'readonly', 'users', 'poOrders', 'ship_id', 'checkHazmatIHMPart', 'hazmat_companies_id', 'partMenual', 'summary', 'trainingRecoreds', 'mdnoresults', 'dpsore', 'trainingRecoredHistory', 'ships', 'majorrepair', 'brifingHistory', 'designatedPerson','sdocresults'));
     }
 
     public function assignShip(Request $request)

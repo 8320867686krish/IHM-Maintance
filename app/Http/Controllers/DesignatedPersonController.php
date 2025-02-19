@@ -80,14 +80,14 @@ class DesignatedPersonController extends Controller
         }
         $insert = DesignatedPerson::updateOrCreate(['id' => $inputData['id']], $inputData);
         if (!@$inputData['id']) {
-            if (!@$inputData['isDesignated']) {
-                DesignatedPersionShip::create(
-                    [
-                        'ship_id' => $inputData['main_ship_id'],
-                        'designated_person_id' => $insert->id
-                    ]
-                );
-            }
+            // if (!@$inputData['isDesignated']) {
+            //     DesignatedPersionShip::create(
+            //         [
+            //             'ship_id' => $inputData['main_ship_id'],
+            //             'designated_person_id' => $insert->id
+            //         ]
+            //     );
+            // }
         }
         if (!@$inputData['isDesignated']) {
             if (@$post['ship_id']) {

@@ -15,7 +15,7 @@ class UserController extends Controller
     //
     public function create()
     {
-        $currentUserRoleLevel = Auth::user()->roles->first()->level;
+        $currentUserRoleLevel =session('currentUserRoleLevel');
         $user =  Auth::user();
         $hazmat_companies_id  = 0;
         if($currentUserRoleLevel != 1){
@@ -105,7 +105,7 @@ class UserController extends Controller
             $user['roleLevel'] = $currentUserRoleLevel;
             unset($user->password, $user->created_at, $user->updated_at);
 
-            return view('user.userAdd', ['roles' => $roles, 'button' => 'Update', 'head_title' => 'Edit', 'user' => $user,'hazmat_companies_id'=> $hazmat_companies_id,'hazmetCompany'=> $hazmetCompany,'currentUserRoleLevel' =>$currentUserRoleLevel]);
+            return view('user.userAdd', ['roles' => $roles, 'button' => 'Update', 'head_title' => 'Edit', 'user' => $user,'hazmat_companies_id'=> $hazmat_companies_id,'hazmetCompany'=> $hazmetCompany]);
         } catch (\Throwable $th) {
             return back()->withError($th->getMessage())->withInput();
         }

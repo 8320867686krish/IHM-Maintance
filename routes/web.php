@@ -102,6 +102,8 @@ Route::middleware('auth')->group(function () {
             Route::get('clientCompany/{id}/delete', 'destroy')->name('clientCompany.delete')->middleware('can:clientCompany.remove');
         });
     });
+    Route::get('/report', [ReportController::class, 'reportCenter'])->name('reportCenter');
+
     Route::get('/portal-guide', [ShipController::class, 'portalGuide'])->name('portal.guide');
     Route::get('/summeryReport/{ship_id}', [VscpController::class, 'summeryReport'])->name('summeryReport');
     Route::post('designatedPerson', [DesignatedPersonController::class, 'store'])->name('designatedPerson');

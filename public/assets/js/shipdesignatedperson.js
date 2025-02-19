@@ -127,9 +127,18 @@ var $form = $("#admindesignatedForm");
                 $submitButton.html(originalText);
                 $submitButton.prop('disabled', false);
                 $("#adminDesignatedModel").modal('hide');
-                $(".admindprecoreds").html("");
-                $(".admindprecoreds").html(response.html);
-              //  window.location.reload();
+              
+                $("#admindprecoredsTable").DataTable().destroy();
+
+                // Update table content
+                $("#admindprecoredsTable tbody").html(response.html);
+
+                // Reinitialize DataTable
+                $("#admindprecoredsTable").DataTable({
+                    lengthChange: false, // Add your options here
+                    responsive: true,
+                    order: [[0, "desc"]],
+                });
                 
             } else {
                 $.each(response.message, function (field, messages) {
@@ -174,7 +183,7 @@ $(document).on("click", ".admineditdesignatedPerson", function () {
     $("#adminDesignatedModel").modal('show');
 });
 $(document).on("click", ".addadminShoreDp", function () {
-    $("#shipshowing").hide();
+   // $("#shipshowing").hide();
     $("#AdminShoreDpModel").modal('show');
 
 });

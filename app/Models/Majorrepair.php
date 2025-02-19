@@ -16,6 +16,9 @@ class Majorrepair extends Model
         'document_uploaded_by',
         'ship_id',
         'hazmat_companies_id',
-        'ship_staff_id'
+        'ship_staff_id',
+        'after_image',
+        'before_image',
+        'entry_date'
     ];
 }

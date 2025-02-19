@@ -12,6 +12,7 @@ use App\Models\Hazmat;
 use App\Models\Ship;
 use App\Traits\PdfGenerator;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Mpdf\Mpdf;
 
@@ -193,6 +194,12 @@ class ReportController extends Controller
         $response->headers->set('X-File-Name', $fileName);
         return $response;
     
+    }
+    public function reportCenter(Request $request){
+        $user = Auth::user();
+
+        $ship_id = $user->shipClient->id;
+        return view('helpCenter.report',compact('ship_id'));
     }
 
 

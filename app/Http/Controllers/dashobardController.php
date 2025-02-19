@@ -23,7 +23,7 @@ class dashobardController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $currentUserRoleLevel = $user->roles->first()->level;
+        $currentUserRoleLevel = session('currentUserRoleLevel');;
         $currentUserRoleName = $user->roles->first()->name;
         if ($currentUserRoleLevel == 5) {
             $chartData = $this->getAllhip();
@@ -55,26 +55,24 @@ class dashobardController extends Controller
         } else {
             return  $this->shipDashboard($user->shipClient->id);
         }
-        return view('dashboard', compact('hazmatCompany', 'path', 'imagekey', 'title', 'routename', 'currentUserRoleLevel', 'chartData'));
+        return view('dashboard', compact('hazmatCompany', 'path', 'imagekey', 'title', 'routename','chartData'));
     }
     public function clientcompany($id)
     {
         $chartData = [];
         $user = Auth::user();
-        $currentUserRoleLevel = $user->roles->first()->level;
         $hazmatCompany = ClientCompany::where('hazmat_companies_id', $id)->get();
         $imagekey = 'client_image';
         $title = "Client Company";
         $routename = 'clientcompany.ships';
         $path = asset('uploads/clientcompany');
 
-        return view('dashboard', compact('hazmatCompany', 'path', 'imagekey', 'title', 'routename', 'currentUserRoleLevel'));
+        return view('dashboard', compact('hazmatCompany', 'path', 'imagekey', 'title', 'routename'));
     }
     public function clientcompanyShips($id)
     {
         $chartData = [];
         $user = Auth::user();
-        $currentUserRoleLevel = $user->roles->first()->level;
         $hazmatCompany = Ship::where('client_company_id', $id)->get();
         $imagekey = 'ship_image';
         $title = "Ships";
@@ -82,13 +80,12 @@ class dashobardController extends Controller
 
         $path = asset('uploads/ship');
 
-        return view('dashboard', compact('hazmatCompany', 'path', 'imagekey', 'title', 'routename', 'currentUserRoleLevel'));
+        return view('dashboard', compact('hazmatCompany', 'path', 'imagekey', 'title', 'routename'));
     }
     public function shipDashboard($id)
     {
         $ship_id = $id;
         $user = Auth::user();
-        $currentUserRoleLevel = $user->roles->first()->level;
         $anyliticsdata = $this->getShipData($id);
         return view('ship-dashboard', compact('anyliticsdata', 'ship_id'));
     }

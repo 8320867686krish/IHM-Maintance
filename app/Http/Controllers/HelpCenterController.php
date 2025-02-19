@@ -22,7 +22,7 @@ class HelpCenterController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $currentUserRoleLevel = $user->roles->first()->level;
+        $currentUserRoleLevel =session('currentUserRoleLevel');
         $correspondence = Correspondence::query();
         $configration = configration::first();
 
@@ -98,7 +98,7 @@ class HelpCenterController extends Controller
             $extractSsms->where('client_company_id', $user->shipClient->client_company_id);
         }
         $extractSsms =  $extractSsms->get()->toArray();
-        return view('helpCenter.index', compact('ships', 'currentUserRoleLevel', 'correspondence', 'credentials', 'clientCompany', 'extractSsms', 'configration', 'admincorrespondence'));
+        return view('helpCenter.index', compact('ships','correspondence', 'credentials', 'clientCompany', 'extractSsms', 'configration', 'admincorrespondence'));
     }
     public function avilabletemplateeSave(Request $request)
     {
@@ -143,7 +143,7 @@ class HelpCenterController extends Controller
     {
         $post = $request->input();
         $user = Auth::user();
-        $currentUserRoleLevel = $user->roles->first()->level;
+        $currentUserRoleLevel =session('currentUserRoleLevel');
         $post['user_id'] =$user->id;
         if ($request->hasFile('attachment')) {
             $image = $this->upload($request, 'attachment', 'uploads/corospondance_attachment');
@@ -157,7 +157,7 @@ class HelpCenterController extends Controller
             $admincorrespondence->where('hazmat_companies_id', $user['hazmat_companies_id']);
             $admincorrespondence->WhereNull('client_company_id');
             $admincorrespondence = $admincorrespondence->orderBy('id', 'desc')->get();
-            $html = view('components.super-admin-corospondance', compact('admincorrespondence', 'currentUserRoleLevel'))->render();
+            $html = view('components.super-admin-corospondance', compact('admincorrespondence'))->render();
 
             return response()->json(['isStatus' => true, 'message' => 'save successfully', 'html' => $html]);
         }
@@ -191,7 +191,7 @@ class HelpCenterController extends Controller
         $correspondence->WhereNotNull('client_company_id');
         $correspondence = $correspondence->orderBy('id', 'desc')->get();
        
-        $html = view('components.correspondence-history', compact('correspondence','currentUserRoleLevel'))->render();
+        $html = view('components.correspondence-history', compact('correspondence'))->render();
         return response()->json(['isStatus' => true, 'message' => 'save successfully','html'=>$html]);
     }
     public function credentialSave(credentialRequest $request)
@@ -206,9 +206,10 @@ class HelpCenterController extends Controller
         $post['hazmat_companies_id'] =  $hazmat_companies_id;
         credential::create($post);
         $credentials = credential::where('hazmat_companies_id', $post['hazmat_companies_id'])->get();
-        $currentUserRoleLevel = $user->roles->first()->level;
+        $currentUserRoleLevel = session('currentUserRoleLevel');
 
-        $html = view('components.credential', compact('credentials', 'currentUserRoleLevel'))->render();
+
+        $html = view('components.credential', compact('credentials'))->render();
 
         return response()->json(['isStatus' => true, 'message' => 'save successfully', 'html' => $html]);
     }
@@ -224,9 +225,9 @@ class HelpCenterController extends Controller
         $post['hazmat_companies_id'] =  $hazmat_companies_id;
         ExtractSms::create($post);
         $extractSsms = ExtractSms::where('hazmat_companies_id', $post['hazmat_companies_id'])->get();
-        $currentUserRoleLevel = $user->roles->first()->level;
+        $currentUserRoleLevel =session('currentUserRoleLevel');
 
-        $html = view('components.extract-sms', compact('extractSsms', 'currentUserRoleLevel'))->render();
+        $html = view('components.extract-sms', compact('extractSsms'))->render();
 
         return response()->json(['isStatus' => true, 'message' => 'save successfully', 'html' => $html]);
     }
@@ -270,9 +271,9 @@ class HelpCenterController extends Controller
 
             $extractSms->delete();
             $extractSsms = ExtractSms::where('hazmat_companies_id', $hazmat_companies_id)->get();
-            $currentUserRoleLevel = $user->roles->first()->level;
+            $currentUserRoleLevel =session('currentUserRoleLevel');
 
-            $html = view('components.extract-sms', compact('extractSsms', 'currentUserRoleLevel'))->render();
+            $html = view('components.extract-sms', compact('extractSsms'))->render();
             return response()->json(['isStatus' => true, 'message' => 'save successfully', 'html' => $html]);
         } catch (\Throwable $th) {
             return response()->json(['isStatus' => false, 'message' => 'credential not  deleted successfully']);

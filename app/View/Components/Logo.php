@@ -16,7 +16,7 @@ class Logo extends Component
     public function __construct()
     {
         $user = Auth()->user();
-        $currentUserRoleLevel = $user->roles->first()->level;
+        $currentUserRoleLevel =session('currentUserRoleLevel');
         if ($currentUserRoleLevel == 2 || $currentUserRoleLevel == 3 || $currentUserRoleLevel == 4) {
             $logo = "uploads/hazmatCompany/" . $user->hazmatCompany->logo;
         }

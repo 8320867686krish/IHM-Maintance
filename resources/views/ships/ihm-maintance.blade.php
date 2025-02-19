@@ -124,7 +124,7 @@
                         <a href="#" class="btn btn-primary float-right addadmineditdesignatedPerson mb-3 ml-2">Add</a>
                         @endcan
                         <div class="table-responsive">
-                            <table class="table table-striped table-bordered first">
+                            <table class="table table-striped table-bordered first" id="admindprecoredsTable">
                                 <thead>
                                     <tr>
                                         <th width="15%">SR NO</th>
@@ -161,7 +161,7 @@
                     </h5>
                 </div>
                 <div id="collapsemacrew" class="collapse" aria-labelledby="headingmacrew" data-parent="#accordion">
-                    <div class="card-body">
+                    <div class="card-body mb-4">
                         <div class="table-responsive">
                             <table class="table table-striped table-bordered first">
                                 <thead>
@@ -173,7 +173,7 @@
                                         <th>Action</th>
                                     </tr>
                                 </thead>
-                                <tbody id="majorList">
+                                <tbody>
                                     <x-brifing-history :brifingHistory=$brifingHistory></x-brifing-history>
 
                                 </tbody>
@@ -269,14 +269,14 @@
                     </h5>
                 </div>
                 <div id="collapsema4" class="collapse" aria-labelledby="headingma4" data-parent="#accordion">
-                    <div class="card-body">
+                    <div class="card-body mb-4">
                         @can('ships.edit')
                         <a href="#"
                             class="btn btn-primary float-right btn addMajorBtn mb-4">Add</a>
                         @endcan
                         <div class="table-responsive">
 
-                            <table class="table table-striped table-bordered first">
+                            <table class="table table-striped table-bordered first" id="majorlttable">
                                 <thead>
                                     <tr>
                                         <th width="5%">Sr.No</th>

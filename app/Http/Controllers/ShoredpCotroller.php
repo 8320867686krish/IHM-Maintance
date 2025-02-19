@@ -11,20 +11,18 @@ class ShoredpCotroller extends Controller
     //
     public function shoredp(){
         $user = Auth::user();
-        $currentUserRoleLevel = $user->roles->first()->level;
         $designatePerson = $user->designatedPerson;
         $ships = Ship::where('client_user_id', $user->id)->get();
         
-        return view('shipdesignated.list', compact('designatePerson','currentUserRoleLevel','ships'));
+        return view('shipdesignated.list', compact('designatePerson','ships'));
 
     }
     public function responsibleperson(){
         $user = Auth::user();
-        $currentUserRoleLevel = $user->roles->first()->level;
         $designatePerson = $user->designatedPerson;
         $ships = Ship::where('client_user_id', $user->id)->get();
         
-        return view('shipdesignated.responsible', compact('designatePerson','currentUserRoleLevel','ships'));
+        return view('shipdesignated.responsible', compact('designatePerson','ships'));
 
     }
 }
