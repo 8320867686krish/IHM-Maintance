@@ -477,11 +477,10 @@ class VscpController extends Controller
             $mpdf->SetHTMLHeader($header);
             $mpdf->SetHTMLFooter($footer);
             $shipImagePath = asset('uploads/ship/'.$shipDetail['ship_image']);
-            $shipImageData = base64_encode(file_get_contents($shipImagePath));
-            $shipImage = 'data:image/png;base64,' . $shipImageData;
+     
             $stylesheet = file_get_contents('public/assets/mpdf.css');
             $mpdf->WriteHTML($stylesheet, \Mpdf\HTMLParserMode::HEADER_CSS);
-            $mpdf->WriteHTML(view('report.cover', compact('shipDetail','shipImage')));
+            $mpdf->WriteHTML(view('report.cover', compact('shipDetail','shipImagePath')));
             $mpdf->WriteHTML(view('report.shipParticular', compact('shipDetail')));
             $mpdf->AddPage('L'); // Set landscape mode for the inventory page
             $mpdf->WriteHTML(view('report.Inventory', compact('filteredResults1', 'filteredResults2', 'filteredResults3')));
