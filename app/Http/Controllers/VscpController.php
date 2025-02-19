@@ -510,7 +510,7 @@ class VscpController extends Controller
             $safeProjectNo = str_replace('/', '_', $shipDetail['project_no']);
             $fileName = "summary_" . $safeProjectNo . '.pdf';
 
-            $filePath = public_path('pdfs1/' . $fileName); // Adjust the directory and file name as needed
+            $filePath = public_path('pdf/' . $fileName); // Adjust the directory and file name as needed
             $mpdf->Output($filePath, \Mpdf\Output\Destination::FILE);
             $response = response()->download($filePath, $fileName)->deleteFileAfterSend(true);
             $response->headers->set('X-File-Name', $fileName);
