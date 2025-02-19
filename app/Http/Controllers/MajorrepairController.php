@@ -96,7 +96,7 @@ class MajorrepairController extends Controller
         try {
             $user = Auth::user();
 
-            $currentUserRoleLevel = session('currentUserRoleLevel');
+            $currentUserRoleLevel = $user->roles->first()->level;
 
 
             $hazmat_companies_id = $user['hazmat_companies_id'];

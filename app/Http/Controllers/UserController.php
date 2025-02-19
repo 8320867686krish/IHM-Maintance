@@ -15,7 +15,7 @@ class UserController extends Controller
     //
     public function create()
     {
-        $currentUserRoleLevel =session('currentUserRoleLevel');
+        $currentUserRoleLevel =$user->roles->first()->level;
         $user =  Auth::user();
         $hazmat_companies_id  = 0;
         if($currentUserRoleLevel != 1){

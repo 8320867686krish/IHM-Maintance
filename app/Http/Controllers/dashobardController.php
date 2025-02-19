@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use  App\Traits\ShipData;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 
 class dashobardController extends Controller
 {
@@ -23,7 +24,8 @@ class dashobardController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $currentUserRoleLevel = session('currentUserRoleLevel');;
+        $currentUserRoleLevel = $user->roles->first()->level;
+
         $currentUserRoleName = $user->roles->first()->name;
         if ($currentUserRoleLevel == 5) {
             $chartData = $this->getAllhip();

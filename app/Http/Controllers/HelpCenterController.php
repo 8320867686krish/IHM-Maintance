@@ -22,7 +22,7 @@ class HelpCenterController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $currentUserRoleLevel =session('currentUserRoleLevel');
+        $currentUserRoleLevel =$user->roles->first()->level;
         $correspondence = Correspondence::query();
         $configration = configration::first();
 
@@ -143,7 +143,7 @@ class HelpCenterController extends Controller
     {
         $post = $request->input();
         $user = Auth::user();
-        $currentUserRoleLevel =session('currentUserRoleLevel');
+        $currentUserRoleLevel =$user->roles->first()->level;
         $post['user_id'] =$user->id;
         if ($request->hasFile('attachment')) {
             $image = $this->upload($request, 'attachment', 'uploads/corospondance_attachment');
@@ -206,7 +206,7 @@ class HelpCenterController extends Controller
         $post['hazmat_companies_id'] =  $hazmat_companies_id;
         credential::create($post);
         $credentials = credential::where('hazmat_companies_id', $post['hazmat_companies_id'])->get();
-        $currentUserRoleLevel = session('currentUserRoleLevel');
+        $currentUserRoleLevel = $user->roles->first()->level;
 
 
         $html = view('components.credential', compact('credentials'))->render();
@@ -225,7 +225,7 @@ class HelpCenterController extends Controller
         $post['hazmat_companies_id'] =  $hazmat_companies_id;
         ExtractSms::create($post);
         $extractSsms = ExtractSms::where('hazmat_companies_id', $post['hazmat_companies_id'])->get();
-        $currentUserRoleLevel =session('currentUserRoleLevel');
+        $currentUserRoleLevel =$user->roles->first()->level;
 
         $html = view('components.extract-sms', compact('extractSsms'))->render();
 
@@ -271,7 +271,7 @@ class HelpCenterController extends Controller
 
             $extractSms->delete();
             $extractSsms = ExtractSms::where('hazmat_companies_id', $hazmat_companies_id)->get();
-            $currentUserRoleLevel =session('currentUserRoleLevel');
+            $currentUserRoleLevel =$user->roles->first()->level;
 
             $html = view('components.extract-sms', compact('extractSsms'))->render();
             return response()->json(['isStatus' => true, 'message' => 'save successfully', 'html' => $html]);

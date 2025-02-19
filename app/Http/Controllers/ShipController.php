@@ -37,7 +37,7 @@ class ShipController extends Controller
     {
         $user = Auth::user();
 
-        $currentUserRoleLevel = session('currentUserRoleLevel');
+        $currentUserRoleLevel = $user->roles->first()->level;
 
         // Initialize the query for ships
         if ($currentUserRoleLevel == 3 || $currentUserRoleLevel == 4) {
@@ -212,7 +212,7 @@ class ShipController extends Controller
     public function portalGuide()
     {
         $user = Auth::user();
-        $currentUserRoleLevel =session('currentUserRoleLevel');
+        $currentUserRoleLevel =$user->roles->first()->level;
         $configration = configration::first();
         if ($currentUserRoleLevel == 2 ||   $currentUserRoleLevel == 3 ||   $currentUserRoleLevel == 4) {
             $showurl = $configration['hazmat_company'] ?? null
