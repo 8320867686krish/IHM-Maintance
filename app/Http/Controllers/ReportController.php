@@ -107,16 +107,9 @@ class ReportController extends Controller
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
 
         //DesignatedPerson
-        $designatedPerson = DesignatedPerson::where('ship_id',$ship_id)->get()->toArray();
-        $designatedPersonShip = DesignatedPersionShip::with('designatedPersonDetail')->where('ship_id',$ship_id)->get()->toArray();
-        $designatedPersonShipDetails = array_map(function ($item) {
-            return $item['designated_person_detail'] ?? null;
-        }, $designatedPersonShip);
-        $mergedData = collect(array_merge($designatedPersonShipDetails,$designatedPerson))
-        ->filter() // Remove null values
-        ->unique('id') // Ensure unique records based on `id`
-        ->values()
-        ->toArray();
+        $designatedPersonShip = DesignatedPersionShip::with('designatedPersonDetail')->where('ship_id',$ship_id)->get();
+        $mergedData = $designatedPersonShip->pluck('designatedPersonDetail');
+
         $html = view('main-report.designatedPerson',compact('mergedData'))->render();
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
 
