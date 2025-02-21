@@ -1,0 +1,45 @@
+<div class="container next">
+    <div class="section-1-1">
+        <h3> 6. Records of MD</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>SR NO</th>
+                    <th>Issue Date</th>
+                    <th>SDoC No.</th>
+
+                    <th>Issuer’s Name</th>
+
+                    <th>Object(s) of Declaration</th>
+                    <th>Supplier’s Declaration of Conformity</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if(count($sdocresults) == 0)
+                <tr>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+
+                </tr>
+                @else
+                @foreach($sdocresults as $mdno)
+                <tr>
+                    <td>{{$loop->iteration}}</td>
+                    <td>{{$value->sdoc_date}}</td>
+                    <td>{{$value->sdoc_no}}</td>
+                    <td>{{$value->issuer_name}}</td>
+                    <td>{{$value->sdoc_objects}}</td>
+                    <td>{{$value->hazmat_names}}</td>
+                </tr>
+                @endforeach
+                @endif
+
+            </tbody>
+        </table>
+
+    </div>
+</div>

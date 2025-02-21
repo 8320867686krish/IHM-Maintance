@@ -23,7 +23,8 @@ class ReportController extends Controller
 {
     //
     use PdfGenerator;
-    public function genrateReport(Request $request){
+    public function genrateReport(Request $request)
+    {
         $version = 1;
         $post = $request->input();
         $ship_id = $post['ship_id'];
@@ -62,9 +63,9 @@ class ReportController extends Controller
         $header = '
         <table width="100%" style="vertical-align: middle; font-family: serif; font-size: 9pt; color: #000088;">
             <tr>
-                <td width="10%"><img src='.$logo.' width="50" /></td>
+                <td width="10%"><img src=' . $logo . ' width="50" /></td>
                 <td width="75%" align="center">' . $projectDetail['ship_name'] . '</td>
-                <td width="15%" style="text-align: right;">Current Version :' . $version.'</td>
+                <td width="15%" style="text-align: right;">Current Version :' . $version . '</td>
         </tr>
         
         </table>';
@@ -91,26 +92,26 @@ class ReportController extends Controller
         $stylesheet = file_get_contents('public/assets/mpdf.css');
 
         $mpdf->WriteHTML($stylesheet, \Mpdf\HTMLParserMode::HEADER_CSS);
-        $shipImagePath = asset('uploads/ship/'.$projectDetail['ship_image']);
-      
+        $shipImagePath = asset('uploads/ship/' . $projectDetail['ship_image']);
+
         $shipImageData = base64_encode(file_get_contents($shipImagePath));
         $shipImage = 'data:image/png;base64,' . $shipImageData;
 
-        $html = view('main-report.cover', compact('projectDetail','shipImage','shipImagePath'))->render();
+        $html = view('main-report.cover', compact('projectDetail', 'shipImage', 'shipImagePath'))->render();
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
 
         $hazmats = Hazmat::get();
-        $html = view('main-report.abbreviation',compact('hazmats'))->render();
+        $html = view('main-report.abbreviation', compact('hazmats'))->render();
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
         //ship particular
-        $html = view('main-report.shipParticular',compact('projectDetail'))->render();
+        $html = view('main-report.shipParticular', compact('projectDetail'))->render();
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
 
         //DesignatedPerson
-        $designatedPersonShip = DesignatedPersionShip::with('designatedPersonDetail')->where('ship_id',$ship_id)->get();
+        $designatedPersonShip = DesignatedPersionShip::with('designatedPersonDetail')->where('ship_id', $ship_id)->get();
         $mergedData = $designatedPersonShip->pluck('designatedPersonDetail');
 
-        $html = view('main-report.designatedPerson',compact('mergedData'))->render();
+        $html = view('main-report.designatedPerson', compact('mergedData'))->render();
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
 
         $checkHazmatIHMPart = CheckHazmat::with(relations: 'hazmat')->where('ship_id', $ship_id)->get();
@@ -126,7 +127,7 @@ class ReportController extends Controller
             return $item->ihm_part_table == 'i-3';
         });
 
-        $html = view('main-report.IHMPart',compact('filteredResults1','filteredResults2','filteredResults3'))->render();
+        $html = view('main-report.IHMPart', compact('filteredResults1', 'filteredResults2', 'filteredResults3'))->render();
         $mpdf->AddPage('L'); // Set landscape mode for the inventory page
 
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
@@ -161,35 +162,50 @@ class ReportController extends Controller
         }
 
         //shipstaff recored
-        $exam = Exam::where('ship_id',$ship_id)->orderBy('id','desc')->get();
-        $html = view('main-report.trainingRecored',compact('exam'))->render();
+        $exam = Exam::where('ship_id', $ship_id)->orderBy('id', 'desc')->get();
+        $html = view('main-report.trainingRecored', compact('exam'))->render();
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
 
-        $crewBrifing = Brifing::where('ship_id',$ship_id)->orderBy('id','desc')->get();
-        $html = view('main-report.crew-briefing',compact('crewBrifing'))->render();
+        $crewBrifing = Brifing::where('ship_id', $ship_id)->orderBy('id', 'desc')->get();
+        $html = view('main-report.crew-briefing', compact('crewBrifing'))->render();
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
 
 
         $mdnoresults = DB::table('po_order_items_hazmats as p')
-        ->join('make_models as m', 'm.id', '=', 'p.model_make_part_id')
-        ->join('hazmats as h', 'h.id', '=', 'p.hazmat_id')
-        ->select([
-            'm.id',
-            'm.md_date',
-            'm.md_no',
-            'm.coumpany_name',
-            DB::raw('GROUP_CONCAT(DISTINCT h.short_name ORDER BY h.short_name ASC) AS hazmat_names')
-        ])
-        ->where('ship_id',$ship_id)
-        ->whereNotNull('p.doc1')
-        ->groupBy('m.id', 'm.md_date', 'm.md_no', 'm.coumpany_name')
-        ->get();
-        $html = view('main-report.md-recoreds',compact('mdnoresults'))->render();
+            ->join('make_models as m', 'm.id', '=', 'p.model_make_part_id')
+            ->join('hazmats as h', 'h.id', '=', 'p.hazmat_id')
+            ->select([
+                'm.id',
+                'm.md_date',
+                'm.md_no',
+                'm.coumpany_name',
+                DB::raw('GROUP_CONCAT(DISTINCT h.short_name ORDER BY h.short_name ASC) AS hazmat_names')
+            ])
+            ->where('ship_id', $ship_id)
+            ->whereNotNull('p.doc1')
+            ->groupBy('m.id', 'm.md_date', 'm.md_no', 'm.coumpany_name')
+            ->get();
+        $html = view('main-report.md-recoreds', compact('mdnoresults'))->render();
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
 
-        // $sdresults = DB::select('SELECT p.po_order_item_id, p.doc2 AS sd_no, m.sdoc_date, m.issuer_name,m.sdoc_objects,m.sdoc_no, m.coumpany_name,po_order_items.description,GROUP_CONCAT(DISTINCT h.short_name) AS hazmat_names FROM po_order_items_hazmats p JOIN hazmats h ON p.hazmat_id = h.id JOIN make_models m ON p.model_make_part_id = m.id JOIN po_order_items po_order_items ON p.po_order_item_id = po_order_items.id where p.ship_id = '.$ship_id.' GROUP BY p.po_order_item_id, p.doc2, m.sdoc_date, m.coumpany_name, m.issuer_name, ,m.sdoc_objects,po_order_items.description,m.sdoc_no');
-        // $html = view('main-report.sdResults',compact('sdresults'))->render();
-        // $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
+        $sdocresults = DB::table('po_order_items_hazmats as p')
+            ->join('make_models as m', 'm.id', '=', 'p.model_make_part_id')
+            ->join('hazmats as h', 'h.id', '=', 'p.hazmat_id')
+            ->select([
+                'm.id',
+                'm.sdoc_date',
+                'm.sdoc_no',
+                'm.issuer_name',
+                'm.sdoc_objects',
+                DB::raw('GROUP_CONCAT(DISTINCT h.short_name ORDER BY h.short_name ASC) AS hazmat_names')
+            ])
+            ->where('p.ship_id', $ship_id)
+            ->whereNotNull('p.doc2')
+            ->groupBy('m.id', 'm.sdoc_date', 'm.sdoc_no', 'm.issuer_name', 'm.sdoc_objects')
+            ->get();
+            $html = view('main-report.sdoc-recoreds', compact('sdocresults'))->render();
+            $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
+       
         // return response()->streamDownload(function () use ($mpdf) {
         //     echo $mpdf->Output('', 'S'); // S = return as string
         // }, 'report.pdf', ['Content-Type' => 'application/pdf']);
@@ -204,14 +220,12 @@ class ReportController extends Controller
         $response = response()->download($filePath, $fileName)->deleteFileAfterSend(true);
         $response->headers->set('X-File-Name', $fileName);
         return $response;
-    
     }
-    public function reportCenter(Request $request){
+    public function reportCenter(Request $request)
+    {
         $user = Auth::user();
 
         $ship_id = $user->shipClient->id;
-        return view('helpCenter.report',compact('ship_id'));
+        return view('helpCenter.report', compact('ship_id'));
     }
-
-
 }
