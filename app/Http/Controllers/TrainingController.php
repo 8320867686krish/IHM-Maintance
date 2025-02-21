@@ -160,7 +160,7 @@ class TrainingController extends Controller
     public function startTraining(Request $request)
     {
         $user =  Auth::user();
-        $designatedPerson = DesignatedPerson::select('id', 'name')->where('ship_staff_id', $user->id)->get()->toArray();
+        $ship_id = Session::get('ship_id');
         $designated_people_id = Session::get('designated_people_id');
         if (!@$designated_people_id) {
             session()->flash('success','Plese start training');
@@ -170,25 +170,22 @@ class TrainingController extends Controller
         $designatedPersonDetail = DesignatedPerson::select('name')->where('id', $designated_people_id)->first();
         Session::put('designated_name',@$designatedPersonDetail['name']);
 
-        $hazmat_companies_id =  $user->hazmat_companies_id;
         $training_material =   $user->hazmatCompany->training_material;
 
-        $ship_id = $user->shipClient->id;
-        $trainingRecoredHistory = Exam::where('ship_staff_id', $user->id)->orderBy('id','desc')->get();
+        $trainingRecoredHistory = Exam::where('ship_id', $ship_id)->orderBy('id','desc')->get();
         $material = asset('uploads/training_material/' . $training_material);
-       $shipReport = $this->genrateSummeryReport($ship_id);
+        $shipReport = $this->genrateSummeryReport($ship_id);
 
-
-
-        return view('training.material', compact('designatedPerson', 'material', 'designatedPersonDetail','shipReport'));
+        return view('training.material', compact('material', 'designatedPersonDetail','shipReport'));
     }
     public function Traininglist(Request $request)
     {
         Session::forget('designated_people_id');
+        $ship_id = Session::get('ship_id');
         $user = Auth::user();
-        $trainingRecoredHistory = Exam::where('ship_staff_id', $user->id)->orderBy('id','desc')->get();
+        $trainingRecoredHistory = Exam::where('ship_id',$ship_id)->orderBy('id','desc')->get();
         $brifingHistory = Brifing::with('DesignatedPersonDetail:id,name')
-        ->where('ship_staff_id', $user->id)
+        ->where('ship_id', $ship_id)
         ->orderBy('id', 'desc') // Correct placement of orderBy
         ->get();
         $designatedPerson = DesignatedPerson::select('id', 'name')->where('ship_staff_id', $user->id)->whereNull('sign_off_date')->get()->toArray();
@@ -197,16 +194,12 @@ class TrainingController extends Controller
     public function saveBrifing(BriefingRequest $request)
     {
         $post = $request->input();
-        $hazmat_companies_id = Auth::user()->hazmat_companies_id;
 
-        $user = Auth::user();
-        $post['ship_id'] = $user->shipClient->id;
+        $post['ship_id'] = Session::get('ship_id');
 
-        $post['ship_staff_id'] = $user->id;
-        $post['hazmat_companies_id'] = $hazmat_companies_id;
         Brifing::updateOrcreate(['id' => $post['id']], $post);
 
-        $brifingHistory = Brifing::with('DesignatedPersonDetail:id,name')->where('ship_staff_id', $user->id)
+        $brifingHistory = Brifing::with('DesignatedPersonDetail:id,name')->where('ship_id', $post['ship_id'])
         ->orderBy('id', 'desc')->get();
 
         
@@ -419,8 +412,7 @@ class TrainingController extends Controller
         if (file_exists($filePath)) {
             unlink($filePath);
         }
-        $inputData['ship_id'] = $user->shipClient->id;
-        $inputData['ship_staff_id'] = $user->id;
+        $inputData['ship_id'] = Session::get('ship_id');
         $inputData['correct_ans'] = $post['correct_ans'];
         $inputData['wrong_ans'] = $post['wrong_ans'];
         $inputData['total_ans'] = $post['total_ans'];

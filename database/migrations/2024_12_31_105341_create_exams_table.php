@@ -19,9 +19,7 @@ return new class extends Migration
             $table->unsignedBigInteger('designated_person_id')->nullable();  // Same data type as hazmat_companies.id
             $table->foreign('designated_person_id')->references('id')->on('designated_people')->onDelete('cascade');
 
-            $table->unsignedBigInteger('ship_staff_id')->nullable();  // Same data type as hazmat_companies.id
-            $table->foreign('ship_staff_id')->references('id')->on('users')->onDelete('cascade');
-
+          
 
             $table->integer('correct_ans');
             $table->integer('wrong_ans');

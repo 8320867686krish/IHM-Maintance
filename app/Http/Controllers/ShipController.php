@@ -247,7 +247,7 @@ class ShipController extends Controller
     {
         $ship = Ship::with(['shipTeams', 'client'])->findOrFail($ship_id);
 
-    
+        Session::put(['ship_id'=>$ship_id]);
         $isBack = 0;
         if (session('back') == 1) {
             $isBack = 1;
@@ -292,9 +292,21 @@ class ShipController extends Controller
 
         $checkHazmatIHMPart = CheckHazmat::with(relations: 'hazmat')->where('ship_id', $ship_id)->get();
 
-        $trainingRecoreds = DesignatedPerson::where('ship_id', $ship_id)->get();
 
-        $dpsore = DesignatedPersionShip::with('designatedPersonDetail')->where('ship_id', $ship_id)->get();
+        $trainingRecoreds = DesignatedPersionShip::with('designatedPersonDetail')
+        ->where('ship_id', $ship_id)
+        ->whereHas('designatedPersonDetail', function ($query) {
+            $query->where('position', '!=','SuperDP');
+        })
+        ->get();
+        $designatedPerson = $trainingRecoreds->pluck('designatedPersonDetail');
+
+        $dpsore = DesignatedPersionShip::with('designatedPersonDetail')
+        ->where('ship_id', $ship_id)
+        ->whereHas('designatedPersonDetail', function ($query) {
+            $query->where('position', 'SuperDP');
+        })
+        ->get();
 
         $trainingRecoredHistory = Exam::where('ship_id', $ship_id)->orderBy('id', 'desc')->get();
 
@@ -345,7 +357,6 @@ class ShipController extends Controller
         $majorrepair = Majorrepair::where('ship_id', $ship_id)->orderBy('id', 'desc')->get();
 
         $brifingHistory = Brifing::where('ship_id', $ship_id)->get();
-        $designatedPerson = DesignatedPerson::select('id', 'name')->where('ship_staff_id', $user->id)->get()->toArray();
 
         return view('ships.view', compact('experts', 'managers', 'isBack', 'ship', 'readonly', 'users', 'poOrders', 'ship_id', 'checkHazmatIHMPart', 'hazmat_companies_id', 'partMenual', 'summary', 'trainingRecoreds', 'mdnoresults', 'dpsore', 'trainingRecoredHistory', 'ships', 'majorrepair', 'brifingHistory', 'designatedPerson','sdocresults'));
     }

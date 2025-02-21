@@ -117,12 +117,12 @@ Route::middleware('auth')->group(function () {
             Route::get('majorrepair/{id}', 'majorrepairDelete')->name('majorrepair.remove');
         });
    // });
+   Route::post('save/brifing', [TrainingController::class,'saveBrifing'])->name('brifing.save');
 
     Route::middleware('can:training')->group(function () {
         Route::controller(TrainingController::class)->group(function () {
             Route::get('ship/training', 'Traininglist')->name('training');
             Route::post('save/result', 'saveResult')->name('saveResult');
-            Route::post('save/brifing', 'saveBrifing')->name('brifing.save');
             Route::get('briefing/download/{id}', 'briefingDownload')->name('briefing.download');
             Route::post('briefing/upload', 'brifingDoc')->name('brifingDoc');
             Route::post('training/savedesignated', 'savedesignated')->name('training.savedesignated');

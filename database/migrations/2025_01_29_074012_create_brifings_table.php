@@ -20,10 +20,7 @@ return new class extends Migration
             $table->unsignedBigInteger('designated_people_id')->nullable();
             $table->foreign('designated_people_id')->references('id')->on('designated_people')->onDelete('cascade');
 
-            $table->unsignedBigInteger('hazmat_companies_id')->nullable();  // Same data type as hazmat_companies.id
-            $table->foreign('hazmat_companies_id')->references('id')->on('hazmat_companies')->onDelete('cascade');
-            $table->unsignedBigInteger('ship_staff_id')->nullable();  // Same data type as hazmat_companies.id
-            $table->foreign('ship_staff_id')->references('id')->on('users')->onDelete('cascade');
+        
 
             $table->timestamps();
         });

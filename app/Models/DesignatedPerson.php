@@ -15,7 +15,6 @@ class DesignatedPerson extends Model
         'position',
         'sign_on_date',
         'sign_off_date',
-        'ship_id',
         'ship_staff_id'
     ];
 

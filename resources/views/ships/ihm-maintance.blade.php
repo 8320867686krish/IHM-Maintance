@@ -26,7 +26,7 @@
                 <div class="card-header" id="TrainingRecoreds">
                     <h5 class="mb-0">
                         <button class="btn btn-link collapsed d-flex justify-content-between w-100" data-toggle="collapse" data-target="#traing-records" aria-expanded="false" aria-controls="soreDpRecoreds">
-                            OnBoard Training Recoreds
+                            OnBoard Training Records
                             <span class="fas fa-angle-down mr-3"></span>
 
                         </button>
@@ -162,6 +162,8 @@
                 </div>
                 <div id="collapsemacrew" class="collapse" aria-labelledby="headingmacrew" data-parent="#accordion">
                     <div class="card-body mb-4">
+                    <button class="btn btn-primary float-right mb-4" type="button" id="startBrifing">Start Briefing
+                        </button>
                         <div class="table-responsive">
                             <table class="table table-striped table-bordered first">
                                 <thead>
@@ -173,7 +175,7 @@
                                         <th>Action</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody class="brifingHistory">
                                     <x-brifing-history :brifingHistory=$brifingHistory></x-brifing-history>
 
                                 </tbody>

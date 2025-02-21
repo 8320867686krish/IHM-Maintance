@@ -12,16 +12,7 @@
           enctype="multipart/form-data">
           @csrf
           <input type="hidden" name="id" id="id"/>
-          <div class="col-12 col-md-12 col-lg-12">
-              <div class="form-group">
-
-                <input type="hidden" id="ship_id" name="ship_id" value="{{@$ship_id}}" >
-                <input type="hidden" id="ship_staff_id" name="ship_staff_id" value="{{@$ship['user_id']}}" >
-                <input type="hidden" id="hazmat_companies_id" name="hazmat_companies_id" value="{{@$ship['hazmat_companies_id']}}" >
-
-              </div>
-            </div>
-
+         
           <div class=" row">
 
               <div class="form-group col-6 col-md-6 col-lg-6 mb-4">

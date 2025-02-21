@@ -6,6 +6,7 @@ use App\Models\Majorrepair;
 use App\Traits\ImageUpload;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class MajorrepairController extends Controller
 {
@@ -14,18 +15,9 @@ class MajorrepairController extends Controller
     public function index(Request $request)
     {
         $user = Auth::user();
-        $majorrepair = Majorrepair::where('ship_staff_id', $user->id)->orderBy('id', 'desc')->get();
-        if ($request->ajax()) {
-            $majorrepair = Majorrepair::where('ship_staff_id', $user->id)
-                ->orderBy('id', 'desc')
-                ->get(); // ✅ Use pagination
-            return response()->json([
-                "draw" => intval($request->input('draw')), // Needed for DataTables
-                "recordsTotal" => $majorrepair->count(),
-                "recordsFiltered" => $majorrepair->count(),
-                "data" => $majorrepair // ✅ Send paginated data
-            ]);
-        }
+        $ship_id = Session::get('ship_id');
+        $majorrepair = Majorrepair::where('ship_id',$ship_id )->orderBy('id', 'desc')->get();
+       
         return view('majorRepair.list', compact('majorrepair'));
     }
 
@@ -37,12 +29,10 @@ class MajorrepairController extends Controller
         if ($post['id'] == 0) {
             if (!@$post['ship_id']) {
 
-                $post['hazmat_companies_id'] = $user['hazmat_companies_id'];
-                $post['ship_staff_id'] = $user->id;
-                $post['ship_id'] = $user->shipClient->id;
+                $post['ship_id'] = Session::get('ship_id');
             }
         }
-        $majrrecoerds = Majorrepair::where('ship_staff_id', $post['id'])->first();
+        $majrrecoerds = Majorrepair::where('ship_id', $post['ship_id'])->first();
         if ($request->has('document')) {
             if ($post['id'] != 0) {
                 if (@$majrrecoerds->document) {
@@ -83,23 +73,16 @@ class MajorrepairController extends Controller
             $post['after_image'] = $image;
         }
         Majorrepair::updateOrCreate(['id' => $post['id']], $post);
-        if ($post['ship_id']) {
-            $majorrepair = Majorrepair::where('ship_id', $post['ship_id'])->orderBy('id', 'desc')->get();
-        } else {
-            $majorrepair = Majorrepair::where('ship_staff_id', $user->id)->orderBy('id', 'desc')->get();
-        }
+        $majorrepair = Majorrepair::where('ship_id', $post['ship_id'])->orderBy('id','asc')->get();
         $html =  view('components.majorrepair-list', compact('majorrepair'))->render();
         return response()->json(['isStatus' => true, 'message' => 'save successfully', 'html' => $html]);
     }
     public function majorrepairDelete($id)
     {
         try {
-            $user = Auth::user();
-
-            $currentUserRoleLevel = $user->roles->first()->level;
+            $ship_id= Session::get('ship_id');
 
 
-            $hazmat_companies_id = $user['hazmat_companies_id'];
             $majorrepairRecords = Majorrepair::findOrFail($id);
             $ship_id = $majorrepairRecords->ship_id;
             if (@$majorrepairRecords->document) {
@@ -111,11 +94,7 @@ class MajorrepairController extends Controller
             }
 
             $majorrepairRecords->delete();
-            if ($currentUserRoleLevel != 6) {
-                $majorrepair = Majorrepair::where('ship_id', $ship_id)->orderBy('id', 'desc')->get();
-            } else {
-                $majorrepair = Majorrepair::where('ship_staff_id', $user->id)->orderBy('id', 'desc')->get();
-            }
+            $majorrepair = Majorrepair::where('ship_id', $ship_id)->orderBy('id', 'desc')->get();
             $html =  view('components.majorrepair-list', compact('majorrepair'))->render();
             return response()->json(['isStatus' => true, 'message' => 'save successfully', 'html' => $html]);
         } catch (\Throwable $th) {

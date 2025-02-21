@@ -13,9 +13,6 @@
                     @csrf
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 row">
                         <input type="hidden" id="id" name="id" class="form-control">
-                        <input type="hidden" id="ship_id" name="ship_id" class="form-control">
-                        <input type="hidden" id="isDesignated" name="isDesignated" value="isDesignated">
-                        <input type="hidden" name="main_ship_id" id="main_ship_id" value="{{$ship_id}}">
                         <input type="hidden" name="ship_staff_id" id="ship_staff_id" value="{{$ship->user_id}}">
 
                         <div class="col-12 col-md-12 col-lg-12 mb-2">
