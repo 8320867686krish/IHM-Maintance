@@ -26,14 +26,14 @@
 
                 </tr>
                 @else
-                @foreach($sdocresults as $mdno)
+                @foreach($sdocresults as $sdoc)
                 <tr>
                     <td>{{$loop->iteration}}</td>
-                    <td>{{$value->sdoc_date}}</td>
-                    <td>{{$value->sdoc_no}}</td>
-                    <td>{{$value->issuer_name}}</td>
-                    <td>{{$value->sdoc_objects}}</td>
-                    <td>{{$value->hazmat_names}}</td>
+                    <td>{{$sdoc->sdoc_date}}</td>
+                    <td>{{$sdoc->sdoc_no}}</td>
+                    <td>{{$sdoc->issuer_name}}</td>
+                    <td>{{$sdoc->sdoc_objects}}</td>
+                    <td>{{$sdoc->hazmat_names}}</td>
                 </tr>
                 @endforeach
                 @endif
