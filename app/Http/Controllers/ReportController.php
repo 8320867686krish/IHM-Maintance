@@ -169,6 +169,24 @@ class ReportController extends Controller
         $html = view('main-report.crew-briefing',compact('crewBrifing'))->render();
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
 
+
+        $mdnoresults = DB::table('po_order_items_hazmats as p')
+        ->join('make_models as m', 'm.id', '=', 'p.model_make_part_id')
+        ->join('hazmats as h', 'h.id', '=', 'p.hazmat_id')
+        ->select([
+            'm.id',
+            'm.md_date',
+            'm.md_no',
+            'm.coumpany_name',
+            DB::raw('GROUP_CONCAT(DISTINCT h.short_name ORDER BY h.short_name ASC) AS hazmat_names')
+        ])
+        ->where('ship_id',$ship_id)
+        ->whereNotNull('p.doc1')
+        ->groupBy('m.id', 'm.md_date', 'm.md_no', 'm.coumpany_name')
+        ->get();
+        $html = view('main-report.md-recoreds',compact('mdnoresults'))->render();
+        $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
+
         // $sdresults = DB::select('SELECT p.po_order_item_id, p.doc2 AS sd_no, m.sdoc_date, m.issuer_name,m.sdoc_objects,m.sdoc_no, m.coumpany_name,po_order_items.description,GROUP_CONCAT(DISTINCT h.short_name) AS hazmat_names FROM po_order_items_hazmats p JOIN hazmats h ON p.hazmat_id = h.id JOIN make_models m ON p.model_make_part_id = m.id JOIN po_order_items po_order_items ON p.po_order_item_id = po_order_items.id where p.ship_id = '.$ship_id.' GROUP BY p.po_order_item_id, p.doc2, m.sdoc_date, m.coumpany_name, m.issuer_name, ,m.sdoc_objects,po_order_items.description,m.sdoc_no');
         // $html = view('main-report.sdResults',compact('sdresults'))->render();
         // $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);

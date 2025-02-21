@@ -326,6 +326,7 @@ class ShipController extends Controller
                 'm.md_no',
                 'm.coumpany_name'
             )
+            ->where('p.ship_id',$ship_id)
             ->whereNotNull('doc1')
             ->get();
 
@@ -348,6 +349,7 @@ class ShipController extends Controller
                 'm.issuer_name',
                 'm.sdoc_objects'
             )
+            ->where('p.ship_id',$ship_id)
             ->whereNotNull('doc2')
             ->get();
 
