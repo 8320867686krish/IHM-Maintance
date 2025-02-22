@@ -18,7 +18,8 @@
                     <x-GuestLayout />
                     <div class="dropdown-menu dropdown-menu-right nav-user-dropdown"
                         aria-labelledby="navbarDropdownMenuLink2">
-
+                        <a class="dropdown-item" href="{{ route('profile') }}"><i
+                        class="fas fa-user mr-2"></i>Profile</a>
                         <a class="dropdown-item" href="{{ route('password.confirm') }}"><i
                                 class="fas fa-cog mr-2"></i>Change Password</a>
                         <a class="dropdown-item" href="{{ route('logout') }}"

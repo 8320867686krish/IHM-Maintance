@@ -25,7 +25,8 @@ class User extends Authenticatable
         'email',
         'password',
         'hazmat_companies_id',
-        'phone'
+        'phone',
+        'image',
     ];
 
     /**

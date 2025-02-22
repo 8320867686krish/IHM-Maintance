@@ -18,15 +18,15 @@ class Logo extends Component
         $user = Auth()->user();
         $currentUserRoleLevel =$user->roles->first()->level;
         if ($currentUserRoleLevel == 2 || $currentUserRoleLevel == 3 || $currentUserRoleLevel == 4) {
-            $logo = "uploads/hazmatCompany/" . $user->hazmatCompany->logo;
+            $logo = "uploads/hazmatCompany/" . @$user->hazmatCompany->logo;
         }
         else if ($currentUserRoleLevel == 5) {
-            $logo = "uploads/clientcompany/".$user->clientCompany->client_image;
+            $logo = "uploads/clientcompany/".@$user->clientCompany->client_image;
         }
         else if ($currentUserRoleLevel == 6) {
-            $logo = 'uploads/clientcompany/' . $user->shipClient->client->client_image;
+            $logo = 'uploads/clientcompany/' . @$user->shipClient->client->client_image;
         }else{
-            $logo = 'assets/images/logo.png';
+            $logo = 'uploads/logo/'.$user['image'];
         }
         $this->logo1 = $logo;
         $this->currentUserRoleLevel = $currentUserRoleLevel;

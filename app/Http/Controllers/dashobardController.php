@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\configrationRequest;
+use App\Http\Requests\profileRequest;
 use App\Models\ClientCompany;
 use App\Models\configration;
 use App\Models\Hazmat;
 use App\Models\hazmatCompany;
 use App\Models\Ship;
+use App\Models\User;
 use App\Traits\ImageUpload;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -21,6 +23,25 @@ class dashobardController extends Controller
     //
     use ShipData;
     use ImageUpload;
+    public function profile(){
+        $user = Auth::user();
+        return view('profile',compact('user'));
+    }
+    public function saveProfile(profileRequest $request){
+        $post = $request->input();
+        $user = Auth::user();
+        if ($request->has('image')) {
+
+            if (@$user && @$user->image) {
+                $oldImagePath = $this->deleteImage('uploads/logo/', $user->image);
+            }
+
+            $image = $this->upload($request, 'image', 'uploads/logo');
+            $post['image'] =  $image;
+        }
+        User::updateOrCreate(['id' => $user->id],$post);
+        return redirect('dashboard');
+    }
     public function index()
     {
         $user = Auth::user();

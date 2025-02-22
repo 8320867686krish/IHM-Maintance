@@ -298,6 +298,44 @@
                 </div>
             </div>
 
+            <div class="card">
+                <div class="card-header" id="headingma5">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link collapsed d-flex justify-content-between w-100" data-toggle="collapse" data-target="#collapsema5" aria-expanded="false" aria-controls="collapsema5">
+                            Previous IHM Maintenance
+                            <span class="fas fa-angle-down mr-3"></span>
+
+                        </button>
+                    </h5>
+                </div>
+                <div id="collapsema5" class="collapse" aria-labelledby="headingma5" data-parent="#accordion">
+                    <div class="card-body mb-4">
+                        @can('ships.edit')
+                        <a href="#"
+                            class="btn btn-primary float-right btn addPreviousBtn mb-4">Add</a>
+                        @endcan
+                        <div class="table-responsive">
+
+                            <table class="table table-striped table-bordered first" id="majorlttable">
+                                <thead>
+                                    <tr>
+                                        <th width="5%">Sr.No</th>
+                                        <th>Name</th>
+                                        <th width="15%">Date</th>
+                                        <th width="15%">Location Name</th>
+                                        <th width="18%">Document Upload By</th>
+                                        <th width="15%">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="majorList">
+                                    <x-majorrepair-list :majorrepair=$majorrepair></x-majorrepair-list>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
 
           
 
@@ -316,6 +354,8 @@
 @push('js')
 <script src="{{ asset('assets/js/shipdesignatedperson.js') }}"></script>
 <script src="{{ asset('assets/js/majorRepair.js')}}"></script>
+<script src="{{ asset('assets/js/previousAttachment.js')}}"></script>
+
 <script src="{{ asset('assets/js/training.js') }}"></script>
 
 <script>

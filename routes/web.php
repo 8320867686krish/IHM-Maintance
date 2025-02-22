@@ -45,6 +45,9 @@ Route::get('/shipwisepo/{ship_id}/{selectedDate}', [dashobardController::class, 
 Route::get('/allshipsData/{type}/{selectedDate}', [dashobardController::class, 'allshipsData'])->middleware(['auth', 'verified'])->name('shipwiseData');
 
 Route::middleware('auth')->group(function () {
+    Route::get('profile',[dashobardController::class,'profile'])->name('profile');
+    Route::post('profile/save',[dashobardController::class,'saveProfile'])->name('profile.save');
+
     Route::get('client-company/{id}', [DashobardController::class, 'clientcompany'])->name('clientcompany');
     Route::get('client-company/ships/{id}', [DashobardController::class, 'clientcompanyShips'])->name('clientcompany.ships');
     Route::get('ship-dashboard/{id}', [DashobardController::class, 'shipDashboard'])->name('ship.dashboard');
