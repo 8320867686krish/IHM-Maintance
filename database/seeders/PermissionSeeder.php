@@ -32,7 +32,7 @@ class PermissionSeeder extends Seeder
             ],
 
             'ships' => [
-                'actions' => ['read' => 0, 'add' => 0, 'edit' => 0,'remove' => 0],
+                'actions' => ['read' => 0, 'add' => 0, 'edit' => 0,'remove' => 0,'view' => 0],
                 "is_show" => 1,
                 'full_name' => 'Ships'
             ],
@@ -59,6 +59,24 @@ class PermissionSeeder extends Seeder
                 'actions' => ['add' => 0],
                 "is_show" => 0,
                 'full_name' => 'Assign Team'
+            ],
+            'majorrepair' => [
+                'actions' => ['read' => 0, 'add' => 0, 'edit' => 0,'remove' => 0],
+                "is_show" => 1,
+                'full_name' => 'Major Repair'
+
+            ],
+            'shoredp' => [
+                'actions' => ['read' => 0, 'add' => 0, 'edit' => 0,'remove' => 0],
+                "is_show" => 1,
+                'full_name' => 'Shoredp'
+
+            ],
+            'responsibleperson' => [
+                'actions' => ['read' => 0, 'add' => 0, 'edit' => 0,'remove' => 0],
+                "is_show" => 1,
+                'full_name' => 'Responsibleperson'
+
             ],
 
          

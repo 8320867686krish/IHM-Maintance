@@ -24,7 +24,11 @@
 
                     @foreach ($allPermissions as $permission)
                     @if ($permission['group_type'] === 'main' && $permission['is_show'] == 1)
-                    @can($permission['name'])
+                    @php
+            // Dynamically append '.read' to the permission name
+            $permissionName = $permission['name'] . '.read'; 
+        @endphp
+                    @can($permissionName)
                     <li class="nav-item">
                         @php
                         $isActive = false;

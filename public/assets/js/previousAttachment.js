@@ -1,25 +1,24 @@
 
 $(".addPreviousBtn").click(function(){
-    alert("hello");
-    // let $form = $("#majorRepairForm"); // Use the form's direct ID
-    // $('#majorRepairForm')[0].reset();
-    // $form.find('.error').text('');
-    // $form.find('.is-invalid').removeClass('is-invalid');
-    // $("#majorRepairModel").modal('show');
+    let $form = $("#PreviousAttachmentModelForm"); // Use the form's direct ID
+    $('#PreviousAttachmentModelForm')[0].reset();
+    $form.find('.error').text('');
+    $form.find('.is-invalid').removeClass('is-invalid');
+    $("#PreviousAttachmentModel").modal('show');
 
 });
-$(document).on('click', '.majorrepairEdit', function () {
+$(document).on('click', '.previousAttachmentEdit', function () {
 
-    var data = $(this).data('major'); 
+    var data = $(this).data('attachment'); 
 
     console.log(data);
-    $("#majorRepairForm").find('#id').val(data.id);
-    $("#majorRepairForm").find('#name').val(data.name);
-    $("#majorRepairForm").find('#date').val(data.date);
-    $("#majorRepairForm").find('#location_name').val(data.location_name);
-    $("#majorRepairForm").find('#document_uploaded_by').val(data.document_uploaded_by);
+    $("#PreviousAttachmentModelForm").find('#id').val(data.id);
+    $("#PreviousAttachmentModelForm").find('#attachment_name').val(data.attachment_name);
+    $("#PreviousAttachmentModelForm").find('#date_from').val(data.date_from);
+    $("#PreviousAttachmentModelForm").find('#date_till').val(data.date_till);
+    $("#PreviousAttachmentModelForm").find('#maintained_by').val(data.maintained_by);
 
-    $("#majorRepairModel").modal('show');
+    $("#PreviousAttachmentModel").modal('show');
 
 })
 $(document).on('click', '.major-delete', function (e) {
@@ -49,39 +48,39 @@ $(document).on('click', '.major-delete', function (e) {
         console.log("Failed to delete: " + response.message);
     });
 });
-$("#savemajorRepair").click(function(){
+$("#savePreviousAttachmentModel").click(function(){
 
-    let checkFormData = new FormData($("#majorRepairForm")[0]);
+    let checkFormData = new FormData($("#PreviousAttachmentModelForm")[0]);
 
     let $submitButton = $(this);
     let originalText = $submitButton.html();
     $submitButton.text('Wait...');
     $submitButton.prop('disabled', true);
-    let $form = $("#majorRepairForm"); // Use the form's direct ID
+    let $form = $("#PreviousAttachmentModelForm"); // Use the form's direct ID
     $form.find(".is-invalid").removeClass("is-invalid");
     $form.find(".text-danger").text("").hide();
     $.ajax({
         type: 'POST',
-        url: $("#majorRepairForm").attr('action'),
+        url: $("#PreviousAttachmentModelForm").attr('action'),
         data: checkFormData,
         contentType: false,
         processData: false,
         success: function (response) {
             if (response.isStatus) {
                 successMsg(response.message);
-                let form = document.getElementById('majorRepairForm');
+                let form = document.getElementById('PreviousAttachmentModelForm');
                 form.reset()
                 $submitButton.html(originalText);
                 $submitButton.prop('disabled', false);
-                $("#majorRepairModel").modal('hide');
+                $("#PreviousAttachmentModel").modal('hide');
               
-                $("#majorlttable").DataTable().destroy();
+                $("#PreviousAttachmentList").DataTable().destroy();
 
                 // Update table content
-                $("#majorlttable tbody").html(response.html);
+                $("#PreviousAttachmentList tbody").html(response.html);
 
                 // Reinitialize DataTable
-                $("#majorlttable").DataTable({
+                $("#PreviousAttachmentList").DataTable({
                     lengthChange: false, // Add your options here
                     responsive: true,
                     order: [[0, "desc"]],

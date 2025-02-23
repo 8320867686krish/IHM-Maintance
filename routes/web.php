@@ -117,6 +117,9 @@ Route::middleware('auth')->group(function () {
         Route::controller(MajorrepairController::class)->group(function () {
             Route::get('majorrepair', 'index')->name('majorrepair');
             Route::post('/majorrepair/save', 'majorrepairSave')->name('majorrepair.save');
+            Route::post('/previousAttachment/save', 'previousAttachmentSave')->name('previousAttachment.save');
+            Route::get('previousAttachment/{id}', 'previousAttachmentDelete')->name('previousAttachment.remove');
+
             Route::get('majorrepair/{id}', 'majorrepairDelete')->name('majorrepair.remove');
         });
    // });
@@ -148,10 +151,11 @@ Route::middleware('auth')->group(function () {
             Route::get('responsibleperson', 'responsibleperson')->name('responsibleperson')->middleware('can:responsibleperson');
         });
     });
-    Route::get('ship/view/{ship_id}',[ShipController::class,'shipView'])->name('ships.view');
 
     Route::middleware('can:ships')->group(function () {
         Route::controller(ShipController::class)->group(function () {
+            Route::get('ship/view/{ship_id}',[ShipController::class,'shipView'])->middleware('can:ships.view')->name(name: 'ships.view');
+
             Route::get('ships', 'index')->name('ships')->middleware('can:ships');
             Route::get('ships/add', 'create')->name('ships.add')->middleware('can:ships.add');
             Route::post('ships', 'store')->name('ships.store');

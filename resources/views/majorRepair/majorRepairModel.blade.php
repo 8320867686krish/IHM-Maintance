@@ -1,5 +1,5 @@
 <div class="modal" tabindex="-1" role="dialog" id="majorRepairModel">
-  <div class="modal-dialog modal-lg" role="document">
+  <div class="modal-dialog modal-lg" role="document" style="max-width:50%">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Repair</h5>

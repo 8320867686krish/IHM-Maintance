@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('table_previous_ihm_maintance', function (Blueprint $table) {
+        Schema::create('previous_attachments', function (Blueprint $table) {
             $table->id();
             $table->string('attachment_name')->nullable();
             $table->date('date_from')->nullable();
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('table_previous_ihm_maintance');
+        Schema::dropIfExists('previous_attachments');
     }
 };

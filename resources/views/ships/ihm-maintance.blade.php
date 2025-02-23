@@ -310,25 +310,25 @@
                 </div>
                 <div id="collapsema5" class="collapse" aria-labelledby="headingma5" data-parent="#accordion">
                     <div class="card-body mb-4">
-                        @can('ships.edit')
+                        @can('majorrepair.add')
                         <a href="#"
                             class="btn btn-primary float-right btn addPreviousBtn mb-4">Add</a>
                         @endcan
                         <div class="table-responsive">
 
-                            <table class="table table-striped table-bordered first" id="majorlttable">
+                            <table class="table table-striped table-bordered first" id="PreviousAttachmentList">
                                 <thead>
                                     <tr>
                                         <th width="5%">Sr.No</th>
                                         <th>Name</th>
-                                        <th width="15%">Date</th>
-                                        <th width="15%">Location Name</th>
-                                        <th width="18%">Document Upload By</th>
+                                        <th width="15%">Date From</th>
+                                        <th width="15%">Date Till</th>
+                                        <th width="18%">Maintained By</th>
                                         <th width="15%">Action</th>
                                     </tr>
                                 </thead>
-                                <tbody id="majorList">
-                                    <x-majorrepair-list :majorrepair=$majorrepair></x-majorrepair-list>
+                                <tbody id="PreviousAttachmentList">
+                                    <x-previous-attachment-list :previousAttachment=$previousAttachment></x-previous-attachment-list>
                                 </tbody>
                             </table>
                         </div>
@@ -349,6 +349,8 @@
 @include('shipdesignated.AdminDesignatedModel')
 @include('shipdesignated.AdminShoreDp')
 @include('majorRepair.majorRepairModel')
+@include('majorRepair.PreviousAttchmentModel')
+
 @include('training.model.startBrifing')
 
 @push('js')

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Majorrepair;
+use App\Models\PreviousAttachment;
 use App\Traits\ImageUpload;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,7 +15,6 @@ class MajorrepairController extends Controller
 
     public function index(Request $request)
     {
-        $user = Auth::user();
         $ship_id = Session::get('ship_id');
         $majorrepair = Majorrepair::where('ship_id',$ship_id )->orderBy('id', 'desc')->get();
        
@@ -25,7 +25,6 @@ class MajorrepairController extends Controller
     {
         $post = $request->input();
         unset($post['_token']);
-        $user = Auth::user();
         if ($post['id'] == 0) {
             if (!@$post['ship_id']) {
 
@@ -75,6 +74,31 @@ class MajorrepairController extends Controller
         Majorrepair::updateOrCreate(['id' => $post['id']], $post);
         $majorrepair = Majorrepair::where('ship_id', $post['ship_id'])->orderBy('id','asc')->get();
         $html =  view('components.majorrepair-list', compact('majorrepair'))->render();
+        return response()->json(['isStatus' => true, 'message' => 'save successfully', 'html' => $html]);
+    }
+    public function previousAttachmentSave(Request $request){
+        $post = $request->input();
+        unset($post['_token']);
+        $post['ship_id'] = Session::get('ship_id');
+
+        $previousRecords = PreviousAttachment::where('ship_id', $post['ship_id'])->first();
+        if ($request->has('document')) {
+            if ($post['id'] != 0) {
+                if (@$previousRecords->attachment) {
+                    $imagePath = public_path("uploads/previousattachment/") . $previousRecords->document;
+
+                    if (file_exists($imagePath)) {
+                        unlink($imagePath);
+                    }
+                }
+            }
+            $image = $this->upload($request, 'attachment', 'uploads/previousattachment');
+            $post['attachment'] = $image;
+        }
+        
+        PreviousAttachment::updateOrCreate(['id' => $post['id']], $post);
+        $previousAttachment = PreviousAttachment::where('ship_id', $post['ship_id'])->orderBy('id','asc')->get();
+        $html =  view('components.previous-attachment-list', compact('previousAttachment'))->render();
         return response()->json(['isStatus' => true, 'message' => 'save successfully', 'html' => $html]);
     }
     public function majorrepairDelete($id)

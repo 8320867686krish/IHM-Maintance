@@ -15,6 +15,7 @@ use App\Models\Majorrepair;
 use App\Models\partManuel;
 use App\Models\poOrder;
 use App\Models\PoOrderItemsHazmats;
+use App\Models\PreviousAttachment;
 use App\Models\Ship;
 use App\Models\ShipTeams;
 use App\Models\Summary;
@@ -356,11 +357,13 @@ class ShipController extends Controller
 
 
         $ships = Ship::get();
-        $majorrepair = Majorrepair::where('ship_id', $ship_id)->orderBy('id', 'desc')->get();
+        $majorrepair = Majorrepair::where('ship_id', operator: $ship_id)->orderBy('id','desc')->get();
 
-        $brifingHistory = Brifing::where('ship_id', $ship_id)->get();
+        $previousAttachment = PreviousAttachment::where('ship_id', operator: $ship_id)->orderBy('id','desc')->get();
 
-        return view('ships.view', compact('experts', 'managers', 'isBack', 'ship', 'readonly', 'users', 'poOrders', 'ship_id', 'checkHazmatIHMPart', 'hazmat_companies_id', 'partMenual', 'summary', 'trainingRecoreds', 'mdnoresults', 'dpsore', 'trainingRecoredHistory', 'ships', 'majorrepair', 'brifingHistory', 'designatedPerson','sdocresults'));
+        $brifingHistory = Brifing::where('ship_id', operator: $ship_id)->get();
+
+        return view('ships.view', compact('experts', 'managers', 'isBack', 'ship', 'readonly', 'users', 'poOrders', 'ship_id', 'checkHazmatIHMPart', 'hazmat_companies_id', 'partMenual', 'summary', 'trainingRecoreds', 'mdnoresults', 'dpsore', 'trainingRecoredHistory', 'ships', 'majorrepair', 'brifingHistory', 'designatedPerson','sdocresults','previousAttachment'));
     }
 
     public function assignShip(Request $request)
