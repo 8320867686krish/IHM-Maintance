@@ -82,7 +82,7 @@ class MajorrepairController extends Controller
         $post['ship_id'] = Session::get('ship_id');
 
         $previousRecords = PreviousAttachment::where('ship_id', $post['ship_id'])->first();
-        if ($request->has('document')) {
+        if ($request->has('attachment')) {
             if ($post['id'] != 0) {
                 if (@$previousRecords->attachment) {
                     $imagePath = public_path("uploads/previousattachment/") . $previousRecords->document;

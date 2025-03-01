@@ -39,7 +39,7 @@ $(document).on('click', '.major-delete', function (e) {
                 $("#majorlttable").DataTable({
                     lengthChange: false, // Add your options here
                     responsive: true,
-                    order: [[0, "asc"]],
+                    order: [[0, "desc"]],
                 });
 
         }

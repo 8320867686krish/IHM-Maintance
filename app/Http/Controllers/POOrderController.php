@@ -16,6 +16,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Session;
 use Maatwebsite\Excel\Facades\Excel;
 use Throwable;
 
@@ -71,7 +72,7 @@ class POOrderController extends Controller
             foreach ($post['items'] as $key => $value) {
                 $value['ship_id'] = $post['ship_id'];
                 $value['po_order_id'] = $poOrder->id;
-                poOrderItem::updateOrCreate(['id' => $key], $value);
+                poOrderItem::updateOrCreate(['id' => $key,'po_order_id'=> $poOrder->id], $value);
             }
         }
 
@@ -174,7 +175,7 @@ class POOrderController extends Controller
                 ];
 
                 if ($poItemsCheck) {
-                    poOrderItem::where('id', $poItemsCheck->id)->update($orderItems);
+                    poOrderItem::where('id', $poItemsCheck->id)->where('po_order_id',$po_id)->update($orderItems);
                 } else {
                     poOrderItem::create($orderItems);
                 }
@@ -192,7 +193,11 @@ class POOrderController extends Controller
     public function poDelete($po_id)
     {
         poOrder::where('id', $po_id)->delete();
-        return response()->json(['isStatus' => true, 'message' => 'Po Order Delete successfully']);
+        $ship_id = Session::get('ship_id');
+        $poOrders = poOrder::withCount(['poOrderItems'])->where('ship_id', $ship_id)->get();
+
+        $html = view('components.po-order-item',compact('poOrders'))->render();
+        return response()->json(['isStatus' => true, 'message' => 'Po Order Delete successfully','html'=>$html]);
     }
     public function poItemsHazmatSave(Request $request)
     {

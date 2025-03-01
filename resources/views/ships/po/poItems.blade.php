@@ -10,7 +10,7 @@
 @endcan
 
                         <div class="table-responsive">
-                            <table class="table table-striped table-bordered first">
+                            <table class="table table-striped table-bordered first" id="porecordsTable">
                                 <thead>
                                     <tr>
                                         <th width="15%">SR NO</th>
@@ -23,28 +23,8 @@
                                         @endcan
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    @foreach($poOrders as $order)
-                                    <tr class="new-po-order" data-id="{{$order['id']}}">
-                                        <td>{{ $loop->iteration }}</td>
-                                        <td>{{$order['po_no']}}</td>
-                                        <td>{{$order['supplier_name']}}</td>
-                                        <td>{{$order['machinery']}}</td>
-                                        <td>{{$order['po_order_items_count']}}</td>
-                                        @can('ships.edit')
-                                        <td>
-                                          
-                                            <a title="Edit" href="{{ route('po.add', ['ship_id' => $order['ship_id'], 'po_order_id' => $order['id'] ?? 0]) }}">
-                                                <span class="icon"><i class="fas fa-edit text-primary"></i></span>
-                                            </a>&nbsp;
-                                            <a href="#" title="Delete"  class="deletePo" data-id="{{$order['id']}}" > <i class="fas fa-trash-alt text-danger"></i>
-                                            </a>
-                                           
-                                        </td>
-                                        @endcan
-                                    </tr>
-                                    @endforeach
-
+                                <tbody class="PoIteamstbody">
+                                   <x-po-order-item :poOrders=$poOrders></x-po-order-item>
 
                                 </tbody>
                             </table>

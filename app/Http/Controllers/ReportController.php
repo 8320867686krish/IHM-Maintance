@@ -9,6 +9,7 @@ use App\Models\DesignatedPersionShip;
 use App\Models\DesignatedPerson;
 use App\Models\Exam;
 use App\Models\Hazmat;
+use App\Models\PreviousAttachment;
 use App\Models\Ship;
 use App\Traits\PdfGenerator;
 use Illuminate\Http\Request;
@@ -89,7 +90,7 @@ class ReportController extends Controller
         // Set header and footer
 
         // Add Table of Contents
-        $stylesheet = file_get_contents('public/assets/mpdf.css');
+        $stylesheet = file_get_contents('assets/mpdf.css');
 
         $mpdf->WriteHTML($stylesheet, \Mpdf\HTMLParserMode::HEADER_CSS);
         $shipImagePath = asset('uploads/ship/' . $projectDetail['ship_image']);
@@ -206,6 +207,19 @@ class ReportController extends Controller
             $html = view('main-report.sdoc-recoreds', compact('sdocresults'))->render();
             $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
        
+            $previousAttachment = PreviousAttachment::where('ship_id',$ship_id)->get();
+            if(@$previousAttachment){
+                foreach($previousAttachment as $value){
+                    $filePath = public_path('uploads/previousattachment')."/".$value['attachment'];
+                    if (file_exists($filePath) && @$value['attachment']) {
+                        $titleHtml = '<h2 style="text-align:center;font-size:13px;font-weight:bold>Previous Attachment ' . $value['attachment_name'] . ' Lab Result</h2>';
+                        $this->mergePdf($filePath, $titleHtml, $mpdf);
+                    }
+                }
+            }
+         
+
+            
         // return response()->streamDownload(function () use ($mpdf) {
         //     echo $mpdf->Output('', 'S'); // S = return as string
         // }, 'report.pdf', ['Content-Type' => 'application/pdf']);
@@ -227,5 +241,36 @@ class ReportController extends Controller
 
         $ship_id = $user->shipClient->id;
         return view('helpCenter.report', compact('ship_id'));
+    }
+
+    protected function mergeImageToPdf($imagePath, $title, $mpdf, $page = null)
+    {
+        $mpdf->AddPage($page);
+        $mpdf->WriteHTML('<h1>' . $title . '</h1>');
+        $mpdf->Image($imagePath, 0, 20,  $mpdf->w, null, 'png', '', true, false);
+    }
+    protected function mergePdf($filePath, $title, $mpdf, $page = null)
+    {
+        $mpdf->setSourceFile($filePath);
+        $pageCount = $mpdf->setSourceFile($filePath);
+        for ($i = 1; $i <= $pageCount; $i++) {
+
+            $mpdf->AddPage($page);
+            $templateId = $mpdf->importPage($i);
+            $size = $mpdf->getTemplateSize($templateId);
+            $scale = min(
+                ($mpdf->w - $mpdf->lMargin - $mpdf->rMargin) / $size['width'],
+                ($mpdf->h - $mpdf->tMargin - $mpdf->bMargin) / $size['height']
+            );
+            if ($i === 1 && @$title) {
+                $mpdf->WriteHTML($title);
+                $lmargin = 10;
+                $tMargin = 20;
+            } else {
+                $lmargin = $mpdf->lMargin;
+                $tMargin = $mpdf->tMargin;
+            }
+            $mpdf->useTemplate($templateId, $lmargin, $tMargin, $size['width'] * $scale, $size['height'] * $scale);
+        }
     }
 }

@@ -11,9 +11,9 @@ class PreviousAttachment extends Model
     protected $fillable = [
         'attachment_name',
         'date_from',
+        'attachment',
         'date_till',
         'maintained_by',
-        'attachment',
         'ship_id'
     ];
 }

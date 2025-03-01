@@ -661,16 +661,31 @@ $("#showTableTypeDiv").on("change", ".cloneTableTypeDiv input[type=checkbox].isI
 
     }
 });
+$(document).on('click', '.deletePo', function (e) {
 
-$(".deletePo").click(function (e) {
     e.preventDefault();
     var itemId = $(this).closest('.new-po-order').data('id');
     let confirmMsg = "Are you sure you want to delete this PO Record?";
     deleteUrl = `${baseUrl}/po-order/delete/${itemId}`;
     console.log(deleteUrl);
     confirmDeleteMethod(deleteUrl, confirmMsg, function (response) {
-        $(this).closest('.new-po-order').remove();
+        $(".PoIteamstbody").html('');
+        if (response.html && response.html.trim() !== '') {
+            $("#porecordsTable").DataTable().destroy();
 
+                // Update table content
+                $("#porecordsTable tbody").html(response.html);
+
+                // Reinitialize DataTable
+                $("#porecordsTable").DataTable({
+                    lengthChange: false, // Add your options here
+                    responsive: true,
+                    order: [[0, "desc"]],
+                });
+
+        }else{
+            $("#porecordsTable").DataTable().draw()
+        }
     }, function (response) {
         console.log("Failed to delete: " + response.message);
     });

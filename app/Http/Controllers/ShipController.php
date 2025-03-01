@@ -266,7 +266,7 @@ class ShipController extends Controller
         })->where('hazmat_companies_id', $user->hazmat_companies_id)->get(['id', 'name']);
 
 
-        $poOrders = poOrder::withCount(['poOrderItems'])->where('ship_id', $ship_id)->get();
+        $poOrders = poOrder::withCount(['poOrderItems'])->where('ship_id', $ship_id)->OrderBy('id','desc')->get();
 
         $users = $ship->shipTeams->pluck('user_id')->toArray();
         if (!Gate::allows('ships.add')) {
