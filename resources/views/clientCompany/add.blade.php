@@ -254,8 +254,8 @@
                                 <div class="form-group mb-3">
                                     <label for="level">choose logo for report<span class="text-danger"> *</span></label>
                                     <select class="form-control" name="is_report_logo" id="is_report_logo">
-                                        <option value="0" <?= ($clientCompany['is_report_logo'] == 0) ? 'selected' : '' ?>>Use Own Logo</option>
-                                        <option value="1" <?= ($clientCompany['is_report_logo'] == 1) ? 'selected' : '' ?>>Client Banner</option>
+                                        <option value="0" <?= ($clientCompany->is_report_logo == 0) ? 'selected' : '' ?>>Use Own Logo</option>
+                                        <option value="1" <?= ($clientCompany->is_report_logo == 1) ? 'selected' : '' ?>>Client Banner</option>
                                     </select>
 
                                 </div>
