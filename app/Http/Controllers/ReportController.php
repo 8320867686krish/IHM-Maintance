@@ -212,7 +212,7 @@ class ReportController extends Controller
                 foreach($previousAttachment as $value){
                     $filePath = public_path('uploads/previousattachment')."/".$value['attachment'];
                     if (file_exists($filePath) && @$value['attachment']) {
-                        $titleHtml = '<h2 style="text-align:center;font-size:13px;font-weight:bold">Previous Attachment ' . $value['attachment_name'] . ' Lab Result</h2>';
+                        $titleHtml = '<h2 style="text-align:center;font-size:13px;font-weight:bold">Previous Attachment ' . $value['attachment_name'] . '</h2>';
                         $this->mergePdf($filePath, $titleHtml, $mpdf);
                     }
                 }
