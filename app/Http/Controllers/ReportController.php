@@ -212,7 +212,7 @@ class ReportController extends Controller
                 foreach($previousAttachment as $value){
                     $filePath = public_path('uploads/previousattachment')."/".$value['attachment'];
                     if (file_exists($filePath) && @$value['attachment']) {
-                        $titleHtml = '<h2 style="text-align:center;font-size:13px;font-weight:bold>Previous Attachment ' . $value['attachment_name'] . ' Lab Result</h2>';
+                        $titleHtml = '<h2 style="text-align:center;font-size:13px;font-weight:bold">Previous Attachment ' . $value['attachment_name'] . ' Lab Result</h2>';
                         $this->mergePdf($filePath, $titleHtml, $mpdf);
                     }
                 }
@@ -262,11 +262,15 @@ class ReportController extends Controller
                 ($mpdf->w - $mpdf->lMargin - $mpdf->rMargin) / $size['width'],
                 ($mpdf->h - $mpdf->tMargin - $mpdf->bMargin) / $size['height']
             );
-                $mpdf->WriteHTML($title,\Mpdf\HTMLParserMode::HTML_BODY);
+            if ($i === 1 && !empty($title)) {
+                $mpdf->WriteHTML($title, \Mpdf\HTMLParserMode::HTML_BODY);
 
+                $lmargin = 10;
+                $tMargin = 20;
+            } else {
                 $lmargin = $mpdf->lMargin;
                 $tMargin = $mpdf->tMargin;
-            
+            }
             $mpdf->useTemplate($templateId, $lmargin, $tMargin, $size['width'] * $scale, $size['height'] * $scale);
         }
     }
