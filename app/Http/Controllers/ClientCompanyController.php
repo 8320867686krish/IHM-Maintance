@@ -31,16 +31,17 @@ class ClientCompanyController extends Controller
 
         return view('clientCompany.list', ['clientCompany' => $clients]);
     }
-    public function create()
+    public function create($id = null)
     {
         $user =  Auth::user();
         $hazmat_companies_id = $user->hazmat_companies_id;
         $created_by = $user->id;
         $hazmetCompany = hazmatCompany::select('id', 'name')->get();
+        $clientCompany = $id ? ClientCompany::find($id) : null;
 
 
         $hazmetCompany = hazmatCompany::select('id', 'name')->get();
-        return view('clientCompany.add', ['head_title' => 'Add', 'button' => 'Save', 'hazmat_companies_id' => $hazmat_companies_id, 'created_by' => $created_by,'hazmetCompany' => $hazmetCompany]);
+        return view('clientCompany.add', ['head_title' => 'Add', 'button' => 'Save', 'hazmat_companies_id' => $hazmat_companies_id, 'created_by' => $created_by,'hazmetCompany' => $hazmetCompany,'clientCompany' => $clientCompany]);
     }
     public function edit(string $id)
     {
