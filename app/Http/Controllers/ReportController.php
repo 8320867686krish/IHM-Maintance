@@ -262,8 +262,9 @@ class ReportController extends Controller
                 ($mpdf->w - $mpdf->lMargin - $mpdf->rMargin) / $size['width'],
                 ($mpdf->h - $mpdf->tMargin - $mpdf->bMargin) / $size['height']
             );
-            if ($i === 1 && @$title) {
-                $mpdf->WriteHTML($title);
+            if ($i === 1 && !empty($title)) {
+                $mpdf->WriteHTML($title, \Mpdf\HTMLParserMode::HTML_BODY);
+
                 $lmargin = 10;
                 $tMargin = 20;
             } else {
