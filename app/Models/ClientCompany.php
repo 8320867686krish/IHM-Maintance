@@ -34,7 +34,8 @@ class ClientCompany extends Model
         'manager_address',
         'manager_contact_person_email',
         'manager_contact_person_name',
-        'manager_contact_person_phone'
+        'manager_contact_person_phone',
+        'is_report_logo'
 
     ];
     public function hazmatCompaniesId()
