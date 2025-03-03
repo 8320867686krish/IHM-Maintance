@@ -34,7 +34,19 @@ class ReportController extends Controller
         $logo = 'data:image/png;base64,' . $logoData;
 
         $date = date('y-m-d');
-        $projectDetail = Ship::find($ship_id);
+        $projectDetail = Ship::with('client.hazmatCompaniesId')->find($ship_id);
+        $is_report_logo = $projectDetail['client']['is_report_logo'];
+        if($is_report_logo == 0){
+            $image = $projectDetail['client']['hazmatCompaniesId']['logo'];
+            $logoPath = public_path('uploads/hazmatCompany/'. $image);
+        }else{
+            $image = $projectDetail['client']['client_image'];
+            $logoPath = public_path('uploads/clientcompany/'. $image);
+            
+        }
+        $logoData = base64_encode(file_get_contents($logoPath));
+        $logo = 'data:image/png;base64,' . $logoData;
+       
         $mpdf = new Mpdf([
             'format' => 'A4',
             'margin_left' => 10,
