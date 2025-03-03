@@ -85,7 +85,7 @@ class MajorrepairController extends Controller
         if ($request->has('attachment')) {
             if ($post['id'] != 0) {
                 if (@$previousRecords->attachment) {
-                    $imagePath = public_path("uploads/previousattachment/") . $previousRecords->document;
+                    $imagePath = public_path("uploads/previousattachment/") . $previousRecords->attachment;
 
                     if (file_exists($imagePath)) {
                         unlink($imagePath);
