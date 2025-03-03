@@ -17,7 +17,7 @@
                         <div class="col-12 col-md-12 col-lg-12 mb-2">
                             <div class="form-group">
                                 <label for="name">Number Of Attendance</label>
-                                <input type="mumber" id="number_of_attendance" name="number_of_attendance" class="form-control @error('number_of_attendance') is-invalid @enderror" onchange="removeInvalidClass(this)">
+                                <input type="number" id="number_of_attendance" name="number_of_attendance" class="form-control @error('number_of_attendance') is-invalid @enderror" onchange="removeInvalidClass(this)">
                                 <div class="invalid-feedback error" id="number_of_attendanceError"></div>
 
                             </div>
