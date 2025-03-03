@@ -124,9 +124,9 @@ class TrainingController extends Controller
         $designated_people_id = Session::get('designated_people_id');
 
         if (!@$designated_people_id) {
-            session()->flash('success','Plese start training');
+            session()->flash('success', 'Plese start training');
             return redirect(url('training'));
-        } 
+        }
         $user =  Auth::user();
         $hazmat_companies_id =  $user->hazmat_companies_id;
         $training_sets_id = AssignTarainingSets::where('hazmat_companies_id', $hazmat_companies_id)
@@ -163,31 +163,31 @@ class TrainingController extends Controller
         $ship_id = Session::get('ship_id');
         $designated_people_id = Session::get('designated_people_id');
         if (!@$designated_people_id) {
-            session()->flash('success','Plese start training');
+            session()->flash('success', 'Plese start training');
             return redirect(url('training'));
-        } 
+        }
 
         $designatedPersonDetail = DesignatedPerson::select('name')->where('id', $designated_people_id)->first();
-        Session::put('designated_name',@$designatedPersonDetail['name']);
+        Session::put('designated_name', @$designatedPersonDetail['name']);
 
         $training_material =   $user->hazmatCompany->training_material;
 
-        $trainingRecoredHistory = Exam::where('ship_id', $ship_id)->orderBy('id','desc')->get();
+        $trainingRecoredHistory = Exam::where('ship_id', $ship_id)->orderBy('id', 'desc')->get();
         $material = asset('uploads/training_material/' . $training_material);
         $shipReport = $this->genrateSummeryReport($ship_id);
 
-        return view('training.material', compact('material', 'designatedPersonDetail','shipReport'));
+        return view('training.material', compact('material', 'designatedPersonDetail', 'shipReport'));
     }
     public function Traininglist(Request $request)
     {
         Session::forget('designated_people_id');
         $ship_id = Session::get('ship_id');
         $user = Auth::user();
-        $trainingRecoredHistory = Exam::where('ship_id',$ship_id)->orderBy('id','desc')->get();
+        $trainingRecoredHistory = Exam::where('ship_id', $ship_id)->orderBy('id', 'desc')->get();
         $brifingHistory = Brifing::with('DesignatedPersonDetail:id,name')
-        ->where('ship_id', $ship_id)
-        ->orderBy('id', 'desc') // Correct placement of orderBy
-        ->get();
+            ->where('ship_id', $ship_id)
+            ->orderBy('id', 'desc') // Correct placement of orderBy
+            ->get();
         $designatedPerson = DesignatedPerson::select('id', 'name')->where('ship_staff_id', $user->id)->whereNull('sign_off_date')->get()->toArray();
         return view('training.history', compact('trainingRecoredHistory', 'designatedPerson', 'brifingHistory'));
     }
@@ -200,9 +200,9 @@ class TrainingController extends Controller
         Brifing::updateOrcreate(['id' => $post['id']], $post);
 
         $brifingHistory = Brifing::with('DesignatedPersonDetail:id,name')->where('ship_id', $post['ship_id'])
-        ->orderBy('id', 'desc')->get();
+            ->orderBy('id', 'desc')->get();
 
-        
+
         $html = view('components.brifing-history', compact('brifingHistory'))->render();
         return response()->json(['isStatus' => true, 'message' => 'save successfully', 'html' => $html]);
     }
@@ -252,16 +252,33 @@ class TrainingController extends Controller
 
             // Import all pages from the briefing plan PDF
             for ($i = 1; $i <= $pageCount; $i++) {
-                $mpdf->AddPage();
-                $mpdf->UseTemplate($mpdf->ImportPage($i));
+                $templateId = $mpdf->ImportPage($i);
+                $size = $mpdf->GetTemplateSize($templateId);
+
+                // Check orientation
+                if ($size['width'] > $size['height']) {
+                    $mpdf->AddPage('L'); // Landscape
+                } else {
+                    $mpdf->AddPage('P'); // Portrait
+                }
+
+                $mpdf->UseTemplate($templateId);
             }
         }
         $mpdf->SetSourceFile($filePath); // Add generated file
         $pageCount = $mpdf->SetSourceFile($filePath);
 
         for ($i = 1; $i <= $pageCount; $i++) {
-            $mpdf->AddPage();
-            $mpdf->UseTemplate($mpdf->ImportPage($i));
+            $templateId = $mpdf->ImportPage($i);
+            $size = $mpdf->GetTemplateSize($templateId);
+        
+            if ($size['width'] > $size['height']) {
+                $mpdf->AddPage('L'); // Landscape
+            } else {
+                $mpdf->AddPage('P'); // Portrait
+            }
+        
+            $mpdf->UseTemplate($templateId);
         }
         unlink($filePath);
 
@@ -354,15 +371,15 @@ class TrainingController extends Controller
                     <td width="33%" style="text-align: center;">Revision:' . $version . '</td>
                     <td width="33%" style="text-align: right;">{PAGENO}/{nbpg}</td>
                 </tr>
-            </table>';  
+            </table>';
             $mpdf->SetHTMLHeader($header);
             $mpdf->SetHTMLFooter($footer);
 
             $stylesheet = file_get_contents('public/assets/mpdf.css');
             $mpdf->WriteHTML($stylesheet, \Mpdf\HTMLParserMode::HEADER_CSS);
-            $shipImagePath = asset('uploads/ship/'.$shipDetail['ship_image']);
-           
-            $mpdf->WriteHTML(view('report.cover', compact('shipDetail','shipImagePath')));
+            $shipImagePath = asset('uploads/ship/' . $shipDetail['ship_image']);
+
+            $mpdf->WriteHTML(view('report.cover', compact('shipDetail', 'shipImagePath')));
             $mpdf->WriteHTML(view('report.shipParticular', compact('shipDetail')));
             $mpdf->AddPage('L'); // Set landscape mode for the inventory page
             $mpdf->WriteHTML(view('report.Inventory', compact('filteredResults1', 'filteredResults2', 'filteredResults3')));
@@ -416,8 +433,8 @@ class TrainingController extends Controller
         $inputData['correct_ans'] = $post['correct_ans'];
         $inputData['wrong_ans'] = $post['wrong_ans'];
         $inputData['total_ans'] = $post['total_ans'];
-        $inputData['designated_person_id']= Session::get('designated_people_id');
-        $inputData['designated_name']=Session::get('designated_name');
+        $inputData['designated_person_id'] = Session::get('designated_people_id');
+        $inputData['designated_name'] = Session::get('designated_name');
         Exam::create($inputData);
         return response()->json(['isStatus' => true, 'message' => 'submit successfully!!']);
     }
