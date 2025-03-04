@@ -147,7 +147,7 @@ $(document).on("click", ".editBrif", function () {
 });
 $(document).on("click", ".uploadBrief", function () {
     var briefid = $(this).data("briefid");
-    console.log(briefid);
+    
     // Find the corresponding file input for the current row
     $("#fileInput_" + briefid).click();  
 });
@@ -173,7 +173,8 @@ $(document).on("change", ".fileInput", function () {
             success: function(response) {
                 if(response.isStatus) {
                     successMsg(response.message);
-
+                    $(".brifingHistory").html("");
+                    $(".brifingHistory").html(response.html);
                     // You can update the UI or notify the user of success here
                 } 
             },

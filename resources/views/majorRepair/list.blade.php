@@ -22,7 +22,7 @@
                 <h4 class="card-header">
                     @can('majorrepair.add')
                     <a href="#"
-                        class="btn btn-primary float-right btn addMajorBtn">Add Repaair</a>
+                        class="btn btn-primary float-right btn addMajorBtn">Add Repair</a>
                     @endcan
                 </h4>
                 <div class="card-body mb-4">

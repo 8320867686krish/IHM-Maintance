@@ -39,9 +39,6 @@ class TrainingController extends Controller
             $user =  Auth::user();
             $training = TrainingSets::get();
             $hazmatCompany = hazmatCompany::get();
-
-
-
             return view('training.list', ['training' => $training, 'hazmatCompany' => $hazmatCompany]);
         } catch (\Throwable $th) {
             return back()->withError($th->getMessage())->withInput();
@@ -219,8 +216,10 @@ class TrainingController extends Controller
             $Brifing->brifing_document = $image;
         }
         $Brifing->save();
-
-        return response()->json(['isStatus' => true, 'message' => 'save successfully']);
+        $brifingHistory = Brifing::with('DesignatedPersonDetail:id,name')->where('ship_id', Session::get('ship_id'))
+        ->orderBy('id', 'desc')->get();
+        $html = view('components.brifing-history', compact('brifingHistory'))->render();
+        return response()->json(['isStatus' => true, 'message' => 'save successfully','html'=>$html]);
     }
     public function briefingDownload($id)
     {

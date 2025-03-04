@@ -5,6 +5,13 @@
     <td>{{$historyValue->brifing_date}}</td>
     <td>{{$historyValue->DesignatedPersonDetail->name}}</td>
     <td>
+        @if($historyValue->brifing_document)
+        <a href="{{ asset('uploads/brifing_document/' . $historyValue['brifing_document']) }}" title="Download" download>
+            <i class="fas fa-download text-primary" style="font-size: 1rem"></i>
+        </a>
+        @endif
+    </td>
+    <td>
         <a href="javascript:void(0);" class="editBrif" data-brief='{{$historyValue}}' title="Edit">
             <i class="fas fa-edit text-primary" style="font-size: 1rem"></i>
         </a>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\majorrepairRequest;
 use App\Models\Majorrepair;
 use App\Models\PreviousAttachment;
 use App\Traits\ImageUpload;
@@ -21,7 +22,7 @@ class MajorrepairController extends Controller
         return view('majorRepair.list', compact('majorrepair'));
     }
 
-    public function majorrepairSave(Request $request)
+    public function majorrepairSave(majorrepairRequest $request)
     {
         $post = $request->input();
         unset($post['_token']);
