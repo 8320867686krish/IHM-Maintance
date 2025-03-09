@@ -48,13 +48,13 @@ $(document).on("click", "#partManualSave", function () {
                 successMsg(response.message);
                 let form = document.getElementById('addPartManualForm');
                 $("#documentshow").html();
-                form.reset()
+                form.reset();
                 $submitButton.html(originalText);
                 $submitButton.prop('disabled', false);
                 $("#partmanuelModel").modal('hide');
-                
+                var firstRow = $(".partmanullist tr:first");
                 $(".partmanullist").html(response.html);
-                
+                $(".partmanullist").prepend(firstRow);                
                 
             } else {
                 $.each(response.message, function (field, messages) {

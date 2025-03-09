@@ -9,6 +9,7 @@ use App\Models\DesignatedPersionShip;
 use App\Models\DesignatedPerson;
 use App\Models\Exam;
 use App\Models\Hazmat;
+use App\Models\partManuel;
 use App\Models\PreviousAttachment;
 use App\Models\Ship;
 use App\Traits\PdfGenerator;
@@ -240,7 +241,11 @@ class ReportController extends Controller
         $user = Auth::user();
 
         $ship_id = $user->shipClient->id;
-        return view('helpCenter.report', compact('ship_id'));
+        $ship = Ship::find($ship_id);
+        $partMenual = partManuel::where('ship_id', operator: $ship_id)->get();
+        $checkHazmatIHMPart = CheckHazmat::with(relations: 'hazmat')->where('ship_id', $ship_id)->get();
+       
+        return view('helpCenter.report', compact('ship_id','partMenual','ship','checkHazmatIHMPart'));
     }
 
     protected function mergeImageToPdf($imagePath, $title, $mpdf, $page = null)

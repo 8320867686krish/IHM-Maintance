@@ -308,7 +308,7 @@ class VscpController extends Controller
         }
         $insert = partManuel::updateOrCreate(['id' => $inputData['id']], $inputData);
 
-        $partMenual = partManuel::where('ship_id', $inputData['ship_id'])->where('hazmat_companies_id', $inputData['hazmat_companies_id'])->get();
+        $partMenual = partManuel::where('ship_id', $inputData['ship_id'])->get();
 
         $htmllist = view('components.part-manual-list', compact('partMenual'))->render();
 

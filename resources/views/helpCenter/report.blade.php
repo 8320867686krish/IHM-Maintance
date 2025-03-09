@@ -2,12 +2,71 @@
 
 @section('content')
 <div class="container-fluid dashboard-content">
-<x-page-header title="Report Center"></x-page-header>
+    <x-page-header title="Initial Ihm Records"></x-page-header>
+    <div class="row">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <div class="card">
+                <div class="card-body mb-4">
+                    <h5>IHM Part I-1</h5>
+                    <x-ihm-part :checkHazmatIHMPart="$checkHazmatIHMPart" :type="'i-1'"></x-ihm-part>
+                    <div class=" mb-2 mt-2">
+                        <x-ihm-part :checkHazmatIHMPart="$checkHazmatIHMPart" :type="'i-2'"></x-ihm-part>
+                    </div>
+                    <div class=" mb-4 mt-2">
+                        <x-ihm-part :checkHazmatIHMPart="$checkHazmatIHMPart" :type="'i-3'"></x-ihm-part>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <div class="card">
+                <div class="card-body mb-4">
+                    <h5>Attachments</h5>
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered first">
+                            <thead>
+                                <tr>
+                                    <th width="15%">SR NO</th>
+                                    <th>Title</th>
+                                    <th>Version</th>
+                                    <th width="20%">Updated By</th>
+                                    <th width="20%">Date</th>
+                                    <th width="20%">Document</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody class="partmanullist">
+                                <tr>
+                                    <td>1</td>
+                                    <td>GA Plan</td>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                    <td><a href="{{asset('uploads/shipsVscp/'.$ship->id.'/'.$ship->ga_plan_pdf)}}" target="_blank" download>{{$ship->ga_plan_pdf}}</a></td>
+                                    <td>
+                                        <a href="{{asset('uploads/shipsVscp/'.$ship->id.'/'.$ship->ga_plan_pdf)}}" title="download" download target="_blank" class="mr-2">
+                                            <span class="icon"><i class="fas fa-download  text-primary"></i></span>
+                                        </a>
+                                    </td>
+                                </tr>
+                                <x-part-manual-list :partMenual="$partMenual"></x-part-manual-list>
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <x-page-header title="Report Center"></x-page-header>
 
     <div class="row">
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
             <div class="card">
                 <div class="card-body">
+
                     <form id="generatePdfForm" action="http://127.0.0.1:8000/report">
                         @csrf
                         <span class="dashboard-spinner spinner-sm" id="spinShow" style="display: none;  position: absolute;top: 50%;left: 35%;transform: translate(-50%, -50%);z-index:999999"></span>
@@ -50,7 +109,7 @@
 @endsection
 @push('js')
 <script>
-      $('#generatePdfForm').submit(function(event) {
+    $('#generatePdfForm').submit(function(event) {
         $(".bg-overlay").show();
         var ship_id = "{{$ship_id}}";
         event.preventDefault(); // Prevent default form submission

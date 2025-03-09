@@ -9,7 +9,6 @@ class partManuel extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'hazmat_companies_id',
         'version',
         'ship_id',
         'document',
