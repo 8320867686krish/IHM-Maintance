@@ -78,6 +78,12 @@ class PermissionSeeder extends Seeder
                 'full_name' => 'Responsibleperson'
 
             ],
+            'previousperson' => [
+                'actions' => ['read' => 0, 'add' => 0, 'edit' => 0,'remove' => 0],
+                "is_show" => 0,
+                'full_name' => 'previousperson'
+
+            ],
 
          
         ];

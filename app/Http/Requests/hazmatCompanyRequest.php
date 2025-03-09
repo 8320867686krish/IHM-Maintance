@@ -26,14 +26,14 @@ class hazmatCompanyRequest extends FormRequest
         return [
             'name' => 'required|unique:hazmat_companies,name,' . $this->id,
             'email' => $this->id ? 'unique:hazmat_companies,email,' . $this->id : 'required|unique:hazmat_companies,email',
-            'logo' => $this->id ? 'image|mimes:jpeg,png,jpg,gif|max:2048,' . $this->id : 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'logo' => $this->id ? 'image|mimes:jpeg,png,jpg,gif,' . $this->id : 'required|image|mimes:jpeg,png,jpg,gif',
             'password' => $this->id ? 'nullable' : 'required',
             'training_material' => $this->id
-                ? 'mimes:jpeg,png,jpg,gif,pdf|max:2048'
+                ? 'mimes:jpeg,png,jpg,gif,pdf'
                 : 'required|mimes:jpeg,png,jpg,gif,pdf',
 
                 'briefing_plan' => $this->id
-                ? 'mimes:jpeg,png,jpg,gif,pdf|max:2048'
+                ? 'mimes:jpeg,png,jpg,gif,pdf'
                 : 'required|mimes:jpeg,png,jpg,gif,pdf',
 
 

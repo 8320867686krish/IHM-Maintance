@@ -35,7 +35,19 @@ class ReportController extends Controller
         $logo = 'data:image/png;base64,' . $logoData;
 
         $date = date('y-m-d');
-        $projectDetail = Ship::find($ship_id);
+        $projectDetail = Ship::with('client.hazmatCompaniesId')->find($ship_id);
+        $is_report_logo = $projectDetail['client']['is_report_logo'];
+        if($is_report_logo == 0){
+            $image = $projectDetail['client']['hazmatCompaniesId']['logo'];
+            $logoPath = public_path('uploads/hazmatCompany/'. $image);
+        }else{
+            $image = $projectDetail['client']['client_image'];
+            $logoPath = public_path('uploads/clientcompany/'. $image);
+            
+        }
+        $logoData = base64_encode(file_get_contents($logoPath));
+        $logo = 'data:image/png;base64,' . $logoData;
+       
         $mpdf = new Mpdf([
             'format' => 'A4',
             'margin_left' => 10,
@@ -91,7 +103,7 @@ class ReportController extends Controller
         // Set header and footer
 
         // Add Table of Contents
-        $stylesheet = file_get_contents('assets/mpdf.css');
+        $stylesheet = file_get_contents('public/assets/mpdf.css');
 
         $mpdf->WriteHTML($stylesheet, \Mpdf\HTMLParserMode::HEADER_CSS);
         $shipImagePath = asset('uploads/ship/' . $projectDetail['ship_image']);
@@ -213,7 +225,7 @@ class ReportController extends Controller
                 foreach($previousAttachment as $value){
                     $filePath = public_path('uploads/previousattachment')."/".$value['attachment'];
                     if (file_exists($filePath) && @$value['attachment']) {
-                        $titleHtml = '<h2 style="text-align:center;font-size:13px;font-weight:bold>Previous Attachment ' . $value['attachment_name'] . ' Lab Result</h2>';
+                        $titleHtml = '<h2 style="text-align:center;font-size:13px;font-weight:bold">Previous Attachment ' . $value['attachment_name'] . '</h2>';
                         $this->mergePdf($filePath, $titleHtml, $mpdf);
                     }
                 }
@@ -267,8 +279,9 @@ class ReportController extends Controller
                 ($mpdf->w - $mpdf->lMargin - $mpdf->rMargin) / $size['width'],
                 ($mpdf->h - $mpdf->tMargin - $mpdf->bMargin) / $size['height']
             );
-            if ($i === 1 && @$title) {
-                $mpdf->WriteHTML($title);
+            if ($i === 1 && !empty($title)) {
+                $mpdf->WriteHTML($title, \Mpdf\HTMLParserMode::HTML_BODY);
+
                 $lmargin = 10;
                 $tMargin = 20;
             } else {

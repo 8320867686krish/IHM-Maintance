@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container-fluid dashboard-content">
-   
+
     <x-page-header title="Client Company Management"></x-page-header>
 
     <div class="row">
@@ -192,7 +192,7 @@
                                         placeholder="Accounting Team Email..."
                                         value="{{ old('accounting_team_email', $clientCompany->accounting_team_email ?? '') }}"
                                         onchange="removeInvalidClass(this)" autocomplete="off">
-                                        <div class="invalid-feedback error" id="accounting_team_emailError"></div>
+                                    <div class="invalid-feedback error" id="accounting_team_emailError"></div>
 
                                 </div>
 
@@ -240,12 +240,24 @@
                             <div class="col-sm-12 col-md-6 col-lg-4 mt-1">
                                 <div class="form-group mb-3">
                                     <label for="level">Crew Briefing Requiremet<span class="text-danger"> *</span></label>
-
                                     <input type="text" name="crew_briefing_requiremet" id="crew_briefing_requiremet"
-                                        class="form-control @error('crew_briefing_requiremet') is-invalid @enderror"
-                                        placeholder="Crew Briefing Requiremet..."
-                                        value="{{ old('tax_details', $clientCompany->crew_briefing_requiremet ?? '') }}"
-                                        onchange="removeInvalidClass(this)" autocomplete="off">
+    class="form-control @error('crew_briefing_requiremet') is-invalid @enderror"
+    placeholder="Crew Briefing Requirement..."
+    value="{{ old('crew_briefing_requiremet', $clientCompany->crew_briefing_requiremet ?? '') }}"
+    onchange="removeInvalidClass(this)" autocomplete="off">
+
+                                </div>
+
+                            </div>
+
+                            <div class="col-sm-12 col-md-6 col-lg-4 mt-1">
+                                <div class="form-group mb-3">
+                                    <label for="level">choose logo for report<span class="text-danger"> *</span></label>
+                                    <select class="form-control" name="is_report_logo" id="is_report_logo">
+    <option value="0" {{ optional($clientCompany)->is_report_logo == 0 ? 'selected' : '' }}>Use Own Logo</option>
+    <option value="1" {{ optional($clientCompany)->is_report_logo == 1 ? 'selected' : '' }}>Client Banner</option>
+</select>
+
                                 </div>
 
                             </div>
