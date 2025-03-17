@@ -15,7 +15,6 @@
                     <input type="hidden" id="id" name="id" class="form-control">
 
                         <input type="hidden" id="ship_id" name="ship_id" class="form-control" value="{{$ship_id}}">
-                        <input type="hidden" id="hazmat_companies_id" name="hazmat_companies_id" class="form-control" value="{{$hazmat_companies_id}}">
 
                         
                         <div class="col-12 col-md-12 col-lg-12 mb-2">

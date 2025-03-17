@@ -348,7 +348,7 @@ class VscpController extends Controller
         }
         $insert = Summary::updateOrCreate(['id' => $inputData['id']], $inputData);
 
-        $summary = Summary::where('ship_id', $inputData['ship_id'])->where('hazmat_companies_id', $inputData['hazmat_companies_id'])->get();
+        $summary = Summary::where('ship_id', $inputData['ship_id'])->get();
 
         $htmllist = view('components.summary-list', compact('summary'))->render();
 
