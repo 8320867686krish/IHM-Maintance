@@ -17,7 +17,7 @@
                 </tr>
             </thead>
             <tbody>
-                @if(count($filteredResults1) == 0)
+                @if(count($filteredResultsAddendum1) == 0)
                 <tr>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
@@ -29,7 +29,7 @@
                     <td>&nbsp;</td>
                 </tr>
                 @else
-                @foreach($filteredResults1 as $key=>$value)
+                @foreach($filteredResultsAddendum1 as $key=>$value)
                 <tr>
                     <td>{{ $loop->iteration}}</td>
                     <td>{{ $value->ihm_machinery_equipment ?? '' }}</td>
@@ -66,7 +66,7 @@
                 </tr>
             </thead>
             <tbody>
-                @if(count($filteredResults2) == 0)
+                @if(count($filteredResultsAddendum2) == 0)
                 <tr>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
@@ -78,7 +78,7 @@
                     <td>&nbsp;</td>
                 </tr>
                 @else
-                @foreach($filteredResults2 as $value)
+                @foreach($filteredResultsAddendum2 as $value)
                 <tr>
                         <td>{{ $loop->iteration}}</td>
                         <td>{{ $value->ihm_machinery_equipment ?? '' }}</td>
@@ -118,7 +118,7 @@
                 </tr>
             </thead>
             <tbody>
-                @if(count($filteredResults3) == 0)
+                @if(count($filteredResultsAddendum3) == 0)
                 <tr>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
@@ -130,7 +130,7 @@
                     <td>&nbsp;</td>
                 </tr>
                 @else
-                @foreach($filteredResults3 as $value)
+                @foreach($filteredResultsAddendum3 as $value)
                 <tr>
                     <td>{{ $loops->iteration}}</td>
                     <td>{{ $value->ihm_machinery_equipment ?? '' }}</td>
