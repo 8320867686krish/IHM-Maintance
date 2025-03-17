@@ -192,15 +192,15 @@ class ReportController extends Controller
         });
         $summary = Summary::where('ship_id',$ship_id)->get();
         if (@$summary) {
-            foreach ($summary as $value) {
-                $filePath = public_path('uploads/shipsVscp') . "/" . $ship_id."/summary/".$value['document'];
+            foreach ($summary as $sumvalue) {
+                $filePathsum = public_path('uploads/shipsVscp') . "/" . $ship_id."/summary/".$sumvalue['document'];
+                $mpdf->WriteHTML($filePathsum, \Mpdf\HTMLParserMode::HTML_BODY);
 
 
-                if (file_exists($filePath) && @$value['document']) {
-                    $mpdf->WriteHTML($filePath, \Mpdf\HTMLParserMode::HTML_BODY);
+                if (file_exists($filePathsum) && @$sumvalue['document']) {
 
                     $titleHtml = '<h2 style="text-align:center;font-size:13px;font-weight:bold">Summary Attachment ' . $value['document'] . '</h2>';
-                    $this->mergePdf($filePath, $titleHtml, $mpdf);
+                    $this->mergePdf($filePathsum, $titleHtml, $mpdf);
                 }
             }
         }
