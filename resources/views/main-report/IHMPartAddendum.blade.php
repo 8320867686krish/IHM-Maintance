@@ -1,6 +1,6 @@
 <div class="container">
     <div class="section-1-1">
-        <h3>IHM Maintance Report</h3>
+        <h3 style="text-align:center">IHM Maintance Report</h3>
         <p>Addendum to IHM due to maintenance, changes in the structure & equipment of the ship
             Hazardous materials contained in the ship’s structure and equipment</p>
         <h3> Part I-1 – Paints and coating systems containing materials listed in table A and table B of appendix 1 of the IMO guidelines </h3>
