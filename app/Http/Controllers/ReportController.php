@@ -176,7 +176,21 @@ class ReportController extends Controller
                 unlink($fileNameDiagram);
             }
         }
+        //Addended IHM Part
+        $checkHazmatIHMAddendum = PoOrderItemsHazmats::with(relations: 'hazmat')->where('ship_id', $ship_id)->whereNotNull('ihm_table_type')->get();
+        $filteredResultsAddendum1 = $checkHazmatIHMAddendum->filter(function ($item) {
+            return $item->ihm_table_type == 'i-1';
+        });
 
+        $filteredResultsAddendum2 = $checkHazmatIHMAddendum->filter(function ($item) {
+            return $item->ihm_table_type == 'i-2';
+        });
+
+        $filteredResultsAddendum3 = $checkHazmatIHMAddendum->filter(function ($item) {
+            return $item->ihm_table_type == 'i-3';
+        });
+
+        $html = view('main-report.IHMPartAddendum', compact('filteredResultsAddendum1', 'filteredResultsAddendum2', 'filteredResultsAddendum3'))->render();
         //shipstaff recored
         $exam = Exam::where('ship_id', $ship_id)->orderBy('id', 'desc')->get();
         $html = view('main-report.trainingRecored', compact('exam'))->render();
@@ -307,7 +321,7 @@ class ReportController extends Controller
             </head>
             <body>';
     
-            $html .= '<div><center><h3>Deck : ' . htmlspecialchars($ship['ship_name']) . '</h3></center></div>';
+            $html .= '<div><center><h3>Ship : ' . htmlspecialchars($ship['ship_name']) . '</h3></center></div>';
             $html .= '<table>';
     
         // Track columns per row
@@ -352,7 +366,8 @@ class ReportController extends Controller
         // Output PDF as attachment
         return response($dompdf->output(), 200)
             ->header('Content-Type', 'application/pdf')
-            ->header('Content-Disposition', 'attachment; filename="qr_codes_' . 'abc' . '.pdf"');
+            ->header('Content-Disposition', 'attachment; filename="qr_codes_' . $ship["ship_name"] . '.pdf"');
+
     }
 
     protected function mergeImageToPdf($imagePath, $title, $mpdf, $page = null)
