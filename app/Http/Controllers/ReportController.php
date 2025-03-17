@@ -191,6 +191,7 @@ class ReportController extends Controller
         });
 
         $html = view('main-report.IHMPartAddendum', compact('filteredResultsAddendum1', 'filteredResultsAddendum2', 'filteredResultsAddendum3'))->render();
+        $mpdf->AddPage('L'); // Set landscape mode for the inventory page
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
 
         //shipstaff recored
