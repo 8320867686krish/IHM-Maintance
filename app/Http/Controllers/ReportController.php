@@ -190,14 +190,15 @@ class ReportController extends Controller
         $filteredResultsAddendum3 = $checkHazmatIHMAddendum->filter(function ($item) {
             return $item->ihm_table_type == 'i-3';
         });
-        $path = 'uploads/shipsVscp/' . $ship_id. '/summary' . "/";
         $summary = Summary::where('ship_id',$ship_id)->get();
         if (@$summary) {
             foreach ($summary as $value) {
                 $filePath = public_path('uploads/shipsVscp') . "/" . $ship_id."/summary/".$value['document'];
-                $mpdf->WriteHTML($filePath, \Mpdf\HTMLParserMode::HTML_BODY);
+
 
                 if (file_exists($filePath) && @$value['document']) {
+                    $mpdf->WriteHTML($filePath, \Mpdf\HTMLParserMode::HTML_BODY);
+
                     $titleHtml = '<h2 style="text-align:center;font-size:13px;font-weight:bold">Summary Attachment ' . $value['document'] . '</h2>';
                     $this->mergePdf($filePath, $titleHtml, $mpdf);
                 }
