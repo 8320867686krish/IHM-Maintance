@@ -325,6 +325,8 @@ $("#showTableTypeDiv").on("change", ".cloneTableTypeDiv select.table_type", func
     cloneTableTypeDiv.find(`.arrivedItemDetails${divValue}`).remove();
     cloneTableTypeDiv.find(`.removeItemDetails${divValue}`).remove();
     cloneTableTypeDiv.find(`.recivedDocumentDetail${divValue}`).remove();
+    cloneTableTypeDiv.find(`.returnItemDetails${divValue}`).remove();
+
 
     if (selectedValue === 'Contained' || selectedValue === 'PCHM') {
         let isOnboardDiv = "";
@@ -369,6 +371,8 @@ $("#showTableTypeDiv").on("change", ".cloneTableTypeDiv select.table_type", func
         cloneTableTypeDiv.find(`.returnItemDetails${divValue}`).remove();
         cloneTableTypeDiv.find(`.ihmUpdated${divValue}`).remove();
         cloneTableTypeDiv.find(`.itemInstall${divValue}`).remove();
+        cloneTableTypeDiv.find(`.returnItemDetails${divValue}`).remove();
+
 
     }
 
@@ -377,53 +381,64 @@ $("#showTableTypeDiv").on("change", ".cloneTableTypeDiv select.table_type", func
 function removeItemDetailsfun(divValue) {
     let removeItemDetails = ` <div class="row  col-12 mb-1  removeItemDetails${divValue}">
     <div class="col-4 mb-2">
-                   <div class="form-group">
-                   <input type="text" name="hazmats[${divValue}][service_supplier_name]" id="service_supplier_name${divValue}" class="form-control" placeHolder="Service Supplier Name">
+                   <div class="form-group input-label-group">
+                   <input type="text" name="hazmats[${divValue}][service_supplier_name]" id="service_supplier_name${divValue}" class="form-control" placeHolder="">
+                   <label>Service Supplier Name</label>
                    </div>
    </div>
      <div class="col-4 mb-2">
-                   <div class="form-group">
-                   <input type="text" name="hazmats[${divValue}][service_supplier_address]" id="service_supplier_address${divValue}" class="form-control" placeHolder="Service Supplier Address">
+                   <div class="form-group input-label-group">
+                   <input type="text" name="hazmats[${divValue}][service_supplier_address]" id="service_supplier_address${divValue}" class="form-control" placeHolder="">
+                    <label>Service Supplier Address</label>
+
                    </div>
    </div>
     <div class="col-4 mb-2">
-                   <div class="form-group">
-                   <input type="date" name="hazmats[${divValue}][removal_date]" id="removal_date${divValue}" class="form-control" placeHolder="Removal Date">
+                   <div class="form-group input-label-group">
+                   <input type="date" name="hazmats[${divValue}][removal_date]" id="removal_date${divValue}" class="form-control" placeHolder="">
+                   <label>Removal Date</label>
                    </div>
    </div>
 
    <div class="col-4 mb-2">
-                   <div class="form-group">
-                   <input type="text" name="hazmats[${divValue}][removal_location]" id="removal_location${divValue}" class="form-control" placeHolder="Removal Location">
+                   <div class="form-group input-label-group">
+                   <input type="text" name="hazmats[${divValue}][removal_location]" id="removal_location${divValue}" class="form-control" placeHolder="">
+                   <label>Removal Location</label>
                    </div>
    </div>
 
     <div class="col-4 mb-2">
-                   <div class="form-group">
-                   <input type="file" name="hazmats[${divValue}][attachment]" id="attachment${divValue}" class="form-control" placeHolder="Attachment">
+                   <div class="form-group input-label-group">
+                   <input type="file" name="hazmats[${divValue}][attachment]" id="attachment${divValue}" class="form-control" placeHolder="">
+                   <label>Attachment</label>
                    </div>
    </div>
      <div class="col-4 mb-2">
-                   <div class="form-group">
-                   <input type="text" name="hazmats[${divValue}][po_no]" id="po_no${divValue}" class="form-control" placeHolder="PO No">
+                   <div class="form-group input-label-group">
+                   <input type="text" name="hazmats[${divValue}][po_no]" id="po_no${divValue}" class="form-control" placeHolder="">
+                   <label>PO No</label>
                    </div>
    </div>
 
     <div class="col-3 mb-2">
-                   <div class="form-group">
-                   <input type="text" name="hazmats[${divValue}][removal_quantity]" id="removal_quantity${divValue}" class="form-control" placeHolder="Quantty">
+                   <div class="form-group input-label-group">
+                   <input type="number" name="hazmats[${divValue}][removal_quantity]" id="removal_quantity${divValue}" class="form-control" placeHolder="">
+                   	<label>Quantty</label>
+
                    </div>
    </div>
 
      <div class="col-3 mb-2">
-                   <div class="form-group">
-                   <input type="text" name="hazmats[${divValue}][removal_unit]" id="removal_unit${divValue}" class="form-control" placeHolder="Unit">
+                   <div class="form-group input-label-group">
+                   <input type="text" name="hazmats[${divValue}][removal_unit]" id="removal_unit${divValue}" class="form-control" placeHolder="">
+                   	<label>Unit</label>
                    </div>
    </div>
 
    <div class="col-6 mb-2">
-                   <div class="form-group">
-                   <input type="text" name="hazmats[${divValue}][removal_remarks]" id="removal_remarks${divValue}" class="form-control" placeHolder="Remarks">
+                   <div class="form-group input-label-group">
+                   <input type="text" name="hazmats[${divValue}][removal_remarks]" id="removal_remarks${divValue}" class="form-control" placeHolder="">
+                    <label>Remarks</label>
                    </div>
    </div>
   
@@ -447,16 +462,19 @@ $("#showTableTypeDiv").on("change", ".cloneTableTypeDiv input[type=radio].isReci
 
     var reciveddocumt = ` <div class="row   mb-1   recivedDocumentDetail${divValue}">
             <div class="col-8">
-                   <div class="form-group mb-1">
-                   <input type="text" name="hazmats[${divValue}][recived_document_comment]" id="recived_document_comment${divValue}" class="form-control" placeHolder="Remarks">
+                   <div class="form-group mb-1 input-label-group">
+                   <input type="text" name="hazmats[${divValue}][recived_document_comment]" id="recived_document_comment${divValue}" class="form-control" placeHolder="">
+              	   <label>Remarks</label>
+
                    </div>
             </div>
             
     `;
     if ($(this).val() === 'yes') {
        reciveddocumt +=`  <div class="col-4">
-                   <div class="form-group mb-1">
-                   <input type="date" name="hazmats[${divValue}][recived_document_date]" id="recived_document_date${divValue}" class="form-control" placeHolder="Date">
+                   <div class="form-group mb-1 input-label-group">
+                   <input type="date" name="hazmats[${divValue}][recived_document_date]" id="recived_document_date${divValue}" class="form-control" placeHolder="">
+                    <label>Date</label>
                    </div>
             </div>`
     }
@@ -485,6 +503,8 @@ $("#showTableTypeDiv").on("change", ".cloneTableTypeDiv input[type=radio].isArri
     cloneTableTypeDiv.find(`.noitemInstalled${divValue}`).remove();
     cloneTableTypeDiv.find(`.itemInstall${divValue}`).remove();
     cloneTableTypeDiv.find(`.arrivedItemDetails${divValue}`).remove();
+    cloneTableTypeDiv.find(`.returnItemDetails${divValue}`).remove();
+
 
     let isReturnDiv = "";
     if ($(this).val() === 'yes') {
@@ -492,13 +512,17 @@ $("#showTableTypeDiv").on("change", ".cloneTableTypeDiv input[type=radio].isArri
         cloneTableTypeDiv.find(`.removeItem${divValue}`).show();
         isReturnDiv += ` <div class="row col-12 col-md-12 col-lg-12  mb-1   arrivedItemDetails${divValue}">
         <div class="col-4">
-                       <div class="form-group mb-1">
-                       <input type="text" name="hazmats[${divValue}][arrived_location]" id="arrived_location${divValue}" class="form-control" placeHolder="Location">
+                       <div class="form-group input-label-group mb-1">
+                       <input type="text" name="hazmats[${divValue}][arrived_location]" id="arrived_location${divValue}" class="form-control" placeHolder="">
+                       	<label>Location</label>
+
                        </div>
        </div>
          <div class="col-4">
-                       <div class="form-group mb-1">
-                       <input type="date" name="hazmats[${divValue}][arrived_date]" id="arrived_date${divValue}" class="form-control" placeHolder="Date">
+                       <div class="form-group mb-1 input-label-group">
+                       <input type="date" name="hazmats[${divValue}][arrived_date]" id="arrived_date${divValue}" class="form-control" placeHolder="">
+                        <label>Date</label>
+
                        </div>
        </div>
       
@@ -563,13 +587,15 @@ $("#showTableTypeDiv").on("change", ".cloneTableTypeDiv input[type=radio].isRetu
         cloneTableTypeDiv.find(`.ihmUpdated${divValue}`).remove();
         let returnItemDetails = ` <div class="row  col-12 mb-1  returnItemDetails${divValue}">
          <div class="col-4">
-                        <div class="form-group mb-1">
-                        <input type="text" name="hazmats[${divValue}][location]" id="location${divValue}" class="form-control" placeHolder="Location">
+                        <div class="form-group mb-1  input-label-group">
+                            <input type="text" name="hazmats[${divValue}][location]" id="location${divValue}" class="form-control" placeHolder="">
+                            <label>Location</label>
                         </div>
         </div>
           <div class="col-4">
-                        <div class="form-group mb-1">
-                        <input type="date" name="hazmats[${divValue}][date]" id="date${divValue}" class="form-control" placeHolder="Date">
+                        <div class="form-group mb-1 input-label-group">
+                        <input type="date" name="hazmats[${divValue}][date]" id="date${divValue}" class="form-control" placeHolder="">
+                        <label>Date</label>
                         </div>
         </div>
        
@@ -618,41 +644,60 @@ $("#showTableTypeDiv").on("change", ".cloneTableTypeDiv input[type=checkbox].isI
 
         let ihmupdetedDetails = ` <div class="row  col-12 mb-2  ihmItemDetails${divValue}">
         <div class="col-4 mb-2">
-                       <div class="form-group">
-                       <input type="text" name="hazmats[${divValue}][ihm_location]" id="location${divValue}" class="form-control" placeHolder="Location">
+                       <div class="form-group input-label-group">
+                       <input type="text" name="hazmats[${divValue}][ihm_location]" id="location${divValue}" class="form-control" placeHolder="">
+                        <label for="">Location</label>
+
                        </div>
        </div>
          <div class="col-4 mb-2">
-                       <div class="form-group">
+                       <div class="form-group input-label-group">
                        <input type="text" name="hazmats[${divValue}][ihm_sublocation]" id="ihm_sublocation${divValue}" class="form-control" placeHolder="Sub Location">
+                        <label for="">Sub Location</label>
                        </div>
        </div>
        <div class="col-4 mb-2">
-                       <div class="form-group">
-                       <input type="text" name="hazmats[${divValue}][ihm_machinery_equipment]" id="ihm_machinery_equipment${divValue}" class="form-control" placeHolder="Machinary/Equipment">
+                       <div class="form-group input-label-group">
+                       <input type="text" name="hazmats[${divValue}][ihm_machinery_equipment]" id="ihm_machinery_equipment${divValue}" class="form-control" placeHolder="">
+                       <label for="">Machinary/Equipment</label>
                        </div>
        </div>
      
        <div class="col-4 mb-2">
-                       <div class="form-group">
-                       <input type="text" name="hazmats[${divValue}][ihm_parts]" id="ihm_parts${divValue}" class="form-control" placeHolder="Parts where used">
+                       <div class="form-group input-label-group">
+                       <input type="text" name="hazmats[${divValue}][ihm_parts]" id="ihm_parts${divValue}" class="form-control" placeHolder="">
+                       <label for="">Parts where used</label>
                        </div>
        </div>
-        ${tableValue === 'B' ? tableBFiled(divValue) : `<div class="col-4 mb-2">
-                       <div class="form-group">
-                       <input type="text" name="hazmats[${divValue}][ihm_qty]" id="ihm_qty${divValue}" class="form-control" placeHolder="Quantity">
+        ${tableValue === 'B' ? tableBFiled(divValue) : `<div class="col-2 mb-2">
+                       <div class="form-group input-label-group">
+                       <input type="number" name="hazmats[${divValue}][ihm_qty]" id="ihm_qty${divValue}" class="form-control" placeHolder="">
+                       <label for="">Quantity</label>
                        </div>
        </div>
 
-       <div class="col-4 mb-2">
-                       <div class="form-group">
-                       <input type="text" name="hazmats[${divValue}][ihm_unit]" id="ihm_unit${divValue}" class="form-control" placeHolder="Unit">
+       <div class="col-2 mb-2">
+                       <div class="form-group input-label-group">
+                       <input type="text" name="hazmats[${divValue}][ihm_unit]" id="ihm_unit${divValue}" class="form-control" placeHolder="">
+                        <label for="">Unit</label>
                        </div>
-       </div>`}
+       </div>
+        <div class="col-4 mb-2">
+                       <div class="form-group">
+                       <select name="hazmats[${divValue}][ihm_table_type]" id="ihm_table_type${divValue}" class="form-control">
+                        <option value="i-1">i-1</option>
+                         <option value="i-2">i-2</option>
+                          <option value="i-3">i-3</option>
+                       </select>
+                       </div>
+       </div>
+       `}
        
        <div class="col-12 mb-2">
-                       <div class="form-group">
+                       <div class="form-group input-label-group">
                        <input type="text" name="hazmats[${divValue}][ihm_remarks]" id="remarks${divValue}" class="form-control" placeHolder="remarks">
+                        <label for="">Remarks</label>
+
                        </div>
        </div>
       
@@ -692,35 +737,42 @@ $(document).on('click', '.deletePo', function (e) {
 });
 function tableBFiled(divValue) {
     let data = `<div class="col-4 mb-2">
-                       <div class="form-group">
-                       <input type="text" name="hazmats[${divValue}][ihm_previous_qty]" id="ihm_previous_qty${divValue}" class="form-control" placeHolder="Previous Quantity">
+                       <div class="form-group  input-label-group">
+                       <input type="number" name="hazmats[${divValue}][ihm_previous_qty]" id="ihm_previous_qty${divValue}" class="form-control" placeHolder="">
+                       <label for="">Previous Quantity</label>
                        </div>
        </div>
 
        <div class="col-4 mb-2">
-                       <div class="form-group">
-                       <input type="text" name="hazmats[${divValue}][ihm_previous_unit]" id="ihm_previous_unit${divValue}" class="form-control" placeHolder="Unit">
+                       <div class="form-group input-label-group">
+                       <input type="text" name="hazmats[${divValue}][ihm_previous_unit]" id="ihm_previous_unit${divValue}" class="form-control" placeHolder="">
+                         <label for="">Unit</label>
                        </div>
        </div>
         <div class="col-3 mb-2">
-                       <div class="form-group">
-                       <input type="date" name="hazmats[${divValue}][ihm_last_date]" id="ihm_last_date${divValue}" class="form-control" placeHolder="Last Date">
+                       <div class="form-group input-label-group">
+                       <input type="date" name="hazmats[${divValue}][ihm_last_date]" id="ihm_last_date${divValue}" class="form-control" placeHolder="">
+                       <label for="">Last Date</label>
+
                        </div>
        </div>
        <div class="col-3 mb-2">
-                       <div class="form-group">
-                       <input type="text" name="hazmats[${divValue}][ihm_qty]" id="ihm_qty${divValue}" class="form-control" placeHolder="Current Quantity">
+                       <div class="form-group input-label-group">
+                       <input type="number" name="hazmats[${divValue}][ihm_qty]" id="ihm_qty${divValue}" class="form-control" placeHolder="">
+                         <label for="">"Current Quantity</label>
                        </div>
        </div>
 
        <div class="col-3 mb-2">
-                       <div class="form-group">
-                       <input type="text" name="hazmats[${divValue}][ihm_unit]" id="ihm_unit${divValue}" class="form-control" placeHolder="Current Unit">
+                       <div class="form-group input-label-group">
+                       <input type="text" name="hazmats[${divValue}][ihm_unit]" id="ihm_unit${divValue}" class="form-control" placeHolder="">
+                       <label for="">"Current Unit</label>
                        </div>
        </div>
           <div class="col-3 mb-2">
-                       <div class="form-group">
-                       <input type="date" name="hazmats[${divValue}][ihm_date]" id="ihm_date${divValue}" class="form-control" placeHolder="Current Date">
+                       <div class="form-group input-label-group">
+                       <input type="date" name="hazmats[${divValue}][ihm_date]" id="ihm_date${divValue}" class="form-control" placeHolder="">
+                        <label for="">"Current Unit</label>
                        </div>
        </div>
        

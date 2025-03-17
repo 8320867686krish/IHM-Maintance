@@ -237,7 +237,7 @@
                                                 <input type="text"
                                                     class="form-control  @error('manager_name') is-invalid @enderror"
                                                     id="manager_name"
-                                                    value="{{ old('manager_name', $ship->client->name ?? '') }}"
+                                                    value="{{ old('manager_name', $ship['client']['name'] ?? '') }}"
                                                     placeholder="Manager Name..." autocomplete="off"
                                                     onchange="removeInvalidClass(this)" readonly>
                                                 @error('manager_name')
@@ -250,7 +250,7 @@
                                                 <label for="client_company_id">Ship Owner</label>
 
                                                 <input type="text" class="form-control" id="owner_name"
-                                                    value="{{ old('owner_name', $ship->client->ship_owner_name ?? '') }}"
+                                                    value="{{ old('owner_name', $ship['client']['ship_owner_name'] ?? '') }}"
                                                     readonly>
                                             </div>
                                         </div>

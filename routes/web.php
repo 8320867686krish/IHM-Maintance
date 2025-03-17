@@ -42,7 +42,7 @@ Route::post('configration/save', [dashobardController::class, 'configrationSave'
 
 Route::get('/dashboard', [dashobardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 Route::get('/shipwisepo/{ship_id}/{selectedDate}', [dashobardController::class, 'shipwiseData'])->middleware(['auth', 'verified'])->name('shipwiseData');
-Route::get('/allshipsData/{type}/{selectedDate}', [dashobardController::class, 'allshipsData'])->middleware(['auth', 'verified'])->name('shipwiseData');
+Route::get('/allshipsData/{type}/{selectedDate}', [dashobardController::class, 'allshipsData'])->middleware(['auth', 'verified'])->name('shipwiseData55');
 
 Route::middleware('auth')->group(function () {
     Route::get('profile',[dashobardController::class,'profile'])->name('profile');
@@ -51,7 +51,7 @@ Route::middleware('auth')->group(function () {
     Route::get('client-company/{id}', [DashobardController::class, 'clientcompany'])->name('clientcompany');
     Route::get('client-company/ships/{id}', [DashobardController::class, 'clientcompanyShips'])->name('clientcompany.ships');
     Route::get('ship-dashboard/{id}', [DashobardController::class, 'shipDashboard'])->name('ship.dashboard');
-
+    Route::get('dynamicdata/{ship_id}/{tab}',[ShipController::class,'dynamicData'])->name('ship.dynamicdata');
     Route::post('report', [ReportController::class, 'genrateReport'])->name('report');
     Route::post('/import', [POOrderController::class, 'import'])->name('import');
     Route::get('poOrderSample', [POOrderController::class, 'poOrderSample'])->name('poOrderSample');
@@ -106,6 +106,8 @@ Route::middleware('auth')->group(function () {
         });
     });
     Route::get('/report', [ReportController::class, 'reportCenter'])->name('reportCenter');
+    Route::get('/generate-IHM-sticker/{ship_id}', [ReportController::class, 'generateIHMSticker'])
+    ->name('generate-IHM-sticker');
 
     Route::get('/portal-guide', [ShipController::class, 'portalGuide'])->name('portal.guide');
     Route::get('/summeryReport/{ship_id}', [VscpController::class, 'summeryReport'])->name('summeryReport');

@@ -19,76 +19,108 @@ trait ShipData
     public function getShipData($shipId, $year = null)
     {
         $year = $year ?? Carbon::now()->year;
-
-        $ship = Ship::with(['pOOrderItems', 'pOOrderItemsHazmats', 'exams', 'brifings'])->find($shipId);
         $monthrelevantCounts = [];
         $monthnonRelevantCounts = [];
+        $labels = [];
+        $brfingmonths = [];
+        $trainingonths = [];
+        $mdRecoreds = [];
+        $sdocRecoreds = [];
+         $monthrelevantCounts = [];
+        $monthnonRelevantCounts = [];
+
+        $ship = Ship::find($shipId);
+        $hazmatSummeryName = Hazmat::withSum(['checkHazmats as qty_sum' => function ($query) use ($shipId, $year) {
+            $query->where('ship_id', $shipId)
+                ->whereYear('created_at', $year);  // Filter by current year
+        }], 'qty')->get()->toArray();
+       
         $start = Carbon::createFromDate($year, 1, 1);  // January 1 of the selected year or current year
 
         $end = Carbon::createFromDate($year, 12, 31);  // December 31 of the selected year
 
 
-        $labels = [];
+       
+        $brifingOverview = $ship->brifings()
+            ->selectRaw('MONTH(created_at) as month, COUNT(*) as count')
+            ->whereYear('created_at', $year) // Fetch data for the whole year
+            ->groupBy('month')
+            ->pluck('count', 'month')
+            ->toArray();
+
+        $trainingOverview = $ship->exams()
+            ->selectRaw('MONTH(created_at) as month, COUNT(*) as count')
+            ->whereYear('created_at', $start->year)
+            ->groupBy('month')
+            ->pluck('count', 'month')
+            ->toArray();
+
+    
+       
+       
+        $countsData = $ship->pOOrderItems()
+            ->whereYear('created_at', $year)
+            ->selectRaw("
+        MONTH(created_at) as month, 
+        SUM(CASE WHEN type_category = 'Relevant' THEN 1 ELSE 0 END) as relevant_count, 
+        SUM(CASE WHEN type_category = 'Non relevant' THEN 1 ELSE 0 END) as non_relevant_count
+    ")
+            ->groupBy('month')
+            ->get()
+            ->keyBy('month'); // Convert collection into key-value pair based on month
+
+        // Initialize result arrays
+       
+        $sdmdcountsData = $ship->pOOrderItemsHazmats()
+            ->whereYear('created_at', $year)
+            ->selectRaw("
+        MONTH(created_at) as month, 
+        SUM(CASE WHEN doc1 IS NOT NULL THEN 1 ELSE 0 END) as md_count, 
+        SUM(CASE WHEN doc2 IS NOT NULL THEN 1 ELSE 0 END) as sdoc_count
+    ")
+            ->groupBy('month')
+            ->get()
+            ->keyBy('month'); // Convert collection into key-value pair based on month
+
+        // Initialize result arrays
+     
+      
 
         // Loop from start to end, pushing each month into the $months array
         while ($start <= $end) {
             // Format the month for labeling
             $monthLabel = $start->format('M');
+            $monthNum = $start->month;
+
             $labels[] = $monthLabel;
             // Count items for each type_category within the current month
-            $monthrelevantCounts[] = $ship->pOOrderItems()
-                ->where('type_category', 'Relevant')
-                ->whereYear('created_at', $start->year)
-                ->whereMonth('created_at', $start->month)
-                ->count();
+            $monthrelevantCounts[] = $countsData[$monthNum]->relevant_count ?? 0;
+            $monthnonRelevantCounts[] = $countsData[$monthNum]->non_relevant_count ?? 0;
 
-            $monthnonRelevantCounts[] = $ship->pOOrderItems()
-                ->where('type_category', 'Non relevant')
-                ->whereYear('created_at', $start->year)
-                ->whereMonth('created_at', $start->month)
-                ->count();
 
-            $mdRecoreds[] = $ship->pOOrderItemsHazmats()
-                ->whereNotNull('doc1')
-                ->whereYear('created_at', $start->year)
-                ->whereMonth('created_at', $start->month)
-                ->count();
 
-            $sdocRecoreds[] = $ship->pOOrderItemsHazmats()
-                ->whereNotNull('doc2')
+            $mdRecoreds[] = $sdmdcountsData[$monthNum]->md_count ?? 0;
+            $sdocRecoreds[] = $sdmdcountsData[$monthNum]->sdoc_count ?? 0;
 
-                ->whereYear('created_at', $start->year)
-                ->whereMonth('created_at', $start->month)
-                ->count();
 
-            $trainingOverview = $ship->exams()
-                ->selectRaw('MONTH(created_at) as month, COUNT(*) as count')
-                ->whereYear('created_at', $start->year) // Filter by the current year
-                ->groupBy('month')
-                ->pluck('count', 'month')
-                ->toArray();
 
             // Generate a full month-wise dataset with zero as the default count
             $months = collect($trainingOverview)->map(function ($count, $monthNum) {
                 return [date('M', mktime(0, 0, 0, $monthNum, 1)), $count];
             })->values()->toArray();
 
-            $brifingOverview = $ship->brifings()
-                ->selectRaw('MONTH(created_at) as month, COUNT(*) as count')
-                ->whereYear('created_at', $start->year) // Filter by the current year
-                ->groupBy('month')
-                ->pluck('count', 'month')
-                ->toArray();
+
+            if (!empty($trainingOverview[$monthNum])) {
+                $trainingonths[] = [$monthLabel, $trainingOverview[$monthNum]];
+            }
+            if (!empty($brifingOverview[$monthNum])) {
 
             // Generate a full month-wise dataset with zero as the default count
-            $brfingmonths = collect($brifingOverview)->map(function ($count, $monthNum) {
-                return [date('M', mktime(0, 0, 0, $monthNum, 1)), $count];
-            })->values()->toArray();
+            $brfingmonths[] = [$monthLabel, $brifingOverview[$monthNum]];
+            }
 
-            $hazmatSummeryName = Hazmat::withSum(['checkHazmats as qty_sum' => function ($query) use ($shipId, $year) {
-                $query->where('ship_id', $shipId)
-                    ->whereYear('created_at', $year);  // Filter by current year
-            }], 'qty')->get()->toArray();
+
+
 
             // Move to the next month
             $start->addMonth();
@@ -101,7 +133,7 @@ trait ShipData
             'monthnonRelevantCounts' => $monthnonRelevantCounts,
             'mdSdRecoreds' => $mdRecoreds,
             'sdocRecoreds' => $sdocRecoreds,
-            'trainingverview' => $months,
+            'trainingverview' => $trainingonths,
             'brifingoverview' => $brfingmonths,
             'hazmatSummeryName' =>  $hazmatSummeryName,
             'ship' => $ship['ship_name']
@@ -121,43 +153,38 @@ trait ShipData
         }
 
         if ($type == 'brifings') {
-            $ships = Ship::with(['brifings' => function ($query)  use($year) {
+            $ships = Ship::with(['brifings' => function ($query)  use ($year) {
                 $query->whereYear('created_at', $year)
-                ->selectRaw('ship_id, DATE_FORMAT(created_at, "%b") as month, COUNT(*) as count')
-                    ->groupBy('ship_id', 'month');
-            }])->where('client_user_id', $user_id)->get();
-        } 
-        else if ($type == 'onboard') {
-            $ships = Ship::with(['exams' => function ($query) use($year){
-                $query->whereYear('created_at', $year)
-                ->selectRaw('ship_id, DATE_FORMAT(created_at, "%b") as month, COUNT(*) as count')
-                ->groupBy('ship_id', 'month');
-            }])->where('client_user_id', $user_id)->get();
-        } 
-        else if ($type == "mdrecords") {
-            $ships = Ship::with(['pOOrderItemsHazmats' => function ($query) use($year) {
-                $query->whereNotNull('doc1') 
-                ->whereYear('created_at', $year) // Filter by the current year
                     ->selectRaw('ship_id, DATE_FORMAT(created_at, "%b") as month, COUNT(*) as count')
                     ->groupBy('ship_id', 'month');
             }])->where('client_user_id', $user_id)->get();
-        }
-        else if($type == 'sdrecords'){
-            $ships = Ship::with(['pOOrderItemsHazmats' => function ($query) use($year){
-                
-                $query->whereNotNull('doc2') 
+        } else if ($type == 'onboard') {
+            $ships = Ship::with(['exams' => function ($query) use ($year) {
+                $query->whereYear('created_at', $year)
+                    ->selectRaw('ship_id, DATE_FORMAT(created_at, "%b") as month, COUNT(*) as count')
+                    ->groupBy('ship_id', 'month');
+            }])->where('client_user_id', $user_id)->get();
+        } else if ($type == "mdrecords") {
+            $ships = Ship::with(['pOOrderItemsHazmats' => function ($query) use ($year) {
+                $query->whereNotNull('doc1')
                     ->whereYear('created_at', $year) // Filter by the current year
                     ->selectRaw('ship_id, DATE_FORMAT(created_at, "%b") as month, COUNT(*) as count')
                     ->groupBy('ship_id', 'month');
             }])->where('client_user_id', $user_id)->get();
-        } 
-        else {
-            $ships = Ship::with(['pOOrderItems' => function ($query) use($year) {
-                $query->whereYear('created_at', $year)
-                ->selectRaw('ship_id, DATE_FORMAT(created_at, "%b") as month, COUNT(*) as count')
+        } else if ($type == 'sdrecords') {
+            $ships = Ship::with(['pOOrderItemsHazmats' => function ($query) use ($year) {
+
+                $query->whereNotNull('doc2')
+                    ->whereYear('created_at', $year) // Filter by the current year
+                    ->selectRaw('ship_id, DATE_FORMAT(created_at, "%b") as month, COUNT(*) as count')
                     ->groupBy('ship_id', 'month');
             }])->where('client_user_id', $user_id)->get();
-            
+        } else {
+            $ships = Ship::with(['pOOrderItems' => function ($query) use ($year) {
+                $query->whereYear('created_at', $year)
+                    ->selectRaw('ship_id, DATE_FORMAT(created_at, "%b") as month, COUNT(*) as count')
+                    ->groupBy('ship_id', 'month');
+            }])->where('client_user_id', $user_id)->get();
         }
 
         $chartData = [
@@ -171,16 +198,14 @@ trait ShipData
 
         foreach ($ships as $index => $ship) {
             $data = [$ship->ship_name]; // Ship name as series
-            $monthData = array_fill_keys($months,0); // Ensure all months exist
+            $monthData = array_fill_keys($months, 0); // Ensure all months exist
             if ($type == 'onboard') {
                 $datarelationship = $ship->exams;
-            }
-            else if ($type == 'brifings') {
+            } else if ($type == 'brifings') {
                 $datarelationship = $ship->brifings;
-            }
-            else if ($type == 'mdrecords' || $type == 'sdrecords') {
+            } else if ($type == 'mdrecords' || $type == 'sdrecords') {
                 $datarelationship = $ship->pOOrderItemsHazmats;
-            }else {
+            } else {
                 $datarelationship = $ship->pOOrderItems;
             }
             foreach ($datarelationship as $item) {

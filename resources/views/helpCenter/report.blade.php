@@ -4,17 +4,23 @@
 <div class="container-fluid dashboard-content">
     <x-page-header title="Initial Ihm Records"></x-page-header>
     <div class="row">
+    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mb-2">
+        <a href="{{url('generate-IHM-sticker/'.$ship_id)}}"><button class="btn btn-primary float-right ml-2">Generate IHM Sticker </button></a>
+        <a href="{{url('summeryReport/'.$ship_id)}}"><button class="btn btn-primary float-right">Summery Report</button></a>
+    </div>
+    </div>
+    <div class="row">
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
             <div class="card">
                 <div class="card-body mb-4">
-                    <h5>IHM Part I-1</h5>
-                    <x-ihm-part :checkHazmatIHMPart="$checkHazmatIHMPart" :type="'i-1'"></x-ihm-part>
-                    <div class=" mb-2 mt-2">
-                        <x-ihm-part :checkHazmatIHMPart="$checkHazmatIHMPart" :type="'i-2'"></x-ihm-part>
-                    </div>
-                    <div class=" mb-4 mt-2">
-                        <x-ihm-part :checkHazmatIHMPart="$checkHazmatIHMPart" :type="'i-3'"></x-ihm-part>
-                    </div>
+                    <h5>Recored Of Previous IHM Amended</h5>
+                    <x-previous-i-hm-amended :checkHazmatIHMPart="$checkHazmatIHMPart" :type="'i-1'"></x-previous-i-hm-amended.>
+                        <div class=" mb-2 mt-2">
+                            <x-previous-i-hm-amended :checkHazmatIHMPart="$checkHazmatIHMPart" :type="'i-2'"></x-previous-i-hm-amended>
+                        </div>
+                        <div class=" mb-4 mt-2">
+                            <x-previous-i-hm-amended :checkHazmatIHMPart="$checkHazmatIHMPart" :type="'i-3'"></x-ihm-part>
+                        </div>
                 </div>
             </div>
         </div>
@@ -23,7 +29,7 @@
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
             <div class="card">
                 <div class="card-body mb-4">
-                    <h5>Attachments</h5>
+                    <h5> Supplement to initial IHM Part</h5>
                     <div class="table-responsive">
                         <table class="table table-striped table-bordered first">
                             <thead>
@@ -60,6 +66,38 @@
             </div>
         </div>
     </div>
+
+    <div class="row">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <div class="card">
+                <div class="card-body mb-4">
+                    <h5>Records of IHM Previous Maintance</h5>
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered first">
+                            <thead>
+                                <tr>
+                                    <th width="5%">Sr.No</th>
+                                    <th>Name</th>
+                                    <th width="15%">Date From</th>
+                                    <th width="15%">Date Till</th>
+                                    <th width="18%">Maintained By</th>
+                                    <th width="15%">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="PreviousAttachmentList">
+                                @if($previousAttachment)
+                                    <x-previous-attachment-list :previousAttachment=$previousAttachment></x-previous-attachment-list>
+                                @endif
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <x-page-header title="Report Center"></x-page-header>
 
     <div class="row">

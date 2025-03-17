@@ -77,4 +77,16 @@ class Ship extends Model
         return $this->hasMany(Brifing::class, 'ship_id', 'id');
 
     }
+    public function partManuel(){
+        return $this->hasMany(partManuel::class, 'ship_id', 'id');
+    }
+    public function CheckHazmat(){
+        return $this->hasMany(CheckHazmat::class, 'ship_id', 'id');
+
+    }
+    public function Majorrepair(){
+        
+        return $this->hasMany(Majorrepair::class, 'ship_id', 'id');
+
+    }
 }

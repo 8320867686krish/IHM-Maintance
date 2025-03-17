@@ -55,6 +55,11 @@ class MakeModel extends Model
             'path' => env('ASSET_URL') . "/images/modelDocument/{$value}",
         ];
     }
+    public function poOrderItemHazmats()
+    {
+        return $this->hasMany(PoOrderItemsHazmats::class, 'model_make_part_id');
+    }
+    
 
 
 }

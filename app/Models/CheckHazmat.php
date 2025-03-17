@@ -38,4 +38,8 @@ class CheckHazmat extends Model
     {
         return $this->belongsTo(Hazmat::class);
     }
+    public function check()
+    {
+        return $this->belongsTo(Check::class);
+    }
 }

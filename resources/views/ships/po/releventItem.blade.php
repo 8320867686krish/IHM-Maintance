@@ -2,6 +2,58 @@
 @section('shiptitle','Po Records')
 @section('css')
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/vendor/bootstrap-select/css/bootstrap-select.css') }}">
+<style>
+	.input-label-group {
+		position: relative;
+		width: 100%;
+	}
+
+	.input-label-group input {
+		width: 100%;
+		padding: 12px 15px;
+		border: 1px solid #ccc;
+		border-radius: 4px;
+		font-size: 14px;
+		background: white;
+		transition: all 0.3s ease;
+		outline: none;
+	}
+
+	.input-label-group label {
+		position: absolute;
+		left: 15px;
+		top: 50%;
+		transform: translateY(-50%);
+		font-size: 14px;
+		color: #999;
+		background: white;
+		padding: 0 5px;
+		transition: 0.3s ease;
+		pointer-events: none;
+	}
+
+	/* Border cut effect */
+	.input-label-group input:focus {
+		border-top-color: #2563eb;
+		border-color: #2563eb;
+		box-shadow: none !important;
+	}
+
+	/* Move label up when focused or has value */
+	.input-label-group input:focus+label,
+	.input-label-group input:not(:placeholder-shown)+label {
+		top: 1px;
+		left: 10px;
+		font-size: 13px;
+		color: #2563eb;
+	}
+
+	/* Creating the cut-out effect */
+	.input-label-group input:focus {
+		border-radius: 4px 4px 0 0;
+		/* Maintain a soft top cut */
+	}
+</style>
 @endsection
 @section('content')
 @include('ships.po.modals.sendMail')
@@ -25,42 +77,42 @@
 
 						<div class="row">
 							<div class="col-6 col-md-6 mb-2">
-								<div class="form-group">
+								<div class="form-group input-label-group">
 									<label for="equipment">Description</label>
 									<input type="text" id="description" name="description" class="form-control" value="{{$poItem->description}}">
 								</div>
 							</div>
 
 							<div class="col-6 col-md-6 mb-2">
-								<div class="form-group">
+								<div class="form-group input-label-group">
 									<label for="equipment">IMPA No.(if available)</label>
 									<input type="text" id="impa_no" name="impa_no" class="form-control" value="{{$poItem->impa_no}}">
 								</div>
 							</div>
 
 							<div class="col-6 col-md-6 mb-2">
-								<div class="form-group">
+								<div class="form-group input-label-group">
 									<label for="equipment">Part No</label>
 									<input type="text" id="part_no" name="part_no" class="form-control" value="{{$poItem->part_no}}">
 								</div>
 							</div>
 							<div class="col-6 col-md-6 mb-2">
-								<div class="form-group">
+								<div class="form-group input-label-group">
 									<label for="Qty">Qty</label>
-									<input type="text" id="qty" name="qty"
+									<input type="number" id="qty" name="qty"
 										class="form-control" value="{{$poItem->qty}}">
 								</div>
 							</div>
 
 							<div class="col-12 col-md-6 mb-2">
-								<div class="form-group">
+								<div class="form-group input-label-group">
 									<label for="unit">Unit</label>
 									<input type="text" id="unit" name="unit" class="form-control" value="{{$poItem->unit}}">
 								</div>
 							</div>
 
 							<div class="col-12 col-md-6 mb-2">
-								<div class="form-group">
+								<div class="form-group input-label-group">
 									<label for="type_category">Type</label>
 									<select class="form-control form-control-lg" name="type_category">
 										<option value="Relevant">Relevant</option>
@@ -70,7 +122,7 @@
 							</div>
 
 							<div class="col-12 col-md-6 mb-2">
-								<div class="form-group">
+								<div class="form-group input-label-group">
 									<label for="suspected_hazmat">Suspected Hazmat</label>
 									<select class="form-control selectpicker" id="suspected_hazmat"
 										name="suspected_hazmat[]" multiple>
@@ -120,7 +172,7 @@
 														<div class="col-12 col-md-12 col-lg-12 cloneTableTypeDiv mb-2 " id="cloneTableTypeDiv{{$value['hazmat_id']}}">
 															<div class="row">
 																<div class="col-4 table_typecol mb-2">
-																	<div class="form-group">
+																	<div class="form-group input-label-group">
 																		<select class="form-control table_type tableType{{$value['hazmat_id']}}" id="table_type_{{$value['hazmat_id']}}" name="hazmats[{{$value['hazmat_id']}}][hazmat_type]" data-findTable="{{ explode('-', $value['hazmat']['table_type'])[0] }}" data-divValue="{{$value['hazmat_id']}}">
 																			<option value="Contained" {{ $value->hazmat_type == 'Contained' ? 'selected' : '' }}>Contained
 																			</option>
@@ -136,7 +188,7 @@
 
 
 																<div class="col-4 equipment mb-2" id="equipment{{$value['hazmat_id']}}">
-																	<div class="form-group">
+																	<div class="form-group input-label-group">
 																		<select class="form-control  equipmentSelectTag" id="equipmentselect_{{$value['hazmat_id']}}" name="hazmats[{{$value['hazmat_id']}}][hazmet_equipment]" data-id="{{$value['hazmat_id']}}" data-findtable="{{$hazmetTable}}" data-divvalue="{{$value['hazmat_id']}}">
 																			<option value="">Select Equipment
 																			</option>
@@ -152,29 +204,29 @@
 																</div>
 
 																<div class="col-4 manufacturer mb-2" id="manufacturer{{$value['hazmat_id']}}">
-																	<div class="form-group">
+																	<div class="form-group input-label-group">
 																		<select class="form-control  manufacturerselect" id="manufacturerselect_{{$value['hazmat_id']}}" name="hazmats[{{$value['hazmat_id']}}][hazmet_manufacturer]" data-id="{{$value['hazmat_id']}}" data-findtable="{{$hazmetTable}}" data-divvalue="{{$value['hazmat_id']}}">
 																			<option value="">Select Manufacturer
 																			</option>
-																		
+
 																		</select>
 																	</div>
 
 																</div>
 
 																<div class="col-4 modelMakePart mb-1" id="modelMakePart{{$value['hazmat_id']}}">
-																	<div class="form-group">
+																	<div class="form-group input-label-group">
 																		<select class="form-control  modelMakePartSelect" data-id="{{$value['hazmat_id']}}" id="modelMakePartselect_{{$value['hazmat_id']}}" name="hazmats[{{$value['hazmat_id']}}][model_make_part_id]" data-findtable="{{$hazmetTable}}" data-divvalue="{{$value['hazmat_id']}}">
 																			<option value="">Select Model Make and Part
 																			</option>
-																			
+
 																		</select>
 																	</div>
 
 																</div>
 
 																<div class=" col-4  documentLoad1 mb-1" id="documentLoad1_{{$value['hazmat_id']}}">
-																	<div class="form-group">
+																	<div class="form-group input-label-group">
 																		@if(@$value['doc1'])
 																		<input type="hidden" name="hazmats[{{$value['hazmat_id']}}][doc1]" value="{{$value['doc1']}}"><a>MD NO.{{$value->makeModel->md_no}}</a>
 
@@ -183,7 +235,7 @@
 																</div>
 
 																<div class=" col-4  documentLoad2 mb-1" id="documentLoad2_{{$value['hazmat_id']}}">
-																	<div class="form-group">
+																	<div class="form-group input-label-group">
 																		@if(@$value['doc2'])
 																		<input type="hidden" name="hazmats[{{$value['hazmat_id']}}][doc2]" value="{{$value['doc2']}}"><a>SDoC No.{{$value->makeModel->sdoc_no}}</a>
 
@@ -201,7 +253,7 @@
 																	</div>
 																</div>
 																<div class="col-1">
-																	<div class="form-group"><button class="btn btn-primary float-right mb-1 sendmail" type="button" data-id="{{$value['hazmat_id']}}">Send Email</button></div>
+																	<div class="form-group input-label-group"><button class="btn btn-primary float-right mb-1 sendmail" type="button" data-id="{{$value['hazmat_id']}}">Send Email</button></div>
 																</div>
 															</div>
 															@endif
@@ -218,12 +270,12 @@
 															@if( $value->isArrived == 'yes')
 															<div class="row col-12 col-md-12 col-lg-12 mb-2 arrivedItemDetails{{$value['hazmat_id']}}">
 																<div class="col-4 mb-2">
-																	<div class="form-group">
+																	<div class="form-group input-label-group">
 																		<input type="text" name="hazmats[{{$value['hazmat_id']}}][arrived_location]" id="arrived_location{{$value['hazmat_id']}}" class="form-control" placeHolder="Location" value="{{$value['arrived_location']}}">
 																	</div>
 																</div>
 																<div class="col-4 mb-2">
-																	<div class="form-group">
+																	<div class="form-group input-label-group input-label-group">
 																		<input type="date" name="hazmats[{{$value['hazmat_id']}}][arrived_date]" id="arrived_date{{$value['hazmat_id']}}" class="form-control" placeHolder="Date" value="{{$value['arrived_date']}}">
 																	</div>
 																</div>
@@ -245,12 +297,12 @@
 															@if( $value->isReturn == 'yes')
 															<div class="row col-12 mb-2 returnItemDetails{{$value['hazmat_id']}}">
 																<div class="col-4 mb-2">
-																	<div class="form-group">
+																	<div class="form-group input-label-group input-label-group">
 																		<input type="text" name="hazmats[{{$value['hazmat_id']}}][location]" id="location{{$value['hazmat_id']}}" class="form-control" placeholder="Location" value="{{$value['location']}}">
 																	</div>
 																</div>
 																<div class="col-4 mb-2">
-																	<div class="form-group">
+																	<div class="form-group input-label-group input-label-group">
 																		<input type="date" name="hazmats[{{$value['hazmat_id']}}][date]" id="date{{$value['hazmat_id']}}" class="form-control" placeholder="Date" value="{{$value['date']}}">
 																	</div>
 																</div>
@@ -302,73 +354,101 @@
 															@if($value->isIHMUpdated == 'yes' && $value->isArrived == 'yes')
 															<div class="row col-12 mb-2 ihmItemDetails{{$value['hazmat_id']}}">
 																<div class="col-4 mb-2">
-																	<div class="form-group">
-																		<input type="text" name="hazmats[{{$value['hazmat_id']}}][ihm_location]" id="location{{$value['hazmat_id']}}" class="form-control" placeholder="Location" value="{{$value->ihm_location}}">
+																	<div class="form-group input-label-group input-label-group">
+																		<input type="text" name="hazmats[{{$value['hazmat_id']}}][ihm_location]" id="location{{$value['hazmat_id']}}" class="form-control" placeholder="" value="{{$value->ihm_location}}">
+																		<label>Location</label>
 																	</div>
 																</div>
 																<div class="col-4 mb-2">
-																	<div class="form-group">
-																		<input type="text" name="hazmats[{{$value['hazmat_id']}}][ihm_sublocation]" id="ihm_sublocation{{$value['hazmat_id']}}" class="form-control" placeholder="Sub Location" value="{{$value->ihm_sublocation}}">
+																	<div class="form-group input-label-group">
+																		<input type="text" name="hazmats[{{$value['hazmat_id']}}][ihm_sublocation]" id="ihm_sublocation{{$value['hazmat_id']}}" class="form-control" placeholder="" value="{{$value->ihm_sublocation}}">
+																		<label>Sub Location</label>
+
 																	</div>
 																</div>
 																<div class="col-4 mb-2">
-																	<div class="form-group">
+																	<div class="form-group input-label-group">
 																		<input type="text" name="hazmats[{{$value['hazmat_id']}}][ihm_machinery_equipment]" id="ihm_machinery_equipment{{$value['hazmat_id']}}" class="form-control" placeholder="Machinery/Equipment" value="{{$value->ihm_machinery_equipment}}">
+																		<label>Machinery</label>
+
 																	</div>
 																</div>
 																<div class="col-4 mb-2">
-																	<div class="form-group">
-																		<input type="text" name="hazmats[{{$value['hazmat_id']}}][ihm_parts]" id="ihm_parts{{$value['hazmat_id']}}" class="form-control" placeholder="Parts where used" value="{{$value->ihm_parts}}">
+																	<div class="form-group input-label-group">
+																		<input type="text" name="hazmats[{{$value['hazmat_id']}}][ihm_parts]" id="ihm_parts{{$value['hazmat_id']}}" class="form-control" placeholder="" value="{{$value->ihm_parts}}">
+																		<label>Parts where used</label>
 																	</div>
 																</div>
 																@if($hazmetTable == 'A')
-																<div class="col-4 mb-2">
-																	<div class="form-group">
-																		<input type="text" name="hazmats[{{$value['hazmat_id']}}][ihm_qty]" id="ihm_qty{{$value['hazmat_id']}}" class="form-control" placeholder="Quantity" value="{{$value->ihm_qty}}">
+																<div class="col-2 mb-2">
+																	<div class="form-group input-label-group">
+																		<input type="number" name="hazmats[{{$value['hazmat_id']}}][ihm_qty]" id="ihm_qty{{$value['hazmat_id']}}" class="form-control" placeholder="" value="{{$value->ihm_qty}}">
+																		<label>Quantity</label>
+
+																	</div>
+																</div>
+																<div class="col-2 mb-2">
+																	<div class="form-group input-label-group">
+																		<input type="text" name="hazmats[{{$value['hazmat_id']}}][ihm_unit]" id="ihm_unit{{$value['hazmat_id']}}" class="form-control" placeholder="" value="{{$value->ihm_machinery_equipment}}" value="{{$value->ihm_unit}}">
+																		<label>Unit</label>
+
 																	</div>
 																</div>
 																<div class="col-4 mb-2">
-																	<div class="form-group">
-																		<input type="text" name="hazmats[{{$value['hazmat_id']}}][ihm_unit]" id="ihm_unit{{$value['hazmat_id']}}" class="form-control" placeholder="Unit" value="{{$value->ihm_machinery_equipment}}" value="{{$value->ihm_unit}}">
+																	<div class="form-group input-label-group">
+																		<select name="hazmats[{{$value['hazmat_id']}}][ihm_table_type]" id="ihm_table_type{{$value['hazmat_id']}}" class="form-control">
+																			<option value="i-1" {{ ($value['ihm_table_type'] ?? '') == 'i-1' ? 'selected' : '' }}>i-1</option>
+																			<option value="i-2" {{ ($value['ihm_table_type'] ?? '') == 'i-2' ? 'selected' : '' }}>i-2</option>
+																			<option value="i-3" {{ ($value['ihm_table_type'] ?? '') == 'i-3' ? 'selected' : '' }}>i-3</option>
+																		</select>
 																	</div>
 																</div>
 																@else
 																<div class="col-4 mb-2">
-																	<div class="form-group">
-																		<input type="text" name="hazmats[{{$value['hazmat_id']}}][ihm_previous_qty]" id="ihm_previous_qty{{$value['hazmat_id']}}" class="form-control" placeHolder="Previous Quantity" value="{{$value['ihm_previous_qty']}}">
+																	<div class="form-group input-label-group">
+																		<input type="number" name="hazmats[{{$value['hazmat_id']}}][ihm_previous_qty]" id="ihm_previous_qty{{$value['hazmat_id']}}" class="form-control" placeHolder="" value="{{$value['ihm_previous_qty']}}">
+																		<label>Previous Quantity</label>
+
 																	</div>
 																</div>
 
 																<div class="col-4 mb-2">
-																	<div class="form-group">
-																		<input type="text" name="hazmats[{{$value['hazmat_id']}}][ihm_previous_unit]" id="ihm_previous_unit{{$value['hazmat_id']}}" class="form-control" placeHolder="Unit" value="{{$value['ihm_previous_unit']}}">
+																	<div class="form-group input-label-group">
+																		<input type="text" name="hazmats[{{$value['hazmat_id']}}][ihm_previous_unit]" id="ihm_previous_unit{{$value['hazmat_id']}}" class="form-control" placeHolder="" value="{{$value['ihm_previous_unit']}}">
+																		<label>Unit</label>
 																	</div>
 																</div>
 																<div class="col-3 mb-2">
-																	<div class="form-group">
+																	<div class="form-group input-label-group">
 																		<input type="date" name="hazmats[{{$value['hazmat_id']}}][ihm_last_date]" id="ihm_last_date{{$value['hazmat_id']}}" class="form-control" placeHolder="Last Date" value="{{$value['ihm_last_date']}}">
+																		<label>Unit</label>
 																	</div>
 																</div>
 																<div class="col-3 mb-2">
-																	<div class="form-group">
-																		<input type="text" name="hazmats[{{$value['hazmat_id']}}][ihm_qty]" id="ihm_qty{{$value['hazmat_id']}}" class="form-control" placeHolder="Next Quantity" value="{{$value['ihm_qty']}}">
+																	<div class="form-group input-label-group">
+																		<input type="number" name="hazmats[{{$value['hazmat_id']}}][ihm_qty]" id="ihm_qty{{$value['hazmat_id']}}" class="form-control" placeHolder="" value="{{$value['ihm_qty']}}">
+																		<label>Next Quantity</label>
 																	</div>
 																</div>
 
 																<div class="col-3 mb-2">
-																	<div class="form-group">
-																		<input type="text" name="hazmats[{{$value['hazmat_id']}}][ihm_unit]" id="ihm_unit{{$value['hazmat_id']}}" class="form-control" placeHolder="Unit" value="{{$value['ihm_unit']}}">
+																	<div class="form-group input-label-group">
+																		<input type="text" name="hazmats[{{$value['hazmat_id']}}][ihm_unit]" id="ihm_unit{{$value['hazmat_id']}}" class="form-control" placeHolder="" value="{{$value['ihm_unit']}}">
+																		
+
 																	</div>
 																</div>
 																<div class="col-3 mb-2">
-																	<div class="form-group">
-																		<input type="date" name="hazmats[{{$value['hazmat_id']}}][ihm_date]" id="ihm_date{{$value['hazmat_id']}}" class="form-control" placeHolder="Next Date" value="{{$value['ihm_date']}}">
+																	<div class="form-group input-label-group">
+																		<input type="date" name="hazmats[{{$value['hazmat_id']}}][ihm_date]" id="ihm_date{{$value['hazmat_id']}}" class="form-control" placeHolder="" value="{{$value['ihm_date']}}">
+																		<label>Next Date</label>
 																	</div>
 																</div>
 																@endif
 																<div class="col-12 mb-2">
-																	<div class="form-group">
-																		<input type="text" name="hazmats[{{$value['hazmat_id']}}][ihm_remarks]" id="remarks{{$value['hazmat_id']}}" class="form-control" placeholder="Remarks" value="{{$value->ihm_remarks}}">
+																	<div class="form-group input-label-group">
+																		<input type="text" name="hazmats[{{$value['hazmat_id']}}][ihm_remarks]" id="remarks{{$value['hazmat_id']}}" class="form-control" placeholder="" value="{{$value->ihm_remarks}}">
+																		<label>Remarks</label>
 																	</div>
 																</div>
 															</div>
@@ -393,52 +473,59 @@
 															@if( $value->isRemove === 'yes')
 															<div class="row  col-12 mb-2  removeItemDetails{{$value['hazmat_id']}}" style="{{$style}}">
 																<div class="col-4 mb-2">
-																	<div class="form-group">
-																		<input type="text" name="hazmats[{{$value['hazmat_id']}}][service_supplier_name]" id="service_supplier_name{{$value['hazmat_id']}}" class="form-control" placeHolder="Service Supplier Name" value="{{$value['service_supplier_name']}}">
+																	<div class="form-group input-label-group">
+																		<input type="text" name="hazmats[{{$value['hazmat_id']}}][service_supplier_name]" id="service_supplier_name{{$value['hazmat_id']}}" class="form-control" placeHolder="" value="{{$value['service_supplier_name']}}">
+																		<label>Service Supplier Name</label>
 																	</div>
 																</div>
 																<div class="col-4 mb-2">
-																	<div class="form-group">
-																		<input type="text" name="hazmats[{{$value['hazmat_id']}}][service_supplier_address]" id="service_supplier_address{{$value['hazmat_id']}}" class="form-control" placeHolder="Service Supplier Address" value="{{$value['service_supplier_address']}}">
+																	<div class="form-group input-label-group">
+																		<input type="text" name="hazmats[{{$value['hazmat_id']}}][service_supplier_address]" id="service_supplier_address{{$value['hazmat_id']}}" class="form-control" placeHolder="" value="{{$value['service_supplier_address']}}">
+																		<label>Service Supplier Address</label>
 																	</div>
 																</div>
 																<div class="col-4 mb-2">
-																	<div class="form-group">
-																		<input type="date" name="hazmats[{{$value['hazmat_id']}}][removal_date]" id="removal_date{{$value['hazmat_id']}}" class="form-control" placeHolder="Removal Date" value="{{$value['removal_date']}}">
-																	</div>
-																</div>
-
-																<div class="col-4 mb-2">
-																	<div class="form-group">
-																		<input type="text" name="hazmats[{{$value['hazmat_id']}}][removal_location]" id="removal_location{{$value['hazmat_id']}}" class="form-control" placeHolder="Removal Location" value="{{$value['removal_location']}}">
+																	<div class="form-group input-label-group">
+																		<input type="date" name="hazmats[{{$value['hazmat_id']}}][removal_date]" id="removal_date{{$value['hazmat_id']}}" class="form-control" placeHolder="" value="{{$value['removal_date']}}">
+																		<label>Removal Date</label>
 																	</div>
 																</div>
 
 																<div class="col-4 mb-2">
-																	<div class="form-group">
-																		<input type="file" name="hazmats[{{$value['hazmat_id']}}][attachment]" id="attachment{{$value['hazmat_id']}}" class="form-control" placeHolder="Attachment">
+																	<div class="form-group input-label-group">
+																		<input type="text" name="hazmats[{{$value['hazmat_id']}}][removal_location]" id="removal_location{{$value['hazmat_id']}}" class="form-control" placeHolder="" value="{{$value['removal_location']}}">
+																		<label>Removal Location</label>
+																	</div>
+																</div>
+
+																<div class="col-4 mb-2">
+																	<div class="form-group input-label-group">
+																		<input type="file" name="hazmats[{{$value['hazmat_id']}}][attachment]" id="attachment{{$value['hazmat_id']}}" class="form-control" placeHolder="">
+																		<label>Attachment</label>
 																	</div>
 																</div>
 																<div class="col-4 mb-2">
-																	<div class="form-group">
-																		<input type="text" name="hazmats[{{$value['hazmat_id']}}][po_no]" id="po_no{{$value['hazmat_id']}}" class="form-control" placeHolder="PO No" value="{{$value['po_no']}}">
+																	<div class="form-group input-label-group">
+																		<input type="text" name="hazmats[{{$value['hazmat_id']}}][po_no]" id="po_no{{$value['hazmat_id']}}" class="form-control" placeHolder="" value="{{$value['po_no']}}">
+																		<label>PO No</label>
 																	</div>
 																</div>
 
 																<div class="col-3 mb-2">
-																	<div class="form-group">
-																		<input type="text" name="hazmats[{{$value['hazmat_id']}}][removal_quantity]" id="removal_quantity{{$value['hazmat_id']}}" class="form-control" placeHolder="Quantty" value="{{$value['removal_quantity']}}">
+																	<div class="form-group input-label-group">
+																		<input type="number" name="hazmats[{{$value['hazmat_id']}}][removal_quantity]" id="removal_quantity{{$value['hazmat_id']}}" class="form-control" placeHolder="" value="{{$value['removal_quantity']}}">
+																		<label>Quantty</label>
 																	</div>
 																</div>
 
 																<div class="col-3 mb-2">
-																	<div class="form-group">
+																	<div class="form-group input-label-group">
 																		<input type="text" name="hazmats[{{$value['hazmat_id']}}][removal_unit]" id="removal_unit{{$value['hazmat_id']}}" class="form-control" placeHolder="Unit" value="{{$value['removal_unit']}}">
 																	</div>
 																</div>
 
 																<div class="col-6 mb-2">
-																	<div class="form-group">
+																	<div class="form-group input-label-group">
 																		<input type="text" name="hazmats[{{$value['hazmat_id']}}][removal_remarks]" id="removal_remarks{{$value['hazmat_id']}}" class="form-control" placeHolder="Remarks" value="{{$value['removal_remarks']}}">
 																	</div>
 																</div>
@@ -461,13 +548,13 @@
 															</div>
 															<div class="row   mb-1   recivedDocumentDetail{{$value['hazmat_id']}}">
 																<div class="col-8">
-																	<div class="form-group mb-1">
+																	<div class="form-group input-label-group mb-1">
 																		<input type="text" name="hazmats[{{$value['hazmat_id']}}][recived_document_comment]" id="recived_document_comment{{$value['hazmat_id']}}" class="form-control" placeHolder="Remarks" value="{{$value['recived_document_comment']}}">
 																	</div>
 																</div>
 																@if($value['isRecivedDoc'] == 'yes')
 																<div class="col-4">
-																	<div class="form-group mb-1">
+																	<div class="form-group input-label-group mb-1">
 																		<input type="date" name="hazmats[{{$value['hazmat_id']}}][recived_document_date]" id="recived_document_comment{{$value['hazmat_id']}}" class="form-control" placeHolder="Remarks" value="{{$value['recived_document_date']}}">
 																	</div>
 																</div>
@@ -553,7 +640,7 @@
 <script src="{{ asset('assets/js/poOrder.js') }}"></script>
 <script>
 	var hazmatIdsvalue = @json($hazmatIds);
-	
+
 	var itemIndex = "{{ isset($poData->poOrderItems) ? count($poData->poOrderItems) : 0 }}";
 	console.log(itemIndex);
 	$(document).ready(function() {

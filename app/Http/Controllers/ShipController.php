@@ -12,6 +12,7 @@ use App\Models\DesignatedPerson;
 use App\Models\Exam;
 use App\Models\Hazmat;
 use App\Models\Majorrepair;
+use App\Models\MakeModel;
 use App\Models\partManuel;
 use App\Models\poOrder;
 use App\Models\PoOrderItemsHazmats;
@@ -256,16 +257,9 @@ class ShipController extends Controller
         Session::forget('back');
         $user =  Auth::user();
 
-        $experts =   User::whereHas('roles', function ($query) {
-            $query->where('level', 4)->orderBy('level', 'asc');
-        })->where('hazmat_companies_id', $user->hazmat_companies_id)->get(['id', 'name']);
-
+       
         $shipId = $ship_id; 
-        $managers =  User::whereHas('roles', function ($query) {
-            $query->where('level', 3)->orderBy('level', 'asc');
-        })->where('hazmat_companies_id', $user->hazmat_companies_id)->get(['id', 'name']);
-
-
+      
         $poOrders = poOrder::withCount(['poOrderItems'])->where('ship_id', $ship_id)->OrderBy('id','desc')->get();
 
         $users = $ship->shipTeams->pluck('user_id')->toArray();
@@ -297,71 +291,58 @@ class ShipController extends Controller
         $trainingRecoreds = DesignatedPersionShip::with('designatedPersonDetail')
         ->where('ship_id', $ship_id)
         ->whereHas('designatedPersonDetail', function ($query) {
-            $query->where('position', '!=','SuperDP');
+            $query->whereIn('position', ['SuperDP', 'Other']); // Fetch both in one go
         })
         ->get();
-        $designatedPerson = $trainingRecoreds->pluck('designatedPersonDetail');
-
-        $dpsore = DesignatedPersionShip::with('designatedPersonDetail')
-        ->where('ship_id', $ship_id)
-        ->whereHas('designatedPersonDetail', function ($query) {
-            $query->where('position', 'SuperDP');
-        })
-        ->get();
+    
+    // Separate results in PHP
+    $designatedPerson = $trainingRecoreds->filter(function ($record) {
+        return $record->designatedPersonDetail->position !== 'SuperDP';
+    });
+    
+    $dpsore = $trainingRecoreds->filter(function ($record) {
+        return $record->designatedPersonDetail->position === 'SuperDP';
+    });
 
         $trainingRecoredHistory = Exam::where('ship_id', $ship_id)->orderBy('id', 'desc')->get();
 
-        $mdnoresults = DB::table('po_order_items_hazmats as p')
-            ->join('make_models as m', 'm.id', '=', 'p.model_make_part_id')
-            ->join('hazmats as h', 'h.id', '=', 'p.hazmat_id')
-            ->select(
-                'm.id',
-                'm.md_date',
-                'm.md_no',
-                'm.coumpany_name',
-                DB::raw('GROUP_CONCAT(DISTINCT h.short_name ORDER BY h.short_name ASC) AS hazmat_names') // Use DB::raw only for the grouped column
-            )
-            ->groupBy(
-                'm.id',
-                'm.md_date',
-                'm.md_no',
-                'm.coumpany_name'
-            )
-            ->where('p.ship_id',$ship_id)
-            ->whereNotNull('doc1')
+
+        $mdnoresults = MakeModel::select([
+                'make_models.id',
+                'make_models.md_date',
+                'make_models.md_no',
+                'make_models.coumpany_name',
+                DB::raw('GROUP_CONCAT(DISTINCT hazmats.short_name ORDER BY hazmats.short_name ASC) AS hazmat_names')
+            ])
+            ->join('po_order_items_hazmats', 'po_order_items_hazmats.model_make_part_id', '=', 'make_models.id')
+            ->join('hazmats', 'hazmats.id', '=', 'po_order_items_hazmats.hazmat_id')
+            ->where('po_order_items_hazmats.ship_id', $ship_id)
+            ->whereNotNull('po_order_items_hazmats.doc1')
+            ->groupBy('make_models.id', 'make_models.md_date', 'make_models.md_no', 'make_models.coumpany_name')
             ->get();
+        
 
-
-            $sdocresults = DB::table('po_order_items_hazmats as p')
-            ->join('make_models as m', 'm.id', '=', 'p.model_make_part_id')
-            ->join('hazmats as h', 'h.id', '=', 'p.hazmat_id')
-            ->select(
-                'm.id',
-                'm.sdoc_date',
-                'm.sdoc_no',
-                'm.issuer_name',
-                'm.sdoc_objects',
-                DB::raw('GROUP_CONCAT(DISTINCT h.short_name ORDER BY h.short_name ASC) AS hazmat_names') // Use DB::raw only for the grouped column
-            )
-            ->groupBy(
-                'm.id',
-                'm.sdoc_date',
-                'm.sdoc_no',
-                'm.issuer_name',
-                'm.sdoc_objects'
-            )
-            ->where('p.ship_id',$ship_id)
-            ->whereNotNull('doc2')
-            ->get();
-
-
-
+            $sdocresults = MakeModel::select([
+                    'make_models.id',
+                    'make_models.sdoc_date',
+                    'make_models.sdoc_no',
+                    'make_models.issuer_name',
+                    'make_models.sdoc_objects',
+                    DB::raw('GROUP_CONCAT(DISTINCT hazmats.short_name ORDER BY hazmats.short_name ASC) AS hazmat_names')
+                ])
+                ->join('po_order_items_hazmats', 'po_order_items_hazmats.model_make_part_id', '=', 'make_models.id')
+                ->join('hazmats', 'hazmats.id', '=', 'po_order_items_hazmats.hazmat_id')
+                ->where('po_order_items_hazmats.ship_id', $ship_id)
+                ->whereNotNull('po_order_items_hazmats.doc2')
+                ->groupBy('make_models.id', 'make_models.sdoc_date', 'make_models.sdoc_no', 'make_models.issuer_name', 'make_models.sdoc_objects')
+                ->get();
+            
         $ships = Ship::get();
         $majorrepair = Majorrepair::where('ship_id', operator: $ship_id)->orderBy('id','desc')->get();
 
         $previousAttachment = PreviousAttachment::where('ship_id', operator: $ship_id)->orderBy('id','desc')->get();
 
-        $brifingHistory = Brifing::where('ship_id', operator: $ship_id)->get();
+        $brifingHistory = Brifing::with('DesignatedPersonDetail')->where('ship_id', operator: $ship_id)->get();
 
         return view('ships.view', compact('experts', 'managers', 'isBack', 'ship', 'readonly', 'users', 'poOrders', 'ship_id', 'checkHazmatIHMPart', 'hazmat_companies_id', 'partMenual', 'summary', 'trainingRecoreds', 'mdnoresults', 'dpsore', 'trainingRecoredHistory', 'ships', 'majorrepair', 'brifingHistory', 'designatedPerson','sdocresults','previousAttachment'));
     }

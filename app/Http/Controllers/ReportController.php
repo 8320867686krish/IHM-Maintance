@@ -10,9 +10,12 @@ use App\Models\DesignatedPerson;
 use App\Models\Exam;
 use App\Models\Hazmat;
 use App\Models\partManuel;
+use App\Models\PoOrderItemsHazmats;
 use App\Models\PreviousAttachment;
 use App\Models\Ship;
 use App\Traits\PdfGenerator;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -37,17 +40,16 @@ class ReportController extends Controller
         $date = date('y-m-d');
         $projectDetail = Ship::with('client.hazmatCompaniesId')->find($ship_id);
         $is_report_logo = $projectDetail['client']['is_report_logo'];
-        if($is_report_logo == 0){
+        if ($is_report_logo == 0) {
             $image = $projectDetail['client']['hazmatCompaniesId']['logo'];
-            $logoPath = public_path('uploads/hazmatCompany/'. $image);
-        }else{
+            $logoPath = public_path('uploads/hazmatCompany/' . $image);
+        } else {
             $image = $projectDetail['client']['client_image'];
-            $logoPath = public_path('uploads/clientcompany/'. $image);
-            
+            $logoPath = public_path('uploads/clientcompany/' . $image);
         }
         $logoData = base64_encode(file_get_contents($logoPath));
         $logo = 'data:image/png;base64,' . $logoData;
-       
+
         $mpdf = new Mpdf([
             'format' => 'A4',
             'margin_left' => 10,
@@ -217,22 +219,22 @@ class ReportController extends Controller
             ->whereNotNull('p.doc2')
             ->groupBy('m.id', 'm.sdoc_date', 'm.sdoc_no', 'm.issuer_name', 'm.sdoc_objects')
             ->get();
-            $html = view('main-report.sdoc-recoreds', compact('sdocresults'))->render();
-            $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
-       
-            $previousAttachment = PreviousAttachment::where('ship_id',$ship_id)->get();
-            if(@$previousAttachment){
-                foreach($previousAttachment as $value){
-                    $filePath = public_path('uploads/previousattachment')."/".$value['attachment'];
-                    if (file_exists($filePath) && @$value['attachment']) {
-                        $titleHtml = '<h2 style="text-align:center;font-size:13px;font-weight:bold">Previous Attachment ' . $value['attachment_name'] . '</h2>';
-                        $this->mergePdf($filePath, $titleHtml, $mpdf);
-                    }
+        $html = view('main-report.sdoc-recoreds', compact('sdocresults'))->render();
+        $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
+
+        $previousAttachment = PreviousAttachment::where('ship_id', $ship_id)->get();
+        if (@$previousAttachment) {
+            foreach ($previousAttachment as $value) {
+                $filePath = public_path('uploads/previousattachment') . "/" . $value['attachment'];
+                if (file_exists($filePath) && @$value['attachment']) {
+                    $titleHtml = '<h2 style="text-align:center;font-size:13px;font-weight:bold">Previous Attachment ' . $value['attachment_name'] . '</h2>';
+                    $this->mergePdf($filePath, $titleHtml, $mpdf);
                 }
             }
-         
+        }
 
-            
+
+
         // return response()->streamDownload(function () use ($mpdf) {
         //     echo $mpdf->Output('', 'S'); // S = return as string
         // }, 'report.pdf', ['Content-Type' => 'application/pdf']);
@@ -255,9 +257,102 @@ class ReportController extends Controller
         $ship_id = $user->shipClient->id;
         $ship = Ship::find($ship_id);
         $partMenual = partManuel::where('ship_id', operator: $ship_id)->get();
-        $checkHazmatIHMPart = CheckHazmat::with(relations: 'hazmat')->where('ship_id', $ship_id)->get();
-       
-        return view('helpCenter.report', compact('ship_id','partMenual','ship','checkHazmatIHMPart'));
+        $checkHazmatIHMPart = PoOrderItemsHazmats::with(relations: 'hazmat')->where('ship_id', $ship_id)->whereNotNull('ihm_table_type')->get();
+        $previousAttachment = PreviousAttachment::where('ship_id', $ship_id)->get();
+        return view('helpCenter.report', compact('ship_id', 'partMenual', 'ship', 'checkHazmatIHMPart', 'previousAttachment'));
+    }
+
+
+    public function generateIHMSticker($ship_id)
+    {
+        $ship = Ship::select('ship_name')->where('id',$ship_id)->find($ship_id);
+        $checks = CheckHazmat::with(['check', 'hazmat'])
+            ->where('ship_id', $ship_id)
+            ->whereNotNull('hazmat_type')
+            ->get();
+    
+        if ($checks->count() <= 0) {
+            return redirect()->back()->with('message', 'This deck check not found.');
+        }
+    
+        // Initialize Dompdf
+        $options = new Options();
+        $options->set('isHtml5ParserEnabled', true);
+        $dompdf = new Dompdf($options);
+    
+        // HTML content for PDF
+        $html = '<!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>QR Codes</title>
+                <style>
+                    body {
+                        font-family: Arial, sans-serif;
+                    }
+                    table {
+                        width: 100%;
+                        border-collapse: collapse;
+                    }
+                    th, td {
+                        padding: 10px;
+                        text-align: left;
+                        border: 1px solid #ddd;
+                        font-size:14px;
+                    }
+                    .left { text-align: left; font-weight: bold; }
+                    .right { text-align: right; font-weight: normal; }
+                </style>
+            </head>
+            <body>';
+    
+            $html .= '<div><center><h3>Deck : ' . htmlspecialchars($ship['ship_name']) . '</h3></center></div>';
+            $html .= '<table>';
+    
+        // Track columns per row
+        $colspan = 2;
+        $counter = 0;
+        
+        foreach ($checks as $key => $check) {
+            if ($counter % $colspan == 0) {
+                $html .= '<tr>'; // Open new row
+            }
+    
+            $html .= '<td width="50%">'; // Each column is 50% width
+    
+            $html .= '<div><span class="left">Check Name:</span> <span class="right">' . $check['check']['name'] . '</span></div>';
+            $html .= '<div style="margin-top: 5px;"><span class="left">Location:</span> <span class="right">' . $check['location'] . '</span></div>';
+            
+            // Hazmat Type (Left) & Hazmat (Right)
+            $html .= '<div style="margin-top: 5px;"><span class="left">Hazmat Type:</span> <span class="right">' . $check['hazmat_type'] . '</span></div>';
+            $html .= '<div style="margin-top: 5px;"><span class="left">Hazmat:</span> <span class="right">' . $check['hazmat']['name'] . '</span></div>';
+    
+            $html .= '</td>'; // Close column
+    
+            if (($counter + 1) % $colspan == 0 || $key == $checks->count() - 1) {
+                $html .= '</tr>'; // Close row
+            }
+    
+            $counter++;
+        }
+    
+        $html .= '</table>';
+        $html .= '</body></html>';
+    
+        // Load HTML content into Dompdf
+        $dompdf->loadHtml($html);
+    
+        // Set paper size and orientation
+        $dompdf->setPaper('A4', 'portrait');
+    
+        // Render PDF
+        $dompdf->render();
+    
+        // Output PDF as attachment
+        return response($dompdf->output(), 200)
+            ->header('Content-Type', 'application/pdf')
+            ->header('Content-Disposition', 'attachment; filename="qr_codes_' . 'abc' . '.pdf"');
     }
 
     protected function mergeImageToPdf($imagePath, $title, $mpdf, $page = null)

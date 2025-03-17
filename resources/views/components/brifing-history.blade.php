@@ -3,7 +3,7 @@
     <td>{{$loop->iteration}}</td>
     <td>{{$historyValue->number_of_attendance}}</td>
     <td>{{$historyValue->brifing_date}}</td>
-    <td>{{$historyValue->DesignatedPersonDetail->name}}</td>
+    <td>{{$historyValue['DesignatedPersonDetail']['name']}}</td>
     <td>
         @if($historyValue->brifing_document)
         <a href="{{ asset('uploads/brifing_document/' . $historyValue['brifing_document']) }}" title="Download" download>

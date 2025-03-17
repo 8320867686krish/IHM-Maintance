@@ -40,7 +40,7 @@
             <div class="card">
                 <div class="card-header" id="headinginitial5">
                     <h5 class="mb-0">
-                   
+
                         <button class="btn btn-link collapsed  d-flex justify-content-between w-100" data-toggle="collapse" data-target="#collapsinitial5" aria-expanded="false" aria-controls="collapsinitial5">
                             IHM Summary Report
                             <span class="fas fa-angle-down mr-3"></span>
@@ -49,9 +49,9 @@
                 </div>
                 <div id="collapsinitial5" class="collapse" aria-labelledby="headinginitial5" data-parent="#accordion">
                     <div class="card-body mb-4">
-                    @can('ships.edit')
+                        @can('ships.edit')
                         <a href="#" class="btn btn-primary float-right addSummary mb-3 ml-2">Add</a>
-                    @endcan
+                        @endcan
                         <div class="table-responsive">
                             <table class="table table-striped table-bordered first">
                                 <thead>
@@ -83,7 +83,7 @@
                 <div class="card-header" id="headinginitial6">
                     <h5 class="mb-0">
                         <button class="btn btn-link collapsed  d-flex justify-content-between w-100" data-toggle="collapse" data-target="#collapsinitial6" aria-expanded="false" aria-controls="collapsinitial6">
-                            Attachments
+                            Supplement  to initial IHM Part
                             <span class="fas fa-angle-down mr-3"></span>
 
                         </button>
@@ -91,9 +91,9 @@
                 </div>
                 <div id="collapsinitial6" class="collapse" aria-labelledby="headinginitial6" data-parent="#accordion">
                     <div class="card-body mb-4">
-                    @can('ships.edit')
+                        @can('ships.edit')
                         <a href="#" class="btn btn-primary float-right addPart mb-3 ml-2">Add</a>
-                    @endcan
+                        @endcan
 
                         <div class="table-responsive">
                             <table class="table table-striped table-bordered first">

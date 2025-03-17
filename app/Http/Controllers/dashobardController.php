@@ -63,8 +63,8 @@ class dashobardController extends Controller
             $routename = 'clientcompany.ships';
             $path = asset('uploads/clientcompany');
         } else if ($currentUserRoleLevel == 1) {
-            $hazmatCompany = hazmatCompany::get();
-
+            $hazmatCompany = HazmatCompany::select('id', 'logo', 'name')->get()->toArray();
+        
             $path = asset('uploads/hazmatCompany');
             $imagekey = 'logo';
             $title = "Hazmat Company";
