@@ -6,7 +6,7 @@
     <div class="row">
     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mb-2">
         <a href="{{url('generate-IHM-sticker/'.$ship_id)}}"><button class="btn btn-primary float-right ml-2">Generate IHM Sticker </button></a>
-        <a href="{{url('summeryReport/'.$ship_id)}}"><button class="btn btn-primary float-right">Summery Report</button></a>
+        <a href="{{url('summeryReport/'.$ship_id)}}"><button class="btn btn-primary float-right">Summary Report</button></a>
     </div>
     </div>
     <div class="row">

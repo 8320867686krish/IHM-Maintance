@@ -193,8 +193,7 @@ class ReportController extends Controller
         $summary = Summary::where('ship_id',$ship_id)->get();
         if (@$summary) {
             foreach ($summary as $sumvalue) {
-                $filePathsum = public_path('uploads/shipsVscp') . "/" . $ship_id."/summary/".$sumvalue['document'];
-                $mpdf->WriteHTML($filePathsum, \Mpdf\HTMLParserMode::HTML_BODY);
+                $filePathsum = public_path('uploads/shipsVscp') . "/" . $ship_id."/summary/".basename($sumvalue['document']);
 
 
                 if (file_exists($filePathsum) && @$sumvalue['document']) {
