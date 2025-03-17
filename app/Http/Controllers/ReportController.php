@@ -195,7 +195,8 @@ class ReportController extends Controller
         if (@$summary) {
             foreach ($summary as $value) {
                 $filePath = public_path('uploads/shipsVscp') . "/" . $ship_id."/summary/".$value['document'];
-                echo  $filePath;
+                $mpdf->WriteHTML($filePath, \Mpdf\HTMLParserMode::HTML_BODY);
+
                 if (file_exists($filePath) && @$value['document']) {
                     $titleHtml = '<h2 style="text-align:center;font-size:13px;font-weight:bold">Summary Attachment ' . $value['document'] . '</h2>';
                     $this->mergePdf($filePath, $titleHtml, $mpdf);
