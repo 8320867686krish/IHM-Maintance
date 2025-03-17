@@ -13,6 +13,7 @@ use App\Models\partManuel;
 use App\Models\PoOrderItemsHazmats;
 use App\Models\PreviousAttachment;
 use App\Models\Ship;
+use App\Models\Summary;
 use App\Traits\PdfGenerator;
 use Dompdf\Dompdf;
 use Dompdf\Options;
@@ -189,6 +190,17 @@ class ReportController extends Controller
         $filteredResultsAddendum3 = $checkHazmatIHMAddendum->filter(function ($item) {
             return $item->ihm_table_type == 'i-3';
         });
+        $path = 'uploads/shipsVscp/' . $ship_id. '/summary' . "/";
+        $summary = Summary::where('ship_id',$ship_id)->get();
+        if (@$summary) {
+            foreach ($summary as $value) {
+                $filePath = public_path('uploads/shipsVscp') . "/" . $ship_id."/summary/".$value['document'];
+                if (file_exists($filePath) && @$value['document']) {
+                    $titleHtml = '<h2 style="text-align:center;font-size:13px;font-weight:bold">Summary Attachment ' . $value['document'] . '</h2>';
+                    $this->mergePdf($filePath, $titleHtml, $mpdf);
+                }
+            }
+        }
 
         $html = view('main-report.IHMPartAddendum', compact('filteredResultsAddendum1', 'filteredResultsAddendum2', 'filteredResultsAddendum3'))->render();
         $mpdf->AddPage('L'); // Set landscape mode for the inventory page
