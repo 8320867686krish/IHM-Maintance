@@ -26,7 +26,6 @@
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
-                    <td>&nbsp;</td>
                 </tr>
                 @else
                 @foreach($filteredResultsAddendum1 as $key=>$value)
