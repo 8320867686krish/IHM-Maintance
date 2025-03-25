@@ -13,7 +13,7 @@
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
             <div class="card">
                 <div class="card-body mb-4">
-                    <h5>Recored Of Previous IHM Amended</h5>
+                    <h5>Record Of IHMM Part1 Maintenance</h5>
                     <x-previous-i-hm-amended :checkHazmatIHMPart="$checkHazmatIHMPart" :type="'i-1'"></x-previous-i-hm-amended.>
                         <div class=" mb-2 mt-2">
                             <x-previous-i-hm-amended :checkHazmatIHMPart="$checkHazmatIHMPart" :type="'i-2'"></x-previous-i-hm-amended>

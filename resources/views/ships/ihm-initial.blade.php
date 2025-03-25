@@ -142,11 +142,16 @@
                         </button>
                     </h5>
                 </div>
+                @can('ships.edit')
                 <div id="collapsinitial7" class="collapse" aria-labelledby="headinginitial7" data-parent="#accordion">
                     <div class="card-body">
+                   
+
                         <a href="#" class="btn btn-primary float-right mb-3 startAmended">Start Amendment </a>
+                    
                     </div>
                 </div>
+                @endif
             </div>
 
 

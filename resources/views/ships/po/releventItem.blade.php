@@ -74,6 +74,7 @@
 						<input type="hidden" name="po_order_item_id" id="po_order_item_id" value="{{@$poItem->id}}">
 						<input type="hidden" name="po_order_id" id="po_order_id" value="{{@$poItem->po_order_id}}">
 						<input type="hidden" name="po_no" id="po_no" value="{{@$poItem->poOrder->po_no}}">
+						<input type="text" name="suspected_hazmat_remove" id="suspected_hazmat_remove" value="">
 
 						<div class="row">
 							<div class="col-6 col-md-6 mb-2">
@@ -397,9 +398,10 @@
 																<div class="col-4 mb-2">
 																	<div class="form-group input-label-group">
 																		<select name="hazmats[{{$value['hazmat_id']}}][ihm_table_type]" id="ihm_table_type{{$value['hazmat_id']}}" class="form-control">
-																			<option value="i-1" {{ ($value['ihm_table_type'] ?? '') == 'i-1' ? 'selected' : '' }}>i-1</option>
-																			<option value="i-2" {{ ($value['ihm_table_type'] ?? '') == 'i-2' ? 'selected' : '' }}>i-2</option>
-																			<option value="i-3" {{ ($value['ihm_table_type'] ?? '') == 'i-3' ? 'selected' : '' }}>i-3</option>
+																			<option value="">Select Table</option>
+																			<option value="i-1" {{ ($value['ihm_table_type'] ?? '') == 'i-1' ? 'selected' : '' }}>IHM Part1 i-1</option>
+																			<option value="i-2" {{ ($value['ihm_table_type'] ?? '') == 'i-2' ? 'selected' : '' }}>IHM Part1 i-2</option>
+																			<option value="i-3" {{ ($value['ihm_table_type'] ?? '') == 'i-3' ? 'selected' : '' }}>IHM Part1 i-3</option>
 																		</select>
 																	</div>
 																</div>

@@ -133,7 +133,9 @@
                         window.location.href = "{{ url('dashboard') }}";
                     },
                     error: function(err) {
-                        console.log(err);
+                        if(err.status == 419){
+                            window.location.href = "{{ url('dashboard') }}";
+                        }
                         if (err.responseJSON == 'undefined') {
                             window.location.href = "{{ url('dashboard') }}";
                         } else {

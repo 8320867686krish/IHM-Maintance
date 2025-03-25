@@ -35,7 +35,9 @@ $(document).ready(function () {
             },
             error: function (xhr, status, error) {
                 let errors = xhr.responseJSON.errors;
-
+                if (xhr.status === 419) { // CSRF Token Mismatch
+                    location.reload();
+                }
                 if (errors) {
                     $.each(errors, function (field, messages) {
                         $('#' + field + 'Error').text(messages[0]).show();
@@ -74,6 +76,9 @@ $(document).ready(function () {
                 }
             },
             error: function (xhr, status, error) {
+                if (xhr.status === 419) { // CSRF Token Mismatch
+                    location.reload();
+                }
                 let errors = xhr.responseJSON.errors;
 
                 if (errors) {
@@ -180,13 +185,21 @@ $(document).ready(function () {
                 }
             },
             error: function (xhr, status, error) {
-                // If there are errors, display them
+                if (xhr.status === 419) { // CSRF Token Mismatch
+                    location.reload();
+                }
                 let errors = xhr.responseJSON.errors;
                 if (errors) {
                     $.each(errors, function (field, messages) {
                         $('#' + field + 'Error').text(messages[0]).show();
                         $('[name="' + field + '"]').addClass('is-invalid');
                     });
+                    var $errorDiv = $(".error:visible:first");
+                    if ($errorDiv.length) {
+                        $('html, body').animate({
+                            scrollTop: $errorDiv.offset().top - 200
+                        }, 500);
+                    }
                 } else {
                     console.error('Error submitting form:', error);
                 }
@@ -212,8 +225,12 @@ $('#suspected_hazmat').on('changed.bs.select', function (e, clickedIndex, isSele
         let tableTypeData = selectedOption.data('table');
         let tableType = tableTypeData.split('-');
         if (!isSelected) {
+            selectedHazmatsIds.push(selectedValue);
+
             $(`#main${selectedValue}`).remove();
         } else {
+            selectedHazmatsIds = selectedHazmatsIds.filter((val) => val !== selectedValue);
+
             getEquipment(selectedValue);
             var div = `<input type="hidden" name="hazmats[${selectedValue}][id]" id="po_iteam_hazmat_id" value="0">   
             <div class="card" id="main${selectedValue}">
@@ -291,6 +308,8 @@ $('#suspected_hazmat').on('changed.bs.select', function (e, clickedIndex, isSele
             </div>
             `;
         }
+        $("#suspected_hazmat_remove").val(selectedHazmatsIds.join(", "));
+
         $('#showTableTypeDiv').append(div);
     }
 });
@@ -471,14 +490,14 @@ $("#showTableTypeDiv").on("change", ".cloneTableTypeDiv input[type=radio].isReci
             
     `;
     if ($(this).val() === 'yes') {
-       reciveddocumt +=`  <div class="col-4">
+        reciveddocumt += `  <div class="col-4">
                    <div class="form-group mb-1 input-label-group">
                    <input type="date" name="hazmats[${divValue}][recived_document_date]" id="recived_document_date${divValue}" class="form-control" placeHolder="">
                     <label>Date</label>
                    </div>
             </div>`
     }
-    reciveddocumt +=`</div>`;
+    reciveddocumt += `</div>`;
     $(reciveddocumt).insertAfter(`.recivedDoc${divValue}`).fadeIn('slow');
 
 
@@ -685,9 +704,11 @@ $("#showTableTypeDiv").on("change", ".cloneTableTypeDiv input[type=checkbox].isI
         <div class="col-4 mb-2">
                        <div class="form-group">
                        <select name="hazmats[${divValue}][ihm_table_type]" id="ihm_table_type${divValue}" class="form-control">
-                        <option value="i-1">i-1</option>
-                         <option value="i-2">i-2</option>
-                          <option value="i-3">i-3</option>
+                       	<option value="">Select Table</option>
+
+                        <option value="i-1">IHM Part1 i-1</option>
+                         <option value="i-2">IHM Part1 i-2</option>
+                          <option value="i-3">IHM Part1 i-3</option>
                        </select>
                        </div>
        </div>
@@ -718,17 +739,17 @@ $(document).on('click', '.deletePo', function (e) {
         if (response.html && response.html.trim() !== '') {
             $("#porecordsTable").DataTable().destroy();
 
-                // Update table content
-                $("#porecordsTable tbody").html(response.html);
+            // Update table content
+            $("#porecordsTable tbody").html(response.html);
 
-                // Reinitialize DataTable
-                $("#porecordsTable").DataTable({
-                    lengthChange: false, // Add your options here
-                    responsive: true,
-                    order: [[0, "desc"]],
-                });
+            // Reinitialize DataTable
+            $("#porecordsTable").DataTable({
+                lengthChange: false, // Add your options here
+                responsive: true,
+                order: [[0, "desc"]],
+            });
 
-        }else{
+        } else {
             $("#porecordsTable").DataTable().draw()
         }
     }, function (response) {
@@ -783,7 +804,7 @@ function getEquipment(hazmetId) {
     let url = `${baseUrl}/equipment/${hazmetId}`;
     fetchData(url, function (response) {
         $(`#equipmentselect_${hazmetId}`).attr('data-id', hazmetId);
-    console.log(response.equipments);
+        console.log(response.equipments);
         $.each(response.equipments, function (index, value) {
             $(`#equipmentselect_${hazmetId}`).append($('<option>', {
                 value: value.equipment,

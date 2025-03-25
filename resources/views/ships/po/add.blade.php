@@ -73,7 +73,7 @@
 
 
                             <div class="form-group col-6 mb-3">
-                                <label for="supplier_name">Supplier Email</label>
+                                <label for="supplier_name">Supplier Email <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control form-control-lg" id="email" name="email" autocomplete="off" onchange="removeInvalidClass(this)"  value="{{@$poData->email}}">
                                 <div class="invalid-feedback error" id="emailError"></div>
                             </div>
