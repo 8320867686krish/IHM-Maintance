@@ -83,7 +83,7 @@
                 <div class="card-header" id="headinginitial6">
                     <h5 class="mb-0">
                         <button class="btn btn-link collapsed  d-flex justify-content-between w-100" data-toggle="collapse" data-target="#collapsinitial6" aria-expanded="false" aria-controls="collapsinitial6">
-                            Supplement  to initial IHM Part
+                            Supplement to initial IHM Part
                             <span class="fas fa-angle-down mr-3"></span>
 
                         </button>
@@ -131,7 +131,7 @@
                     </div>
                 </div>
             </div>
-
+            @can('ships.edit')
             <div class="card">
                 <div class="card-header" id="headinginitial7">
                     <h5 class="mb-0">
@@ -142,17 +142,18 @@
                         </button>
                     </h5>
                 </div>
-                @can('ships.edit')
+
                 <div id="collapsinitial7" class="collapse" aria-labelledby="headinginitial7" data-parent="#accordion">
                     <div class="card-body">
-                   
+
 
                         <a href="#" class="btn btn-primary float-right mb-3 startAmended">Start Amendment </a>
-                    
+
                     </div>
                 </div>
-                @endif
             </div>
+            @endcan
+
 
 
         </div>
