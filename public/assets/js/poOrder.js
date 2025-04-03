@@ -716,7 +716,7 @@ $("#showTableTypeDiv").on("change", ".cloneTableTypeDiv input[type=checkbox].isI
        
        <div class="col-12 mb-2">
                        <div class="form-group input-label-group">
-                       <input type="text" name="hazmats[${divValue}][ihm_remarks]" id="remarks${divValue}" class="form-control" placeHolder="remarks">
+                       <input type="text" name="hazmats[${divValue}][ihm_remarks]" id="remarks${divValue}" class="form-control" placeHolder="">
                         <label for="">Remarks</label>
 
                        </div>
