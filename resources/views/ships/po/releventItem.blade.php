@@ -528,7 +528,8 @@
 
 																<div class="col-6 mb-2">
 																	<div class="form-group input-label-group">
-																		<input type="text" name="hazmats[{{$value['hazmat_id']}}][removal_remarks]" id="removal_remarks{{$value['hazmat_id']}}" class="form-control" placeHolder="Remarks" value="{{$value['removal_remarks']}}">
+																		<input type="text" name="hazmats[{{$value['hazmat_id']}}][removal_remarks]" id="removal_remarks{{$value['hazmat_id']}}" class="form-control" placeHolder="" value="{{$value['removal_remarks']}}">
+																		<label>Remarks</label>
 																	</div>
 																</div>
 
@@ -551,13 +552,14 @@
 															<div class="row   mb-1   recivedDocumentDetail{{$value['hazmat_id']}}">
 																<div class="col-8">
 																	<div class="form-group input-label-group mb-1">
-																		<input type="text" name="hazmats[{{$value['hazmat_id']}}][recived_document_comment]" id="recived_document_comment{{$value['hazmat_id']}}" class="form-control" placeHolder="Remarks" value="{{$value['recived_document_comment']}}">
+																		<input type="text" name="hazmats[{{$value['hazmat_id']}}][recived_document_comment]" id="recived_document_comment{{$value['hazmat_id']}}" class="form-control" placeHolder="" value="{{$value['recived_document_comment']}}">
+																		<label>Remarks</label>
 																	</div>
 																</div>
 																@if($value['isRecivedDoc'] == 'yes')
 																<div class="col-4">
 																	<div class="form-group input-label-group mb-1">
-																		<input type="date" name="hazmats[{{$value['hazmat_id']}}][recived_document_date]" id="recived_document_comment{{$value['hazmat_id']}}" class="form-control" placeHolder="Remarks" value="{{$value['recived_document_date']}}">
+																		<input type="date" name="hazmats[{{$value['hazmat_id']}}][recived_document_date]" id="recived_document_comment{{$value['hazmat_id']}}" class="form-control"  value="{{$value['recived_document_date']}}">
 																	</div>
 																</div>
 																@endif
