@@ -73,7 +73,7 @@ class POOrderController extends Controller
             foreach ($post['items'] as $key => $value) {
                 $value['ship_id'] = $post['ship_id'];
                 $value['po_order_id'] = $poOrder->id;
-                poOrderItem::updateOrCreate(['id' => $key,'po_order_id'=> $poOrder->id], $value);
+                poOrderItem::updateOrCreate(['id' => $key, 'po_order_id' => $poOrder->id], $value);
             }
         }
 
@@ -81,11 +81,11 @@ class POOrderController extends Controller
     }
     public function viewReleventItem($poiteam_id)
     {
-        $poItem = poOrderItem::with(['poOrder:id,po_no', 'poOrderItemsHazmets.hazmat','poOrderItemsHazmets.makeModel','poOrderItemsHazmets.emailHistory'])->find($poiteam_id);
+        $poItem = poOrderItem::with(['poOrder:id,po_no', 'poOrderItemsHazmets.hazmat', 'poOrderItemsHazmets.makeModel', 'poOrderItemsHazmets.emailHistory'])->find($poiteam_id);
 
         $equipments = MakeModel::selectRaw('MIN(id) as id, equipment')
-        ->groupBy('equipment')
-        ->get();
+            ->groupBy('equipment')
+            ->get();
         $backurl = 'ships/po-order/add/' . $poItem['ship_id'] . "/" . $poItem['po_order_id'];
         $table_type = Hazmat::select('table_type')->distinct()->pluck('table_type');
         $hazmats = [];
@@ -94,7 +94,7 @@ class POOrderController extends Controller
         foreach ($table_type as $type) {
             $hazmats[$type] = Hazmat::where('table_type', $type)->get(['id', 'name', 'table_type']);
         }
-        return view('ships.po.releventItem', compact('poItem', 'backurl', 'hazmats', 'hazmatIds','equipments'));
+        return view('ships.po.releventItem', compact('poItem', 'backurl', 'hazmats', 'hazmatIds', 'equipments'));
     }
     public function import(Request $request)
     {
@@ -176,7 +176,7 @@ class POOrderController extends Controller
                 ];
 
                 if ($poItemsCheck) {
-                    poOrderItem::where('id', $poItemsCheck->id)->where('po_order_id',$po_id)->update($orderItems);
+                    poOrderItem::where('id', $poItemsCheck->id)->where('po_order_id', $po_id)->update($orderItems);
                 } else {
                     poOrderItem::create($orderItems);
                 }
@@ -197,8 +197,8 @@ class POOrderController extends Controller
         $ship_id = Session::get('ship_id');
         $poOrders = poOrder::withCount(['poOrderItems'])->where('ship_id', $ship_id)->get();
 
-        $html = view('components.po-order-item',compact('poOrders'))->render();
-        return response()->json(['isStatus' => true, 'message' => 'Po Order Delete successfully','html'=>$html]);
+        $html = view('components.po-order-item', compact('poOrders'))->render();
+        return response()->json(['isStatus' => true, 'message' => 'Po Order Delete successfully', 'html' => $html]);
     }
     public function poItemsHazmatSave(Request $request)
     {
@@ -217,53 +217,51 @@ class POOrderController extends Controller
                 'po_order_id' => $post['po_order_id'],
                 'is_sent_email' => 0
             ];
-            if(@$post['suspected_hazmat_remove']){
+            if (@$post['suspected_hazmat_remove']) {
                 $deletedIds = explode(',', $post['suspected_hazmat_remove']); // This splits the string into an array
-                PoOrderItemsHazmats::whereIn('hazmat_id', $deletedIds)->where('po_order_item_id',$post['po_order_item_id'])->delete();
+                PoOrderItemsHazmats::whereIn('hazmat_id', $deletedIds)->where('po_order_item_id', $post['po_order_item_id'])->delete();
             }
-            if(@$post['suspected_hazmat']){
+            if (@$post['suspected_hazmat']) {
                 foreach ($post['hazmats'] as $key => $value) {
-                  
-                    
-                        if (@$value['isInstalled'] == 'no') {
-                            $value['isIHMUpdated'] = 'no';
-                        }
-                        $value['ship_id'] = $post['ship_id'];
-                        $value['po_order_id'] = $post['po_order_id'];
-                        $value['po_order_item_id'] = $post['po_order_item_id'];
-                        $value['hazmat_id'] = $key;
-                        $PoOrderItemsHazmat = PoOrderItemsHazmats::find($value['id']);
-                        $value['model_make_part_id'] = @$value['model_make_part_id'] ?? @$PoOrderItemsHazmat['model_make_part_id'];
-                        $value['doc1'] = @$value['doc1'] ?  $value['model_make_part_id'].'M':'' ;
-                        $value['doc2'] = @$value['doc2'] ?  $value['model_make_part_id'].'S':'' ;
-                        $sloats = [];
-        
-                        $poOrderItemHazmat =  PoOrderItemsHazmats::updateOrCreate(['id' => $value['id']], $value);
-                        $email_history_arry['po_order_item_hazmat_id'] = $poOrderItemHazmat->id;
-                        if(@$value['isRecivedDoc'] == 'yes'){
-                            emailHistory::where('po_order_item_hazmat_id',$poOrderItemHazmat->id)->where('is_sent_email',0)->delete();
-                        }
-                        if($poOrderItemHazmat->wasRecentlyCreated){
-                            if ($value['hazmat_type'] == 'Unknown') {
-                                // Example Usage
-                                $startDate = date('Y-m-d');  // Starting date (today's date)
-                                $daysToAdd = 1;
-                                $newDate = $this->addDaysToCurrentDate($startDate, $daysToAdd);
+
+
+                    if (@$value['isInstalled'] == 'no') {
+                        $value['isIHMUpdated'] = 'no';
+                    }
+                    $value['ship_id'] = $post['ship_id'];
+                    $value['po_order_id'] = $post['po_order_id'];
+                    $value['po_order_item_id'] = $post['po_order_item_id'];
+                    $value['hazmat_id'] = $key;
+                    $PoOrderItemsHazmat = PoOrderItemsHazmats::find($value['id']);
+                    $value['model_make_part_id'] = @$value['model_make_part_id'] ?? @$PoOrderItemsHazmat['model_make_part_id'];
+                    $value['doc1'] = @$value['doc1'] ?  $value['model_make_part_id'] . 'M' : '';
+                    $value['doc2'] = @$value['doc2'] ?  $value['model_make_part_id'] . 'S' : '';
+                    $sloats = [];
+
+                    $poOrderItemHazmat =  PoOrderItemsHazmats::updateOrCreate(['id' => $value['id']], $value);
+                    $email_history_arry['po_order_item_hazmat_id'] = $poOrderItemHazmat->id;
+                    if (@$value['isRecivedDoc'] == 'yes') {
+                        emailHistory::where('po_order_item_hazmat_id', $poOrderItemHazmat->id)->where('is_sent_email', 0)->delete();
+                    }
+                    if ($value['hazmat_type'] == 'Unknown') {
+                        // Example Usage
+                        $startDate = date('Y-m-d');  // Starting date (today's date)
+                        $daysToAdd = 1;
+                        $newDate = $this->addDaysToCurrentDate($startDate, $daysToAdd);
+                        $email_history_arry['start_date'] =    $newDate;
+                        $exist = emailHistory::where('po_order_item_id', $post['po_order_item_id'])->where('po_order_item_hazmat_id', $poOrderItemHazmat->id)->first();
+                        if (!$exist) {
+                            emailHistory::create($email_history_arry);
+
+                            for ($i = 0; $i <= 3; $i++) {
+                                $daysToAdd = 3;
+                                $newDate = $this->addDaysToCurrentDate($newDate, $daysToAdd);
                                 $email_history_arry['start_date'] =    $newDate;
                                 emailHistory::create($email_history_arry);
-        
-                                for ($i = 0; $i <= 3; $i++) {
-                                    $daysToAdd = 3;
-                                    $newDate = $this->addDaysToCurrentDate($newDate, $daysToAdd);
-                                    $email_history_arry['start_date'] =    $newDate;
-                                    emailHistory::create($email_history_arry);
-                                }
                             }
                         }
                     }
-                
-                
-                
+                }
             }
         }
         return response()->json(['isStatus' => true, 'message' => 'save successfully']);
@@ -279,9 +277,9 @@ class POOrderController extends Controller
     {
         try {
             $equipments = MakeModel::selectRaw('MIN(id) as id, equipment')
-            ->groupBy('equipment')
-            ->get();
-           
+                ->groupBy('equipment')
+                ->get();
+
             return response()->json(['isStatus' => true, 'message' => 'Equipment retrieved successfully.', 'equipments' => $equipments]);
         } catch (Throwable $th) {
             return response()->json(['error' => $th->getMessage()], 500);

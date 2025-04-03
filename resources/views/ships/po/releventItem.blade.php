@@ -74,7 +74,7 @@
 						<input type="hidden" name="po_order_item_id" id="po_order_item_id" value="{{@$poItem->id}}">
 						<input type="hidden" name="po_order_id" id="po_order_id" value="{{@$poItem->po_order_id}}">
 						<input type="hidden" name="po_no" id="po_no" value="{{@$poItem->poOrder->po_no}}">
-						<input type="text" name="suspected_hazmat_remove" id="suspected_hazmat_remove" value="">
+						<input type="hidden" name="suspected_hazmat_remove" id="suspected_hazmat_remove" value="">
 
 						<div class="row">
 							<div class="col-6 col-md-6 mb-2">
