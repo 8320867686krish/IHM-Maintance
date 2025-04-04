@@ -29,7 +29,7 @@
                             </div>
 
 
-                          
+
                             <div class="form-group col-6 mb-3">
                                 <label for="machinery">Machinery</label>
                                 <input type="text" class="form-control form-control-lg" id="machinery" name="machinery" autocomplete="off" onchange="removeInvalidClass(this)" value="{{@$poData->machinery}}">
@@ -74,13 +74,13 @@
 
                             <div class="form-group col-6 mb-3">
                                 <label for="supplier_name">Supplier Email <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control form-control-lg" id="email" name="email" autocomplete="off" onchange="removeInvalidClass(this)"  value="{{@$poData->email}}">
+                                <input type="text" class="form-control form-control-lg" id="email" name="email" autocomplete="off" onchange="removeInvalidClass(this)" value="{{@$poData->email}}">
                                 <div class="invalid-feedback error" id="emailError"></div>
                             </div>
 
                             <div class="form-group col-6 mb-3">
                                 <label for="onboard_reciving_date">Onboard reciving date</label>
-                                <input type="date" class="form-control form-control-lg" id="onboard_reciving_date" name="onboard_reciving_date" autocomplete="off" onchange="removeInvalidClass(this)"  value="{{@$poData->onboard_reciving_date}}">
+                                <input type="date" class="form-control form-control-lg" id="onboard_reciving_date" name="onboard_reciving_date" autocomplete="off" onchange="removeInvalidClass(this)" value="{{@$poData->onboard_reciving_date}}">
                                 <div class="invalid-feedback error" id="onboard_reciving_dateError"></div>
                             </div>
 
@@ -173,7 +173,7 @@
                                     <i class="fas fa-trash-alt text-danger mt-3 remove-item-btn" title="Delete"></i>
                                     @if($item->type_category == 'Relevant')
                                     <a href="{{ route('po.relevent', $item->id) }}" title="Edit">
-                                    <i class="fas fa-edit text-primary ml-2 view-item-btn"></i></a>
+                                        <i class="fas fa-edit text-primary ml-2 view-item-btn"></i></a>
                                     @endif
                                 </div>
 
@@ -199,12 +199,70 @@
                         </div>
                     </div>
                 </form>
+
+                <hr />
+                <div class="card-body mb-4">
+                    <div class="row">
+                        <div class="col-6">
+                            <h4>Email History</h4>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <button class="btn btn-primary float-right" type="button" id="sendtovendor"><i class="fas fa-paper-plane"></i> &nbsp;&nbsp;Emil To Vendor</button>
+                            </div>
+                        </div>
+                        
+                    
+                    <div class=" col-12">
+                        <div class="table-responsive mt-2 mb-4">
+                            <table class="table table-bordered">
+
+                                <thead>
+                                    <tr>
+                                        <th>Start Date</th>
+                                        <th>Reminder Sent</th>
+                                        <th>Company Email</th>
+                                        <th>Supplier Email</th>
+                                        <th>Accounting Email</th>
+
+                                    </tr>
+
+                                </thead>
+                                <tbody>
+                                    @if(count($poData->emailHistory) > 0)
+                                    @foreach($poData->emailHistory as $history)
+                                    <tr>
+
+                                        <td>{{ \Carbon\Carbon::parse($history['start_date'])->format('d/m/y') }}</td>
+                                        <td>{{$history['is_sent_email'] == 0 ? 'Pending' : 'Sent'}}</td>
+                                        <td>{{$history['company_email']}}</td>
+                                        <td>{{$history['suppliear_email']}}</td>
+
+                                        <td>{{$history['accounting_email']}}</td>
+
+                                    </tr>
+                                    @endforeach
+                                    @else
+                                    <tr>
+                                        <td colspan="5" class="text-center">No Recored</td>
+                                    </tr>
+
+                                    @endif
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
 
 </div>
 @endsection
+@include('ships.po.modals.sendVendorMail')
+
 @push('js')
 <script src="{{ asset('assets/vendor/bootstrap-select/js/bootstrap-select.js') }}"></script>
 

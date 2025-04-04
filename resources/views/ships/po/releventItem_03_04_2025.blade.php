@@ -79,44 +79,48 @@
 						<div class="row">
 							<div class="col-6 col-md-6 mb-2">
 								<div class="form-group input-label-group">
-									<input type="text" id="description" name="description" class="form-control" value="{{$poItem['description']}}" placeholder="">
 									<label for="equipment">Description</label>
-
+									<input type="text" id="description" name="description" class="form-control" value="{{$poItem->description}}">
 								</div>
 							</div>
 
 							<div class="col-6 col-md-6 mb-2">
 								<div class="form-group input-label-group">
-									<input type="text" id="impa_no" name="impa_no" class="form-control" value="{{$poItem->impa_no}}" placeholder="">
-									<label>IMPA No.(if available)</label>
-
+									<label for="equipment">IMPA No.(if available)</label>
+									<input type="text" id="impa_no" name="impa_no" class="form-control" value="{{$poItem->impa_no}}">
 								</div>
 							</div>
 
 							<div class="col-6 col-md-6 mb-2">
 								<div class="form-group input-label-group">
-									<input type="text" id="part_no" name="part_no" class="form-control" value="{{$poItem->part_no}}" placeholder="">
-									<label>Part No</label>
-
+									<label for="equipment">Part No</label>
+									<input type="text" id="part_no" name="part_no" class="form-control" value="{{$poItem->part_no}}">
 								</div>
 							</div>
 							<div class="col-6 col-md-6 mb-2">
 								<div class="form-group input-label-group">
-									<input type="number" id="qty" name="qty" class="form-control" value="{{$poItem->qty}}" placeholder="">
 									<label for="Qty">Qty</label>
-
+									<input type="number" id="qty" name="qty"
+										class="form-control" value="{{$poItem->qty}}">
 								</div>
 							</div>
 
 							<div class="col-12 col-md-6 mb-2">
 								<div class="form-group input-label-group">
-									<input type="text" id="unit" name="unit" class="form-control" value="{{$poItem->unit}}" placeholder="">
 									<label for="unit">Unit</label>
-
+									<input type="text" id="unit" name="unit" class="form-control" value="{{$poItem->unit}}">
 								</div>
 							</div>
 
-							
+							<div class="col-12 col-md-6 mb-2">
+								<div class="form-group input-label-group">
+									<label for="type_category">Type</label>
+									<select class="form-control form-control-lg" name="type_category">
+										<option value="Relevant">Relevant</option>
+										<option value="Non relevant">Non relevant</option>
+									</select>
+								</div>
+							</div>
 
 							<div class="col-12 col-md-6 mb-2">
 								<div class="form-group input-label-group">
@@ -350,16 +354,6 @@
 															@endif
 															@if($value->isIHMUpdated == 'yes' && $value->isArrived == 'yes')
 															<div class="row col-12 mb-2 ihmItemDetails{{$value['hazmat_id']}}">
-															<div class="col-4 mb-2">
-																	<div class="form-group input-label-group">
-																		<select name="hazmats[{{$value['hazmat_id']}}][ihm_table_type]" id="ihm_table_type{{$value['hazmat_id']}}" class="form-control">
-																			<option value="">Select Table</option>
-																			<option value="i-1" {{ ($value['ihm_table_type'] ?? '') == 'i-1' ? 'selected' : '' }}>IHMM Part1 i-1</option>
-																			<option value="i-2" {{ ($value['ihm_table_type'] ?? '') == 'i-2' ? 'selected' : '' }}>IHMM Part1 i-2</option>
-																			<option value="i-3" {{ ($value['ihm_table_type'] ?? '') == 'i-3' ? 'selected' : '' }}>IHMM Part1 i-3</option>
-																		</select>
-																	</div>
-																</div>
 																<div class="col-4 mb-2">
 																	<div class="form-group input-label-group input-label-group">
 																		<input type="text" name="hazmats[{{$value['hazmat_id']}}][ihm_location]" id="location{{$value['hazmat_id']}}" class="form-control" placeholder="" value="{{$value->ihm_location}}">
@@ -401,7 +395,16 @@
 
 																	</div>
 																</div>
-																
+																<div class="col-4 mb-2">
+																	<div class="form-group input-label-group">
+																		<select name="hazmats[{{$value['hazmat_id']}}][ihm_table_type]" id="ihm_table_type{{$value['hazmat_id']}}" class="form-control">
+																			<option value="">Select Table</option>
+																			<option value="i-1" {{ ($value['ihm_table_type'] ?? '') == 'i-1' ? 'selected' : '' }}>IHM Part1 i-1</option>
+																			<option value="i-2" {{ ($value['ihm_table_type'] ?? '') == 'i-2' ? 'selected' : '' }}>IHM Part1 i-2</option>
+																			<option value="i-3" {{ ($value['ihm_table_type'] ?? '') == 'i-3' ? 'selected' : '' }}>IHM Part1 i-3</option>
+																		</select>
+																	</div>
+																</div>
 																@else
 																<div class="col-4 mb-2">
 																	<div class="form-group input-label-group">
@@ -534,7 +537,73 @@
 															@endif
 
 															@endif
-															
+															@if($value->hazmat_type === 'Unknown')
+															<div class="row  mb-2  recivedDoc{{$value['hazmat_id']}}">
+																<div class="col-12 col-md-12 col-lg-12 ">
+																	<h5>Recived Document?</h5>
+																	<label class="custom-control custom-radio custom-control-inline">
+																		<input type="radio" id="isRecivedDoc{{$value['hazmat_id']}}" name="hazmats[{{$value['hazmat_id']}}][isRecivedDoc]" value='yes' class="custom-control-input isRecivedDocChoice" data-tab="{{$hazmetTable}}" data-isRecivedDoc="{{$value['hazmat_id']}}" {{ $value->isRecivedDoc == 'yes' ? 'checked' : '' }}><span class="custom-control-label">Yes</span>
+																	</label>
+																	<label class="custom-control custom-radio custom-control-inline">
+																		<input type="radio" id="isRecivedDoc{{$value['hazmat_id']}}" name="hazmats[{{$value['hazmat_id']}}][isRecivedDoc]" value="no" class="custom-control-input isRecivedDocChoice" data-tab="{{ $hazmetTable }}" data-isRecivedDoc="{{$value['hazmat_id']}}" {{ $value->isRecivedDoc == 'no' ? 'checked' : '' }}><span class="custom-control-label">No</span>
+																	</label>
+																</div>
+															</div>
+															<div class="row   mb-1   recivedDocumentDetail{{$value['hazmat_id']}}">
+																<div class="col-8">
+																	<div class="form-group input-label-group mb-1">
+																		<input type="text" name="hazmats[{{$value['hazmat_id']}}][recived_document_comment]" id="recived_document_comment{{$value['hazmat_id']}}" class="form-control" placeHolder="" value="{{$value['recived_document_comment']}}">
+																		<label>Remarks</label>
+																	</div>
+																</div>
+																@if($value['isRecivedDoc'] == 'yes')
+																<div class="col-4">
+																	<div class="form-group input-label-group mb-1">
+																		<input type="date" name="hazmats[{{$value['hazmat_id']}}][recived_document_date]" id="recived_document_comment{{$value['hazmat_id']}}" class="form-control"  value="{{$value['recived_document_date']}}">
+																	</div>
+																</div>
+																@endif
+															</div>
+															<div class="table-responsive mt-2 mb-4">
+																<h6>Emil History</h6>
+																<table class="table table-bordered">
+
+																	<thead>
+																		<tr>
+																			<th>Start Date</th>
+																			<th>Reminder Sent</th>
+																			<th>Company Email</th>
+																			<th>Supplier Email</th>
+																			<th>Accounting Email</th>
+
+																		</tr>
+
+																	</thead>
+																	<tbody>
+																		@if(count($value->emailHistory) > 0)
+																		@foreach($value->emailHistory as $history)
+																		<tr>
+
+																			<td>{{ \Carbon\Carbon::parse($history['start_date'])->format('d/m/y') }}</td>
+																			<td>{{$history['is_sent_email'] == 0 ? 'Pending' : 'Sent'}}</td>
+																			<td>{{$history['company_email']}}</td>
+																			<td>{{$history['suppliear_email']}}</td>
+
+																			<td>{{$history['accounting_email']}}</td>
+
+																		</tr>
+																		@endforeach
+																		@else
+																		<tr>
+																			<td colspan="5" class="text-center">No Recored</td>
+																		</tr>
+
+																		@endif
+																	</tbody>
+																</table>
+															</div>
+
+															@endif
 
 														</div>
 													</div>

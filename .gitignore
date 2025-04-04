@@ -22,3 +22,4 @@ yarn-error.log
 /public/assets/tet.pdf
 public/training/summary_1.pdf
 composer.lock
+storage/debugbar/

@@ -44,7 +44,8 @@ class POOrderController extends Controller
             $head_title = "Add";
         }
         $backurl = "ship/view" . "/" . $ship_id . "#po-records";
-        $poData = poOrder::with('poOrderItems','emailHistory')->find($po_order_id);
+        $poData = poOrder::with('poOrderItems')->find($po_order_id);
+
         return view('ships.po.add', compact('head_title', 'ship_id', 'poData', 'backurl'));
     }
 
@@ -80,7 +81,7 @@ class POOrderController extends Controller
     }
     public function viewReleventItem($poiteam_id)
     {
-        $poItem = poOrderItem::with(['poOrder:id,po_no', 'poOrderItemsHazmets.hazmat', 'poOrderItemsHazmets.makeModel', 'poOrderItemsHazmets'])->find($poiteam_id);
+        $poItem = poOrderItem::with(['poOrder:id,po_no', 'poOrderItemsHazmets.hazmat', 'poOrderItemsHazmets.makeModel', 'poOrderItemsHazmets.emailHistory'])->find($poiteam_id);
 
         $equipments = MakeModel::selectRaw('MIN(id) as id, equipment')
             ->groupBy('equipment')
@@ -238,8 +239,28 @@ class POOrderController extends Controller
                     $sloats = [];
 
                     $poOrderItemHazmat =  PoOrderItemsHazmats::updateOrCreate(['id' => $value['id']], $value);
-                   
-                  
+                    $email_history_arry['po_order_item_hazmat_id'] = $poOrderItemHazmat->id;
+                    if (@$value['isRecivedDoc'] == 'yes') {
+                        emailHistory::where('po_order_item_hazmat_id', $poOrderItemHazmat->id)->where('is_sent_email', 0)->delete();
+                    }
+                    if ($value['hazmat_type'] == 'Unknown') {
+                        // Example Usage
+                        $startDate = date('Y-m-d');  // Starting date (today's date)
+                        $daysToAdd = 1;
+                        $newDate = $this->addDaysToCurrentDate($startDate, $daysToAdd);
+                        $email_history_arry['start_date'] =    $newDate;
+                        $exist = emailHistory::where('po_order_item_id', $post['po_order_item_id'])->where('po_order_item_hazmat_id', $poOrderItemHazmat->id)->first();
+                        if (!$exist) {
+                            emailHistory::create($email_history_arry);
+
+                            for ($i = 0; $i <= 3; $i++) {
+                                $daysToAdd = 3;
+                                $newDate = $this->addDaysToCurrentDate($newDate, $daysToAdd);
+                                $email_history_arry['start_date'] =    $newDate;
+                                emailHistory::create($email_history_arry);
+                            }
+                        }
+                    }
                 }
             }
         }
