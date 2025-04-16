@@ -335,7 +335,7 @@ class POOrderController extends Controller
         $headers .= "MIME-Version: 1.0\r\n";
         $headers .= "Content-type: text/plain; charset=UTF-8\r\n";
         $headers .= "X-Mailer: PHP/" . phpversion();
-        SendReminderMailJob::dispatch($to, $subject, $message, $headers);
+        SendReminderMailJob::dispatchSync($to, $subject, $message, $headers);
         return response()->json(['isStatus' => true, 'message' => 'sent email successfully.']);
     }
     public function poOrderSample()
