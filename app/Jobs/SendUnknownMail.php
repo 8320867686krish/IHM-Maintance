@@ -38,7 +38,7 @@ class SendUnknownMail implements ShouldQueue
                     ->send(new UnknownMail($emildata));
 
                 // Update the email status after successful sending
-                $value->update(['is_sent_email' => 1]);
+              //  $value->update(['is_sent_email' => 1]);
 
                 Log::info("Email sent to: " . $value->suppliear_email);
             } catch (\Exception $e) {

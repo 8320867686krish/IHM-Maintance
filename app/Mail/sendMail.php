@@ -8,22 +8,25 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Mail\Mailables\Address; // <-- Make sure this is here
+use Illuminate\Mail\Mailables\Attachment;
+use Illuminate\Support\Facades\File;
 
 class sendMail extends Mailable
 {
     use Queueable, SerializesModels;
     public $mailData;
 
+    public $fromAddress;
 
     /**
      * Create a new message instance.
      */
-    public function __construct($mailData)
+    public function __construct($mailData, $fromAddress = null)
     {
         //
         $this->mailData = $mailData;
-
-
+        $this->fromAddress = $fromAddress;
     }
 
     /**
@@ -31,10 +34,16 @@ class sendMail extends Mailable
      */
     public function envelope(): Envelope
     {
+        $fromEmail = $this->fromAddress['email'];
+        $fromName = $this->fromAddress['name'];
         return new Envelope(
+            from: new Address('no-reply@example.com',$fromName),
+
+            replyTo: [new Address($fromEmail, $fromName)],
             subject: $this->mailData['title'],
         );
     }
+
 
     /**
      * Get the message content definition.
@@ -53,6 +62,28 @@ class sendMail extends Mailable
      */
     public function attachments(): array
     {
-        return [];
+
+        if ($this->mailData['attachments']) {
+            return collect($this->mailData['attachments'])
+                ->map(function ($filePath) {
+                    return Attachment::fromPath($filePath);
+                })
+                ->toArray();
+            $this->deleteAttachments();
+        } else {
+            return [];
+        }
+    }
+    public function deleteAttachments()
+    {
+        // Check if attachments exist and remove them
+        if (!empty($this->mailData['attachments'])) {
+            foreach ($this->mailData['attachments'] as $filePath) {
+                // Check if the file exists before deleting
+                if (File::exists($filePath)) {
+                    File::delete($filePath); // Remove the file
+                }
+            }
+        }
     }
 }

@@ -199,76 +199,93 @@
                         </div>
                     </div>
                 </form>
-
+                @if(@$poData->id)
                 <hr />
                 <div class="card-body mb-4">
                     <div class="row">
                         <div class="col-6">
                             <h4>Email History</h4>
                         </div>
+                        @if($currentUserRoleLevel == 2)
                         <div class="col-6">
                             <div class="form-group">
                                 <button class="btn btn-primary float-right" type="button" id="sendtovendor"><i class="fas fa-paper-plane"></i> &nbsp;&nbsp;Emil To Vendor</button>
                             </div>
                         </div>
-                        
-                    
-                    <div class=" col-12">
-                        <div class="table-responsive mt-2 mb-4">
-                            <table class="table table-bordered">
+                        @endif
 
-                                <thead>
-                                    <tr>
-                                        <th>Start Date</th>
-                                        <th>Reminder Sent</th>
-                                        <th>Company Email</th>
-                                        <th>Supplier Email</th>
-                                        <th>Accounting Email</th>
 
-                                    </tr>
+                        <div class=" col-12">
+                            <div class="table-responsive mt-2 mb-4">
+                                <table class="table table-bordered">
 
-                                </thead>
-                                <tbody>
-                                    @if(count($poData->emailHistory) > 0)
-                                    @foreach($poData->emailHistory as $history)
-                                    <tr>
+                                    <thead>
+                                        <tr>
+                                            <th>From Email</th>
+                                            <th>To Email(Supplier Email)</th>
+                                            <th>CC Email(Company Email)</th>
+                                            <th>CC Email (Accounting Email)</th>
 
-                                        <td>{{ \Carbon\Carbon::parse($history['start_date'])->format('d/m/y') }}</td>
-                                        <td>{{$history['is_sent_email'] == 0 ? 'Pending' : 'Sent'}}</td>
-                                        <td>{{$history['company_email']}}</td>
+                                        </tr>
+
+                                    </thead>
+                                    <tbody>
+                                        @if(@$poData->emailHistory)
+                                        @foreach($poData->emailHistory as $history)
+                                        <tr>
+                                        <td>{{$history['from_email']}}</td>
                                         <td>{{$history['suppliear_email']}}</td>
-
+                                        <td>{{$history['company_email']}}</td>
                                         <td>{{$history['accounting_email']}}</td>
 
-                                    </tr>
-                                    @endforeach
-                                    @else
-                                    <tr>
-                                        <td colspan="5" class="text-center">No Recored</td>
-                                    </tr>
+                                        </tr>
+                                        @endforeach
+                                        @else
+                                        <tr>
+                                            <td colspan="3" class="text-center">No Recored</td>
+                                        </tr>
 
-                                    @endif
-                                </tbody>
-                            </table>
+                                        @endif
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
-                    </div>
                 </div>
+                @endif
 
             </div>
         </div>
     </div>
 
 </div>
+
+
 @endsection
 @include('ships.po.modals.sendVendorMail')
 
 @push('js')
-<script src="{{ asset('assets/vendor/bootstrap-select/js/bootstrap-select.js') }}"></script>
-
-<script src="{{ asset('assets/js/poOrder.js') }}"></script>
+<script type="text/javascript"
+    src="https://cdn.jsdelivr.net/npm/froala-editor@latest/js/froala_editor.pkgd.min.js"></script>
 <script>
     var poItemGrid = "{{ url('ship/view') }}/{{ $ship_id }}#po-records"
     var itemIndex = "{{ isset($poData->poOrderItems) ? count($poData->poOrderItems) : 0 }}";
+    var editorInstance;
+
+    document.addEventListener('DOMContentLoaded', function() {
+        editorInstance = new FroalaEditor('#email_body', {
+            events: {
+                'initialized': function() {
+                    console.log("Froala initialized");
+                }
+            }
+        });
+    });
+
+   
 </script>
+<script src="{{ asset('assets/vendor/bootstrap-select/js/bootstrap-select.js') }}"></script>
+
+<script src="{{ asset('assets/js/poOrder.js') }}"></script>
+
 @endpush

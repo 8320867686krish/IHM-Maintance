@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exports\POExport;
 use App\Http\Requests\POrderRequest;
+use App\Jobs\SendReminderMailJob;
 use App\Mail\ExampleMail;
 use App\Mail\sendMail;
 use App\Models\emailHistory;
@@ -16,6 +17,7 @@ use App\Models\Ship;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Maatwebsite\Excel\Facades\Excel;
@@ -26,26 +28,19 @@ class POOrderController extends Controller
     //
     public function add($ship_id, $po_order_id = null)
     {
-        $data = array('name' => "Our Code World");
-        // Path or name to the blade template to be rendered
-        $template_path = 'email.example';
-
-
-
-        // Mail::send(['text'=> $template_path ], $data, function($message) {
-        //     // Set the receiver and subject of the mail.
-        //     $message->to('krishna.patel628@gmail.com', 'krishna')->subject('Laravel First Mail');
-        //     // Set the sender
-        //     $message->from('shopify@meetanshi.email','Our Code World');
-        // });
+        $ship = Ship::with('client:id,name')->find($ship_id);
+        $user = Auth::user();
+        $currentUserRoleLevel = $user->roles->first()->level;
+        $client_name = $ship['client']['name'];
         if (@$po_order_id) {
             $head_title = "View";
         } else {
             $head_title = "Add";
         }
         $backurl = "ship/view" . "/" . $ship_id . "#po-records";
-        $poData = poOrder::with('poOrderItems','emailHistory')->find($po_order_id);
-        return view('ships.po.add', compact('head_title', 'ship_id', 'poData', 'backurl'));
+        $poData = poOrder::with('poOrderItems', 'emailHistory')->find($po_order_id);
+
+        return view('ships.po.add', compact('head_title', 'ship_id', 'poData', 'backurl', 'client_name', 'currentUserRoleLevel'));
     }
 
     public function store(POrderRequest $request)
@@ -214,7 +209,6 @@ class POOrderController extends Controller
                 'ship_id' =>  $post['ship_id'],
                 'po_order_item_id' => $post['po_order_item_id'],
                 'po_order_id' => $post['po_order_id'],
-                'is_sent_email' => 0
             ];
             if (@$post['suspected_hazmat_remove']) {
                 $deletedIds = explode(',', $post['suspected_hazmat_remove']); // This splits the string into an array
@@ -238,8 +232,6 @@ class POOrderController extends Controller
                     $sloats = [];
 
                     $poOrderItemHazmat =  PoOrderItemsHazmats::updateOrCreate(['id' => $value['id']], $value);
-                   
-                  
                 }
             }
         }
@@ -303,14 +295,45 @@ class POOrderController extends Controller
     public function sendMail(Request $request)
     {
         $data = $request->input();
-        $shipsData = Ship::find($data['shipId']);
-        $clientCompany = User::select('email')->find($shipsData['client_user_id']);
-        $shipmail = User::select('email')->find($shipsData['user_id']);
-        $supplier_email = poOrder::select('email')->find($data['order_id']);
-        $mailData = ['title' => $data['email_subject'], 'body' => $data['email_body']];
-        Mail::to($clientCompany['email'])
-            ->cc([$shipmail['email'], $supplier_email['email']])
-            ->queue(new sendMail($mailData));
+        $shipsData = Ship::with(['client.userDetail', 'hazmatComapny:id,email,name'])->find($data['shipId']);
+        $accounting_team_email = $shipsData['client']['accounting_team_email'];
+        $client_company_email = $shipsData['client']['userDetail']['email'];
+
+        $from_email = $shipsData['hazmatComapny']['email'];
+        $vendor = poOrder::select('email')->find($data['order_id']);
+        $to = $vendor['email'];
+
+        $from = [
+            'email' => $from_email,
+            'name' => $shipsData['hazmatComapny']['name']
+        ];
+        $attachments = [];
+        if ($request->hasFile('attachments.*')) {
+            foreach ($request->file('attachments') as $file) {
+                $path = $file->store('attachments');
+                $fullPath = storage_path('app/' . $path);
+                $attachments[] = $fullPath;
+            }
+        }
+        $email_history_arry = [
+            'suppliear_email' =>  $to,
+            'company_email' =>  $client_company_email,
+            'accounting_email' =>  $accounting_team_email,
+            'from_email' => $from_email,
+            'ship_id' =>  $data['shipId'],
+            'po_order_id' => $data['order_id'],
+        ];
+        emailHistory::create($email_history_arry);
+        $mailData = ['title' => $data['email_subject'], 'body' => $data['email_body'], 'attachments' => $attachments];
+
+        $to = $to;
+        $subject = $data['email_subject'];
+        $message = "First line of text\nSecond line of text";
+
+        $headers = "From: samjay.meetanshi@gmail.com\r\n";
+        $headers .= "Reply-To: meetanshi.com\r\n";
+        $headers .= "X-Mailer: PHP/" . phpversion();
+        SendReminderMailJob::dispatch($to, $subject, $message, $headers);
         return response()->json(['isStatus' => true, 'message' => 'sent email successfully.']);
     }
     public function poOrderSample()

@@ -13,9 +13,8 @@ class emailHistory extends Model
         'po_order_id',
         'po_order_item_id',
         'po_order_item_hazmat_id',
-        'start_date',
-        'is_sent_email',
         'suppliear_email',
+        'from_email',
         'company_email',
         'accounting_email',
     ];

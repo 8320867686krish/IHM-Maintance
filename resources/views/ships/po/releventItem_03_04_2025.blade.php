@@ -570,8 +570,6 @@
 
 																	<thead>
 																		<tr>
-																			<th>Start Date</th>
-																			<th>Reminder Sent</th>
 																			<th>Company Email</th>
 																			<th>Supplier Email</th>
 																			<th>Accounting Email</th>
@@ -584,8 +582,6 @@
 																		@foreach($value->emailHistory as $history)
 																		<tr>
 
-																			<td>{{ \Carbon\Carbon::parse($history['start_date'])->format('d/m/y') }}</td>
-																			<td>{{$history['is_sent_email'] == 0 ? 'Pending' : 'Sent'}}</td>
 																			<td>{{$history['company_email']}}</td>
 																			<td>{{$history['suppliear_email']}}</td>
 

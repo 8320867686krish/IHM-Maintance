@@ -215,7 +215,6 @@ class POOrderController extends Controller
                 'ship_id' =>  $post['ship_id'],
                 'po_order_item_id' => $post['po_order_item_id'],
                 'po_order_id' => $post['po_order_id'],
-                'is_sent_email' => 0
             ];
             if (@$post['suspected_hazmat_remove']) {
                 $deletedIds = explode(',', $post['suspected_hazmat_remove']); // This splits the string into an array
@@ -240,9 +239,7 @@ class POOrderController extends Controller
 
                     $poOrderItemHazmat =  PoOrderItemsHazmats::updateOrCreate(['id' => $value['id']], $value);
                     $email_history_arry['po_order_item_hazmat_id'] = $poOrderItemHazmat->id;
-                    if (@$value['isRecivedDoc'] == 'yes') {
-                        emailHistory::where('po_order_item_hazmat_id', $poOrderItemHazmat->id)->where('is_sent_email', 0)->delete();
-                    }
+                   
                     if ($value['hazmat_type'] == 'Unknown') {
                         // Example Usage
                         $startDate = date('Y-m-d');  // Starting date (today's date)

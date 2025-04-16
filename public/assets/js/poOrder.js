@@ -1,24 +1,25 @@
 $(document).ready(function () {
-    $("#sendtovendor").click(function () {
-        var po_id = $("#po_id").val();
+    $("#sendtovendor").click(function() {
         let index = 1;
-
+        var po_id = $("#po_id").val();
         var po_no = $("#po_no").val();
         var po_date = $("#po_date").val();
+
         let content = '';
-        content += `PO NO: ${po_no}\n`;
-        content += `PO Date: ${po_date}\n`;
 
-        content += `Items:\n`;
-        document.querySelectorAll('.new-item-row').forEach(function (row) {
+        // Add PO details
+        content += `PO NO: ${po_no}<br>`;
+        content += `PO Date: ${po_date}<br>`;
 
-            const itemDataRaw = row.getAttribute('data-item'); // or row.dataset.item
-            
+        content += `Items:<br><ul style="padding-left:15px">`;
+        document.querySelectorAll('.new-item-row').forEach(function(row) {
+            const itemDataRaw = row.getAttribute('data-item');
             if (itemDataRaw) {
                 try {
                     const item = JSON.parse(itemDataRaw);
+                 
                     if (item.type_category.toLowerCase() === 'relevant') {
-                        content += `Item ${index} : ${item.description} (${item.part_no})\n`;
+                        content += `<li>Item ${index}: ${item.description} (Part No: ${item.part_no})</li>`;
                         index++;
                     }
                 } catch (e) {
@@ -27,12 +28,22 @@ $(document).ready(function () {
             } else {
                 console.warn('data-item is missing or empty for this row:', row);
             }
-
         });
-        console.log(content);
-        $("#email_body").text(content);
+
+        content += `</ul>`; // Close the unordered list
+
+        // Insert the content with HTML tags
+
+
+        // Show the modal
         $("#sendVendorMail").modal('show');
+        $('#sendVendorMail').on('shown.bs.modal', function() {
+            if (editorInstance) {
+                editorInstance.html.set(content);
+            }
+        });
     });
+    
     $("#showTableTypeDiv").on("click", ".cloneTableTypeDiv .sendmail", function (e) {
         e.preventDefault();
         var hazmatId = $(this).attr('data-id');
@@ -48,20 +59,23 @@ $(document).ready(function () {
         $('#relevantModal').modal('show');
 
     });
-    $("#sendEmailForm").on('submit', function (e) {
+    $("#sendEmail").on('click', function (e) {
         e.preventDefault();
-        let formData = new FormData(this);
+        let formData = new FormData($("#sendEmailForm")[0]);
+
         $.ajax({
-            url: $(this).attr('action'),
+            url: $("#sendEmailForm").attr('action'),
             type: 'POST',
             data: formData,
-            dataType: 'json',
             contentType: false,
             processData: false,
             success: function (response) {
                 if (response.isStatus) {
                     successMsg(response.message);
-                    $('#relevantModal').modal('hide');
+                    let form = document.getElementById('sendEmailForm');
+                    form.reset()
+                    $('#sendVendorMail').modal('hide');
+                    location.reload();
 
                 } else {
                     errorMsg(response.message);
