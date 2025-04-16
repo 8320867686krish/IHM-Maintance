@@ -331,7 +331,6 @@ class POOrderController extends Controller
         $message = "First line of text\nSecond line of text";
 
         $headers = "From: {$from_email}\r\n";
-        $headers .= "Reply-To: {$from_email}\r\n";
         $headers .= "MIME-Version: 1.0\r\n";
         $headers .= "Content-type: text/plain; charset=UTF-8\r\n";
         $headers .= "X-Mailer: PHP/" . phpversion();
