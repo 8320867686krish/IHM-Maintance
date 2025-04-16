@@ -330,8 +330,8 @@ class POOrderController extends Controller
         $subject = $data['email_subject'];
         $message = "First line of text\nSecond line of text";
 
-        $headers = "From: samjay.meetanshi@gmail.com\r\n";
-        $headers .= "Reply-To: meetanshi.com\r\n";
+        $headers = "From: {$from_email}\r\n";
+        $headers .= "Reply-To: {$from_email}\r\n";
         $headers .= "X-Mailer: PHP/" . phpversion();
         SendReminderMailJob::dispatch($to, $subject, $message, $headers);
         return response()->json(['isStatus' => true, 'message' => 'sent email successfully.']);
