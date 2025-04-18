@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuditRecordssController;
 use App\Http\Controllers\ClientCompanyController;
 use App\Http\Controllers\dashobardController;
 use App\Http\Controllers\DesignatedPersonController;
@@ -84,7 +85,15 @@ Route::middleware('auth')->group(function () {
             Route::get('roles/{id}/delete', 'destroy')->name('roles.delete')->middleware('can:roles.remove');
         });
     });
-
+    Route::middleware('can:auditrecords')->group(function () {
+        Route::controller(AuditRecordssController::class)->group(function () {
+            Route::get('auditrecords', 'index')->name('auditrecords')->middleware('can:auditrecords');
+            Route::get('auditrecords/add', 'create')->name('auditrecords.add')->middleware('can:auditrecords.add');
+            Route::post('auditrecords', 'store')->name('auditrecords.store');
+            Route::get('auditrecords/{id}/edit', 'edit')->name('auditrecords.edit')->middleware('can:auditrecords.edit');
+            Route::get('auditrecords/{id}/delete', 'destroy')->name('auditrecords.delete')->middleware('can:auditrecords.remove');
+        });
+    });
     Route::middleware('can:hazmatCompany')->group(function () {
         Route::controller(HazmatCompanyController::class)->group(function () {
             Route::get('hazmatCompany', 'index')->name('hazmatCompany')->middleware('can:hazmatCompany');

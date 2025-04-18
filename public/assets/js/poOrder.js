@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    $("#sendtovendor").click(function() {
+    $("#sendtovendor").click(function () {
         let index = 1;
         var po_id = $("#po_id").val();
         var po_no = $("#po_no").val();
@@ -12,12 +12,12 @@ $(document).ready(function () {
         content += `PO Date: ${po_date}<br>`;
 
         content += `Items:<br><ul style="padding-left:15px">`;
-        document.querySelectorAll('.new-item-row').forEach(function(row) {
+        document.querySelectorAll('.new-item-row').forEach(function (row) {
             const itemDataRaw = row.getAttribute('data-item');
             if (itemDataRaw) {
                 try {
                     const item = JSON.parse(itemDataRaw);
-                 
+
                     if (item.type_category.toLowerCase() === 'relevant') {
                         content += `<li>Item ${index}: ${item.description} (Part No: ${item.part_no})</li>`;
                         index++;
@@ -37,13 +37,13 @@ $(document).ready(function () {
 
         // Show the modal
         $("#sendVendorMail").modal('show');
-        $('#sendVendorMail').on('shown.bs.modal', function() {
+        $('#sendVendorMail').on('shown.bs.modal', function () {
             if (editorInstance) {
                 editorInstance.html.set(content);
             }
         });
     });
-    
+
     $("#showTableTypeDiv").on("click", ".cloneTableTypeDiv .sendmail", function (e) {
         e.preventDefault();
         var hazmatId = $(this).attr('data-id');
