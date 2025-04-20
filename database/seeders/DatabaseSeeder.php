@@ -16,7 +16,8 @@ class DatabaseSeeder extends Seeder
 
             PermissionSeeder::class,
             RoleSeeder::class,
-            CreateSuperAdminUserSeeder::class
+            CreateSuperAdminUserSeeder::class,
+            HazmatSeeder::class
             
         ]);
         // \App\Models\User::factory(10)->create();

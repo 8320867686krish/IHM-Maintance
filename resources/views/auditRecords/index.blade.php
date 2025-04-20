@@ -9,7 +9,9 @@
                 <form method="post" action="{{route('auditrecords.store')}}" class="needs-validation" novalidate
                     id="AuditForm" enctype="multipart/form-data">
                     @csrf
-                   
+                   <input type="hidden" name="user_id" value="{{ $user_id }}" id="user_id">
+                   <input type="hidden" name="hazmat_companies_id" value="{{ $hazmat_companies_id }}" id="hazmat_companies_id">
+                   <input type="hidden" name="deleted_id" id="deleted_id">
                     <div class="card-body">
                         <div class="row">
                             <div class="col-6">
@@ -32,51 +34,43 @@
                             <div class="form-group col-3 mb-3">
                                 <label for="date">Date</label>
                             </div>
-                            <div class="form-group col-3 mb-3">
+                            <div class="form-group col-2 mb-3">
                                 <label for="attachments">Attachments</label>
                             </div>
                         </div>
                         <div id="AuditItemsContainer">
-                            @if(@$poData->poOrderItems && count($poData->poOrderItems) > 0)
-                            @foreach($poData->poOrderItems as $key=>$item)
+                            @if(@$auditRecords)
+                            @foreach($auditRecords as $key=>$item)
                             <div class="row new-audit-row" data-id="{{$item->id}}" data-item="{{$item}}">
                                 <div class="form-group col-3 mb-3">
-                                    <input type="text" class="form-control form-control-lg" name="items[{{$item->id}}][description]" autocomplete="off" placeholder="Description" value="{{$item->description}}">
+                                    <input type="text" class="form-control form-control-lg" name="items[{{$item->id}}][audit_name]" autocomplete="off" placeholder="Description" value="{{$auditiname}}">
                                     <div class="invalid-feedback error"></div>
                                 </div>
-                                <div class="form-group col-2 mb-3">
-                                    <input type="text" class="form-control form-control-lg" name="items[{{$item->id}}][impa_no]" autocomplete="off" placeholder="IMPA NO" value="{{$item->impa_no   }}">
+                                <div class="form-group col-3 mb-3">
+                                    <input type="text" class="form-control form-control-lg" name="items[{{$item->id}}][auditee_name]" autocomplete="off" placeholder="IMPA NO" value="{{$auditieename}}">
                                     <div class="invalid-feedback error"></div>
                                 </div>
-                                <div class="form-group col-2 mb-3">
-                                    <input type="text" class="form-control form-control-lg" name="items[{{$item->id}}][part_no]" autocomplete="off" placeholder="Part No" value="{{$item->part_no}}">
+                                <div class="form-group col-3 mb-3">
+                                    <input type="date" class="form-control form-control-lg" name="items[{{$item->id}}][date]" autocomplete="off" placeholder="Part No" value="{{$item->date}}">
                                     <div class="invalid-feedback error"></div>
                                 </div>
-
-                                <div class="form-group col-1 mb-3">
-                                    <input type="text" class="form-control form-control-lg" name="items[{{$item->id}}][qty]" autocomplete="off" placeholder="Qty" value="{{$item->qty}}">
-                                    <div class="invalid-feedback error"></div>
-                                </div>
-
-                                <div class="form-group col-1 mb-3">
-                                    <input type="text" class="form-control form-control-lg" name="items[{{$item->id}}][unit]" autocomplete="off" placeholder="Unit" value="{{$item->unit}}">
-                                    <div class="invalid-feedback error"></div>
-                                </div>
-
-
 
                                 <div class="form-group col-2 mb-3">
-                                    <select class="form-control form-control-lg" name="items[{{$item->id}}][type_category]">
-                                        <option value="Relevant" {{ $item->type_category === 'Relevant' ? 'selected' : '' }}>Relevant</option>
-                                        <option value="Non relevant" {{ $item->type_category === 'Non relevant' ? 'selected' : '' }}>Non relevant</option>
-                                    </select>
+                                    <input type="file" class="form-control form-control-lg" name="items[{{$item->id}}][attachment]" autocomplete="off" placeholder="Qty" value="">
+                                    <div class="invalid-feedback error"></div>
                                 </div>
+
+                              
+
+
+                               
                                 <div class="form-group col-1 mb-3">
                                     <i class="fas fa-trash-alt text-danger mt-3 remove-item-btn" title="Delete"></i>
-                                    @if($item->type_category == 'Relevant')
-                                    <a href="{{ route('po.relevent', $item->id) }}" title="Edit">
-                                        <i class="fas fa-edit text-primary ml-2 view-item-btn"></i></a>
-                                    @endif
+                                    <a href="{{ asset('uploads/auditrecords/' . $item['user_id'] . '/' . $item['attachment']) }}"
+   download="{{ $item['attachment'] }}"
+   class="float-right">
+    Download
+</a>
                                 </div>
 
 
@@ -114,7 +108,8 @@
 <script>
   
 var auditIndex = 0;;
-  
+var auditiname = "{{ $auditiname }}";
+var auditieename = "{{ $auditieename }}";
 </script>
 
 <script src="{{ asset('assets/js/auditRecords.js') }}"></script>

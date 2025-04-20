@@ -5,11 +5,11 @@ $("#addAuditRecordsBtn").click(function(){
     var newItemRow = `
     <div class="row new-audit-row">
         <div class="form-group col-3 mb-1">
-            <input type="text" class="form-control form-control-lg" name="items[` + auditIndex + `][audit_name]" autocomplete="off" placeholder="">
+            <input type="text" class="form-control form-control-lg" name="items[` + auditIndex + `][audit_name]"  value="${auditiname}" autocomplete="off" placeholder="">
             <div class="invalid-feedback error"></div>
         </div>
         <div class="form-group col-3 mb-1">
-            <input type="text" class="form-control form-control-lg" name="items[` + auditIndex + `][auditee_name]" autocomplete="off" placeholder="">
+            <input type="text" class="form-control form-control-lg" name="items[` + auditIndex + `][auditee_name]" value="${auditieename}" autocomplete="off" placeholder="">
             <div class="invalid-feedback error"></div>
         </div>
         <div class="form-group col-3 mb-1">
@@ -30,7 +30,7 @@ $("#addAuditRecordsBtn").click(function(){
     $('#AuditItemsContainer').append(newItemRow);
 });
 $(document).on('click', '.remove-item-btn', function () {
-    var itemId = $(this).closest('.new-item-row').data('id');
+    var itemId = $(this).closest('.new-audit-row').data('id');
     if (itemId) {
         var deletedIds = $('#deleted_id').val();
         $('#deleted_id').val(deletedIds ? deletedIds + ',' + itemId : itemId);
@@ -67,7 +67,8 @@ $('#AuditForm').submit(function (e) {
         processData: false,
         success: function (response) {
             if (response.message) {
-                successMsgWithRedirect(response.message, poItemGrid);
+                successMsgWithRedirect(response.message);
+                location.reload();
             }
         },
         error: function (xhr, status, error) {
