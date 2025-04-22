@@ -40,7 +40,7 @@ class POOrderController extends Controller
         }
         $backurl = "ship/view" . "/" . $ship_id . "#po-records";
         $poData = poOrder::with('poOrderItems', 'emailHistory')->find($po_order_id);
-
+dd($poData);
         return view('ships.po.add', compact('head_title', 'ship_id', 'poData', 'backurl', 'client_name', 'currentUserRoleLevel'));
     }
 
