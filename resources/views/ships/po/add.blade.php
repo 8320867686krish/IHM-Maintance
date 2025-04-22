@@ -220,9 +220,8 @@
                         @endif
 
                         <div class="col-12">
-                            {{$poData['isRecivedDoc']}}
-                            @if($poData['isRecivedDoc'] == 1)
-                        Document Received date : {{ \Carbon\Carbon::parse($poData['recived_document_date'])->format('d/m/y') }}
+                        @if($poData['isRecivedDoc'] == 1)
+                            Document Received date : {{ \Carbon\Carbon::parse($poData['recived_document_date'])->format('d/m/y') }}
                         @endif    
                     </div>
                         <div class=" col-12">
