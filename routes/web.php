@@ -66,7 +66,8 @@ Route::middleware('auth')->group(function () {
     Route::get('model/{hazmat_id}/{equipment}/{manufacturer}', [POOrderController::class, 'getmodel'])->name('getmodel');
     Route::get('document/{id}', [POOrderController::class, 'getPartBasedDocumentFile'])->name('getPartBasedDocumentFile');
     Route::post('send/mail', [POOrderController::class, 'sendMail'])->name('send.mail');
-    
+    Route::post('recivedDoc', [POOrderController::class, 'recivedDoc'])->name('recivedDoc');
+
     Route::post('/avilabletemplate/save', [HelpCenterController::class, 'avilabletemplateeSave'])->name('avilabletemplate.save');
 
     Route::get('/helpcenter', [HelpCenterController::class, 'index'])->name('helpcenter.list');
@@ -87,7 +88,7 @@ Route::middleware('auth')->group(function () {
     });
     Route::middleware('can:auditrecords')->group(function () {
         Route::controller(AuditRecordssController::class)->group(function () {
-            Route::get('auditrecords', 'index')->name('auditrecords')->middleware('can:auditrecords');
+            Route::get('auditrecords/{id?}', 'index')->name('auditrecords')->middleware('can:auditrecords');
             Route::get('auditrecords/add', 'create')->name('auditrecords.add')->middleware('can:auditrecords.add');
             Route::post('auditrecords', 'store')->name('auditrecords.store');
             Route::get('auditrecords/{id}/edit', 'edit')->name('auditrecords.edit')->middleware('can:auditrecords.edit');

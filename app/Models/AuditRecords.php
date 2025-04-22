@@ -13,7 +13,7 @@ class AuditRecords extends Model
     protected $fillable = [
         'date',
         'attachment',
-        'user_id',
+        'client_company_id',
         'hazmat_companies_id'
     ];
     public static function updateOrCreateWithFile($id, array $data, UploadedFile $file = null)
@@ -35,7 +35,7 @@ class AuditRecords extends Model
     {
         // Delete old file if exists
         if ($this->attachment) {
-            $oldPath = "uploads/auditrecords/{$this->user_id}/{$this->attachment}";
+            $oldPath = "uploads/auditrecords/{$this->client_company_id}/{$this->attachment}";
             if (Storage::disk('public')->exists($oldPath)) {
                 Storage::disk('public')->delete($oldPath);
             }
@@ -43,7 +43,7 @@ class AuditRecords extends Model
 
         // Save new file
         $filename = time() . '_' . $file->getClientOriginalName();
-        $path = "uploads/auditrecords/{$this->user_id}";
+        $path = "uploads/auditrecords/{$this->client_company_id}";
         Storage::disk('public')->putFileAs($path, $file, $filename);
         $this->attachment = $filename;
     }
@@ -60,7 +60,7 @@ class AuditRecords extends Model
     public function deleteAttachmentFile()
     {
         if ($this->attachment) {
-            $path = "uploads/auditrecords/{$this->user_id}/{$this->attachment}";
+            $path = "uploads/auditrecords/{$this->client_company_id}/{$this->attachment}";
             if (Storage::disk('public')->exists($path)) {
                 Storage::disk('public')->delete($path);
             }

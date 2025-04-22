@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Maatwebsite\Excel\Facades\Excel;
+use PDO;
 use Throwable;
 
 class POOrderController extends Controller
@@ -343,6 +344,16 @@ class POOrderController extends Controller
             echo "Failed to send mail.";
         }
         return response()->json(['isStatus' => true, 'message' => 'sent email successfully.']);
+    }
+    public function recivedDoc(Request $request){
+        $post = $request->input();
+        $poorder = poOrder::where('id',$post['recived_order_id'])->update([
+            'isRecivedDoc' => 1,
+            'recived_document_comment' => $post['recived_document_comment'],
+            'recived_document_date' => $post['recived_document_date']
+        ]);
+        return response()->json(['isStatus' => true, 'message' => 'save successfully.']);
+
     }
     public function poOrderSample()
     {

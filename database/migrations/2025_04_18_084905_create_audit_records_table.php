@@ -13,14 +13,12 @@ return new class extends Migration
     {
         Schema::create('audit_records', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id')->nullable();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->unsignedBigInteger('client_company_id')->nullable();
+            $table->foreign('client_company_id')->references('id')->on('client_companies')->onDelete('cascade');
             
             $table->unsignedBigInteger('hazmat_companies_id')->nullable();  // Same data type as hazmat_companies.id
             $table->foreign('hazmat_companies_id')->references('id')->on('hazmat_companies')->onDelete('cascade');
 
-            $table->string('audit_name');
-            $table->string('auditee_name');
             $table->date('date');
             $table->string("attachment");
             $table->timestamps();

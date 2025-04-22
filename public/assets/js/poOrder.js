@@ -97,6 +97,44 @@ $(document).ready(function () {
             },
         });
     });
+    $("#reciveddocsave").on('click', function (e) {
+        e.preventDefault();
+        let formData = new FormData($("#recivedDocForm")[0]);
+
+        $.ajax({
+            url: $("#recivedDocForm").attr('action'),
+            type: 'POST',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (response) {
+                if (response.isStatus) {
+                    successMsg(response.message);
+                    let form = document.getElementById('recivedDocForm');
+                    form.reset()
+                    $('#recivedDocModel').modal('hide');
+                    location.reload();
+
+                } else {
+                    errorMsg(response.message);
+                }
+            },
+            error: function (xhr, status, error) {
+                let errors = xhr.responseJSON.errors;
+                if (xhr.status === 419) { // CSRF Token Mismatch
+                    location.reload();
+                }
+                if (errors) {
+                    $.each(errors, function (field, messages) {
+                        $('#' + field + 'Error').text(messages[0]).show();
+                        $('[name="' + field + '"]').addClass('is-invalid');
+                    });
+                } else {
+                    console.error('Error submitting form:', error);
+                }
+            },
+        });
+    });
 
     $("#checkHazmatAddForm").on('submit', function (e) {
 
@@ -259,6 +297,12 @@ $(document).ready(function () {
             }
         });
     });
+});
+$("#FromVendor").click(function(){
+    var po_id = $("#po_id").val();
+    $("#recived_order_id").val(po_id);
+    $("#recivedDocModel").modal('show');
+
 });
 let selectedHazmatsIds = [];
 

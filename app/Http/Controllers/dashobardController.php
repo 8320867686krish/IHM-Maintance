@@ -96,6 +96,7 @@ class dashobardController extends Controller
     {
         $chartData = [];
         $user = Auth::user();
+        $client_company_id = $id;
         $hazmatCompany = Ship::where('client_company_id', $id)->get();
         $imagekey = 'ship_image';
         $title = "Ships";
@@ -103,7 +104,7 @@ class dashobardController extends Controller
 
         $path = asset('uploads/ship');
 
-        return view('dashboard', compact('hazmatCompany', 'path', 'imagekey', 'title', 'routename'));
+        return view('dashboard', compact('hazmatCompany', 'path', 'imagekey', 'title', 'routename','client_company_id'));
     }
     public function shipDashboard($id)
     {

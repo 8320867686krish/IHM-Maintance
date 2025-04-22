@@ -113,6 +113,18 @@
                     </div>
                 </div>
             </div>
+         @can('auditrecords.view')
+         @if(@$client_company_id)
+            <div class="col-xl-4 col-lg-3 col-md-6 col-sm-12 col-12">
+                <div class="card border-3 border-top border-top-primary">
+                    <div class="card-body">
+                        <h4 class="text-muted text-center"><a href="{{ route('auditrecords', @$client_company_id) }}">Audit Records</a>
+                        </h4>
+                    </div>
+                </div>
+            </div>
+            @endif
+            @endcan
             @if($currentUserRoleLevel != 1)
             <div class="col-xl-4 col-lg-3 col-md-6 col-sm-12 col-12">
                 <div class="card border-3 border-top border-top-primary">

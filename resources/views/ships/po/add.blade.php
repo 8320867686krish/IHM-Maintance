@@ -209,12 +209,19 @@
                         @if($currentUserRoleLevel == 2)
                         <div class="col-6">
                             <div class="form-group">
+
                                 <button class="btn btn-primary float-right" type="button" id="sendtovendor"><i class="fas fa-paper-plane"></i> &nbsp;&nbsp;Emil To Vendor</button>
+                                <button class="btn btn-primary float-right mr-2" type="button" id="FromVendor">
+                                    <i class="fas fa-inbox"></i>&nbsp;&nbsp;Received Documents
+                                </button>
+
                             </div>
                         </div>
                         @endif
 
-
+                        <div class="col-12">
+                        Document Received date : {{ \Carbon\Carbon::parse($poData['recived_document_date'])->format('d/m/y') }}
+                        </div>
                         <div class=" col-12">
                             <div class="table-responsive mt-2 mb-4">
                                 <table class="table table-bordered">
@@ -225,6 +232,7 @@
                                             <th>To Email(Supplier Email)</th>
                                             <th>CC Email(Company Email)</th>
                                             <th>CC Email (Accounting Email)</th>
+                                            <th>Sent Date</th>
 
                                         </tr>
 
@@ -233,10 +241,14 @@
                                         @if(@$poData->emailHistory)
                                         @foreach($poData->emailHistory as $history)
                                         <tr>
-                                        <td>{{$history['from_email']}}</td>
-                                        <td>{{$history['suppliear_email']}}</td>
-                                        <td>{{$history['company_email']}}</td>
-                                        <td>{{$history['accounting_email']}}</td>
+                                            <td>{{$history['from_email']}}</td>
+                                            <td>{{$history['suppliear_email']}}</td>
+                                            <td>{{$history['company_email']}}</td>
+                                            <td>{{$history['accounting_email']}}</td>
+                                            <td>{{ \Carbon\Carbon::parse(trim($history['recived_document_date']))->setTimezone('Asia/Kolkata')->format('d/m/y g:i A') }}
+
+                                            </td>
+
 
                                         </tr>
                                         @endforeach
@@ -263,6 +275,7 @@
 
 @endsection
 @include('ships.po.modals.sendVendorMail')
+@include('ships.po.modals.recivedDocModel')
 
 @push('js')
 <script type="text/javascript"
@@ -281,8 +294,6 @@
             }
         });
     });
-
-   
 </script>
 <script src="{{ asset('assets/vendor/bootstrap-select/js/bootstrap-select.js') }}"></script>
 
