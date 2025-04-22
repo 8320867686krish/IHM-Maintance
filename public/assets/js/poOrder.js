@@ -300,6 +300,7 @@ $(document).ready(function () {
 });
 $("#FromVendor").click(function(){
     var po_id = $("#po_id").val();
+    alert("ggg");
     $("#recived_order_id").val(po_id);
     $("#recivedDocModel").modal('show');
 
