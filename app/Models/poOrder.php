@@ -28,15 +28,8 @@ class poOrder extends Model
         'recived_document_comment',
         'recived_document_date'
     ];
-    public function getIsRecivedDocAttribute($value)
-    {
-        return $value === 1 ? 'yes' : 'no';
-    }
-    public function setIsRecivedDocAttribute($value)
-    {
-
-        $this->attributes['isRecivedDoc'] = $value == 'yes' ? 1 : ($value == 'no' ? 0 : $value);
-    }
+   
+   
     public function poOrderItems()
     {
         return $this->hasMany(poOrderItem::class, 'po_order_id', 'id');
