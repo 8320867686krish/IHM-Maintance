@@ -326,22 +326,9 @@ class POOrderController extends Controller
         emailHistory::create($email_history_arry);
         $mailData = ['title' => $data['email_subject'], 'body' => $data['email_body'], 'attachments' => $attachments];
 
-        $to = "krishna.patel@meetanshi.com";
-        $subject = "My subject";
-        $message = "First line of text\nSecond line of text";
-        $message = wordwrap($message, 70);
-    
-        // Set From header
-        $headers = "From: samjay.meetanshi@gmail.com\r\n";
-        $headers .= "Reply-To: meetanshi.com\r\n";
-        $headers .= "X-Mailer: PHP/" . phpversion();
-    
-        // Send the email
-        if (mail($to, $subject, $message, $headers)) {
-            echo "Mail sent successfully.";
-        } else {
-            echo "Failed to send mail.";
-        }
+        Mail::to($to)
+        ->cc([$client_company_email, $accounting_team_email])
+        ->queue(new sendMail($mailData,$from));
         return response()->json(['isStatus' => true, 'message' => 'sent email successfully.']);
     }
     public function recivedDoc(Request $request){
