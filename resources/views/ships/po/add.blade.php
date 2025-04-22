@@ -220,8 +220,10 @@
                         @endif
 
                         <div class="col-12">
+                            @if($poData['isRecivedDoc'] == 1)
                         Document Received date : {{ \Carbon\Carbon::parse($poData['recived_document_date'])->format('d/m/y') }}
-                        </div>
+                        @endif    
+                    </div>
                         <div class=" col-12">
                             <div class="table-responsive mt-2 mb-4">
                                 <table class="table table-bordered">
@@ -245,7 +247,7 @@
                                             <td>{{$history['suppliear_email']}}</td>
                                             <td>{{$history['company_email']}}</td>
                                             <td>{{$history['accounting_email']}}</td>
-                                            <td>{{ \Carbon\Carbon::parse(trim($history['recived_document_date']))->setTimezone('Asia/Kolkata')->format('d/m/y g:i A') }}
+                                            <td>{{ \Carbon\Carbon::parse(trim($history['created_at']))->setTimezone('Asia/Kolkata')->format('d/m/y g:i A') }}
 
                                             </td>
 
