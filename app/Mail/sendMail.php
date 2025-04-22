@@ -37,7 +37,7 @@ class sendMail extends Mailable
         $fromEmail = $this->fromAddress['email'];
         $fromName = $this->fromAddress['name'];
         return new Envelope(
-            from: new Address('ihmportal@sosgroup.in'),
+            from: new Address('ihmportal@sosgroup.in',$fromName),
 
             replyTo: [new Address($fromEmail, $fromName)],
             subject: $this->mailData['title'],
