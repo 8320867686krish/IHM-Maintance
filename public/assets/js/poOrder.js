@@ -273,7 +273,8 @@ $(document).ready(function () {
             processData: false,
             success: function (response) {
                 if (response.message) {
-                    successMsgWithRedirect(response.message, poItemGrid);
+                    successMsg(response.message);
+                    location.reload();
                 }
             },
             error: function (xhr, status, error) {
