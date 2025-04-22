@@ -18,8 +18,14 @@ $(document).ready(function () {
                 try {
                     const item = JSON.parse(itemDataRaw);
 
-                    if (item.type_category.toLowerCase() === 'relevant') {
-                        content += `<li>Item ${index}: ${item.description} (Part No: ${item.part_no})</li>`;
+                    if (item.type_category?.toLowerCase() === 'relevant') {
+                        content += `<li>Item ${index}: ${item.description}`;
+
+                        if (item.part_no !== null && item.part_no !== '') {
+                            content += ` (Part No: ${item.part_no})`;
+                        }
+
+                        content += `</li>`;
                         index++;
                     }
                 } catch (e) {
@@ -298,7 +304,7 @@ $(document).ready(function () {
         });
     });
 });
-$("#FromVendor").click(function(){
+$("#FromVendor").click(function () {
     var po_id = $("#po_id").val();
     $("#recived_order_id").val(po_id);
     $("#recivedDocModel").modal('show');
