@@ -86,9 +86,8 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                @can('auditrecords.add' || auditrecords.edit)
+               
                 <button type="button" class="btn btn-primary" id="auditSave">Save changes</button>
-                @endcan
             </div>
         </div>
     </div>

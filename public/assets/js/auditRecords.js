@@ -64,6 +64,7 @@ $(document).on('click', '.remove-item-btn', function (e) {
         }
     });
         $(".attachmentDiv").hide();
+        $(".auditSave").hide();
         $("#AuditModel").modal('show');
 
 });
