@@ -210,23 +210,22 @@
                         <div class="col-6">
                             <div class="form-group">
 
-                                <button class="btn btn-primary float-right" type="button" id="sendtovendor"><i class="fas fa-paper-plane"></i> &nbsp;&nbsp;Emil To Vendor</button>
-                                <button class="btn btn-primary float-right mr-2" type="button" id="FromVendor">
-                                    <i class="fas fa-inbox"></i>&nbsp;&nbsp;Received Documents
-                                </button>
+                                <button class="btn btn-primary float-right" type="button" id="sendtovendor"><i class="fas fa-paper-plane"></i> &nbsp;&nbsp;Email To Vendor</button>
+
 
                             </div>
                         </div>
                         @endif
 
                         <div class="col-12">
-                        @if($poData['isRecivedDoc'] == 1)
-                            Document Received date : {{ \Carbon\Carbon::parse($poData['recived_document_date'])->format('d/m/y') }}
-                        @endif    
-                    </div>
-                        <div class=" col-12">
+                            <h5>Document Received Date :
+                            {!! $poData['isRecivedDoc'] == 0 
+    ? '<span class="text-danger">Not Received</span>' 
+    : \Carbon\Carbon::parse($poData['recived_document_date'])->format('d/m/y') !!}</h5>
+                        </div>
+                        <div class="col-12">
                             <div class="table-responsive mt-2 mb-4">
-                                <table class="table table-bordered">
+                                <table class="table table-striped table-bordered first dataTable">
 
                                     <thead>
                                         <tr>
@@ -240,8 +239,7 @@
 
                                     </thead>
                                     <tbody>
-                                        @if(@$poData->emailHistory)
-                                        @foreach($poData->emailHistory as $history)
+                                        @forelse(@$poData->emailHistory as $history)
                                         <tr>
                                             <td>{{$history['from_email']}}</td>
                                             <td>{{$history['suppliear_email']}}</td>
@@ -253,15 +251,23 @@
 
 
                                         </tr>
-                                        @endforeach
-                                        @else
+                                        @empty
                                         <tr>
-                                            <td colspan="3" class="text-center">No Recored</td>
+                                            <td colspan="5" class="text-center">No email history available.</td>
                                         </tr>
+                                        @endforelse
 
-                                        @endif
+
+
                                     </tbody>
                                 </table>
+                            </div>
+                        </div>
+                        <div class="col-12 text-right">
+                            <div class="form-group ">
+                                <button class="btn btn-primary" type="button" id="FromVendor">
+                                    <i class="fas fa-inbox"></i>&nbsp;&nbsp;Received Documents
+                                </button>
                             </div>
                         </div>
                     </div>

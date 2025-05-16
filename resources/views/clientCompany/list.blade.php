@@ -31,12 +31,12 @@
                             <thead>
                                 <tr>
                                     <th width="5%">Sr.No</th>
-                                    <th>Name</th>
+                                    <th width="20%">Name</th>
                                     <th width="15%">Ship Owner_email</th>
                                     <th width="15%">Hazmat Company</th>
                                     <th width="18%">Client Email</th>
                                     <th width="10%">Client Phone</th>
-                                    <th width="5%">Action</th>
+                                    <th width="15%">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -59,6 +59,12 @@
                                         @can('clientCompany.remove')
                                         <a href="{{ route('clientCompany.delete', ['id' => $client->id]) }}" class="ml-2 delete-btn">
                                             <i class="fas fa-trash-alt text-danger" style="font-size: 1rem;"></i>
+                                        </a>
+                                        @endcan
+                                        @can('auditrecords.view')
+                                         <a href="{{ route('clientCompany.auditrecords', ['id' => $client->id]) }}" class="ml-2">
+                                        <img src="{{asset('images/auditrecords.png')}}"  class=" user-avatar-sm">
+
                                         </a>
                                         @endcan
                                     </td>

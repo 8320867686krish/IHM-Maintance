@@ -14,7 +14,12 @@ class AuditRecords extends Model
         'date',
         'attachment',
         'client_company_id',
-        'hazmat_companies_id'
+        'hazmat_companies_id',
+        'auditor_person_name',
+        'auditee_person_name',
+        'auditor_designation',
+        'auditee_designation',
+
     ];
     public static function updateOrCreateWithFile($id, array $data, UploadedFile $file = null)
     {

@@ -92,6 +92,8 @@ Route::middleware('auth')->group(function () {
             Route::get('auditrecords/add', 'create')->name('auditrecords.add')->middleware('can:auditrecords.add');
             Route::post('auditrecords', 'store')->name('auditrecords.store');
             Route::get('auditrecords/{id}/edit', 'edit')->name('auditrecords.edit')->middleware('can:auditrecords.edit');
+            Route::get('clientCompany/audit/{id}','index')->name('clientCompany.auditrecords')->middleware('can:auditrecords.view');
+
             Route::get('auditrecords/{id}/delete', 'destroy')->name('auditrecords.delete')->middleware('can:auditrecords.remove');
         });
     });

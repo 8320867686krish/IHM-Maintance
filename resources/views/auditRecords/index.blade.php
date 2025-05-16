@@ -29,7 +29,7 @@
 
 
                         @foreach($auditRecords as $key => $item)
-                        <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12 new-audit-row">
+                        <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12 new-audit-row view-item-btn" data-iteam="{{$item}}">
                             <div class="card">
                                 <div class="card-body mb-2">
                                     <div class="text-center mt-1">
@@ -55,6 +55,11 @@
                                         <a href="{{ asset('uploads/auditrecords/' . $item['client_company_id'] . '/' . $item['attachment']) }}"
                                             download="{{ $item['attachment'] }}" class="ml-2">
                                             <i class="fa fa-download"></i>
+                                        </a>
+
+                                         <a href="#" 
+                                             class="ml-2 view-item-btn" data-iteam="{{$item}}">
+                                            <i class="fa fa-eye"></i>
                                         </a>
                                     </p>
                                 </div>

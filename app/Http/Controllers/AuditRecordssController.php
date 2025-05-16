@@ -51,6 +51,10 @@ class AuditRecordssController extends Controller
                 'client_company_id' => $post['client_company_id'],
                 'hazmat_companies_id' => $post['hazmat_companies_id'],
                 'date' => $post['date'],
+                'auditor_person_name' => $post['auditor_person_name'],
+                'auditee_person_name' => $post['auditor_person_name'],
+                'auditor_designation' => $post['auditor_designation'],
+                'auditee_designation'=>$post['auditee_designation'],
             ],
             $file
         );

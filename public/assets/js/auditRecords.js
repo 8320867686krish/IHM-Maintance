@@ -48,6 +48,26 @@ $(document).on('click', '.remove-item-btn', function (e) {
         console.log("Failed to delete: " + response.message);
     });
 });
+ $(".view-item-btn").click(function () {
+    let itemData = $(this).attr('data-iteam');
+    let item = JSON.parse(itemData);
+
+    $('#auditrecordsForm [name]').each(function () {
+        let fieldName = $(this).attr('name');
+        let fieldType = $(this).attr('type');
+
+        // Skip file inputs
+        if (fieldType === 'file') return;
+
+        if (item.hasOwnProperty(fieldName)) {
+            $(this).val(item[fieldName]);
+        }
+    });
+        $(".attachmentDiv").hide();
+        $("#AuditModel").modal('show');
+
+});
+
 $('#auditSave').click(function (e) {
    
     let checkFormData = new FormData($("#auditrecordsForm")[0]);
@@ -97,4 +117,5 @@ var $form = $("#auditrecordsForm");
             $submitButton.prop('disabled', false);
         }
     });
+   
 });

@@ -18,7 +18,10 @@ return new class extends Migration
             
             $table->unsignedBigInteger('hazmat_companies_id')->nullable();  // Same data type as hazmat_companies.id
             $table->foreign('hazmat_companies_id')->references('id')->on('hazmat_companies')->onDelete('cascade');
-
+            $table->string('auditor_person_name')->nullable();
+            $table->string('auditee_person_name')->nullable();
+            $table->string('auditor_designation')->nullable();
+            $table->string('auditee_designation')->nullable();
             $table->date('date');
             $table->string("attachment");
             $table->timestamps();
