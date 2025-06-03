@@ -105,6 +105,35 @@
         </div>
     </div>
 
+    <div class="row  mb-4 mt-4">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <div class="page-header">
+                <h2 class="pageheader-title text-center">Help Center</h2>
+            </div>
+        </div>
+    </div>
+     <div class="container mb-4 mt-4">
+        <div class="row ">
+            <div class="col-xl-4 col-lg-3 col-md-6 col-sm-12 col-12">
+                <div class="card border-3 border-top border-top-primary">
+                    <div class="card-body">
+                        <h4 class="text-muted text-center"><a href="{{url('helpcenter')}}">Correspondence With Ship / Client</a></h4>
+
+
+                    </div>
+                </div>
+            </div>
+
+              <div class="col-xl-4 col-lg-3 col-md-6 col-sm-12 col-12">
+                <div class="card border-3 border-top border-top-primary">
+                    <div class="card-body">
+                        <h4 class="text-muted text-center"><a href="{{url('helpcenter')}}">Hazmat Company Credentials</a></h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+     </div>
+
 
 
     @stop

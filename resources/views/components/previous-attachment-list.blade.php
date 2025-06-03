@@ -13,12 +13,12 @@
     @endcan
         @can('previousperson.edit')
         
-        <a href="{{route('majorrepair.remove', ['id' => $value->id])}}" class="ml-2 major-delete">
+        <a href="{{route('majorrepair.remove', ['id' => $value->id])}}" class="ml-2 major-delete" title="Delete">
             <i class="fas fa-trash-alt text-danger" style="font-size: 1rem;"></i>
         </a>
         @endcan
         @if(@$value['attachment'])
-        <a href="{{asset('uploads/previousattachment/'.$value['attachment'])}}" class="ml-2" target="_blank">
+        <a href="{{asset('uploads/previousattachment/'.$value['attachment'])}}" class="ml-2" target="_blank" title="Attachment">
             <i class="fas fa-download text-primary" style="font-size: 1rem;"></i>
         </a>
         @endif

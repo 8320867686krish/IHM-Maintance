@@ -50,7 +50,7 @@
                 <div id="collapsinitial5" class="collapse" aria-labelledby="headinginitial5" data-parent="#accordion">
                     <div class="card-body mb-4">
                         @can('ships.edit')
-                        <a href="#" class="btn btn-primary float-right addSummary mb-3 ml-2">Add</a>
+                        <a href="#" class="btn btn-primary float-right addSummary mb-3 ml-2" title="Add">Add</a>
                         @endcan
                         <div class="table-responsive">
                             <table class="table table-striped table-bordered first">
@@ -92,7 +92,7 @@
                 <div id="collapsinitial6" class="collapse" aria-labelledby="headinginitial6" data-parent="#accordion">
                     <div class="card-body mb-4">
                         @can('ships.edit')
-                        <a href="#" class="btn btn-primary float-right addPart mb-3 ml-2">Add</a>
+                        <a href="#" class="btn btn-primary float-right addPart mb-3 ml-2" title="Add">Add</a>
                         @endcan
 
                         <div class="table-responsive">
@@ -147,7 +147,7 @@
                     <div class="card-body">
 
 
-                        <a href="#" class="btn btn-primary float-right mb-3 startAmended">Start Amendment </a>
+                        <a href="#" class="btn btn-primary float-right mb-3 startAmended" title="Amendment">Start Amendment </a>
 
                     </div>
                 </div>

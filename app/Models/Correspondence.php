@@ -15,7 +15,8 @@ class Correspondence extends Model
         'attachment',
         'content',
         'hazmat_companies_id',
-        'user_id'
+        'user_id',
+        'isRead'
     ];
 
     public function shipDetail(){

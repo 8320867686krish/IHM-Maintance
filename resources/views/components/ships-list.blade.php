@@ -13,8 +13,8 @@
                 @if($currentUserRoleLevel == 1)
                 <p class="card-text mb-2">Hazmat Company : {{@$ship->hazmatComapny->name}}</p>
                 @endif
-                <a href="{{ route('ships.view', ['ship_id' => $ship->id]) }}" class="btn btn-outline-light mt-2"><i class="fas fa-eye text-primery"></i></a>
-                <a href="{{ route('ships.delete', ['id' => $ship->id]) }}" class="btn btn-outline-light deleteship mt-2"><i class="fas fa-trash-alt text-danger"></i></a>
+                <a href="{{ route('ships.view', ['ship_id' => $ship->id]) }}" class="btn btn-outline-light mt-2" title="view"><i class="fas fa-eye text-primery"></i></a>
+                <a href="{{ route('ships.delete', ['id' => $ship->id]) }}" class="btn btn-outline-light deleteship mt-2"  title="Delete"><i class="fas fa-trash-alt text-danger"></i></a>
             </div>
         </div>
     </a>

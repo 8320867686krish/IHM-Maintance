@@ -14,7 +14,7 @@
                 {{-- <div class="page-breadcrumb">
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="{{ route('users') }}" class="breadcrumb-link">User</a>
+                                <li class="breadcrumb-item"><a href="{{ route('users') }}" class="breadcrumb-link" title="User">User</a>
                 </li>
                 <li class="breadcrumb-item active"><a href="#" class="breadcrumb-link">{{ $head_title ?? 'Add' }}</a></li>
                 </ol>
@@ -146,7 +146,7 @@
                     <div class="row mt-3">
                         <div class="col-sm-12 col-md-6">
                             <div class="form-group">
-                                <a href="{{ route('users') }}" id="userBackBtn" type="button"><i class="fas fa-arrow-left"></i> <b>Back</b></a>
+                                <a href="{{ route('users') }}" title="users" id="userBackBtn" type="button"><i class="fas fa-arrow-left"></i> <b>Back</b></a>
                             </div>
                         </div>
                         <div class="col-sm-12 col-md-6">

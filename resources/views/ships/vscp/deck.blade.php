@@ -1,7 +1,7 @@
  <div class="title"><span>VSCP</span>
      @can('ships.edit')
      <div style="float:right">
-         <button class="btn btn-primary" onclick="triggerFileInput('pdfFile')">Add</button>&nbsp;&nbsp;
+         <button class="btn btn-primary" onclick="triggerFileInput('pdfFile')" title="Add">Add</button>&nbsp;&nbsp;
        
          <input type="file" id="pdfFile" name="pdfFile" accept=".pdf" style="display: none;">
      </div>

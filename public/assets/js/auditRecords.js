@@ -31,6 +31,11 @@ $("#addAuditRecordsBtn").click(function(){
 
     // $('#AuditItemsContainer').append(newItemRow);
 });
+$('#AuditModel').on('hidden.bs.modal', function (e) {
+     let form = document.getElementById('auditrecordsForm');
+                form.reset()
+    // You can trigger any logic here (e.g., reset form, reload data, etc.)
+});
 $(document).on('click', '.remove-item-btn', function (e) {
     e.preventDefault();
     let deleteUrl = $(this).attr('href');

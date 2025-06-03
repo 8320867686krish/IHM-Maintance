@@ -1,3 +1,5 @@
+
+   
 <div class="nav-left-sidebar sidebar-dark" id="mainSidebar">
     <div class="menu-list">
         <nav class="navbar navbar-expand-lg navbar-light">
@@ -25,9 +27,9 @@
                     @foreach ($allPermissions as $permission)
                     @if ($permission['group_type'] === 'main' && $permission['is_show'] == 1)
                     @php
-            // Dynamically append '.read' to the permission name
-            $permissionName = $permission['name'] . '.read'; 
-        @endphp
+                    // Dynamically append '.read' to the permission name
+                    $permissionName = $permission['name'] . '.read';
+                    @endphp
                     @can($permissionName)
                     <li class="nav-item">
                         @php
@@ -66,12 +68,31 @@
                     @endif
                     @endforeach
                     <li class="nav-item">
-                        <a class="nav-link" href="{{route('portal.guide')}}"><i class="fa fa-fw fa-user-circle"></i>Portal User Guide</a>
+                        @if($currentUserRoleLevel == 1)
+                        <a class="nav-link" href="{{ route('portal.guide') }}">
+                            <i class="fa fa-fw fa-user-circle"></i> Configuration Management
+                        </a>
+                        @else
+                        <a class="nav-link" href="{{ route('portal.guide') }}">
+                            <i class="fa fa-fw fa-user-circle"></i> Portal User Guide
+                        </a>
+                        @endif
                     </li>
 
+
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('helpcenter.list') }}"><i class="fa fa-fw fa-user-circle"></i>Help Center</a>
+                        <a class="nav-link d-flex align-items-center" href="{{ route('helpcenter.list') }}">
+                            <i class="fa fa-fw fa-user-circle mr-1"></i>
+                            Help Center
+                            @if($currentUserRoleLevel == 2 && $markasRead > 0)
+                            <span class="badge1 badge-danger badge-pill ml-2 text-center">{{$markasRead}}</span>
+                                                
+                            @endif
+                        </a>
+                                                  
+
                     </li>
+
                     @if($currentUserRoleLevel == 6)
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('reportCenter') }}"><i class="fa fa-fw fa-user-circle"></i>Report Center</a>

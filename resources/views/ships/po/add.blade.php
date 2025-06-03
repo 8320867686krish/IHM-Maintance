@@ -219,9 +219,9 @@
 
                         <div class="col-12">
                             <h5>Document Received Date :
-                            {!! $poData['isRecivedDoc'] == 0 
-    ? '<span class="text-danger">Not Received</span>' 
-    : \Carbon\Carbon::parse($poData['recived_document_date'])->format('d/m/y') !!}</h5>
+                                {!! $poData['isRecivedDoc'] == 0
+                                ? '<span class="text-danger">Not Received</span>'
+                                : \Carbon\Carbon::parse($poData['recived_document_date'])->format('d/m/y') !!}</h5>
                         </div>
                         <div class="col-12">
                             <div class="table-responsive mt-2 mb-4">

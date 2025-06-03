@@ -1,10 +1,10 @@
-$("#correspondencesSave").click(function(){
+$("#correspondencesSave").click(function () {
     let checkFormData = new FormData($("#addcorrespondencesForm")[0]);
     let $submitButton = $(this);
     let originalText = $submitButton.html();
     $submitButton.text('Wait...');
     $submitButton.prop('disabled', true);
-    var editorData= CKEDITOR.instances['mytextarea'].getData();
+    var editorData = CKEDITOR.instances['mytextarea'].getData();
     checkFormData.append('content', editorData);
     $.ajax({
         type: 'POST',
@@ -19,11 +19,11 @@ $("#correspondencesSave").click(function(){
                 form.reset()
                 $submitButton.html(originalText);
                 $submitButton.prop('disabled', false);
-                
+
                 $("#corospondenceModel").modal('hide');
 
-                $("#corospondenceList").html("");         
-                $("#corospondenceList").html(response.html);          
+                $("#corospondenceList").html("");
+                $("#corospondenceList").html(response.html);
             } else {
                 $.each(response.message, function (field, messages) {
                     $('#' + field + 'Error').text(messages[0]).show();
@@ -39,13 +39,13 @@ $("#correspondencesSave").click(function(){
         }
     });
 });
-$("#saveadmincorospondence").click(function(){
+$("#saveadmincorospondence").click(function () {
     let checkFormData = new FormData($("#correspondencesForm")[0]);
     let $submitButton = $(this);
     let originalText = $submitButton.html();
     $submitButton.text('Wait...');
     $submitButton.prop('disabled', true);
-    var editorData= CKEDITOR.instances['mytextareasuperadmin'].getData();
+    var editorData = CKEDITOR.instances['mytextareasuperadmin'].getData();
     checkFormData.append('content', editorData);
     $.ajax({
         type: 'POST',
@@ -65,7 +65,7 @@ $("#saveadmincorospondence").click(function(){
                 $("#admincorospondanceList").html();
                 $("#admincorospondanceList").html(response.html);
 
-               // window.location.reload();                
+                // window.location.reload();                
             } else {
                 $.each(response.message, function (field, messages) {
                     $('#' + field + 'Error').text(messages[0]).show();
@@ -81,7 +81,7 @@ $("#saveadmincorospondence").click(function(){
         }
     });
 });
-$("#avilableTemplateSave").click(function(){
+$("#avilableTemplateSave").click(function () {
     let checkFormData = new FormData($("#avilabletemplateForm")[0]);
     let $submitButton = $(this);
     let originalText = $submitButton.html();
@@ -100,7 +100,7 @@ $("#avilableTemplateSave").click(function(){
                 form.reset()
                 $submitButton.html(originalText);
                 $submitButton.prop('disabled', false);
-                window.location.reload();                
+                window.location.reload();
             } else {
                 $.each(response.message, function (field, messages) {
                     $('#' + field + 'Error').text(messages[0]).show();
@@ -127,7 +127,7 @@ $(document).on('click', '.addadmincorospondence', function (e) {
 });
 $(document).on('click', '#viewRemarks', function (e) {
     var remarks = $(this).attr('data-remarks');
-    
+
     $(".remrksText").html(remarks)
     $("#remarksModel").modal('show');
 });
@@ -137,15 +137,15 @@ $(document).on('click', '.delete-credential', function (e) {
     let $deleteButton = $(this);
     let confirmMsg = "Are you sure you want to delete this credential?";
 
-    confirmDelete(deleteUrl, confirmMsg, function(response) {
+    confirmDelete(deleteUrl, confirmMsg, function (response) {
         // Success callback
         $(".credentials").html("");
         if (response.html && response.html.trim() !== '') {
 
             $(".credentials").html(response.html);
         }
-              
-    }, function(response) {
+
+    }, function (response) {
         // Error callback (optional)
         console.log("Failed to delete: " + response.message);
     });
@@ -156,15 +156,15 @@ $(document).on('click', '.delete-sms', function (e) {
     let $deleteButton = $(this);
     let confirmMsg = "Are you sure you want to delete this sms?";
 
-    confirmDelete(deleteUrl, confirmMsg, function(response) {
+    confirmDelete(deleteUrl, confirmMsg, function (response) {
         // Success callback
         $(".credentials").html("");
         if (response.html && response.html.trim() !== '') {
 
             $(".smsList").html(response.html);
         }
-              
-    }, function(response) {
+
+    }, function (response) {
         // Error callback (optional)
         console.log("Failed to delete: " + response.message);
     });
@@ -209,7 +209,7 @@ $(document).on("click", "#saveSms", function () {
             var errors = xhr.responseJSON.errors;
 
             if (errors) {
-                $.each(errors, function(field, messages) {
+                $.each(errors, function (field, messages) {
                     $form.find('[name="' + field + '"]').addClass('is-invalid');
                     $form.find('#' + field + 'Error').text(messages[0]).show();
                 });
@@ -229,7 +229,7 @@ $(document).on("click", "#saveCredential", function () {
     let originalText = $submitButton.html();
     $submitButton.text('Wait...');
     $submitButton.prop('disabled', true);
-    
+
     $.ajax({
         type: 'POST',
         url: $("#credentialForm").attr('action'),
@@ -259,7 +259,7 @@ $(document).on("click", "#saveCredential", function () {
             var errors = xhr.responseJSON.errors;
 
             if (errors) {
-                $.each(errors, function(field, messages) {
+                $.each(errors, function (field, messages) {
                     $('#' + field + 'Error').text(messages[0]).show();
                     $('[name="' + field + '"]').addClass('is-invalid');
                 });
@@ -272,7 +272,7 @@ $(document).on("click", "#saveCredential", function () {
     });
 });
 $(document).on('click', '.addCredential', function (e) {
-   
+
     let $form = $("#credentialForm"); // Use the form's direct ID
     $('#credentialForm')[0].reset();
     $form.find('.error').text('');
@@ -286,4 +286,28 @@ $(document).on('click', '.addSms', function (e) {
     $form.find('.error').text('');
     $form.find('.is-invalid').removeClass('is-invalid');
     $("#smsModel").modal('show');
+});
+$('.switch-input').change(function () {
+    let isChecked = $(this).is(':checked');
+    let corrospondanceId = $(this).attr('data-corrospondanceId');
+    let $checkbox = $(this);
+    if (isChecked == 1) {
+        $.ajax({
+            url: unlockurl,
+            method: "POST",
+            data: {
+                "_token": unlockToken,
+                "id": corrospondanceId,
+                "isRead": isChecked ? 1 : 0
+            },
+            success: function (response) {
+                swal("Success", response.message, "success");
+            },
+            error: function (xhr, status, error) {
+                swal("Error", "An error occurred: " + error, "error");
+                // $checkbox.prop('checked',
+                //     initialState); // Revert checkbox state
+            }
+        });
+    }
 });

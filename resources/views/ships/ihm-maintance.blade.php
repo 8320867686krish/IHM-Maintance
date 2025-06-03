@@ -79,7 +79,7 @@
                     <div class="card-body mb-4">
                         @can('ships.edit')
 
-                        <a href="#" class="btn btn-primary float-right addadminShoreDp mb-3 ml-2">Add</a>
+                        <a href="#" class="btn btn-primary float-right addadminShoreDp mb-3 ml-2" title="Add">Add</a>
                         @endcan
                         <div class="table-responsive">
 
@@ -121,7 +121,7 @@
                     <div class="card-body mb-4">
                         @can('ships.edit')
 
-                        <a href="#" class="btn btn-primary float-right addadmineditdesignatedPerson mb-3 ml-2">Add</a>
+                        <a href="#" title="Add" class="btn btn-primary float-right addadmineditdesignatedPerson mb-3 ml-2">Add</a>
                         @endcan
                         <div class="table-responsive">
                             <table class="table table-striped table-bordered first" id="admindprecoredsTable">
@@ -274,7 +274,7 @@
                     <div class="card-body mb-4">
                         @can('ships.edit')
                         <a href="#"
-                            class="btn btn-primary float-right btn addMajorBtn mb-4">Add</a>
+                            class="btn btn-primary float-right btn addMajorBtn mb-4" title="Add">Add</a>
                         @endcan
                         <div class="table-responsive">
 

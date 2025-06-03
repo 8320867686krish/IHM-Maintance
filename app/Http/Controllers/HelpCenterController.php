@@ -53,7 +53,6 @@ class HelpCenterController extends Controller
             $admincorrespondence = [];
         }
 
-
         $credentials = credential::query();
         if ($currentUserRoleLevel > 1) {
             $credentials->where('hazmat_companies_id', $user['hazmat_companies_id']);
@@ -136,8 +135,14 @@ class HelpCenterController extends Controller
             $image = $this->upload($request, 'operation_manual', 'uploads/avilable/');
             $post['operation_manual'] = $image;
         }
+        
         $configration = configration::updateOrCreate(['id' => $request->input('id')], $post);
         return response()->json(['isStatus' => true, 'message' => 'save successfully']);
+    }
+    public function readasmarkcorrospondance(Request $request){
+        $post = $request->input();
+       Correspondence::where('id',$post['id'])->update(['isRead'=>$post['isRead']]);
+       return response()->json(['isStatus' => true, 'message' => 'save successfully']);
     }
     public function correspondenceSave(Request $request)
     {

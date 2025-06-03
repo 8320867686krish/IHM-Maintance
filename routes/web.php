@@ -48,7 +48,7 @@ Route::get('/allshipsData/{type}/{selectedDate}', [dashobardController::class, '
 Route::middleware('auth')->group(function () {
     Route::get('profile',[dashobardController::class,'profile'])->name('profile');
     Route::post('profile/save',[dashobardController::class,'saveProfile'])->name('profile.save');
-
+    Route::post('isread/corospondance',[HelpCenterController::class,'readasmarkcorrospondance'])->name('readasmarkcorrospondance');
     Route::get('client-company/{id}', [DashobardController::class, 'clientcompany'])->name('clientcompany');
     Route::get('client-company/ships/{id}', [DashobardController::class, 'clientcompanyShips'])->name('clientcompany.ships');
     Route::get('ship-dashboard/{id}', [DashobardController::class, 'shipDashboard'])->name('ship.dashboard');

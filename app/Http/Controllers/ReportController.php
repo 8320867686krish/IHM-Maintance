@@ -106,7 +106,7 @@ class ReportController extends Controller
         // Set header and footer
 
         // Add Table of Contents
-        $stylesheet = file_get_contents('public/assets/mpdf.css');
+        $stylesheet = file_get_contents('assets/mpdf.css');
 
         $mpdf->WriteHTML($stylesheet, \Mpdf\HTMLParserMode::HEADER_CSS);
         $shipImagePath = asset('uploads/ship/' . $projectDetail['ship_image']);

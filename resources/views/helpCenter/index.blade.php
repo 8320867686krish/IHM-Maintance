@@ -19,7 +19,7 @@
                 <li class="nav-item">
                     <a class="nav-link active show" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Correspondence With Ship / Client</a>
                 </li>
-             
+
                 @if($currentUserRoleLevel != 1)
                 <li class="nav-item">
                     <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Hazmat Company Credentials</a>
@@ -55,6 +55,7 @@
                                 @endif
                                 <th>Attachment</th>
                                 <th>Content</th>
+                               
                             </tr>
                         </thead>
                         <tbody id="admincorospondanceList">
@@ -80,6 +81,9 @@
                                 @endif
                                 <th>Attachment</th>
                                 <th>Content</th>
+                                  @if($currentUserRoleLevel == 2)
+                                 <th width="5%">Marked</th>
+                                 @endif
                             </tr>
                         </thead>
                         <tbody id="corospondenceList">
@@ -173,7 +177,10 @@
 <script src="{{ asset('assets/js/correspondences.js')}}"></script>
 
 <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
-
+<script>
+    var unlockurl = "{{route('readasmarkcorrospondance')}}";
+    var unlockToken = "{{ csrf_token() }}";
+</script>
 <script>
     $(document).ready(function() {
         var currentUserRoleLevel = "{{$currentUserRoleLevel}}";
