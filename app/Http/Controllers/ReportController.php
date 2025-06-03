@@ -126,8 +126,8 @@ class ReportController extends Controller
             'suppress' => false, // This should prevent a new page from being created before and after TOC
             'toc-resetpagenum' => 1,
         ]);
-        
-        $html = view('main-report.ihmpart1')->render();
+        $sectionText = 'Initial IHM Part1 Summary Report';
+        $html = view('main-report.ihmpart1',compact('sectionText'))->render();
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
 
         $hazmats = Hazmat::get();
@@ -216,7 +216,9 @@ class ReportController extends Controller
                 }
             }
         }
-
+        $sectionText = 'IHM Maintance Report';
+        $html = view('main-report.ihmpart1',compact('sectionText'))->render();
+        $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
         $html = view('main-report.IHMPartAddendum', compact('filteredResultsAddendum1', 'filteredResultsAddendum2', 'filteredResultsAddendum3'))->render();
         $mpdf->AddPage('L'); // Set landscape mode for the inventory page
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
