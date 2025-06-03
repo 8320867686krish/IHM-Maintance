@@ -106,7 +106,7 @@ class ReportController extends Controller
         // Set header and footer
 
         // Add Table of Contents
-        $stylesheet = file_get_contents('assets/mpdf.css');
+        $stylesheet = file_get_contents('public/assets/mpdf.css');
 
         $mpdf->WriteHTML($stylesheet, \Mpdf\HTMLParserMode::HEADER_CSS);
         $shipImagePath = asset('uploads/ship/' . $projectDetail['ship_image']);
@@ -115,6 +115,19 @@ class ReportController extends Controller
         $shipImage = 'data:image/png;base64,' . $shipImageData;
 
         $html = view('main-report.cover', compact('projectDetail', 'shipImage', 'shipImagePath'))->render();
+        $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
+         $mpdf->TOCpagebreak();
+        $mpdf->TOCpagebreakByArray([
+            'links' => true,
+            'toc-preHTML' => '',
+            'toc-bookmarkText' => 'Table of Contents',
+            'level' => 0,
+            'page-break-inside' => 'avoid',
+            'suppress' => false, // This should prevent a new page from being created before and after TOC
+            'toc-resetpagenum' => 1,
+        ]);
+        
+        $html = view('main-report.ihmpart1')->render();
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
 
         $hazmats = Hazmat::get();
