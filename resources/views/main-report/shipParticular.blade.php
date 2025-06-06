@@ -222,7 +222,7 @@
             <tbody>
                 <tr>
                     <td><b>Name</b></td>
-                    <td>SOS INDIA</td>
+                    <td>{{$projectDetail['client']['hazmatCompaniesId']['name']}}</td>
                 </tr>
 
                 <tr>
