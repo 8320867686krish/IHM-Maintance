@@ -29,6 +29,88 @@ class ReportController extends Controller
 {
     //
     use PdfGenerator;
+    public function mdSDRecord($ship_id)
+    {
+       
+        $mpdf = new Mpdf([
+            'format' => 'A4',
+            'margin_left' => 10,
+            'margin_right' => 10,
+            'margin_top' => 15,
+            'margin_bottom' => 20,
+            'margin_header' => 0,
+            'margin_footer' => 10,
+            'defaultPagebreakType' => 'avoid',
+            'imageProcessor' => 'GD', // or 'imagick' if you have Imagick installed
+            'jpeg_quality' => 75, // Set the JPEG quality (0-100)
+            'shrink_tables_to_fit' => 1, // Shrink tables to fit the page width
+            'tempDir' => __DIR__ . '/tmp', // Set a temporary directory for mPDF
+            'default_font' => 'dejavusans',
+
+
+            'allow_output_buffering' => true,
+        ]);
+        $mpdf->SetCompression(true);
+
+        $mpdf->use_kwt = true;
+
+        $mpdf->defaultPageNumStyle = '1';
+        $mpdf->SetDisplayMode('fullpage');
+        $mpdf->h2toc = ['H2' => 0, 'H3' => 1];
+        $mpdf->h2bookmarks = ['H2' => 0, 'H3' => 1];
+        $stylesheet = file_get_contents('public/assets/mpdf.css');
+        $mpdf->WriteHTML($stylesheet, \Mpdf\HTMLParserMode::HEADER_CSS);
+        $mpdf->TOCpagebreak();
+        $mpdf->TOCpagebreakByArray([
+            'links' => true,
+            'toc-preHTML' => '',
+            'toc-bookmarkText' => 'Table of Contents',
+            'level' => 0,
+            'page-break-inside' => 'avoid',
+            'suppress' => false, // This should prevent a new page from being created before and after TOC
+            'toc-resetpagenum' => 1,
+        ]);
+        $sectionText = 'MD Records';
+        $html = view('main-report.ihmpart1', compact('sectionText'))->render();
+        $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
+        $mdnoresults = PoOrderItemsHazmats::with(['makeModel:id,md_no,document1'])
+            ->where('ship_id', $ship_id)
+            ->whereNotNull('doc1')
+            ->get();
+        if (@$mdnoresults) {
+            foreach ($mdnoresults as $mdvalue) {
+
+                $filePathsum = public_path('images/modelDocument/') . $mdvalue['makeModel']['document1']['name'];
+                if ($mdvalue['makeModel']['document1']) {
+                    $titleHtml = '<h2 style="text-align:center;font-size:13px;font-weight:bold">Md Name ' . $mdvalue['makeModel']['md_no'] . '</h2>';
+                    $this->mergePdf($filePathsum, $titleHtml, $mpdf);
+                }
+            }
+        }
+        $mpdf->AddPage('P');
+        $sectionText = 'SD Records';
+        $html = view('main-report.ihmpart1', compact('sectionText'))->render();
+        $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
+        $sdocresults = PoOrderItemsHazmats::with(['makeModel:id,sdoc_no,document2'])
+            ->where('ship_id', $ship_id)
+            ->whereNotNull('doc2')
+            ->get();
+
+        if (@$sdocresults) {
+            foreach ($sdocresults as $sdValue) {
+                if (@$sdValue['makeModel']['document2']['name']) {
+                    $filePathsum1 = public_path('images/modelDocument/') . $sdValue['makeModel']['document2']['name'];
+                    if (file_exists($filePathsum1)) {
+                        $titleHtml = '<h2 style="text-align:center;font-size:13px;font-weight:bold">SDoC No.' . $sdValue['makeModel']['sdoc_no'] . '</h2>';
+                        $this->mergePdf($filePathsum1, $titleHtml, $mpdf);
+                    }
+                }
+            }
+        }
+        $mpdf->Output('IHM-Report.pdf', 'I'); // 'I' = inline view in browser
+
+
+    }
     public function genrateReport(Request $request)
     {
         $version = 1;
@@ -116,7 +198,7 @@ class ReportController extends Controller
 
         $html = view('main-report.cover', compact('projectDetail', 'shipImage', 'shipImagePath'))->render();
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
-         $mpdf->TOCpagebreak();
+        $mpdf->TOCpagebreak();
         $mpdf->TOCpagebreakByArray([
             'links' => true,
             'toc-preHTML' => '',
@@ -127,7 +209,7 @@ class ReportController extends Controller
             'toc-resetpagenum' => 1,
         ]);
         $sectionText = 'Initial IHM Part1 Summary Report';
-        $html = view('main-report.ihmpart1',compact('sectionText'))->render();
+        $html = view('main-report.ihmpart1', compact('sectionText'))->render();
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
 
         $hazmats = Hazmat::get();
@@ -203,10 +285,10 @@ class ReportController extends Controller
         $filteredResultsAddendum3 = $checkHazmatIHMAddendum->filter(function ($item) {
             return $item->ihm_table_type == 'i-3';
         });
-        $summary = Summary::where('ship_id',$ship_id)->get();
+        $summary = Summary::where('ship_id', $ship_id)->get();
         if (@$summary) {
             foreach ($summary as $sumvalue) {
-                $filePathsum = public_path('uploads/shipsVscp') . "/" . $ship_id."/summary/".basename($sumvalue['document']);
+                $filePathsum = public_path('uploads/shipsVscp') . "/" . $ship_id . "/summary/" . basename($sumvalue['document']);
 
 
                 if (file_exists($filePathsum) && @$sumvalue['document']) {
@@ -217,7 +299,7 @@ class ReportController extends Controller
             }
         }
         $sectionText = 'IHM Maintance Report';
-        $html = view('main-report.ihmpartMaintance1',compact('sectionText'))->render();
+        $html = view('main-report.ihmpartMaintance1', compact('sectionText'))->render();
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
         $html = view('main-report.IHMPartAddendum', compact('filteredResultsAddendum1', 'filteredResultsAddendum2', 'filteredResultsAddendum3'))->render();
         $mpdf->AddPage('L'); // Set landscape mode for the inventory page
@@ -311,21 +393,21 @@ class ReportController extends Controller
 
     public function generateIHMSticker($ship_id)
     {
-        $ship = Ship::select('ship_name')->where('id',$ship_id)->find($ship_id);
+        $ship = Ship::select('ship_name')->where('id', $ship_id)->find($ship_id);
         $checks = CheckHazmat::with(['check', 'hazmat'])
             ->where('ship_id', $ship_id)
             ->whereNotNull('hazmat_type')
             ->get();
-    
+
         if ($checks->count() <= 0) {
             return redirect()->back()->with('message', 'This deck check not found.');
         }
-    
+
         // Initialize Dompdf
         $options = new Options();
         $options->set('isHtml5ParserEnabled', true);
         $dompdf = new Dompdf($options);
-    
+
         // HTML content for PDF
         $html = '<!DOCTYPE html>
             <html lang="en">
@@ -352,54 +434,53 @@ class ReportController extends Controller
                 </style>
             </head>
             <body>';
-    
-            $html .= '<div><center><h3>Ship : ' . htmlspecialchars($ship['ship_name']) . '</h3></center></div>';
-            $html .= '<table>';
-    
+
+        $html .= '<div><center><h3>Ship : ' . htmlspecialchars($ship['ship_name']) . '</h3></center></div>';
+        $html .= '<table>';
+
         // Track columns per row
         $colspan = 2;
         $counter = 0;
-        
+
         foreach ($checks as $key => $check) {
             if ($counter % $colspan == 0) {
                 $html .= '<tr>'; // Open new row
             }
-    
+
             $html .= '<td width="50%">'; // Each column is 50% width
-    
+
             $html .= '<div><span class="left">Check Name:</span> <span class="right">' . $check['check']['name'] . '</span></div>';
             $html .= '<div style="margin-top: 5px;"><span class="left">Location:</span> <span class="right">' . $check['location'] . '</span></div>';
-            
+
             // Hazmat Type (Left) & Hazmat (Right)
             $html .= '<div style="margin-top: 5px;"><span class="left">Hazmat Type:</span> <span class="right">' . $check['hazmat_type'] . '</span></div>';
             $html .= '<div style="margin-top: 5px;"><span class="left">Hazmat:</span> <span class="right">' . $check['hazmat']['name'] . '</span></div>';
-    
+
             $html .= '</td>'; // Close column
-    
+
             if (($counter + 1) % $colspan == 0 || $key == $checks->count() - 1) {
                 $html .= '</tr>'; // Close row
             }
-    
+
             $counter++;
         }
-    
+
         $html .= '</table>';
         $html .= '</body></html>';
-    
+
         // Load HTML content into Dompdf
         $dompdf->loadHtml($html);
-    
+
         // Set paper size and orientation
         $dompdf->setPaper('A4', 'portrait');
-    
+
         // Render PDF
         $dompdf->render();
-    
+
         // Output PDF as attachment
         return response($dompdf->output(), 200)
             ->header('Content-Type', 'application/pdf')
             ->header('Content-Disposition', 'attachment; filename="qr_codes_' . $ship["ship_name"] . '.pdf"');
-
     }
 
     protected function mergeImageToPdf($imagePath, $title, $mpdf, $page = null)

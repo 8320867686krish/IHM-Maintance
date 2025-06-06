@@ -4,10 +4,10 @@
 <div class="container-fluid dashboard-content">
     <x-page-header title="Initial Ihm Records"></x-page-header>
     <div class="row">
-    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mb-2">
-        <a href="{{url('generate-IHM-sticker/'.$ship_id)}}"><button class="btn btn-primary float-right ml-2">Generate IHM Sticker </button></a>
-        <a href="{{url('summeryReport/'.$ship_id)}}"><button class="btn btn-primary float-right">Summary Report</button></a>
-    </div>
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mb-2">
+            <a href="{{url('generate-IHM-sticker/'.$ship_id)}}"><button class="btn btn-primary float-right ml-2">Generate IHM Sticker </button></a>
+            <a href="{{url('summeryReport/'.$ship_id)}}"><button class="btn btn-primary float-right">Summary Report</button></a>
+        </div>
     </div>
     <div class="row">
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
@@ -86,7 +86,7 @@
                             </thead>
                             <tbody id="PreviousAttachmentList">
                                 @if($previousAttachment)
-                                    <x-previous-attachment-list :previousAttachment=$previousAttachment></x-previous-attachment-list>
+                                <x-previous-attachment-list :previousAttachment=$previousAttachment></x-previous-attachment-list>
                                 @endif
                             </tbody>
 
@@ -143,6 +143,23 @@
             </div>
         </div>
     </div>
+
+    <div class="row">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <div class="card">
+                <div class="card-body mb-4">
+                    <h5>MD & SD Recort Report</h5>
+                    <div class="col-12">
+                        <div class="form-group">
+                            <a href="{{ url('md-sd-records/'.$ship->id) }}" target="_blank"><button class="btn btn-primary float-right mb-3" type="button" id="genratereportbtn">Download MD & SD </button></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 </div>
 @endsection
 @push('js')
