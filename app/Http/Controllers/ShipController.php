@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ShipRequest;
+use App\Jobs\sendUserRegisterMail;
 use App\Models\Brifing;
 use App\Models\CheckHazmat;
 use App\Models\ClientCompany;
@@ -197,9 +198,21 @@ class ShipController extends Controller
                     }
                 }
             }
-
-            $message = empty($id) ? "Ship added successfully" : "Ship updated successfully";
             DB::commit(); // Commit the transaction
+            $message = empty($id) ? "Ship added successfully" : "Ship updated successfully";
+             $userMailData = [
+                'name' => $inputData['name'],
+                'last_name' =>  $inputData['last_name'],
+                'email' => $inputData['email'],
+                'password' => $inputData['password'],
+            ];
+            try {
+                dispatch(new sendUserRegisterMail($userMailData));
+                return response()->json(['isStatus' => true, 'message' => $message]);
+            } catch (\Exception $e) {
+                return response()->json(['isStatus' => false, 'message' => 'User created successfully, but failed to send welcome email']);
+            }
+          
 
             return response()->json(['isStatus' => true, 'message' => $message]);
         } catch (\Throwable $th) {
