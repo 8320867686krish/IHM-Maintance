@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UserRequest;
+use App\Jobs\sendUserRegisterMail;
 use App\Models\hazmatCompany;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
@@ -76,6 +77,20 @@ class UserController extends Controller
           
 
             $message = empty($id) ? "User created successfully" : "User updated successfully";
+               $userMailData = [
+                    'name'=> $user->name,
+                    'last_name' => $user->last_name,
+                    'email' => $user->email,
+                    'password' => $inputData['password'],
+                ];
+                try{
+                     dispatch(new sendUserRegisterMail($userMailData));
+                      return response()->json(['isStatus' => true, 'message' => $message]);
+                }catch(\Exception $e){
+                      return response()->json(['isStatus' => false, 'message' => 'User created successfully, but failed to send welcome email']);
+
+                }
+              
 
             // return redirect('users')->with('message', $message);
             return response()->json(['isStatus' => true, 'message' => $message]);

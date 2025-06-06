@@ -18,6 +18,7 @@ class hazmatCompany extends Model
         'phone',
         'logo',
         'briefing_plan',
-        'training_material'
+        'training_material',
+        'address'
     ];
 }
