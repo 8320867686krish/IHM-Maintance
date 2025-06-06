@@ -92,9 +92,6 @@
         </div>
         <div class="btn-container">
             <a href="{{ route('login') }}" class="btn">Login</a>
-            @if ($user['isAppAccess'])
-                <a href="{{ route('login') }}" class="btn">Download App</a>
-            @endif
         </div>
         <p class="card-text mt-3">This exclusive offer is our way of saying thank you for being a valued member of our
             community. Whether you've had your eye on that must-have item or you're planning to explore our latest
