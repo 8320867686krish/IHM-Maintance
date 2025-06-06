@@ -31,7 +31,7 @@ class ReportController extends Controller
     use PdfGenerator;
     public function mdSDRecord($ship_id)
     {
-       
+
         $mpdf = new Mpdf([
             'format' => 'A4',
             'margin_left' => 10,
@@ -79,11 +79,13 @@ class ReportController extends Controller
             ->get();
         if (@$mdnoresults) {
             foreach ($mdnoresults as $mdvalue) {
+                if (@$mdvalue['makeModel']['document1']['name']) {
 
-                $filePathsum = public_path('images/modelDocument/') . $mdvalue['makeModel']['document1']['name'];
-                if ($mdvalue['makeModel']['document1']) {
-                    $titleHtml = '<h2 style="text-align:center;font-size:13px;font-weight:bold">Md Name ' . $mdvalue['makeModel']['md_no'] . '</h2>';
-                    $this->mergePdf($filePathsum, $titleHtml, $mpdf);
+                    $filePathsum = public_path('images/modelDocument/') . $mdvalue['makeModel']['document1']['name'];
+                    if ($mdvalue['makeModel']['document1']) {
+                        $titleHtml = '<h2 style="text-align:center;font-size:13px;font-weight:bold">Md Name ' . $mdvalue['makeModel']['md_no'] . '</h2>';
+                        $this->mergePdf($filePathsum, $titleHtml, $mpdf);
+                    }
                 }
             }
         }
