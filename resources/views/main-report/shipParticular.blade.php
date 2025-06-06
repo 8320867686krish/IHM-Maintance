@@ -221,28 +221,22 @@
         <table>
             <tbody>
                 <tr>
-                    <td><b>Name</b></td>
+                    <td><b>Company Name</b></td>
                     <td>{{$projectDetail['client']['hazmatCompaniesId']['name']}}</td>
                 </tr>
-
-                <tr>
-                    <td><b>Initials</b></td>
-                    <td>SOS</td>
-                </tr>
-
-                <tr>
-                    <td><b>Company</b></td>
-                    <td>SOS INDIA PRIVATE LIMITED</td>
-                </tr>
-
                 <tr>
                     <td><b>Address</b></td>
-                    <td>GROUND FLOOR,OFFICE NO-46,AGARWAL TRADE CENTRE,PLOT NO62,SECTOR-11,CBD BELAPUR ,NAVI MUMBAI</td>
+                    <td>-</td>
                 </tr>
 
                 <tr>
-                    <td><b>Position</b></td>
-                    <td>IHM SERVICE SUPPLIER</td>
+                    <td><b>Phone</b></td>
+                    <td>{{$projectDetail['client']['hazmatCompaniesId']['phone']}}</td>
+                </tr>
+
+                 <tr>
+                    <td><b>Email</b></td>
+                    <td>{{$projectDetail['client']['hazmatCompaniesId']['email']}}</td>
                 </tr>
 
                 <tr>
