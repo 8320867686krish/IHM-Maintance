@@ -105,7 +105,7 @@
             <div class="card">
                 <div class="card-body">
 
-                    <form id="generatePdfForm" action="http://127.0.0.1:8000/report">
+                    <form id="generatePdfForm" action="{{route('report')}}">
                         @csrf
                         <span class="dashboard-spinner spinner-sm" id="spinShow" style="display: none;  position: absolute;top: 50%;left: 35%;transform: translate(-50%, -50%);z-index:999999"></span>
                         <div class="row">
