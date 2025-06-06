@@ -21,7 +21,7 @@ class ClientCompanyController extends Controller
         $role_level = Auth::user()->roles->first()->level;
         $user =  Auth::user();
         if ($role_level == 2) {
-            $clients = ClientCompany::with(['hazmatCompaniesId', 'userDetail'])->where('hazmat_companies_id', $user['hazmat_companies_id'])->get();
+            $clients = ClientCompany::with(['hazmatCompaniesId', 'userDetail'])->where('hazmat_companies_id', $user['id'])->get();
         }
         if ($role_level == 3) {
             $clients = ClientCompany::with(['hazmatCompaniesId', 'userDetail'])->where('hazmat_companies_id', $user['hazmat_companies_id'])->where('created_by', $user->id)->get();
