@@ -151,7 +151,7 @@
                     <h5>MD & SD Recort Report</h5>
                     <div class="col-12">
                         <div class="form-group">
-                            <a href="{{ url('md-sd-records/'.$ship->id) }}" target="_blank"><button class="btn btn-primary float-right mb-3" type="button" id="genratereportbtn">Download MD & SD </button></a>
+                            <a href="{{ url('md-sd-records/'.$ship->id) }}" target="_blank"><button class="btn btn-primary float-right mb-3"  id="genratereportbtn">Download MD & SD </button></a>
                         </div>
                     </div>
                 </div>
