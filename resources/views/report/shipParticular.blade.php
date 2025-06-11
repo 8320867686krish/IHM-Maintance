@@ -148,7 +148,7 @@
                     <p class="sufont">Ship Manager Name</p>
                 </td>
                 <td>
-                    <p class="sufont">{{ $shipDetail['client']->manager_name }}</p>
+                    <p class="sufont">{{ $shipDetail['manager_name_initial'] }}</p>
                 </td>
             </tr>
             
