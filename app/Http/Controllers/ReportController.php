@@ -185,7 +185,7 @@ class ReportController extends Controller
         // Set header and footer
 
         // Add Table of Contents
-        $stylesheet = file_get_contents('assets/mpdf.css');
+        $stylesheet = file_get_contents('public/assets/mpdf.css');
 
         $mpdf->WriteHTML($stylesheet, \Mpdf\HTMLParserMode::HEADER_CSS);
         $shipImagePath = public_path('uploads/ship/' . $projectDetail['ship_image']);
@@ -240,29 +240,29 @@ class ReportController extends Controller
                 $query->where('hazmat_type', 'PCHM')->orWhere('hazmat_type', 'Contained');
             });
         }])->where('ship_id', $ship_id)->get();
-        // foreach ($decks as $key => $value) {
-        //     if (count($value['checks']) > 0) {
-        //         $html = $this->drawDigarm($value);
-        //         $fileNameDiagram = $this->genrateDompdf($html['html'], $html['ori']);
-        //         //    $mpdf = new Mpdf(['orientation' => 'L']); // Ensure landscape mode
-        //         $mpdf->setSourceFile($fileNameDiagram);
+        foreach ($decks as $key => $value) {
+            if (count($value['checks']) > 0) {
+                $html = $this->drawDigarm($value);
+                $fileNameDiagram = $this->genrateDompdf($html['html'], $html['ori']);
+                //    $mpdf = new Mpdf(['orientation' => 'L']); // Ensure landscape mode
+                $mpdf->setSourceFile($fileNameDiagram);
 
-        //         $pageCount = $mpdf->setSourceFile($fileNameDiagram);
-        //         for ($i = 1; $i <= $pageCount; $i++) {
+                $pageCount = $mpdf->setSourceFile($fileNameDiagram);
+                for ($i = 1; $i <= $pageCount; $i++) {
 
-        //             $mpdf->AddPage($html['ori']);
-        //             if ($key == 0) {
-        //                 $mpdf->WriteHTML('<h3 style="font-size:14px">2.1 Location Diagram of Contained HazMat & PCHM.</h3>');
-        //             }
-        //             $mpdf->WriteHTML('<h5 style="font-size:14px;">Area: ' . $value['name'] . '</h5>');
+                    $mpdf->AddPage($html['ori']);
+                    if ($key == 0) {
+                        $mpdf->WriteHTML('<h3 style="font-size:14px">2.1 Location Diagram of Contained HazMat & PCHM.</h3>');
+                    }
+                    $mpdf->WriteHTML('<h5 style="font-size:14px;">Area: ' . $value['name'] . '</h5>');
 
-        //             $templateId = $mpdf->importPage($i);
-        //             $mpdf->useTemplate($templateId, null, null, $mpdf->w, null); // Use the template with appropriate dimensions
+                    $templateId = $mpdf->importPage($i);
+                    $mpdf->useTemplate($templateId, null, null, $mpdf->w, null); // Use the template with appropriate dimensions
 
-        //         }
-        //         unlink($fileNameDiagram);
-        //     }
-        // }
+                }
+                unlink($fileNameDiagram);
+            }
+        }
         $summary = partManuel::where('ship_id', $ship_id)->get();
         $ga_plan_pdf = $ship_id ."/".$projectDetail['ga_plan_pdf'];
         $gaplan =  public_path('uploads/shipsVscp/' . $ga_plan_pdf);
