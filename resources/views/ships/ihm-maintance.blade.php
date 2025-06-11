@@ -404,10 +404,15 @@
             success: function(response, status, xhr) {
                 let fileName = xhr.getResponseHeader('X-File-Name');
                 $(".bg-overlay").hide();
-                if (!fileName) {
-                    console.log("dd");
-                    fileName = projectId + '.pdf';
-                }
+
+    // Fallback to Content-Disposition
+    if (!fileName) {
+        const disposition = xhr.getResponseHeader('Content-Disposition');
+        if (disposition && disposition.includes('filename=')) {
+            const matches = disposition.match(/filename="([^"]+)"/);
+            fileName = matches ? matches[1] : null;
+        }
+    }
                 let blob = new Blob([response], {
                     type: 'application/pdf'
                 });

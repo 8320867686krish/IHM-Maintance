@@ -655,7 +655,6 @@
         const url = window.location.href;
         const segments = url.split('/');
         const projectId = segments[segments.length - 1];
-        alert(projectId);
         let sidebar = $("#mainSidebar");
         let isSidebarVisible = true;
 
