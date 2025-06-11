@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Spatie\PdfToImage\Pdf;
+
 use App\Models\Brifing;
 use App\Models\CheckHazmat;
 use App\Models\Deck;
@@ -20,7 +22,11 @@ use Dompdf\Options;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\FacadesLog;
 use Mpdf\Mpdf;
+use setasign\Fpdi\Fpdi;
+
 
 ini_set("pcre.backtrack_limit", "1000000");
 ini_set('exif.decode_jpeg', '0');
@@ -41,26 +47,22 @@ class ReportController extends Controller
             'margin_header' => 0,
             'margin_footer' => 10,
             'defaultPagebreakType' => 'avoid',
-            'imageProcessor' => 'GD', // or 'imagick' if you have Imagick installed
-            'jpeg_quality' => 75, // Set the JPEG quality (0-100)
-            'shrink_tables_to_fit' => 1, // Shrink tables to fit the page width
-            'tempDir' => __DIR__ . '/tmp', // Set a temporary directory for mPDF
+            'imageProcessor' => 'GD',
+            'jpeg_quality' => 75,
+            'shrink_tables_to_fit' => 1,
+            'tempDir' => __DIR__ . '/tmp',
             'default_font' => 'dejavusans',
-
-
             'allow_output_buffering' => true,
         ]);
         $mpdf->SetCompression(true);
-
         $mpdf->use_kwt = true;
-
         $mpdf->defaultPageNumStyle = '1';
         $mpdf->SetDisplayMode('fullpage');
         $mpdf->h2toc = ['H2' => 0, 'H3' => 1];
         $mpdf->h2bookmarks = ['H2' => 0, 'H3' => 1];
         $stylesheet = file_get_contents('public/assets/mpdf.css');
         $mpdf->WriteHTML($stylesheet, \Mpdf\HTMLParserMode::HEADER_CSS);
-        $mpdf->TOCpagebreak();
+
         $mpdf->TOCpagebreakByArray([
             'links' => true,
             'toc-preHTML' => '',
@@ -109,31 +111,26 @@ class ReportController extends Controller
                 }
             }
         }
-        $mpdf->Output('IHM-Report.pdf', 'I'); // 'I' = inline view in browser
-
-
+        $mpdf->Output('IHM-Report.pdf', 'I');
     }
     public function genrateReport(Request $request)
     {
         $version = 1;
         $post = $request->input();
         $ship_id = $post['ship_id'];
-        $logoPath = public_path('assets/images/logo.png');
-        $logoData = base64_encode(file_get_contents($logoPath));
-        $logo = 'data:image/png;base64,' . $logoData;
+        $logo = public_path('assets/images/logo.png');
 
         $date = date('y-m-d');
         $projectDetail = Ship::with('client.hazmatCompaniesId')->find($ship_id);
         $is_report_logo = $projectDetail['client']['is_report_logo'];
         if ($is_report_logo == 0) {
             $image = $projectDetail['client']['hazmatCompaniesId']['logo'];
-            $logoPath = public_path('uploads/hazmatCompany/' . $image);
+            $logo = public_path('uploads/hazmatCompany/' . $image);
         } else {
             $image = $projectDetail['client']['client_image'];
-            $logoPath = public_path('uploads/clientcompany/' . $image);
+            $logo = public_path('uploads/clientcompany/' . $image);
         }
-        $logoData = base64_encode(file_get_contents($logoPath));
-        $logo = 'data:image/png;base64,' . $logoData;
+
 
         $mpdf = new Mpdf([
             'format' => 'A4',
@@ -149,8 +146,6 @@ class ReportController extends Controller
             'shrink_tables_to_fit' => 1, // Shrink tables to fit the page width
             'tempDir' => __DIR__ . '/tmp', // Set a temporary directory for mPDF
             'default_font' => 'dejavusans',
-
-
             'allow_output_buffering' => true,
         ]);
         $mpdf->SetCompression(true);
@@ -166,7 +161,7 @@ class ReportController extends Controller
             <tr>
                 <td width="10%"><img src=' . $logo . ' width="50" /></td>
                 <td width="75%" align="center">' . $projectDetail['ship_name'] . '</td>
-                <td width="15%" style="text-align: right;">Current Version :' . $version . '</td>
+                <td width="15%" style="text-align: right;">&nbsp;</td>
         </tr>
         
         </table>';
@@ -190,42 +185,36 @@ class ReportController extends Controller
         // Set header and footer
 
         // Add Table of Contents
-        $stylesheet = file_get_contents('public/assets/mpdf.css');
+        $stylesheet = file_get_contents('assets/mpdf.css');
 
         $mpdf->WriteHTML($stylesheet, \Mpdf\HTMLParserMode::HEADER_CSS);
-        $shipImagePath = asset('uploads/ship/' . $projectDetail['ship_image']);
+        $shipImagePath = public_path('uploads/ship/' . $projectDetail['ship_image']);
 
-        $shipImageData = base64_encode(file_get_contents($shipImagePath));
-        $shipImage = 'data:image/png;base64,' . $shipImageData;
-
-        $html = view('main-report.cover', compact('projectDetail', 'shipImage', 'shipImagePath'))->render();
+        $html = view('main-report.cover', compact('projectDetail', 'shipImagePath'))->render();
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
-        $mpdf->TOCpagebreak();
+
         $mpdf->TOCpagebreakByArray([
             'links' => true,
-            'toc-preHTML' => '',
+            'toc-preHTML' => '<div class="toc_heading">Table of Contents</div>',
             'toc-bookmarkText' => 'Table of Contents',
             'level' => 0,
             'page-break-inside' => 'avoid',
-            'suppress' => false, // This should prevent a new page from being created before and after TOC
+            'suppress' => false,
             'toc-resetpagenum' => 1,
         ]);
-        $sectionText = 'Initial IHM Part1 Summary Report';
-        $html = view('main-report.ihmpart1', compact('sectionText'))->render();
+
+
+
+        // //ship particular
+        $html = view('main-report.shipParticular', compact('projectDetail'))->render();
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
 
         $hazmats = Hazmat::get();
         $html = view('main-report.abbreviation', compact('hazmats'))->render();
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
-        //ship particular
-        $html = view('main-report.shipParticular', compact('projectDetail'))->render();
-        $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
-
-        //DesignatedPerson
-        $designatedPersonShip = DesignatedPersionShip::with('designatedPersonDetail')->where('ship_id', $ship_id)->get();
-        $mergedData = $designatedPersonShip->pluck('designatedPersonDetail');
-
-        $html = view('main-report.designatedPerson', compact('mergedData'))->render();
+       
+        $sectionText = '3 Initial IHM Part1 Summary Report';
+        $html = view('main-report.ihmpart1', compact('sectionText'))->render();
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
 
         $checkHazmatIHMPart = CheckHazmat::with(relations: 'hazmat')->where('ship_id', $ship_id)->get();
@@ -251,30 +240,60 @@ class ReportController extends Controller
                 $query->where('hazmat_type', 'PCHM')->orWhere('hazmat_type', 'Contained');
             });
         }])->where('ship_id', $ship_id)->get();
-        foreach ($decks as $key => $value) {
-            if (count($value['checks']) > 0) {
-                $html = $this->drawDigarm($value);
-                $fileNameDiagram = $this->genrateDompdf($html['html'], $html['ori']);
-                //    $mpdf = new Mpdf(['orientation' => 'L']); // Ensure landscape mode
-                $mpdf->setSourceFile($fileNameDiagram);
+        // foreach ($decks as $key => $value) {
+        //     if (count($value['checks']) > 0) {
+        //         $html = $this->drawDigarm($value);
+        //         $fileNameDiagram = $this->genrateDompdf($html['html'], $html['ori']);
+        //         //    $mpdf = new Mpdf(['orientation' => 'L']); // Ensure landscape mode
+        //         $mpdf->setSourceFile($fileNameDiagram);
 
-                $pageCount = $mpdf->setSourceFile($fileNameDiagram);
-                for ($i = 1; $i <= $pageCount; $i++) {
+        //         $pageCount = $mpdf->setSourceFile($fileNameDiagram);
+        //         for ($i = 1; $i <= $pageCount; $i++) {
 
-                    $mpdf->AddPage($html['ori']);
-                    if ($key == 0) {
-                        $mpdf->WriteHTML('<h3 style="font-size:14px">2.1 Location Diagram of Contained HazMat & PCHM.</h3>');
+        //             $mpdf->AddPage($html['ori']);
+        //             if ($key == 0) {
+        //                 $mpdf->WriteHTML('<h3 style="font-size:14px">2.1 Location Diagram of Contained HazMat & PCHM.</h3>');
+        //             }
+        //             $mpdf->WriteHTML('<h5 style="font-size:14px;">Area: ' . $value['name'] . '</h5>');
+
+        //             $templateId = $mpdf->importPage($i);
+        //             $mpdf->useTemplate($templateId, null, null, $mpdf->w, null); // Use the template with appropriate dimensions
+
+        //         }
+        //         unlink($fileNameDiagram);
+        //     }
+        // }
+        $summary = partManuel::where('ship_id', $ship_id)->get();
+        $ga_plan_pdf = $ship_id ."/".$projectDetail['ga_plan_pdf'];
+        $gaplan =  public_path('uploads/shipsVscp/' . $ga_plan_pdf);
+        
+        if(file_exists($gaplan)){
+           
+            $this->mergeImageToPdf($gaplan, 'GA Plan', $mpdf);
+
+        }
+        if (@$summary) {
+            foreach ($summary as $index => $sumvalue) {
+                $filePathsum = public_path('uploads/shipsVscp') . "/" . $ship_id . "/partmanual/" . basename($sumvalue['document']);
+
+
+                if (file_exists($filePathsum) && @$sumvalue['document']) {
+                    if ($index == 0) {
+                        $titleHtml = '<h3 style="text-align:center;font-size:12pt">3.2 Supplement to initial IHM Part</h3>';
+                    } else {
+                        $titleHtml = "";
                     }
-                    $mpdf->WriteHTML('<h5 style="font-size:14px;">Area: ' . $value['name'] . '</h5>');
-
-                    $templateId = $mpdf->importPage($i);
-                    $mpdf->useTemplate($templateId, null, null, $mpdf->w, null); // Use the template with appropriate dimensions
-
+                    $this->mergePdf($filePathsum, $titleHtml, $mpdf);
                 }
-                unlink($fileNameDiagram);
             }
         }
-        //Addended IHM Part
+        $sectionText = '4 IHM Maintance Report';
+        $html = view('main-report.ihmpartMaintance1', compact('sectionText'))->render();
+        $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
+      
+      
+      
+        // //Addended IHM Part
         $checkHazmatIHMAddendum = PoOrderItemsHazmats::with(relations: 'hazmat')->where('ship_id', $ship_id)->whereNotNull('ihm_table_type')->get();
         $filteredResultsAddendum1 = $checkHazmatIHMAddendum->filter(function ($item) {
             return $item->ihm_table_type == 'i-1';
@@ -287,35 +306,30 @@ class ReportController extends Controller
         $filteredResultsAddendum3 = $checkHazmatIHMAddendum->filter(function ($item) {
             return $item->ihm_table_type == 'i-3';
         });
-        $summary = Summary::where('ship_id', $ship_id)->get();
-        if (@$summary) {
-            foreach ($summary as $sumvalue) {
-                $filePathsum = public_path('uploads/shipsVscp') . "/" . $ship_id . "/summary/" . basename($sumvalue['document']);
-
-
-                if (file_exists($filePathsum) && @$sumvalue['document']) {
-
-                    $titleHtml = '<h2 style="text-align:center;font-size:13px;font-weight:bold">Summary Attachment ' . $value['document'] . '</h2>';
-                    $this->mergePdf($filePathsum, $titleHtml, $mpdf);
-                }
-            }
-        }
-        $sectionText = 'IHM Maintance Report';
-        $html = view('main-report.ihmpartMaintance1', compact('sectionText'))->render();
-        $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
+        
+        
         $html = view('main-report.IHMPartAddendum', compact('filteredResultsAddendum1', 'filteredResultsAddendum2', 'filteredResultsAddendum3'))->render();
         $mpdf->AddPage('L'); // Set landscape mode for the inventory page
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
 
-        //shipstaff recored
+        $designatedPersonShip = DesignatedPersionShip::with('designatedPersonDetail')->where('ship_id', $ship_id)->get();
+        $mergedData = $designatedPersonShip->pluck('designatedPersonDetail');
+        $superDpResult = $mergedData->filter(function ($item) {
+            return $item->position == 'SuperDp';
+        });
+
+        $responsibleResult = $mergedData->filter(function ($item) {
+            return $item->position != 'SuperDp';
+        });
+         $html = view('main-report.designatedPerson', compact('responsibleResult','superDpResult'))->render();
+         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
+
+        // //shipstaff recored
         $exam = Exam::where('ship_id', $ship_id)->orderBy('id', 'desc')->get();
         $html = view('main-report.trainingRecored', compact('exam'))->render();
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
 
-        $crewBrifing = Brifing::where('ship_id', $ship_id)->orderBy('id', 'desc')->get();
-        $html = view('main-report.crew-briefing', compact('crewBrifing'))->render();
-        $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
-
+        
 
         $mdnoresults = DB::table('po_order_items_hazmats as p')
             ->join('make_models as m', 'm.id', '=', 'p.model_make_part_id')
@@ -357,13 +371,13 @@ class ReportController extends Controller
             foreach ($previousAttachment as $value) {
                 $filePath = public_path('uploads/previousattachment') . "/" . $value['attachment'];
                 if (file_exists($filePath) && @$value['attachment']) {
-                    $titleHtml = '<h2 style="text-align:center;font-size:13px;font-weight:bold">Previous Attachment ' . $value['attachment_name'] . '</h2>';
+                    $titleHtml = '<h4 style="text-align:center;font-size:13px;font-weight:bold">Previous Attachment ' . $value['attachment_name'] . '</h4>';
                     $this->mergePdf($filePath, $titleHtml, $mpdf);
                 }
             }
         }
 
-
+        $mpdf->Output('IHM-Report.pdf', 'I');
 
         // return response()->streamDownload(function () use ($mpdf) {
         //     echo $mpdf->Output('', 'S'); // S = return as string
@@ -514,6 +528,149 @@ class ReportController extends Controller
                 $tMargin = $mpdf->tMargin;
             }
             $mpdf->useTemplate($templateId, $lmargin, $tMargin, $size['width'] * $scale, $size['height'] * $scale);
+        }
+    }
+    protected function mergePdfAttachment($filePath, $title, $mpdf, $page = null)
+    {
+        Log::info("Starting merge for: {$filePath}");
+
+        // Validate input file
+        if (!file_exists($filePath)) {
+            Log::error("PDF file not found: {$filePath}");
+            throw new \Exception("PDF file not found: {$filePath}");
+        }
+        if (!is_readable($filePath)) {
+           Log:error("PDF file is not readable: {$filePath}");
+            throw new \Exception("PDF file is not readable: {$filePath}");
+        }
+        $fileContent = @file_get_contents($filePath, false, null, 0, 4);
+        if ($fileContent === false || $fileContent !== '%PDF') {
+            Log::error("Invalid PDF or unable to read: {$filePath}");
+            throw new \Exception("File is not a valid PDF: {$filePath}");
+        }
+
+        $mergedPdfPath = storage_path('app/merged_output_' . uniqid() . '.pdf');
+
+        // Process with Fpdi
+        $fpdi = new \setasign\Fpdi\Fpdi(); // Explicitly create new instance
+        try {
+            Log::info("Opening PDF file: {$filePath}");
+            $pageCount = $fpdi->setSourceFile($filePath);
+            if ($pageCount === false || $pageCount === 0) {
+                Log::error("Failed to load PDF: {$filePath}");
+                throw new \Exception("Invalid PDF file: {$filePath}");
+            }
+            Log::info("Page count: {$pageCount}");
+
+            for ($i = 1; $i <= $pageCount; $i++) {
+                Log::info("Importing page {$i}");
+                $template = $fpdi->importPage($i);
+                $size = $fpdi->getTemplateSize($template);
+                if (!is_array($size)) {
+                    Log::error("Invalid template size for page {$i}");
+                    continue;
+                }
+                $fpdi->AddPage($size['orientation'], [$size['width'], $size['height']]);
+                $fpdi->useTemplate($template);
+            }
+
+            Log::info("Writing merged PDF to: {$mergedPdfPath}");
+            $fpdi->Output('F', $mergedPdfPath);
+            if (!file_exists($mergedPdfPath) || filesize($mergedPdfPath) === 0) {
+                Log::error("Failed to create merged PDF or file is empty: {$mergedPdfPath}");
+                throw new \Exception("Merged PDF not created or empty");
+            }
+           Log::info("Generated merged PDF: {$mergedPdfPath}, Size: " . filesize($mergedPdfPath));
+        } catch (\Exception $e) {
+            Log::error("FPDI error with {$filePath}: " . $e->getMessage());
+            Log::info("Attempting image fallback for: {$filePath}");
+            unset($fpdi); // Ensure FPDI object is destroyed
+            $this->mergePdfAsImages($filePath, $title, $mpdf, $page);
+            return;
+        } finally {
+            unset($fpdi); // Explicitly destroy FPDI object
+        }
+
+        // Process with mPDF
+        try {
+            if (!is_readable($mergedPdfPath)) {
+                Log::error("Merged PDF is not readable: {$mergedPdfPath}");
+                throw new \Exception("Merged PDF is not readable: {$mergedPdfPath}");
+            }
+            Log::info("Opening merged PDF for mPDF: {$mergedPdfPath}");
+            $pageCount = $mpdf->setSourceFile($mergedPdfPath);
+            Log::info("Merged PDF page count: {$pageCount}");
+
+            for ($i = 1; $i <= $pageCount; $i++) {
+                Log::info("Processing mpdf page {$i}");
+                $templateId = $mpdf->importPage($i);
+                if (!$templateId) {
+                    Log::error("Failed to import page {$i} from merged PDF");
+                    continue;
+                }
+
+                $size = $mpdf->getTemplateSize($templateId);
+                if (!is_array($size)) {
+                    Log::error("Invalid template size for page {$i} in merged PDF");
+                    continue;
+                }
+
+                $mpdf->AddPage($page);
+                if ($i === 1 && !empty($title)) {
+                    $mpdf->WriteHTML($title);
+                    $lmargin = 10;
+                    $tMargin = 20;
+                } else {
+                    $lmargin = $mpdf->lMargin;
+                    $tMargin = $mpdf->tMargin;
+                }
+
+                $scale = min(
+                    ($mpdf->w - $mpdf->lMargin - $mpdf->rMargin) / $size['width'],
+                    ($mpdf->h - $mpdf->tMargin - $mpdf->bMargin) / $size['height']
+                );
+
+                $mpdf->useTemplate($templateId, $lmargin, $tMargin, $size['width'] * $scale, $size['height'] * $scale);
+            }
+        } catch (\Exception $e) {
+           
+            $this->mergePdfAsImages($filePath, $title, $mpdf, $page);
+        } finally {
+            // Clean up temporary file
+            if (file_exists($mergedPdfPath)) {
+                if (@unlink($mergedPdfPath)) {
+                } else {
+                }
+            }
+        }
+
+    }
+    protected function mergePdfAsImages($filePath, $title, $mpdf, $page = null)
+    {
+
+        try {
+          
+            $pdf = new \Spatie\PdfToImage\Pdf($filePath);
+            $pageCount = $pdf->getNumberOfPages();
+
+            for ($i = 1; $i <= $pageCount; $i++) {
+                $imagePath = storage_path("app/temp_pdf_page_{$i}.jpg");
+
+                $pdf->setPage($i)
+                    ->setOutputFormat('jpg')
+                    ->saveImage($imagePath);
+
+                $mpdf->AddPage($page);
+
+                if ($i === 1 && !empty($title)) {
+                    $mpdf->WriteHTML($title);
+                }
+
+                // A4 size image placement
+                $mpdf->Image($imagePath, 0, 0, 210, 297, 'jpg', '', true, false);
+            }
+        } catch (\Exception $e) {
+            throw new \Exception("PDF to Image conversion failed: " . $e->getMessage());
         }
     }
 }

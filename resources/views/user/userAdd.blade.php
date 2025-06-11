@@ -36,47 +36,8 @@
                     @csrf
                     <input type="hidden" name="id" value="{{ $user->id ?? '' }}">
                     <div class="row">
-                        <div class="col-sm-12 col-md-6">
+                        <div class="col-sm-12 col-md-4  mb-1">
                             <div class="form-group">
-                                <label for="name">First Name <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control @error('name') is-invalid @enderror"
-                                    id="name" value="{{ old('name', $user->name ?? '') }}" name="name"
-                                    placeholder="First Name..." autocomplete="off"
-                                    onchange="removeInvalidClass(this)">
-                                {{-- @error('name') --}}
-                                <div class="invalid-feedback error" id="nameError"></div>
-                                {{-- @enderror --}}
-                            </div>
-                        </div>
-                        <div class="col-sm-12 col-md-6">
-                            <div class="form-group">
-                                <label for="last_name">Last Name</label>
-                                <input type="text" class="form-control @error('last_name') is-invalid @enderror"
-                                    id="last_name" value="{{ old('last_name', $user->last_name ?? '') }}"
-                                    name="last_name" placeholder="Last Name..." autocomplete="off"
-                                    onchange="removeInvalidClass(this)">
-                                {{-- @error('name') --}}
-                                <div class="invalid-feedback error" id="lastNameError"></div>
-                                {{-- @enderror --}}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-12 col-md-6">
-                            <div class="form-group">
-                                <label for="email">Email <span class="text-danger">*</span></label>
-                                <input type="email" class="form-control @error('email') is-invalid @enderror"
-                                    id="email" name="email" value="{{ old('email', $user->email ?? '') }}"
-                                    placeholder="User Email..." autocomplete="off"
-                                    onchange="removeInvalidClass(this)">
-                                {{-- @error('email') --}}
-                                <div class="invalid-feedback error" id="emailError"></div>
-                                {{-- @enderror --}}
-                            </div>
-                        </div>
-                        <div class="col-sm-12 col-md-6">
-                            <div class="form-group">
-                                <label for="roles">Role <span class="text-danger">*</span></label>
                                 @if (isset($user) && !empty($user->role))
                                 <input type="hidden" name="roles" id="roles" value="{{ $user->role }}">
                                 @endif
@@ -100,49 +61,89 @@
                                 <div class="invalid-feedback error" id="rolesError"></div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-12 col-md-6">
-                            <div class="form-group">
-                                <label for="phone">Phone</label>
-                                <input type="number" class="form-control @error('phone') is-invalid @enderror"
-                                    id="phone" name="phone" value="{{ old('phone', $user->phone ?? '') }}"
-                                    placeholder="User Phone..." autocomplete="off"
+                        <div class="col-sm-12 col-md-4  mb-1">
+                            <div class="form-group input-label-group">
+
+                                <input type="text" class="form-control @error('name') is-invalid @enderror"
+                                    id="name" value="{{ old('name', $user->name ?? '') }}" name="name"
+                                    placeholder="" autocomplete="off"
                                     onchange="removeInvalidClass(this)">
-                                <div class="invalid-feedback error" id="phoneError"></div>
+                                <label for="name">First Name <span class="text-danger">*</span></label>
+
+                                <div class="invalid-feedback error" id="nameError"></div>
+
                             </div>
                         </div>
+                        <div class="col-sm-12 col-md-4  mb-1">
+                            <div class="form-group input-label-group">
 
+                                <input type="text" class="form-control @error('last_name') is-invalid @enderror"
+                                    id="last_name" value="{{ old('last_name', $user->last_name ?? '') }}"
+                                    name="last_name" placeholder="" autocomplete="off"
+                                    onchange="removeInvalidClass(this)">
+                                <label for="last_name">Last Name</label>
+                                <div class="invalid-feedback error" id="lastNameError"></div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-4 mb-1">
+                            <div class="form-group input-label-group mb-1">
 
-                        <div class="col-sm-12 col-md-6">
-                            <div class="form-group">
+                                <input type="email" class="form-control @error('email') is-invalid @enderror"
+                                    id="email" name="email" value="{{ old('email', $user->email ?? '') }}"
+                                    placeholder="" autocomplete="off"
+                                    onchange="removeInvalidClass(this)">
+                                <label for="email">Email <span class="text-danger">*</span></label>
+                                <div class="invalid-feedback error" id="emailError"></div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-4">
+                            <div class="form-group input-label-group">
                                 <label for="password">Password <span class="text-danger">*</span></label>
                                 <input type="password" class="form-control @error('password') is-invalid @enderror"
                                     id="password" name="password"
-                                    placeholder="User Password..." autocomplete="off"
+                                    placeholder="" autocomplete="off"
                                     onchange="removeInvalidClass(this)">
                                 <div class="invalid-feedback error" id="passwordError"></div>
                             </div>
                         </div>
+                        <div class="col-sm-12 col-md-4">
+                            <div class="form-group input-label-group mb-1">
 
+                                <input type="number" class="form-control @error('phone') is-invalid @enderror"
+                                    id="phone" name="phone" value="{{ old('phone', $user->phone ?? '') }}"
+                                    placeholder="User Phone..." autocomplete="off"
+                                    onchange="removeInvalidClass(this)">
+                                <label for="phone">Phone</label>
+                                <div class="invalid-feedback error" id="phoneError"></div>
+                            </div>
+                        </div>
+                         @if($currentUserRoleLevel == 1)
+                    <div class="col-sm-12 col-md-4">
+                        <div class="form-group">
+                            <select name="hazmat_companies_id" id="hazmat_companies_id " class="form-control" onchange="removeInvalidClass(this)">
+                                <option value="">Select Hazmat Company</option>
+                                @if (isset($hazmetCompany) && $hazmetCompany->count() > 0)
+                                @foreach ($hazmetCompany as $value)
+
+                                <option value="{{ $value->id }}"
+                                    {{ old('hazmat_companies_id') == $role->id || (isset($user) && $value->id == $user->hazmat_companies_id) ? 'selected' : '' }}>
+                                    {{ $value->name }}
+                                </option>
+
+                                @endforeach
+                                @endif
+                            </select>
+                            <div class="invalid-feedback error" id="hazmat_companies_idError"></div>
+
+                        </div>
                     </div>
-                    @if($currentUserRoleLevel == 1)
-                    <select name="hazmat_companies_id" id="hazmat_companies_id " class="form-control" onchange="removeInvalidClass(this)">
-                                    <option value="">Select Hazmat Company</option>
-                                    @if (isset($hazmetCompany) && $hazmetCompany->count() > 0)
-                                    @foreach ($hazmetCompany as $value)
-                                  
-                                    <option value="{{ $value->id }}"
-                                        {{ old('hazmat_companies_id') == $role->id || (isset($user) && $value->id == $user->hazmat_companies_id) ? 'selected' : '' }}>
-                                        {{ $value->name }}
-                                    </option>
-
-                                    @endforeach
-                                    @endif
-                                </select>
                     @else
                     <input type="hidden" id="hazmat_companies_id" name="hazmat_companies_id" value="{{ $hazmat_companies_id ?? '' }}">
                     @endif
+                    </div>
+
+
+                   
                     <div class="row mt-3">
                         <div class="col-sm-12 col-md-6">
                             <div class="form-group">

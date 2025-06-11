@@ -48,7 +48,7 @@ class ShipController extends Controller
         } else {
             // Otherwise, start with a query builder
 
-            $shipsQuery = Ship::with('client','hazmatComapny');
+            $shipsQuery = Ship::with('client', 'hazmatComapny');
             if ($request->has('search')) {
                 $search = $request->search;
                 $shipsQuery->where(function ($query) use ($search) {
@@ -81,7 +81,7 @@ class ShipController extends Controller
                 'ships_html' => view('components.ships-list', compact('ships'))->render(),
             ]);
         }
-  
+
         // Return the view with the ships data
         return view('ships.list', compact('ships'));
     }
@@ -200,19 +200,21 @@ class ShipController extends Controller
             }
             DB::commit(); // Commit the transaction
             $message = empty($id) ? "Ship added successfully" : "Ship updated successfully";
-             $userMailData = [
-                'name' => $inputData['name'],
-                'last_name' =>  $inputData['last_name'],
-                'email' => $inputData['email'],
-                'password' => $inputData['password'],
-            ];
-            try {
-                dispatch(new sendUserRegisterMail($userMailData));
-                return response()->json(['isStatus' => true, 'message' => $message]);
-            } catch (\Exception $e) {
-                return response()->json(['isStatus' => false, 'message' => 'User created successfully, but failed to send welcome email']);
+            if ($id == 0) {
+                $userMailData = [
+                    'name' => $inputData['name'],
+                    'last_name' =>  $inputData['last_name'],
+                    'email' => $inputData['email'],
+                    'password' => $inputData['password'],
+                ];
+                try {
+                    dispatch(new sendUserRegisterMail($userMailData));
+                    return response()->json(['isStatus' => true, 'message' => $message]);
+                } catch (\Exception $e) {
+                    return response()->json(['isStatus' => false, 'message' => 'User created successfully, but failed to send welcome email']);
+                }
             }
-          
+
 
             return response()->json(['isStatus' => true, 'message' => $message]);
         } catch (\Throwable $th) {
@@ -227,7 +229,7 @@ class ShipController extends Controller
     public function portalGuide()
     {
         $user = Auth::user();
-        $currentUserRoleLevel =$user->roles->first()->level;
+        $currentUserRoleLevel = $user->roles->first()->level;
         $configration = configration::first();
         if ($currentUserRoleLevel == 2 ||   $currentUserRoleLevel == 3 ||   $currentUserRoleLevel == 4) {
             $showurl = $configration['hazmat_company'] ?? null
@@ -260,9 +262,9 @@ class ShipController extends Controller
     }
     public function shipView($ship_id)
     {
-        $ship = Ship::with(['shipTeams', 'client'])->findOrFail($ship_id);
+        $ship = Ship::with(['shipTeams', 'client', 'hazmatComapny'])->findOrFail($ship_id);
 
-        Session::put(['ship_id'=>$ship_id]);
+        Session::put(['ship_id' => $ship_id]);
         $isBack = 0;
         if (session('back') == 1) {
             $isBack = 1;
@@ -270,10 +272,10 @@ class ShipController extends Controller
         Session::forget('back');
         $user =  Auth::user();
 
-       
-        $shipId = $ship_id; 
-      
-        $poOrders = poOrder::withCount(['poOrderItems'])->where('ship_id', $ship_id)->OrderBy('id','desc')->get();
+
+        $shipId = $ship_id;
+
+        $poOrders = poOrder::withCount(['poOrderItems'])->where('ship_id', $ship_id)->OrderBy('id', 'desc')->get();
 
         $users = $ship->shipTeams->pluck('user_id')->toArray();
         if (!Gate::allows('ships.add')) {
@@ -302,62 +304,62 @@ class ShipController extends Controller
 
 
         $trainingRecoreds = DesignatedPersionShip::with('designatedPersonDetail')
-        ->where('ship_id', $ship_id)
-        ->whereHas('designatedPersonDetail', function ($query) {
-            $query->whereIn('position', ['SuperDP', 'Other']); // Fetch both in one go
-        })
-        ->get();
-    
-    // Separate results in PHP
-    $designatedPerson = $trainingRecoreds->filter(function ($record) {
-        return $record->designatedPersonDetail->position !== 'SuperDP';
-    });
-    
-    $dpsore = $trainingRecoreds->filter(function ($record) {
-        return $record->designatedPersonDetail->position === 'SuperDP';
-    });
+            ->where('ship_id', $ship_id)
+            ->whereHas('designatedPersonDetail', function ($query) {
+                $query->whereIn('position', ['SuperDP', 'Other']); // Fetch both in one go
+            })
+            ->get();
+
+        // Separate results in PHP
+        $designatedPerson = $trainingRecoreds->filter(function ($record) {
+            return $record->designatedPersonDetail->position !== 'SuperDP';
+        });
+
+        $dpsore = $trainingRecoreds->filter(function ($record) {
+            return $record->designatedPersonDetail->position === 'SuperDP';
+        });
 
         $trainingRecoredHistory = Exam::where('ship_id', $ship_id)->orderBy('id', 'desc')->get();
 
 
         $mdnoresults = MakeModel::select([
-                'make_models.id',
-                'make_models.md_date',
-                'make_models.md_no',
-                'make_models.coumpany_name',
-                DB::raw('GROUP_CONCAT(DISTINCT hazmats.short_name ORDER BY hazmats.short_name ASC) AS hazmat_names')
-            ])
+            'make_models.id',
+            'make_models.md_date',
+            'make_models.md_no',
+            'make_models.coumpany_name',
+            DB::raw('GROUP_CONCAT(DISTINCT hazmats.short_name ORDER BY hazmats.short_name ASC) AS hazmat_names')
+        ])
             ->join('po_order_items_hazmats', 'po_order_items_hazmats.model_make_part_id', '=', 'make_models.id')
             ->join('hazmats', 'hazmats.id', '=', 'po_order_items_hazmats.hazmat_id')
             ->where('po_order_items_hazmats.ship_id', $ship_id)
             ->whereNotNull('po_order_items_hazmats.doc1')
             ->groupBy('make_models.id', 'make_models.md_date', 'make_models.md_no', 'make_models.coumpany_name')
             ->get();
-        
 
-            $sdocresults = MakeModel::select([
-                    'make_models.id',
-                    'make_models.sdoc_date',
-                    'make_models.sdoc_no',
-                    'make_models.issuer_name',
-                    'make_models.sdoc_objects',
-                    DB::raw('GROUP_CONCAT(DISTINCT hazmats.short_name ORDER BY hazmats.short_name ASC) AS hazmat_names')
-                ])
-                ->join('po_order_items_hazmats', 'po_order_items_hazmats.model_make_part_id', '=', 'make_models.id')
-                ->join('hazmats', 'hazmats.id', '=', 'po_order_items_hazmats.hazmat_id')
-                ->where('po_order_items_hazmats.ship_id', $ship_id)
-                ->whereNotNull('po_order_items_hazmats.doc2')
-                ->groupBy('make_models.id', 'make_models.sdoc_date', 'make_models.sdoc_no', 'make_models.issuer_name', 'make_models.sdoc_objects')
-                ->get();
-            
+
+        $sdocresults = MakeModel::select([
+            'make_models.id',
+            'make_models.sdoc_date',
+            'make_models.sdoc_no',
+            'make_models.issuer_name',
+            'make_models.sdoc_objects',
+            DB::raw('GROUP_CONCAT(DISTINCT hazmats.short_name ORDER BY hazmats.short_name ASC) AS hazmat_names')
+        ])
+            ->join('po_order_items_hazmats', 'po_order_items_hazmats.model_make_part_id', '=', 'make_models.id')
+            ->join('hazmats', 'hazmats.id', '=', 'po_order_items_hazmats.hazmat_id')
+            ->where('po_order_items_hazmats.ship_id', $ship_id)
+            ->whereNotNull('po_order_items_hazmats.doc2')
+            ->groupBy('make_models.id', 'make_models.sdoc_date', 'make_models.sdoc_no', 'make_models.issuer_name', 'make_models.sdoc_objects')
+            ->get();
+
         $ships = Ship::get();
-        $majorrepair = Majorrepair::where('ship_id', operator: $ship_id)->orderBy('id','desc')->get();
+        $majorrepair = Majorrepair::where('ship_id', operator: $ship_id)->orderBy('id', 'desc')->get();
 
-        $previousAttachment = PreviousAttachment::where('ship_id', operator: $ship_id)->orderBy('id','desc')->get();
+        $previousAttachment = PreviousAttachment::where('ship_id', operator: $ship_id)->orderBy('id', 'desc')->get();
 
         $brifingHistory = Brifing::with('DesignatedPersonDetail')->where('ship_id', operator: $ship_id)->get();
 
-        return view('ships.view', compact('experts', 'managers', 'isBack', 'ship', 'readonly', 'users', 'poOrders', 'ship_id', 'checkHazmatIHMPart', 'hazmat_companies_id', 'partMenual', 'summary', 'trainingRecoreds', 'mdnoresults', 'dpsore', 'trainingRecoredHistory', 'ships', 'majorrepair', 'brifingHistory', 'designatedPerson','sdocresults','previousAttachment'));
+        return view('ships.view', compact('experts', 'managers', 'isBack', 'ship', 'readonly', 'users', 'poOrders', 'ship_id', 'checkHazmatIHMPart', 'hazmat_companies_id', 'partMenual', 'summary', 'trainingRecoreds', 'mdnoresults', 'dpsore', 'trainingRecoredHistory', 'ships', 'majorrepair', 'brifingHistory', 'designatedPerson', 'sdocresults', 'previousAttachment'));
     }
 
     public function assignShip(Request $request)

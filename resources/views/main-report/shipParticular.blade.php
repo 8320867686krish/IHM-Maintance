@@ -1,11 +1,12 @@
-<div class="container next">
+<div class="container">
     <div class="section-1-1">
-        <h3> 2 Record of Inventory of Hazardous Material On-board</h3>
-        <h5>2.1. Particulars of the Ship:</h5>
+        <h2>1 Ship Particular</h2>
         <table>
             <tr>
                 <td colspan="2" align="center">
-                    <b><p class="setFont">Ship Particulars Details</p></b>
+                    <b>
+                        <p class="setFont">Ship Particulars Details</p>
+                    </b>
                 </td>
             </tr>
             <tr>
@@ -194,10 +195,25 @@
 
             <tr>
                 <td colspan="2" align="center"><b>
-                        <p class="setfont">Survey Details</p>
+                        <p class="setfont">Initial IHM Details</p>
                     </b></td>
             </tr>
-           
+            <tr>
+                <td>
+                    <p class="sufont">Company Name</p>
+                </td>
+                <td>
+                    <p class="sufont">{{$projectDetail['client']['hazmatCompaniesId']['name']}}</p>
+                </td>
+            </tr>
+             <tr>
+                <td>
+                    <p class="sufont">Address</p>
+                </td>
+                <td>
+                    <p class="sufont">{{$projectDetail['client']['hazmatCompaniesId']['address']}}</p>
+                </td>
+            </tr>
             <tr>
                 <td>
                     <p class="sufont">Survey Location Name</p>
@@ -206,44 +222,14 @@
                     <p class="sufont">{{ $projectDetail['survey_location'] }}</p>
                 </td>
             </tr>
-         
-           
-
-         
-         
-        </table>
-        <p>
-        This inventory was developed in accordance with the IMO Guidelines for the Development of the Inventory of Hazardous Materials.
-        This IHM has been developed to cover additional requirements of the EU Ship Recycling Regulation (EU) 1257/2013.
-        </p>
-
-        <h5>2.2 Initially Prepared By:</h5>
-        <table>
-            <tbody>
-                <tr>
-                    <td><b>Company Name</b></td>
-                    <td>{{$projectDetail['client']['hazmatCompaniesId']['name']}}</td>
-                </tr>
-                <tr>
-                    <td><b>Address</b></td>
-                    <td>-</td>
-                </tr>
-
-                <tr>
-                    <td><b>Phone</b></td>
-                    <td>{{$projectDetail['client']['hazmatCompaniesId']['phone']}}</td>
-                </tr>
-
-                 <tr>
-                    <td><b>Email</b></td>
-                    <td>{{$projectDetail['client']['hazmatCompaniesId']['email']}}</td>
-                </tr>
-
-                <tr>
-                    <td><b>Date</b></td>
-                    <td>18.04.2021</td>
-                </tr>
-            </tbody>
+             <tr>
+                <td>
+                    <p class="sufont">Survey  Date</p>
+                </td>
+                <td>
+                    <p class="sufont">{{$projectDetail['survey_date']}}</p>
+                </td>
+            </tr>
         </table>
     </div>
 </div>

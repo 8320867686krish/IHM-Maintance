@@ -1,6 +1,6 @@
 <div class="container next">
     <div class="section-1-1">
-        <h3> 7. Records of SDOC</h3>
+        <h2> 8. Records of SDOC</h2>
         <table>
             <thead>
                 <tr>

@@ -23,6 +23,7 @@ class UserRequest extends FormRequest
     {
         return [
             'name' => 'required|max:254',
+            'hazmat_companies_id' => 'required',
             'email' => 'required|email|unique:users,email,'.$this->id,
             'roles' => 'required',
             'password' => $this->id ? 'nullable' : 'required'

@@ -17,6 +17,7 @@ class ClientCompanyRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'hazmat_companies_id' => 'required',
             'name' => 'required|unique:client_companies,name,'.$this->id,
             'email' => 'required|email|unique:users,email,'.$this->user_id,
             'password' => $this->user_id ? 'nullable' : 'required',
@@ -28,6 +29,7 @@ class ClientCompanyRequest extends FormRequest
     public function messages(): array
     {
         return [
+            'hazmat_companies_id.required' => 'please select hazmat company',
             'name.required' => 'please enter name',
             'email.required' => 'please enter email',
             'email.unique' => 'please enter unique email',

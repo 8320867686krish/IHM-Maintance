@@ -33,7 +33,7 @@
 
 .pageheader-title {
     font-size: 20px; /* Adjust as needed */
-    font-weight: bold;
+   
 }
         .invalid-feedback {
             font-size: 14px;

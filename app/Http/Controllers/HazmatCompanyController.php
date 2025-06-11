@@ -34,7 +34,7 @@ class HazmatCompanyController extends Controller
                 $query->where('id', $role_id);
             })->where('hazmat_companies_id', $id)->first();
 
-            $hazmatCompany = hazmatCompany::select('id', 'name', 'email', 'first_name', 'last_name', 'phone', 'logo')->find($id);
+            $hazmatCompany = hazmatCompany::select('id', 'name', 'email', 'first_name', 'last_name', 'phone', 'logo','briefing_plan','training_material','address')->find($id);
             return view('hazmatCompany.create', ["hazmatCompany" => $hazmatCompany, 'head_title' => 'Edit', 'button' => 'Update', 'user' => $user]);
         } catch (\Throwable $e) {
             return back()->withError($e->getMessage())->withInput();
@@ -89,11 +89,9 @@ class HazmatCompanyController extends Controller
             $userData['phone'] = $post['phone'];
 
             if ($post['id'] == 0) {
-
                 $userData['hazmat_companies_id'] = $hazmatCompany->id;
                 $user = User::create($userData);
                 $role_id = Role::where('level', 2)->pluck('id')->first();
-
                 $user->assignRole([$role_id]);
             } else {
                 if (@!$userData['password']) {
@@ -102,18 +100,21 @@ class HazmatCompanyController extends Controller
                 $user = User::updateOrCreate(['id' => $request->input('user_id')], $userData);
             }
             $message = empty($request->input('id')) ? "HazmatCompany added successfully" : "HazmatCompany updated successfully";
-            $userMailData = [
-                'name' => $userData['name'],
-                'last_name' =>  $userData['last_name'],
-                'email' => $userData['email'],
-                'password' => $userData['password'],
-            ];
-            try {
-                dispatch(new sendUserRegisterMail($userMailData));
-                return response()->json(['isStatus' => true, 'message' => $message]);
-            } catch (\Exception $e) {
-                return response()->json(['isStatus' => false, 'message' => 'User created successfully, but failed to send welcome email']);
+            if ($post['id'] == 0) {
+                $userMailData = [
+                    'name' => $userData['name'],
+                    'last_name' =>  $userData['last_name'],
+                    'email' => $userData['email'],
+                    'password' => $userData['password'],
+                ];
+                try {
+                    dispatch(new sendUserRegisterMail($userMailData));
+                    return response()->json(['isStatus' => true, 'message' => $message]);
+                } catch (\Exception $e) {
+                    return response()->json(['isStatus' => false, 'message' => 'User created successfully, but failed to send welcome email']);
+                }
             }
+
             return response()->json(['isStatus' => true, 'message' => $message]);
         } catch (\Throwable $e) {
             print_r($e->getMessage());
@@ -123,16 +124,11 @@ class HazmatCompanyController extends Controller
     public function destroy(string $id)
     {
         try {
-
             $HazmatCompany = HazmatCompany::findOrFail($id);
             $this->deleteImage('uploads/hazmatCompany/', $HazmatCompany['logo']);
             $HazmatCompany->delete();
-
-            // return redirect('clients')->with('message', 'Client deleted successfully');
             return response()->json(['isStatus' => true, 'message' => 'Hazmat Comapny deleted successfully']);
         } catch (\Throwable $th) {
-            // dd($th->getMessage());
-            // return back()->withError($th->getMessage());
             return response()->json(['isStatus' => false, 'message' => 'Hazmat Comapny not deleted successfully']);
         }
     }

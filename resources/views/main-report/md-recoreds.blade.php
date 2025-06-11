@@ -1,6 +1,6 @@
 <div class="container next">
     <div class="section-1-1">
-        <h3> 6. Records of MD</h3>
+        <h2> 7. Records of MD</h2>
         <table>
             <thead>
                 <tr>

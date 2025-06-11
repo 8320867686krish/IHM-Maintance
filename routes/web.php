@@ -46,6 +46,7 @@ Route::get('/shipwisepo/{ship_id}/{selectedDate}', [dashobardController::class, 
 Route::get('/allshipsData/{type}/{selectedDate}', [dashobardController::class, 'allshipsData'])->middleware(['auth', 'verified'])->name('shipwiseData55');
 
 Route::middleware('auth')->group(function () {
+    Route::post('report', [ReportController::class, 'genrateReport'])->name('report');
     Route::get('md-sd-records/{ship_id}',[ReportController::class,'mdSDRecord'])->name('md&sd');
     Route::get('profile',[dashobardController::class,'profile'])->name('profile');
     Route::post('profile/save',[dashobardController::class,'saveProfile'])->name('profile.save');
@@ -54,7 +55,7 @@ Route::middleware('auth')->group(function () {
     Route::get('client-company/ships/{id}', [DashobardController::class, 'clientcompanyShips'])->name('clientcompany.ships');
     Route::get('ship-dashboard/{id}', [DashobardController::class, 'shipDashboard'])->name('ship.dashboard');
     Route::get('dynamicdata/{ship_id}/{tab}',[ShipController::class,'dynamicData'])->name('ship.dynamicdata');
-    Route::post('report', [ReportController::class, 'genrateReport'])->name('report');
+   
     Route::post('/import', [POOrderController::class, 'import'])->name('import');
     Route::get('poOrderSample', [POOrderController::class, 'poOrderSample'])->name('poOrderSample');
     Route::get('ships/po-order/add/{ship_id}/{po_order_id?}', [POOrderController::class, 'add'])->name('po.add');

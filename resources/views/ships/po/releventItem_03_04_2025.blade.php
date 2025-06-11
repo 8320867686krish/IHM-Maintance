@@ -2,58 +2,7 @@
 @section('shiptitle','Po Records')
 @section('css')
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/vendor/bootstrap-select/css/bootstrap-select.css') }}">
-<style>
-	.input-label-group {
-		position: relative;
-		width: 100%;
-	}
 
-	.input-label-group input {
-		width: 100%;
-		padding: 12px 15px;
-		border: 1px solid #ccc;
-		border-radius: 4px;
-		font-size: 14px;
-		background: white;
-		transition: all 0.3s ease;
-		outline: none;
-	}
-
-	.input-label-group label {
-		position: absolute;
-		left: 15px;
-		top: 50%;
-		transform: translateY(-50%);
-		font-size: 14px;
-		color: #999;
-		background: white;
-		padding: 0 5px;
-		transition: 0.3s ease;
-		pointer-events: none;
-	}
-
-	/* Border cut effect */
-	.input-label-group input:focus {
-		border-top-color: #2563eb;
-		border-color: #2563eb;
-		box-shadow: none !important;
-	}
-
-	/* Move label up when focused or has value */
-	.input-label-group input:focus+label,
-	.input-label-group input:not(:placeholder-shown)+label {
-		top: 1px;
-		left: 10px;
-		font-size: 13px;
-		color: #2563eb;
-	}
-
-	/* Creating the cut-out effect */
-	.input-label-group input:focus {
-		border-radius: 4px 4px 0 0;
-		/* Maintain a soft top cut */
-	}
-</style>
 @endsection
 @section('content')
 @include('ships.po.modals.sendMail')

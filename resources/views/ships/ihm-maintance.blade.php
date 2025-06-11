@@ -385,15 +385,10 @@
         var ship_id = "{{$ship_id}}";
         event.preventDefault(); // Prevent default form submission
         let $submitButton = $('#genratereportbtn');
-
         let originalText = $submitButton.html();
-
-
-        // Show loading spinner and disable the submit button
         $('#spinShow').show();
         $submitButton.text('Wait...');
         $submitButton.prop('disabled', true);
-
         let formData = new FormData(this);
         formData.append('ship_id', ship_id); // Add action to formData
 
@@ -413,26 +408,19 @@
                     console.log("dd");
                     fileName = projectId + '.pdf';
                 }
-                // Create a Blob from the response
                 let blob = new Blob([response], {
                     type: 'application/pdf'
                 });
                 let url = URL.createObjectURL(blob);
-
-                // Create a link element and trigger a download
                 let a = document.createElement('a');
                 a.href = url;
                 a.download = fileName; // Set the file name
                 document.body.appendChild(a);
                 a.click();
                 document.body.removeChild(a);
-
-                // Hide loading spinner and re-enable the submit button
                 $('#spinShow').hide();
                 $submitButton.text(originalText);
                 $submitButton.prop('disabled', false);
-
-                // Revoke the object URL after the download
                 URL.revokeObjectURL(url);
             },
             error: function(xhr, status, error) {

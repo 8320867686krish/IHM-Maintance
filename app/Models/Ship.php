@@ -37,7 +37,8 @@ class Ship extends Model
         'prepared_by',
         'approved_by',
         'current_ihm_version',
-        'ihm_version_updated_date'
+        'ihm_version_updated_date',
+        'survey_date'
     ];
 
     public function shipTeams()

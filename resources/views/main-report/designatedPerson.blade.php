@@ -1,6 +1,7 @@
 <div class="container next">
     <div class="section-1-1">
-        <h3> 2.3. Designated person(s) responsible for the Inventory: </h3>
+        <h2> 5. Responsible Parties For IHM Maintance: </h2>
+        <h4>Designated Person On Shore</h4>
         <table>
             <thead>
                 <tr>
@@ -12,18 +13,46 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach($mergedData as $value)
+                @foreach($superDpResult as $value)
                 <tr>
-                    @if($value['position'] == 'SuperDp')
-                    <?php $color = 'style=color:red; '?>
-                    @else
-                    <?php $color = ''?>
-                  @endif
-                    <td {{@$color}}>{{$loop->iteration}}</td>
-                    <td  {{@$color}}>{{$value['name']}}</td>
-                    <td  {{@$color}}>{{$value['position']}}</td>
-                    <td  {{@$color}}>{{$value['sign_on_date']}}</td>
-                    <td  {{@$color}}>{{$value['sign_off_date']}}</td>
+                  
+                    <td>{{$loop->iteration}}</td>
+                    <td>{{$value['name']}}</td>
+                    <td>{{$value['position']}}</td>
+                    <td>{{$value['sign_on_date']}}</td>
+                    <td>{{$value['sign_off_date']}}</td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+
+         <h4>Responsible Person On Shore</h4>
+        <table>
+            <thead>
+                <tr>
+                    <th>SR No</th>
+                    <th>Name</th>
+                    <th>Designation</th>
+                    <th>Stat/Sign On Date</th>
+                    <th>End/Sign Off Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($responsibleResult as $value)
+                <tr>
+                   
+                    <td>{{$loop->iteration}}</td>
+                    <td >{{$value['name']}}</td>
+                    <td>
+                        @if($value['position'] == 'incharge')
+                        Overall-incharge (Captain)
+                        @else
+                        Responsible Person
+                        @endif
+                       
+                    </td>
+                    <td>{{$value['sign_on_date']}}</td>
+                    <td>{{$value['sign_off_date']}}</td>
                 </tr>
                 @endforeach
             </tbody>

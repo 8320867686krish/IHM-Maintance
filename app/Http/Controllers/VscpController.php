@@ -295,7 +295,7 @@ class VscpController extends Controller
     public function partManual(Request $request)
     {
         $inputData =  $request->input();
-        $path = 'uploads/shipsVscp/' . $inputData['ship_id']  . '/partmanual' . "/";
+        $path = public_path('uploads/shipsVscp/') . $inputData['ship_id']  . '/partmanual' . "/";
         if ($request->hasFile('document')) {
             if (@$inputData['id'] != 0) {
                 $partmanul = partManuel::find($inputData['id']);
@@ -319,7 +319,7 @@ class VscpController extends Controller
         try {
             $partMenualData = partManuel::find($id);
             $shipId = $partMenualData->ship_id;
-            $path = 'uploads/shipsVscp/' . $shipId  . '/partmanual' . "/";
+            $path = public_path('uploads/shipsVscp/') . $shipId  . '/partmanual' . "/";
 
             if (!$partMenualData) {
                 return response()->json(["isStatus" => false, 'error' => 'Deck not found'], 404);

@@ -8,7 +8,7 @@
 
         <h4 style="padding-top: 1px;">IMO No: {{$projectDetail['imo_number']}}</h4>
 
-        <h4 style="padding-top: 1px;">Report NUmber: {{$projectDetail['project_no']}}</h4>
+        <h4 style="padding-top: 1px;">Report Number: {{$projectDetail['project_no']}}</h4>
         <h4 style="padding-top: 1px;">Report Duration From: 20/05/2025 To 30/05/2025</h4>
     </div>
     <div style="margin-auto:0;text-align:center">

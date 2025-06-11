@@ -35,7 +35,7 @@
             <div class="aside-header">
                 <span class="title" style="font-size: 20px;">{{ ucFirst($ship->ship_name) ?? '' }} Information</span>
                 <p class="description"></p>
-            
+
             </div>
             <div class="aside-nav collapse">
                 <ul class="nav">
@@ -90,28 +90,24 @@
             <div class="card-header" id="headinginitial5">
                 <h5 class="mb-0">
                     Report Center
-
                 </h5>
             </div>
 
             <div class="card-body">
                 <form id="generatePdfForm" action="{{route('report')}}">
                     @csrf
-                    <span class="dashboard-spinner spinner-sm" id="spinShow" style="display: none;  position: absolute;
-        top: 50%;
-        left: 35%;
-        transform: translate(-50%, -50%);z-index:999999"></span>
+                    <span class="dashboard-spinner spinner-sm" id="spinShow" style="display: none;  position: absolute;top: 50%;left: 35%;transform: translate(-50%, -50%);z-index:999999"></span>
                     <div class="row">
 
 
-                        <div class="form-group col-4 mb-3">
+                        <div class="form-group col-4 mb-1">
                             <label for="assign_date">
                                 From Date<span class="text-danger">*</span></label>
                             <input type="date" class="form-control form-control-lg" id="from_date" value="" name="from_date" autocomplete="off" onchange="updateToDate()" required>
                             <div class="invalid-feedback error" id="po_noError"></div>
                         </div>
 
-                        <div class="form-group col-4 mb-3">
+                        <div class="form-group col-4 mb-1">
                             <label for="assign_date">
                                 To Date<span class="text-danger">*</span></label>
                             <input type="date" class="form-control form-control-lg" id="to_date" value="" name="to_date" autocomplete="off" onchange="removeInvalidClass(this)" required>
@@ -138,9 +134,7 @@
     <div class="main-content container-fluid p-0" id="assign_project" style="display: none;">
 
         <div class="email-head-subject">
-            <div class="title"><span>Assign Team</span>
-
-            </div>
+            <div class="title"><span>Assign Team</span></div>
         </div>
 
         <div class="row">
@@ -160,8 +154,8 @@
 
             <div class="accrodion-regular">
                 <div id="accordion">
-                   
-                  
+
+
                     <div class="card">
                         <div class="card-header" id="headingThree">
                             <h5 class="mb-0">
@@ -188,42 +182,45 @@
                                     <input type="hidden" name="id" value="{{ $ship->id ?? '' }}" id="id">
 
                                     <div class="row">
-                                        <div class="col-sm-12 col-md-6 col-lg-4">
-                                            <div class="form-group mb-3">
-                                                <label for="ship_name">Ship Name <span
-                                                        class="text-danger">*</span></label>
+                                        <div class="col-sm-12 col-md-6 col-lg-4 mb-1">
+                                            <div class="form-group input-label-group">
+
                                                 <input type="text"
                                                     class="form-control  @error('ship_name') is-invalid @enderror"
                                                     id="ship_name"
                                                     value="{{ old('ship_name', $ship->ship_name ?? '') }}"
-                                                    name="ship_name" placeholder="Ship Name..." autocomplete="off"
+                                                    name="ship_name" placeholder="" autocomplete="off"
                                                     onchange="removeInvalidClass(this)" {{$readonly}}>
+                                                <label for="ship_name">Ship Name <span
+                                                        class="text-danger">*</span></label>
                                                 <div class="invalid-feedback error" id="ship_nameError"></div>
                                             </div>
                                         </div>
 
-                                        <div class="col-sm-12 col-md-6 col-lg-4">
-                                            <div class="form-group mb-3">
-                                                <label for="imo_number">Ship IMO Number <span
-                                                        class="text-danger">*</span></label>
+                                        <div class="col-sm-12 col-md-6 col-lg-4 mb-1">
+                                            <div class="form-group input-label-group">
+
                                                 <input type="number"
                                                     class="form-control  @error('imo_number') is-invalid @enderror"
                                                     id="imo_number" name="imo_number"
                                                     onchange="removeInvalidClass(this)"
                                                     value="{{ old('imo_number', $ship->imo_number ?? '') }}"
                                                     {{ $readonly }}>
+                                                <label for="imo_number">Ship IMO Number <span
+                                                        class="text-danger">*</span></label>
                                                 <div class="invalid-feedback error" id="imo_numberError"></div>
                                             </div>
                                         </div>
 
-                                        <div class="col-sm-12 col-md-6 col-lg-4">
-                                            <div class="form-group mb-3">
-                                                <label for="call_sign">Call Sign</label>
+                                        <div class="col-sm-12 col-md-6 col-lg-4 mb-1">
+                                            <div class="form-group input-label-group">
+
                                                 <input type="text"
                                                     class="form-control  @error('call_sign') is-invalid @enderror"
-                                                    id="call_sign" name="call_sign" placeholder="Call Sign..."
+                                                    id="call_sign" name="call_sign" placeholder=""
                                                     value="{{ old('call_sign', $project->call_sign ?? '') }}"
                                                     {{ $readonly }}>
+                                                <label for="call_sign">Call Sign</label>
                                                 @error('call_sign')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror
@@ -231,38 +228,41 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-sm-12 col-md-6 col-lg-4">
-                                            <div class="form-group mb-3">
-                                                <label for="manager_name">Manager Name</label>
+                                        <div class="col-sm-12 col-md-6 col-lg-4  mb-1">
+                                            <div class="form-group  input-label-group">
+
                                                 <input type="text"
                                                     class="form-control  @error('manager_name') is-invalid @enderror"
                                                     id="manager_name"
                                                     value="{{ old('manager_name', $ship['client']['name'] ?? '') }}"
-                                                    placeholder="Manager Name..." autocomplete="off"
+                                                    placeholder="" autocomplete="off"
                                                     onchange="removeInvalidClass(this)" readonly>
+                                                <label for="manager_name">Manager Name</label>
                                                 @error('manager_name')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror
                                             </div>
                                         </div>
-                                        <div class="col-sm-12 col-md-6 col-lg-4">
-                                            <div class="form-group">
-                                                <label for="client_company_id">Ship Owner</label>
+                                        <div class="col-sm-12 col-md-6 col-lg-4 mb-1">
+                                            <div class="form-group  input-label-group">
 
                                                 <input type="text" class="form-control" id="owner_name"
                                                     value="{{ old('owner_name', $ship['client']['ship_owner_name'] ?? '') }}"
                                                     readonly>
+                                                <label for="client_company_id">Ship Owner</label>
+
                                             </div>
                                         </div>
-                                        <div class="col-sm-12 col-md-4">
-                                            <div class="form-group">
-                                                <label for="ship_type">Type of ship</label>
+                                        <div class="col-sm-12 col-md-4 mb-1">
+                                            <div class="form-group  input-label-group">
+
                                                 <input type="text"
                                                     class="form-control  @error('ship_type') is-invalid @enderror"
                                                     id="ship_type" name="ship_type"
                                                     value="{{ old('ship_type', $ship->ship_type ?? '') }}"
-                                                    placeholder="Ship Type..." autocomplete="off"
+                                                    placeholder="" autocomplete="off"
                                                     onchange="removeInvalidClass(this)" {{ $readonly }} required>
+                                                <label for="ship_type">Type of ship</label>
                                                 @error('ship_type')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror
@@ -270,38 +270,41 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-sm-12 col-md-6 col-lg-4">
-                                            <div class="form-group">
-                                                <label for="port_of_registry">Port Of Registry</label>
+                                        <div class="col-sm-12 col-md-6 col-lg-4  mb-1">
+                                            <div class="form-group input-label-group">
+
                                                 <input type="text"
                                                     class="form-control  @error('port_of_registry') is-invalid @enderror"
                                                     id="port_of_registry"
                                                     value="{{ old('port_of_registry', $ship->port_of_registry ?? '') }}"
-                                                    name="port_of_registry" placeholder="Port Of Registry"
+                                                    name="port_of_registry" placeholder="   "
                                                     autocomplete="off" onchange="removeInvalidClass(this)"
                                                     {{ $readonly }}>
+                                                <label for="port_of_registry">Port Of Registry</label>
                                             </div>
                                         </div>
-                                        <div class="col-sm-12 col-md-6 col-lg-4">
-                                            <div class="form-group">
-                                                <label for="vessel_class">Vessel Class</label>
+                                        <div class="col-sm-12 col-md-6 col-lg-4  mb-1">
+                                            <div class="form-group input-label-group">
+
                                                 <input type="text"
                                                     class="form-control  @error('vessel_class') is-invalid @enderror"
                                                     id="vessel_class"
                                                     value="{{ old('vessel_class', $ship->vessel_class ?? '') }}"
-                                                    name="vessel_class" placeholder="Vessel Class" autocomplete="off"
+                                                    name="vessel_class" placeholder="" autocomplete="off"
                                                     onchange="removeInvalidClass(this)" {{ $readonly }}>
+                                                <label for="vessel_class">Vessel Class</label>
                                             </div>
                                         </div>
-                                        <div class="col-sm-12 col-md-6 col-lg-4">
-                                            <div class="form-group">
-                                                <label for="ihm_class">IHM Certifying Class</label>
+                                        <div class="col-sm-12 col-md-6 col-lg-4  mb-1">
+                                            <div class="form-group input-label-group">
+
                                                 <input type="text"
                                                     class="form-control  @error('ihm_class') is-invalid @enderror"
                                                     id="ihm_class"
                                                     value="{{ old('ihm_class', $ship->ihm_class ?? '') }}"
                                                     name="ihm_class" placeholder="Ihm Class" autocomplete="off"
                                                     onchange="removeInvalidClass(this)" {{ $readonly }}>
+                                                <label for="ihm_class">IHM Certifying Class</label>
                                                 @error('ihm_class')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror
@@ -309,43 +312,46 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-sm-12 col-md-6 col-lg-4">
-                                            <div class="form-group">
-                                                <label for="flag_of_ship">Flag of ship</label>
+                                        <div class="col-sm-12 col-md-6 col-lg-4  mb-1">
+                                            <div class="form-group input-label-group">
+
                                                 <input type="text"
                                                     class="form-control  @error('flag_of_ship') is-invalid @enderror"
                                                     id="flag_of_ship"
                                                     value="{{ old('flag_of_ship', $ship->flag_of_ship ?? '') }}"
                                                     name="flag_of_ship" placeholder="Flag of ship..." autocomplete="off"
                                                     onchange="removeInvalidClass(this)" {{ $readonly }}>
+                                                <label for="flag_of_ship">Flag of ship</label>
                                                 @error('flag_of_ship')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror
                                             </div>
                                         </div>
 
-                                        <div class="col-sm-12 col-md-6 col-lg-4">
-                                            <div class="form-group">
-                                                <label for="delivery_date">Delivery Date</label>
+                                        <div class="col-sm-12 col-md-6 col-lg-4  mb-1">
+                                            <div class="form-group input-label-group">
+
                                                 <input type="date"
                                                     class="form-control  @error('delivery_date') is-invalid @enderror"
                                                     id="delivery_date"
                                                     value="{{ old('delivery_date', $ship->delivery_date ?? '') }}"
-                                                    name="delivery_date" placeholder="Delivery Date" autocomplete="off"
+                                                    name="delivery_date" placeholder="" autocomplete="off"
                                                     onchange="removeInvalidClass(this)" {{ $readonly }}>
+                                                <label for="delivery_date">Delivery Date</label>
                                             </div>
                                         </div>
 
-                                        <div class="col-sm-12 col-md-6 col-lg-4">
-                                            <div class="form-group">
-                                                <label for="building_details">Building Yard Details</label>
+                                        <div class="col-sm-12 col-md-6 col-lg-4  mb-1">
+                                            <div class="form-group input-label-group">
+
                                                 <input type="text"
                                                     class="form-control  @error('building_details') is-invalid @enderror"
                                                     id="building_details"
                                                     value="{{ old('building_details', $ship->building_details ?? '') }}"
-                                                    name="building_details" placeholder="Builder Details"
+                                                    name="building_details" placeholder=""
                                                     autocomplete="off" onchange="removeInvalidClass(this)"
                                                     {{ $readonly }}>
+                                                <label for="building_details">Building Yard Details</label>
                                                 @error('building_details')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror
@@ -354,9 +360,9 @@
                                     </div>
 
                                     <div class="row">
-                                        <div class="col-sm-12 col-md-6 col-lg-4">
-                                            <div class="form-group">
-                                                <label for="x_breadth_depth">Length x breadth x depth</label>
+                                        <div class="col-sm-12 col-md-6 col-lg-4  mb-1">
+                                            <div class="form-group input-label-group">
+
                                                 <input type="text"
                                                     class="form-control  @error('x_breadth_depth') is-invalid @enderror"
                                                     id="x_breadth_depth"
@@ -364,30 +370,32 @@
                                                     name="x_breadth_depth" placeholder="Length x breadth x depth"
                                                     autocomplete="off" onchange="removeInvalidClass(this)"
                                                     {{ $readonly }}>
+                                                <label for="x_breadth_depth">Length x breadth x depth</label>
                                                 @error('x_breadth_depth')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror
                                             </div>
                                         </div>
 
-                                        <div class="col-sm-12 col-md-6 col-lg-4">
-                                            <div class="form-group">
-                                                <label for="gross_tonnage">Gross Registered Tonnage (GRT)</label>
+                                        <div class="col-sm-12 col-md-6 col-lg-4  mb-1">
+                                            <div class="form-group input-label-group">
+
                                                 <input type="text"
                                                     class="form-control  @error('gross_tonnage') is-invalid @enderror"
                                                     id="gross_tonnage"
                                                     value="{{ old('gross_tonnage', $ship->gross_tonnage ?? '') }}"
                                                     name="gross_tonnage" placeholder="GRT" autocomplete="off"
                                                     onchange="removeInvalidClass(this)" {{ $readonly }}>
+                                                <label for="gross_tonnage">Gross Registered Tonnage (GRT)</label>
                                                 @error('grt')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror
                                             </div>
                                         </div>
 
-                                        <div class="col-sm-12 col-md-4">
-                                            <div class="form-group">
-                                                <label for="vessel_previous_name">Vessel Previous Name (If Any) </label>
+                                        <div class="col-sm-12 col-md-4  mb-1">
+                                            <div class="form-group input-label-group">
+
                                                 <input type="text"
                                                     class="form-control  @error('vessel_previous_name') is-invalid @enderror"
                                                     id="vessel_previous_name"
@@ -395,96 +403,137 @@
                                                     name="vessel_previous_name" placeholder="Vessel Previous Name"
                                                     autocomplete="off" onchange="removeInvalidClass(this)"
                                                     {{ $readonly }}>
+                                                <label for="vessel_previous_name">Vessel Previous Name (If Any) </label>
                                                 @error('vessel_previous_names')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror
                                             </div>
                                         </div>
 
-                                        <div class="col-sm-12 col-md-6 col-lg-4">
-                                            <div class="form-group">
-                                                <label for="project_name">Ship Image</label>
+                                        <div class="col-sm-12 col-md-6 col-lg-4  mb-1">
+                                            <div class="form-group input-label-group">
+
                                                 <input type="file"
                                                     class="form-control @error('ship_image') is-invalid @enderror"
                                                     id="ship_image" name="ship_image" autocomplete="off"
                                                     onchange="removeInvalidClass(this)">
+                                                <label for="project_name">Ship Image</label>
                                                 @error('ship_type')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror
                                             </div>
                                         </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <hr class="mb-4">
+                                        </div>
+                                    </div>
 
-                                        <div class="col-sm-12 col-md-6 col-lg-4">
-                                            <div class="form-group">
-                                                <label for="project_name">Initial Ihm Date</label>
+                                    <h5 class="mb-2">Initial IHM Details</h5>
+                                    <div class="row mt-4">
+
+
+                                        <div class="col-sm-12 col-md-6 col-lg-4  mb-1">
+                                            <div class="form-group input-label-group">
+
                                                 <input type="date"
                                                     class="form-control @error('initial_ihm_date') is-invalid @enderror"
                                                     id="initial_ihm_date" name="initial_ihm_date" autocomplete="off"
                                                     onchange="removeInvalidClass(this)" value="{{ old('initial_ihm_date', $ship->initial_ihm_date ?? '') }}">
+                                                <label for="project_name">Initial Ihm Report Date</label>
                                                 @error('initial_ihm_date')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror
                                             </div>
                                         </div>
 
-                                        <div class="col-sm-12 col-md-6 col-lg-4">
-                                            <div class="form-group">
-                                                <label for="project_name">Survey Location</label>
+                                        <div class="col-sm-12 col-md-6 col-lg-4  mb-1">
+                                            <div class="form-group input-label-group">
+
                                                 <input type="text"
                                                     class="form-control @error('survey_location') is-invalid @enderror"
                                                     id="survey_location" name="survey_location" autocomplete="off"
-                                                    onchange="removeInvalidClass(this)" value="{{ old('survey_location', $ship->survey_location ?? '') }}">
+                                                    onchange="removeInvalidClass(this)" value="{{ old('survey_location', $ship->survey_location ?? '') }}" placeholder="">
+                                                <label for="project_name">Survey Location</label>
                                                 @error('survey_location')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror
                                             </div>
                                         </div>
 
-                                        <div class="col-sm-12 col-md-6 col-lg-4 mt-1">
-                                            <div class="form-group">
-                                                <label for="project_name">prepared By</label>
+                                        <div class="col-sm-12 col-md-6 col-lg-4  mb-1">
+                                            <div class="form-group input-label-group">
+
+                                                <input type="date"
+                                                    class="form-control @error('survey_date') is-invalid @enderror"
+                                                    id="survey_date" name="survey_date" autocomplete="off"
+                                                    onchange="removeInvalidClass(this)" value="{{ old('survey_date', $ship->survey_date ?? '') }}" placeholder="">
+                                                <label for="survey_date">Survey Date</label>
+                                                @error('survey_date')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-12 col-md-6 col-lg-4  mb-1">
+                                            <div class="form-group input-label-group">
+
                                                 <input type="text"
                                                     class="form-control @error('prepared_by') is-invalid @enderror"
-                                                    id="prepared_by" name="prepared_by" autocomplete="off"
-                                                    onchange="removeInvalidClass(this)" value="{{ old('prepared_by', $ship->prepared_by ?? '') }}">
+                                                    autocomplete="off"
+                                                    onchange="removeInvalidClass(this)" value="{{ old('prepared_by', @$ship->hazmatComapny->name ?? '') }}" placeholder="" readonly>
+                                                <label for="project_name">prepared By</label>
                                                 @error('prepared_by')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror
                                             </div>
                                         </div>
 
-                                        <div class="col-sm-12 col-md-6 col-lg-4 mt-1">
-                                            <div class="form-group">
-                                                <label for="project_name">Approved By</label>
+                                        <div class="col-sm-12 col-md-6 col-lg-4  mb-1">
+                                            <div class="form-group input-label-group">
+
                                                 <input type="text"
                                                     class="form-control @error('approved_by') is-invalid @enderror"
-                                                    id="approved_by" name="approved_by" autocomplete="off"
-                                                    onchange="removeInvalidClass(this)" value="{{ old('approved_by', $ship->approved_by ?? '') }}">
+                                                    autocomplete="off"
+                                                    onchange="removeInvalidClass(this)" value="{{ old('approved_by', @$ship->hazmatComapny->address ?? '') }}" readonly>
+                                                <label for="project_name">Approved By</label>
                                                 @error('approved_by')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror
                                             </div>
                                         </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <hr class="mb-4">
+                                        </div>
+                                    </div>
 
-                                        <div class="col-sm-12 col-md-6 col-lg-4 mt-1">
-                                            <div class="form-group">
-                                                <label for="project_name">Current IHM Version</label>
+                                    <h5 class="mb-2">Initial IHM Current Version</h5>
+                                    <div class="row mt-4">
+
+                                        <div class="col-sm-12 col-md-6 col-lg-4  mb-2">
+                                            <div class="form-group input-label-group">
+
                                                 <input type="text"
                                                     class="form-control @error('current_ihm_version') is-invalid @enderror"
                                                     id="current_ihm_version" name="current_ihm_version" autocomplete="off"
                                                     onchange="removeInvalidClass(this)" value="{{ old('current_ihm_version', $ship->current_ihm_version ?? '') }}">
+                                                <label for="project_name">Current IHM Version</label>
                                                 @error('current_ihm_version')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror
                                             </div>
                                         </div>
-                                        <div class="col-sm-12 col-md-6 col-lg-4 mt-2">
-                                            <div class="form-group">
-                                                <label for="project_name">Ihm Version Updated Date</label>
+                                        <div class="col-sm-12 col-md-6 col-lg-4  mb-1">
+                                            <div class="form-group input-label-group">
+
                                                 <input type="date"
                                                     class="form-control @error('ihm_version_updated_date') is-invalid @enderror"
                                                     id="ihm_version_updated_date" name="ihm_version_updated_date" autocomplete="off" value="{{ old('ihm_version_updated_date', $ship->ihm_version_updated_date ?? '') }}"
                                                     onchange="removeInvalidClass(this)">
+                                                <label for="project_name">Ihm Version Updated Date</label>
                                                 @error('ihm_version_updated_date')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror
@@ -534,7 +583,7 @@
         @include('ships.ihm-initial')
 
     </div>
-   
+
 
     <div class="main-content container-fluid p-0" id="ihm_maintenance" style="display: none;">
         @if(session('success'))
@@ -606,6 +655,7 @@
         const url = window.location.href;
         const segments = url.split('/');
         const projectId = segments[segments.length - 1];
+        alert(projectId);
         let sidebar = $("#mainSidebar");
         let isSidebarVisible = true;
 

@@ -1,6 +1,6 @@
 <div class="container next">
     <div class="section-1-1">
-        <h3> Ship Particular </h3>
+        <h2> Ship Particular </h3>
         <table>
             <tr>
                 <td colspan="2" align="center">
@@ -203,6 +203,15 @@
                 </td>
                 <td>
                     <p class="sufont">{{ $shipDetail['survey_location'] }}</p>
+                </td>
+            </tr>
+
+             <tr>
+                <td>
+                    <p class="sufont">Survey Location Date</p>
+                </td>
+                <td>
+                    <p class="sufont">-</p>
                 </td>
             </tr>
          

@@ -5951,7 +5951,7 @@ Vertical Timeline - by CodyHouse.co
 
 .page-aside {
     background: none repeat scroll 0 0 #ffffff;
-    width: 280px;
+    width: 230px;
     height: 100%;
     position: fixed;
     top: 0;
@@ -6107,7 +6107,7 @@ Vertical Timeline - by CodyHouse.co
 }
 
 .dashboard-main-wrapper .main-content {
-    margin-left: 266px;
+    margin-left: 220px;
     width: auto;
 }
 
@@ -7054,7 +7054,7 @@ Media Query
     /* Inbox */
     .page-aside {
         background: none repeat scroll 0 0 #ffffff;
-        width: 280px;
+        width: 230px;
         height: 100%;
         position: absolute;
         top: 0;

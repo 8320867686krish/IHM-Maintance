@@ -14,9 +14,7 @@ class hazmatCompanyRequest extends FormRequest
     {
         return true;
     }
-
-
-    /**
+     /**
      * Get the validation rules that apply to the request.
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
@@ -31,14 +29,9 @@ class hazmatCompanyRequest extends FormRequest
             'training_material' => $this->id
                 ? 'mimes:jpeg,png,jpg,gif,pdf'
                 : 'required|mimes:jpeg,png,jpg,gif,pdf',
-
-                'briefing_plan' => $this->id
+            'briefing_plan' => $this->id
                 ? 'mimes:jpeg,png,jpg,gif,pdf'
                 : 'required|mimes:jpeg,png,jpg,gif,pdf',
-
-
-
-
         ];
     }
     public function messages(): array
