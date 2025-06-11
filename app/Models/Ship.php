@@ -38,7 +38,13 @@ class Ship extends Model
         'approved_by',
         'current_ihm_version',
         'ihm_version_updated_date',
-        'survey_date'
+        'survey_date',
+        'report_number',
+        'initial_address',
+        'ship_owner_name_initial',
+        'ship_owner_address_initial',
+        'manager_address_initial',
+        'manager_name_initial'
     ];
 
     public function shipTeams()

@@ -106,7 +106,7 @@ class ReportController extends Controller
                     $filePathsum1 = public_path('images/modelDocument/') . $sdValue['makeModel']['document2']['name'];
                     if (file_exists($filePathsum1)) {
                         $titleHtml = '<h2 style="text-align:center;font-size:13px;font-weight:bold">SDoC No.' . $sdValue['makeModel']['sdoc_no'] . '</h2>';
-                        $this->mergePdf($filePathsum1, $titleHtml, $mpdf);
+                        $this->mergePdfAttachment($filePathsum1, $titleHtml, $mpdf);
                     }
                 }
             }
@@ -244,7 +244,6 @@ class ReportController extends Controller
             if (count($value['checks']) > 0) {
                 $html = $this->drawDigarm($value);
                 $fileNameDiagram = $this->genrateDompdf($html['html'], $html['ori']);
-                //    $mpdf = new Mpdf(['orientation' => 'L']); // Ensure landscape mode
                 $mpdf->setSourceFile($fileNameDiagram);
 
                 $pageCount = $mpdf->setSourceFile($fileNameDiagram);
@@ -283,7 +282,7 @@ class ReportController extends Controller
                     } else {
                         $titleHtml = "";
                     }
-                    $this->mergePdf($filePathsum, $titleHtml, $mpdf);
+                    $this->mergePdfAttachment($filePathsum, $titleHtml, $mpdf);
                 }
             }
         }
@@ -372,19 +371,12 @@ class ReportController extends Controller
                 $filePath = public_path('uploads/previousattachment') . "/" . $value['attachment'];
                 if (file_exists($filePath) && @$value['attachment']) {
                     $titleHtml = '<h4 style="text-align:center;font-size:13px;font-weight:bold">Previous Attachment ' . $value['attachment_name'] . '</h4>';
-                    $this->mergePdf($filePath, $titleHtml, $mpdf);
+                    $this->mergePdfAttachment($filePath, $titleHtml, $mpdf);
                 }
             }
         }
 
-    //    $mpdf->Output('IHM-Report.pdf', 'I');
-
-        // return response()->streamDownload(function () use ($mpdf) {
-        //     echo $mpdf->Output('', 'S'); // S = return as string
-        // }, 'report.pdf', ['Content-Type' => 'application/pdf']);
-        // return response()->make($mpdf->Output('', 'I'), 200, [
-        //     'Content-Type' => 'application/pdf',
-        // ]);
+   
         $safeProjectNo = str_replace('/', '_', $projectDetail['project_no']);
 
         $fileName = $safeProjectNo . '.pdf';

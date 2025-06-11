@@ -459,7 +459,7 @@ class VscpController extends Controller
             $header = '
             <table width="100%" style="border-bottom: 1px solid #000000; vertical-align: middle; font-family: serif; font-size: 9pt; color: #000088;">
                 <tr>
-                    <td width="10%"><img src="' . $logo . '" width="50" /></td>
+                    <td width="10%"></td>
                     <td width="80%" align="center">' . $shipDetail['ship_name'] . '</td>
                     <td width="10%" style="text-align: right;">' . $shipDetail['project_no'] . '<br/>' . $date . '</td>
                 </tr>
@@ -470,7 +470,7 @@ class VscpController extends Controller
             <table width="100%" style="vertical-align: bottom; font-family: serif; font-size: 8pt; color: #000000;">
                 <tr>
                     <td width="33%" style="text-align: left;">' . $shipDetail['ihm_table'] . 'Summary</td>
-                    <td width="33%" style="text-align: center;">Revision:' . $version . '</td>
+                    <td width="33%" style="text-align: center;"></td>
                     <td width="33%" style="text-align: right;">{PAGENO}/{nbpg}</td>
                 </tr>
             </table>';

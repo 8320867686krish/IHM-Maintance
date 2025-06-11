@@ -123,31 +123,16 @@
                     <p class="sufont">Ship Owner Name</p>
                 </td>
                 <td>
-                    <p class="sufont"> {{ $shipDetail['client']->owner_name }}</p>
+                    <p class="sufont"> {{ $shipDetail['ship_owner_name_initial'] }}</p>
                 </td>
             </tr>
-            <tr>
-                <td>
-                    <p class="sufont">Ship Owner Email</p>
-                </td>
-                <td>
-                    <p class="sufont"> {{ $shipDetail['client']->owner_email }}</p>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <p class="sufont">Ship Owner Phone</p>
-                </td>
-                <td>
-                    <p class="sufont">{{ $shipDetail['client']->owner_phone }}</p>
-                </td>
-            </tr>
+          
             <tr>
                 <td>
                     <p class="sufont">Ship Owner Address</p>
                 </td>
                 <td>
-                    <p class="sufont">{{ $shipDetail['client']->owner_address }}</p>
+                    <p class="sufont">{{ $shipDetail['ship_owner_address_initial'] }}</p>
                 </td>
             </tr>
             <tr>
@@ -166,28 +151,14 @@
                     <p class="sufont">{{ $shipDetail['client']->manager_name }}</p>
                 </td>
             </tr>
-            <tr>
-                <td>
-                    <p class="sufont">Ship Manager Email</p>
-                </td>
-                <td>
-                    <p class="sufont">{{ $shipDetail['client']->manager_email }}</p>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <p class="sufont">Ship Manager Phone</p>
-                </td>
-                <td>
-                    <p class="sufont">{{ $shipDetail['client']->manager_phone }}</p>
-                </td>
-            </tr>
+            
+            
             <tr>
                 <td>
                     <p class="sufont">Ship Manager Address</p>
                 </td>
                 <td>
-                    <p class="sufont">{{ $shipDetail['client']->manager_address }}</p>
+                    <p class="sufont">{{ $shipDetail['manager_address_initial'] }}</p>
                 </td>
             </tr>
 
@@ -196,7 +167,32 @@
                         <p class="setfont">Survey Details</p>
                     </b></td>
             </tr>
-           
+             <tr>
+                <td>
+                    <p class="sufont">Company Name</p>
+                </td>
+                <td>
+                    <p class="sufont">{{ $shipDetail['prepared_by'] }}</p>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p class="sufont">Address</p>
+                </td>
+                <td>
+                    <p class="sufont">{{ $shipDetail['initial_address'] }}</p>
+                </td>
+            </tr>
+             <tr>
+                <td>
+                    <p class="sufont">Approved By(Class)</p>
+                </td>
+                <td>
+                    <p class="sufont">{{ $shipDetail['approved_by'] }}</p>
+                </td>
+            </tr>
+            
+
             <tr>
                 <td>
                     <p class="sufont">Survey Location Name</p>
@@ -211,7 +207,7 @@
                     <p class="sufont">Survey Location Date</p>
                 </td>
                 <td>
-                    <p class="sufont">-</p>
+                    <p class="sufont">{{ $shipDetail['survey_date'] }}</p>
                 </td>
             </tr>
          

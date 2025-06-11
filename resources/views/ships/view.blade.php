@@ -412,7 +412,6 @@
 
                                         <div class="col-sm-12 col-md-6 col-lg-4  mb-1">
                                             <div class="form-group input-label-group">
-
                                                 <input type="file"
                                                     class="form-control @error('ship_image') is-invalid @enderror"
                                                     id="ship_image" name="ship_image" autocomplete="off"
@@ -422,6 +421,9 @@
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror
                                             </div>
+                                            @if($ship['ship_image'])
+                                            <a href="{{ asset('uploads/ship/' . $ship->ship_image) }}" target="_blank">{{$ship['ship_image']}}</a>
+                                            @endif
                                         </div>
                                     </div>
                                     <div class="row">
@@ -430,9 +432,22 @@
                                         </div>
                                     </div>
 
-                                    <h5 class="mb-2">Initial IHM Details</h5>
+                                    <h5 class="mb-2">Initial IHM Particulars</h5>
                                     <div class="row mt-4">
 
+                                        <div class="col-sm-12 col-md-6 col-lg-4  mb-1">
+                                            <div class="form-group input-label-group">
+
+                                                <input type="text"
+                                                    class="form-control @error('report_number') is-invalid @enderror"
+                                                    id="report_number" name="report_number" autocomplete="off"
+                                                    onchange="removeInvalidClass(this)" value="{{ old('report_number', $ship->report_number ?? '') }}" placeholder="">
+                                                <label for="project_name">Report Number</label>
+                                                @error('report_number')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
 
                                         <div class="col-sm-12 col-md-6 col-lg-4  mb-1">
                                             <div class="form-group input-label-group">
@@ -481,9 +496,9 @@
 
                                                 <input type="text"
                                                     class="form-control @error('prepared_by') is-invalid @enderror"
-                                                    autocomplete="off"
-                                                    onchange="removeInvalidClass(this)" value="{{ old('prepared_by', @$ship->hazmatComapny->name ?? '') }}" placeholder="" readonly>
-                                                <label for="project_name">prepared By</label>
+                                                    autocomplete="off" name="prepared_by"
+                                                    onchange="removeInvalidClass(this)" value="{{ old('prepared_by', @$ship->prepared_by ?? '') }}" placeholder="">
+                                                <label for="project_name">prepared By(company Name)</label>
                                                 @error('prepared_by')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror
@@ -494,11 +509,82 @@
                                             <div class="form-group input-label-group">
 
                                                 <input type="text"
+                                                    class="form-control @error('initial_address') is-invalid @enderror"
+                                                    autocomplete="off" name="initial_address"
+                                                    onchange="removeInvalidClass(this)" value="{{ old('initial_address', @$ship->initial_address ?? '') }}" placeholder="">
+                                                <label for="project_name">Address</label>
+                                                @error('prepared_by')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-sm-12 col-md-6 col-lg-4  mb-1">
+                                            <div class="form-group input-label-group">
+
+                                                <input type="text"
                                                     class="form-control @error('approved_by') is-invalid @enderror"
-                                                    autocomplete="off"
-                                                    onchange="removeInvalidClass(this)" value="{{ old('approved_by', @$ship->hazmatComapny->address ?? '') }}" readonly>
-                                                <label for="project_name">Approved By</label>
+                                                    autocomplete="off" name="approved_by"
+                                                    onchange="removeInvalidClass(this)" value="{{ old('approved_by', @$ship->hazmatComapny->address ?? '') }}">
+                                                <label for="project_name">Approved By(Class)</label>
                                                 @error('approved_by')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-12 col-md-6 col-lg-4  mb-1">
+                                            <div class="form-group input-label-group">
+
+                                                <input type="text"
+                                                    class="form-control @error('ship_owner_name_initial') is-invalid @enderror"
+                                                    autocomplete="off" name="ship_owner_name_initial"
+                                                    onchange="removeInvalidClass(this)" value="{{ old('ship_owner_name_initial', @$ship->ship_owner_name_initial ?? '') }}" placeholder="">
+                                                <label for="project_name">Ship Owner Name</label>
+                                                @error('ship_owner_name_initial')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-12 col-md-6 col-lg-4  mb-1">
+                                            <div class="form-group input-label-group">
+
+                                                <input type="text"
+                                                    class="form-control @error('ship_owner_address_initial') is-invalid @enderror"
+                                                    autocomplete="off" name="ship_owner_address_initial"
+                                                    onchange="removeInvalidClass(this)" value="{{ old('ship_owner_address_initial', @$ship->ship_owner_address_initial ?? '') }}" placeholder="">
+                                                <label for="project_name">Ship Owner Address</label>
+                                                @error('ship_owner_address_initial')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
+
+                                         <div class="col-sm-12 col-md-6 col-lg-4  mb-1">
+                                            <div class="form-group input-label-group">
+
+                                                <input type="text"
+                                                    class="form-control @error('manager_name_initial') is-invalid @enderror"
+                                                    autocomplete="off" name="manager_name_initial"
+                                                    onchange="removeInvalidClass(this)" value="{{ old('manager_name_initial', @$ship->manager_name_initial ?? '') }}" placeholder="">
+                                                <label for="project_name">Manager Name</label>
+                                                @error('manager_name_initial')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-12 col-md-6 col-lg-4  mb-1">
+                                            <div class="form-group input-label-group">
+
+                                                <input type="text"
+                                                    class="form-control @error('manager_address_initial') is-invalid @enderror"
+                                                    autocomplete="off" name="manager_address_initial"
+                                                    onchange="removeInvalidClass(this)" value="{{ old('manager_address_initial', @$ship->manager_address_initial ?? '') }}" placeholder="">
+                                                <label for="project_name">Manager Address</label>
+                                                @error('manager_address_initial')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror
                                             </div>
