@@ -13,6 +13,7 @@
                 </tr>
             </thead>
             <tbody>
+                @if(@$superDpResult)
                 @foreach($superDpResult as $value)
                 <tr>
                   
@@ -23,6 +24,16 @@
                     <td>{{$value['sign_off_date']}}</td>
                 </tr>
                 @endforeach
+                @else
+                  <tr>
+                  
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+                @endif
             </tbody>
         </table>
 
@@ -38,6 +49,7 @@
                 </tr>
             </thead>
             <tbody>
+                @if(@$responsibleResult)
                 @foreach($responsibleResult as $value)
                 <tr>
                    
@@ -55,6 +67,16 @@
                     <td>{{$value['sign_off_date']}}</td>
                 </tr>
                 @endforeach
+                @else
+                <tr>
+                  
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+                @endif
             </tbody>
         </table>
         

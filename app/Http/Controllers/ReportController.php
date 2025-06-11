@@ -252,7 +252,7 @@ class ReportController extends Controller
 
                     $mpdf->AddPage($html['ori']);
                     if ($key == 0) {
-                        $mpdf->WriteHTML('<h3 style="font-size:14px">2.1 Location Diagram of Contained HazMat & PCHM.</h3>');
+                        $mpdf->WriteHTML('<h3 style="font-size:14px">3.1 Location Diagram of Contained HazMat & PCHM.</h3>');
                     }
                     $mpdf->WriteHTML('<h5 style="font-size:14px;">Area: ' . $value['name'] . '</h5>');
 
