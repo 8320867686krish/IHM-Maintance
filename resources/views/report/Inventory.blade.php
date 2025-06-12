@@ -11,7 +11,7 @@
         @if(@$filteredResults1)
         <h5>I-1 Paints and coating systems containing materials listed in table A and table B of appendix 1 of these guidelines</h5>
 
-        <table style="page-break-inside:avoid">
+        <table>
             <thead>
                 <tr>
                     <th>No</th>

@@ -393,8 +393,6 @@ class VscpController extends Controller
     }
     public function summeryReport($ship_id)
     {
-
-
         $shipDetail = Ship::with('client')->find($ship_id);
         if (!$shipDetail) {
             die('Project details not found');
@@ -441,8 +439,6 @@ class VscpController extends Controller
                 'jpeg_quality' => 75, // Set the JPEG quality (0-100)
                 'shrink_tables_to_fit' => 1, // Shrink tables to fit the page width
                 'tempDir' => __DIR__ . '/tmp', // Set a temporary directory for mPDF
-
-
                 'allow_output_buffering' => true,
             ]);
             $mpdf->defaultPageNumStyle = '1';
