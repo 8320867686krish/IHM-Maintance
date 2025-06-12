@@ -498,7 +498,7 @@
                                                     class="form-control @error('prepared_by') is-invalid @enderror"
                                                     autocomplete="off" name="prepared_by"
                                                     onchange="removeInvalidClass(this)" value="{{ old('prepared_by', @$ship->prepared_by ?? '') }}" placeholder="">
-                                                <label for="project_name">prepared By(company Name)</label>
+                                                <label for="project_name">Prepared By(Company Name)</label>
                                                 @error('prepared_by')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror

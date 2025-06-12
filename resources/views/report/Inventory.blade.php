@@ -20,6 +20,7 @@
                     <th>Location</th>
                     <th>Materials (classification in appendix 1 of MEPC.379(80) & Annex-B of EMSA Guidelines)</th>
                     <th colspan="2">Approximate quantity</th>
+                    <th>CHM/PCHM</th>
                     <th>Remarks</th>
                 </tr>
             </thead>
@@ -34,8 +35,10 @@
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
+                    <td>&nbsp;</td>
                 </tr>
                 <tr>
+                    <td>&nbsp;</td>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
@@ -55,6 +58,7 @@
                     <td>{{ $value->hazmat->name ?? '' }}</td>
                     <td>{{ $value->qty }}</td>
                     <td>{{ $value->unit }}</td>
+                    <td>{{ $value->hazmat_type === 'Contained' ? 'C' : 'P' }}</td>
                     <td>Check No:{{ $value->remarks }}</td>
                 </tr>
                 @endforeach
@@ -75,6 +79,7 @@
                         <th>Materials (classification in appendix 1)</th>
                         <th>Parts where used</th>
                         <th colspan="2">Approximate quantity</th>
+                        <th>CHM/PCHM</th>
                         <th>Remarks</th>
                     </tr>
                 </thead>
@@ -89,8 +94,10 @@
                         <td>&nbsp;</td>
                         <td>&nbsp;</td>
                         <td>&nbsp;</td>
+                        <td>&nbsp;</td>
                     </tr>
                     <tr>
+                        <td>&nbsp;</td>
                         <td>&nbsp;</td>
                         <td>&nbsp;</td>
                         <td>&nbsp;</td>
@@ -111,6 +118,7 @@
 
                         <td>{{ $value->qty }}</td>
                         <td>{{ $value->unit }}</td>
+                        <td>{{ $value->hazmat_type === 'Contained' ? 'C' : 'P' }}</td>
                         <td>Check No:; {{ $value->lab_remarks }}</td>
 
                     </tr>
@@ -134,6 +142,7 @@
                         <th>Materials (classification in appendix 1)</th>
                         <th>Parts where used</th>
                         <th colspan="2">Approximate quantity</th>
+                        <th>CHM/PCHM</th>
                         <th>Remarks</th>
                     </tr>
                 </thead>
@@ -148,8 +157,10 @@
                         <td>&nbsp;</td>
                         <td>&nbsp;</td>
                         <td>&nbsp;</td>
+                        <td>&nbsp;</td>
                     </tr>
                     <tr>
+                        <td>&nbsp;</td>
                         <td>&nbsp;</td>
                         <td>&nbsp;</td>
                         <td>&nbsp;</td>
@@ -170,6 +181,7 @@
                         <td>{{ $value->hazmat->name ?? '' }}</td>
                         <td>{{ $value->qty }}</td>
                         <td>{{ $value->unit }}</td>
+                        <td>{{ $value->hazmat_type === 'Contained' ? 'C' : 'P' }}</td>
                         <td>Check No:; {{ $value->lab_remarks }}</td>
 
                     </tr>

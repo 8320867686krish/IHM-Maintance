@@ -177,8 +177,8 @@ $(document).ready(function () {
     let checkId;
     $(".imagehazmat").hide();
 
-    $("#checkList").css('height', $("#previewImg1").height());
-
+    // $("#checkList").css('max-height', $("#previewImg1").height());
+    $("#checkList").css('max-height', '100%');
     $('.target').draggable({
         stop: function (event, ui) {
             isStopped = true;
