@@ -106,6 +106,7 @@
                                     </tr>
                                 </thead>
                                 <tbody class="partmanullist">
+                                    @if($ship->ga_plan_pdf)
                                     <tr>
                                         <td>1</td>
                                         <td>GA Plan</td>
@@ -117,6 +118,7 @@
                                             </a>
                                         </td>
                                     </tr>
+                                    @endif
                                     <x-part-manual-list :partMenual="$partMenual"></x-part-manual-list>
                                 </tbody>
 

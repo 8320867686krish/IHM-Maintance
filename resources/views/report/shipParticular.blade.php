@@ -176,6 +176,8 @@
                      <td>
                         <p class="sufont">{{ $shipDetail['initial_ihm_date'] }}</p>
                     </td>
+                </tr>
+            <tr>
                     <td>
                         <p class="sufont">Prepared By</p>
                     </td>

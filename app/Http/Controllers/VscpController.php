@@ -451,9 +451,9 @@ class VscpController extends Controller
             $mpdf->use_kwt = true;
             $mpdf->defaultPageNumStyle = '1';
             $mpdf->SetDisplayMode('fullpage');
-            $version =$shipDetail['current_ihm_version'];
+            $version = $shipDetail['current_ihm_version'];
 
-            
+
             // Define header content with logo
             $header = '
             <table width="100%" style="border-bottom: 1px solid #000000; vertical-align: middle; font-family: serif; font-size: 9pt; color: #000088;">
@@ -461,7 +461,6 @@ class VscpController extends Controller
                     <td width="10%"></td>
                     <td width="80%" align="center">' . $shipDetail['ship_name'] . '</td>
                     <td width="10%" style="text-align: right;">Report Number: ' . $shipDetail['report_number'] . '<br/>Version: ' . $shipDetail['current_ihm_version'] . '</td>
-
                 </tr>
             </table>';
 
@@ -485,33 +484,34 @@ class VscpController extends Controller
             $mpdf->AddPage('L'); // Set landscape mode for the inventory page
             $mpdf->WriteHTML(view('report.Inventory', compact('filteredResults1', 'filteredResults2', 'filteredResults3')));
 
-            foreach ($decks as $key => $value) {
-                if (count($value['checks']) > 0) {
-                    $html = $this->drawDigarm($value);
-                    $fileNameDiagram = $this->genrateDompdf($html['html'], $html['ori']);
-                    $mpdf->setSourceFile($fileNameDiagram);
-                    $pageCount = $mpdf->setSourceFile($fileNameDiagram);
-                    for ($i = 1; $i <= $pageCount; $i++) {
+            if (count($decks) > 0) {
+                foreach ($decks as $key => $value) {
+                    if (count($value['checks']) > 0) {
+                        $html = $this->drawDigarm($value);
+                        $fileNameDiagram = $this->genrateDompdf($html['html'], $html['ori']);
+                        $mpdf->setSourceFile($fileNameDiagram);
+                        $pageCount = $mpdf->setSourceFile($fileNameDiagram);
+                        for ($i = 1; $i <= $pageCount; $i++) {
 
-                        $mpdf->AddPage($html['ori']);
-                        if ($key == 0) {
-                            $mpdf->WriteHTML('<h3 style="font-size:14px">2.1 Location Diagram of Contained HazMat & PCHM.</h3>');
+                            $mpdf->AddPage($html['ori']);
+                            if ($key == 0) {
+                                $mpdf->WriteHTML('<h3 style="font-size:14px">2.1 Location Diagram of Contained HazMat & PCHM.</h3>');
+                            }
+                            $mpdf->WriteHTML('<h5 style="font-size:14px;">Area: ' . $value['name'] . '</h5>');
+
+                            $templateId = $mpdf->importPage($i);
+                            $mpdf->useTemplate($templateId, null, null, $mpdf->w, null); // Use the template with appropriate dimensions
+
                         }
-                        $mpdf->WriteHTML('<h5 style="font-size:14px;">Area: ' . $value['name'] . '</h5>');
-
-                        $templateId = $mpdf->importPage($i);
-                        $mpdf->useTemplate($templateId, null, null, $mpdf->w, null); // Use the template with appropriate dimensions
-
+                        $mpdf->AddPage('L');
+                        $mpdf->writeHTML(view('report.vscpPrepration', ['checks' => $value['checks'], 'name' => $value['name']]));
+                        unlink($fileNameDiagram);
                     }
-                    $mpdf->AddPage('L');
-                    $mpdf->writeHTML(view('report.vscpPrepration', ['checks' => $value['checks'], 'name' => $value['name']]));
-                    unlink($fileNameDiagram);
                 }
             }
             $summary = partManuel::where('ship_id', $ship_id)->get();
             $ga_plan_pdf = $ship_id . "/" . $shipDetail['ga_plan_pdf'];
             $gaplan =  public_path('uploads/shipsVscp/' . $ga_plan_pdf);
-
             if (file_exists($gaplan)) {
 
                 $this->mergePdfAsImages($gaplan, 'GA Plan', $mpdf);

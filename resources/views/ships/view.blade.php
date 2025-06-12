@@ -302,7 +302,7 @@
                                                     class="form-control  @error('ihm_class') is-invalid @enderror"
                                                     id="ihm_class"
                                                     value="{{ old('ihm_class', $ship->ihm_class ?? '') }}"
-                                                    name="ihm_class" placeholder="Ihm Class" autocomplete="off"
+                                                    name="ihm_class" placeholder="" autocomplete="off"
                                                     onchange="removeInvalidClass(this)" {{ $readonly }}>
                                                 <label for="ihm_class">IHM Certifying Class</label>
                                                 @error('ihm_class')
@@ -319,7 +319,7 @@
                                                     class="form-control  @error('flag_of_ship') is-invalid @enderror"
                                                     id="flag_of_ship"
                                                     value="{{ old('flag_of_ship', $ship->flag_of_ship ?? '') }}"
-                                                    name="flag_of_ship" placeholder="Flag of ship..." autocomplete="off"
+                                                    name="flag_of_ship" placeholder="" autocomplete="off"
                                                     onchange="removeInvalidClass(this)" {{ $readonly }}>
                                                 <label for="flag_of_ship">Flag of ship</label>
                                                 @error('flag_of_ship')
@@ -367,7 +367,7 @@
                                                     class="form-control  @error('x_breadth_depth') is-invalid @enderror"
                                                     id="x_breadth_depth"
                                                     value="{{ old('x_breadth_depth', $ship->x_breadth_depth ?? '') }}"
-                                                    name="x_breadth_depth" placeholder="Length x breadth x depth"
+                                                    name="x_breadth_depth" placeholder=""
                                                     autocomplete="off" onchange="removeInvalidClass(this)"
                                                     {{ $readonly }}>
                                                 <label for="x_breadth_depth">Length x breadth x depth</label>
