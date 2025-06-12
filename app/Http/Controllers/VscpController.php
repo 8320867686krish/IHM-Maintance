@@ -458,9 +458,9 @@ class VscpController extends Controller
             $header = '
             <table width="100%" style="border-bottom: 1px solid #000000; vertical-align: middle; font-family: serif; font-size: 9pt; color: #000088;">
                 <tr>
-                    <td width="10%"></td>
-                    <td width="80%" align="center">' . $shipDetail['ship_name'] . '</td>
-                    <td width="10%" style="text-align: right;">Report Number: ' . $shipDetail['report_number'] . '<br/>Version: ' . $shipDetail['current_ihm_version'] . '</td>
+                    <td width="5%"></td>
+                    <td width="75%" align="center">' . $shipDetail['ship_name'] . '</td>
+                    <td width="15%" style="text-align: right;">Report Number: ' . $shipDetail['report_number'] . '<br/>Version: ' . $shipDetail['current_ihm_version'] . '</td>
                 </tr>
             </table>';
 
@@ -511,21 +511,21 @@ class VscpController extends Controller
             }
             $summary = partManuel::where('ship_id', $ship_id)->get();
             $ga_plan_pdf = $ship_id . "/" . $shipDetail['ga_plan_pdf'];
-            $gaplan =  public_path('uploads/shipsVscp/' . $ga_plan_pdf);
+            $gaplan =  public_path('shipsVscp/' . $ga_plan_pdf);
             if (file_exists($gaplan)) {
 
                 $this->mergePdfAsImages($gaplan, 'GA Plan', $mpdf);
             }
             if (@$summary) {
                 foreach ($summary as $index => $sumvalue) {
-                    $filePathsum = public_path('uploads/shipsVscp') . "/" . $ship_id . "/partmanual/" . basename($sumvalue['document']);
+                    $filePathsum = public_path('shipsVscp') . "/" . $ship_id . "/partmanual/" . basename($sumvalue['document']);
 
 
                     if (file_exists($filePathsum) && @$sumvalue['document']) {
                         if ($index == 0) {
                             $titleHtml = '<h3 style="text-align:center;font-size:12pt">3.2 Supplement to initial IHM Part</h3>';
                         } else {
-                            $titleHtml = "";
+                            $titleHtml = "Title:".$sumvalue['title'];
                         }
                         $this->mergePdfAttachment($filePathsum, $titleHtml, $mpdf);
                     }
