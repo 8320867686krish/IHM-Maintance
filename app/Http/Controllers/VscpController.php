@@ -15,6 +15,7 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Str;
 use App\Traits\ImageUpload;
 use Dompdf\Dompdf;
+use Illuminate\Support\Facades\Log;
 use Mpdf\Mpdf;
 
 ini_set("pcre.backtrack_limit", "1000000");
@@ -502,8 +503,32 @@ class VscpController extends Controller
                     $mpdf->AddPage('L');
                     $mpdf->writeHTML(view('report.vscpPrepration', ['checks' => $value['checks'], 'name' => $value['name']]));
                     unlink($fileNameDiagram);
-                 }
+                }
             }
+            $summary = partManuel::where('ship_id', $ship_id)->get();
+            $ga_plan_pdf = $ship_id . "/" . $shipDetail['ga_plan_pdf'];
+            $gaplan =  public_path('uploads/shipsVscp/' . $ga_plan_pdf);
+
+            if (file_exists($gaplan)) {
+
+                $this->mergeImageToPdf($gaplan, 'GA Plan', $mpdf);
+            }
+            if (@$summary) {
+                foreach ($summary as $index => $sumvalue) {
+                    $filePathsum = public_path('uploads/shipsVscp') . "/" . $ship_id . "/partmanual/" . basename($sumvalue['document']);
+
+
+                    if (file_exists($filePathsum) && @$sumvalue['document']) {
+                        if ($index == 0) {
+                            $titleHtml = '<h3 style="text-align:center;font-size:12pt">3.2 Supplement to initial IHM Part</h3>';
+                        } else {
+                            $titleHtml = "";
+                        }
+                        $this->mergePdfAttachment($filePathsum, $titleHtml, $mpdf);
+                    }
+                }
+            }
+
             $safeProjectNo = str_replace('/', '_', $shipDetail['project_no']);
             $fileName = "summary_" . $safeProjectNo . '.pdf';
 
@@ -725,5 +750,148 @@ class VscpController extends Controller
 
 
         return ['html' => $html, 'ori' => $ori];
+    }
+    protected function mergePdfAttachment($filePath, $title, $mpdf, $page = null)
+    {
+        Log::info("Starting merge for: {$filePath}");
+
+        // Validate input file
+        if (!file_exists($filePath)) {
+            Log::error("PDF file not found: {$filePath}");
+            throw new \Exception("PDF file not found: {$filePath}");
+        }
+        if (!is_readable($filePath)) {
+            Log:
+            error("PDF file is not readable: {$filePath}");
+            throw new \Exception("PDF file is not readable: {$filePath}");
+        }
+        $fileContent = @file_get_contents($filePath, false, null, 0, 4);
+        if ($fileContent === false || $fileContent !== '%PDF') {
+            Log::error("Invalid PDF or unable to read: {$filePath}");
+            throw new \Exception("File is not a valid PDF: {$filePath}");
+        }
+
+        $mergedPdfPath = storage_path('app/merged_output_' . uniqid() . '.pdf');
+
+        // Process with Fpdi
+        $fpdi = new \setasign\Fpdi\Fpdi(); // Explicitly create new instance
+        try {
+            Log::info("Opening PDF file: {$filePath}");
+            $pageCount = $fpdi->setSourceFile($filePath);
+            if ($pageCount === false || $pageCount === 0) {
+                Log::error("Failed to load PDF: {$filePath}");
+                throw new \Exception("Invalid PDF file: {$filePath}");
+            }
+            Log::info("Page count: {$pageCount}");
+
+            for ($i = 1; $i <= $pageCount; $i++) {
+                Log::info("Importing page {$i}");
+                $template = $fpdi->importPage($i);
+                $size = $fpdi->getTemplateSize($template);
+                if (!is_array($size)) {
+                    Log::error("Invalid template size for page {$i}");
+                    continue;
+                }
+                $fpdi->AddPage($size['orientation'], [$size['width'], $size['height']]);
+                $fpdi->useTemplate($template);
+            }
+
+            Log::info("Writing merged PDF to: {$mergedPdfPath}");
+            $fpdi->Output('F', $mergedPdfPath);
+            if (!file_exists($mergedPdfPath) || filesize($mergedPdfPath) === 0) {
+                Log::error("Failed to create merged PDF or file is empty: {$mergedPdfPath}");
+                throw new \Exception("Merged PDF not created or empty");
+            }
+            Log::info("Generated merged PDF: {$mergedPdfPath}, Size: " . filesize($mergedPdfPath));
+        } catch (\Exception $e) {
+            Log::error("FPDI error with {$filePath}: " . $e->getMessage());
+            Log::info("Attempting image fallback for: {$filePath}");
+            unset($fpdi); // Ensure FPDI object is destroyed
+            $this->mergePdfAsImages($filePath, $title, $mpdf, $page);
+            return;
+        } finally {
+            unset($fpdi); // Explicitly destroy FPDI object
+        }
+
+        // Process with mPDF
+        try {
+            if (!is_readable($mergedPdfPath)) {
+                Log::error("Merged PDF is not readable: {$mergedPdfPath}");
+                throw new \Exception("Merged PDF is not readable: {$mergedPdfPath}");
+            }
+            Log::info("Opening merged PDF for mPDF: {$mergedPdfPath}");
+            $pageCount = $mpdf->setSourceFile($mergedPdfPath);
+            Log::info("Merged PDF page count: {$pageCount}");
+
+            for ($i = 1; $i <= $pageCount; $i++) {
+                Log::info("Processing mpdf page {$i}");
+                $templateId = $mpdf->importPage($i);
+                if (!$templateId) {
+                    Log::error("Failed to import page {$i} from merged PDF");
+                    continue;
+                }
+
+                $size = $mpdf->getTemplateSize($templateId);
+                if (!is_array($size)) {
+                    Log::error("Invalid template size for page {$i} in merged PDF");
+                    continue;
+                }
+
+                $mpdf->AddPage($page);
+                if ($i === 1 && !empty($title)) {
+                    $mpdf->WriteHTML($title);
+                    $lmargin = 10;
+                    $tMargin = 20;
+                } else {
+                    $lmargin = $mpdf->lMargin;
+                    $tMargin = $mpdf->tMargin;
+                }
+
+                $scale = min(
+                    ($mpdf->w - $mpdf->lMargin - $mpdf->rMargin) / $size['width'],
+                    ($mpdf->h - $mpdf->tMargin - $mpdf->bMargin) / $size['height']
+                );
+
+                $mpdf->useTemplate($templateId, $lmargin, $tMargin, $size['width'] * $scale, $size['height'] * $scale);
+            }
+        } catch (\Exception $e) {
+
+            $this->mergePdfAsImages($filePath, $title, $mpdf, $page);
+        } finally {
+            // Clean up temporary file
+            if (file_exists($mergedPdfPath)) {
+                if (@unlink($mergedPdfPath)) {
+                } else {
+                }
+            }
+        }
+    }
+    protected function mergePdfAsImages($filePath, $title, $mpdf, $page = null)
+    {
+
+        try {
+
+            $pdf = new \Spatie\PdfToImage\Pdf($filePath);
+            $pageCount = $pdf->getNumberOfPages();
+
+            for ($i = 1; $i <= $pageCount; $i++) {
+                $imagePath = storage_path("app/temp_pdf_page_{$i}.jpg");
+
+                $pdf->setPage($i)
+                    ->setOutputFormat('jpg')
+                    ->saveImage($imagePath);
+
+                $mpdf->AddPage($page);
+
+                if ($i === 1 && !empty($title)) {
+                    $mpdf->WriteHTML($title);
+                }
+
+                // A4 size image placement
+                $mpdf->Image($imagePath, 0, 0, 210, 297, 'jpg', '', true, false);
+            }
+        } catch (\Exception $e) {
+            throw new \Exception("PDF to Image conversion failed: " . $e->getMessage());
+        }
     }
 }

@@ -2,7 +2,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="partmanuelModellLabel">Part Manual</h5>
+                <h5 class="modal-title" id="partmanuelModellLabel">Supplement to initial IHM Part</h5>
                 <button type="button" class="close partmanuelModelClose" data-dismiss="modal" aria-label="Close">
                     <span>&times;</span>
                 </button>
@@ -23,12 +23,7 @@
                                 <input type="text" id="title" name="title" class="form-control">
                             </div>
                         </div>
-                        <div class="col-12 col-md-12 col-lg-12 mb-2">
-                            <div class="form-group">
-                                <label for="name">Version</label>
-                                <input type="text" id="version" name="version" class="form-control">
-                            </div>
-                        </div>
+                       
                         <div class="col-12 col-md-12 col-lg-12 mb-2">
                             <div class="form-group">
                                 <label for="name">Document</label>
@@ -37,26 +32,12 @@
                             </div>
                         </div>
 
-                        <div class="col-12 col-md-12 col-lg-12 mb-2">
-                            <div class="form-group">
-                                <label for="name">Uploaded By</label>
-                                <input type="text" id="uploaded_by" name="uploaded_by" class="form-control">
-                              
-                            </div>
-                        </div>
-
-                        <div class="col-12 col-md-12 col-lg-12 mb-2">
-                            <div class="form-group">
-                                <label for="name">Date</label>
-                                <input type="date" id="date" name="date" class="form-control">
-                            </div>
-                        </div>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="partManualSave">Save changes</button>
+                <button type="button" class="btn btn-primary" id="partManualSave">Save</button>
             </div>
         </div>
     </div>
