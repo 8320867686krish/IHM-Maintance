@@ -511,7 +511,7 @@ class VscpController extends Controller
 
             if (file_exists($gaplan)) {
 
-                $this->mergeImageToPdf($gaplan, 'GA Plan', $mpdf);
+                $this->mergePdfAsImages($gaplan, 'GA Plan', $mpdf);
             }
             if (@$summary) {
                 foreach ($summary as $index => $sumvalue) {
