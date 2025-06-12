@@ -202,8 +202,7 @@ class ShipController extends Controller
             $message = empty($id) ? "Ship added successfully" : "Ship updated successfully";
             if ($id == 0) {
                 $userMailData = [
-                    'name' => $inputData['name'],
-                    'last_name' =>  $inputData['last_name'],
+                    'name' => $inputData['ship_name'],
                     'email' => $inputData['email'],
                     'password' => $inputData['password'],
                 ];
