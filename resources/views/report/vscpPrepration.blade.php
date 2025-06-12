@@ -42,7 +42,7 @@
                 <td>{{ $check->type }}</td>
                 <td>
                     @if($check->close_image)
-                    <img src="{{ $check->close_imag }}" width="130px" height="130px" />
+                    <img src="{{ $check->close_image }}" width="130px" height="130px" />
                     @else
                     &nbsp;
                     @endif
