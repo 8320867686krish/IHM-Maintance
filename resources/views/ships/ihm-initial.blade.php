@@ -101,9 +101,6 @@
                                     <tr>
                                         <th width="15%">SR NO</th>
                                         <th>Title</th>
-                                        <th>Version</th>
-                                        <th width="20%">Updated By</th>
-                                        <th width="20%">Date</th>
                                         <th width="20%">Document</th>
                                         <th>Action</th>
                                     </tr>
@@ -112,9 +109,7 @@
                                     <tr>
                                         <td>1</td>
                                         <td>GA Plan</td>
-                                        <td>&nbsp;</td>
-                                        <td>&nbsp;</td>
-                                        <td>&nbsp;</td>
+                                       
                                         <td><a href="{{asset('uploads/shipsVscp/'.$ship->id.'/'.$ship->ga_plan_pdf)}}" target="_blank" download>{{$ship->ga_plan_pdf}}</a></td>
                                         <td>
                                             <a href="{{asset('uploads/shipsVscp/'.$ship->id.'/'.$ship->ga_plan_pdf)}}" title="download" download target="_blank" class="mr-2">
