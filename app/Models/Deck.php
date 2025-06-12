@@ -22,6 +22,6 @@ class Deck extends Model
         if (!$value) {
             return null; // Return null if the value is not available
         }
-        return asset('uploads/shipsVscp/' . $this->ship_id  ."/". $value);
+        return asset('shipsVscp/' . $this->ship_id  ."/". $value);
     }
 }
