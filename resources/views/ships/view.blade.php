@@ -498,7 +498,7 @@
                                                     class="form-control @error('prepared_by') is-invalid @enderror"
                                                     autocomplete="off" name="prepared_by"
                                                     onchange="removeInvalidClass(this)" value="{{ old('prepared_by', @$ship->prepared_by ?? '') }}" placeholder="">
-                                                <label for="project_name">Prepared By(Company Name)</label>
+                                                <label for="project_name">Prepared By (Company Name)</label>
                                                 @error('prepared_by')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror
@@ -527,7 +527,7 @@
                                                     class="form-control @error('approved_by') is-invalid @enderror"
                                                     autocomplete="off" name="approved_by"
                                                     onchange="removeInvalidClass(this)" value="{{ old('approved_by', @$ship->hazmatComapny->address ?? '') }}">
-                                                <label for="project_name">Approved By(Class)</label>
+                                                <label for="project_name">Approved By (Class)</label>
                                                 @error('approved_by')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror

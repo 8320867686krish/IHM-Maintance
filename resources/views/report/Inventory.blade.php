@@ -59,7 +59,16 @@
                     <td>{{ $value->qty }}</td>
                     <td>{{ $value->unit }}</td>
                     <td>{{ $value->hazmat_type === 'Contained' ? 'C' : 'P' }}</td>
-                    <td>Check No:{{ $value->remarks }}</td>
+                    <td>
+                        Check Type: {{ $value->check->type ?? '' }}
+                        @if(!empty($value->check->type) && (!empty($value->check->name) || !empty($value->remarks))),@endif
+
+                        Check Name: {{ $value->check->name ?? '' }}
+                        @if(!empty($value->check->name) && !empty($value->remarks)),@endif
+
+                        {{ $value->remarks ?? '' }}
+                    </td>
+
                 </tr>
                 @endforeach
                 @endif
@@ -119,7 +128,15 @@
                         <td>{{ $value->qty }}</td>
                         <td>{{ $value->unit }}</td>
                         <td>{{ $value->hazmat_type === 'Contained' ? 'C' : 'P' }}</td>
-                        <td>Check No:; {{ $value->lab_remarks }}</td>
+                        <td>
+                            Check Type: {{ $value->check->type ?? '' }}
+                            @if(!empty($value->check->type) && (!empty($value->check->name) || !empty($value->remarks))),@endif
+
+                            Check Name: {{ $value->check->name ?? '' }}
+                            @if(!empty($value->check->name) && !empty($value->remarks)),@endif
+
+                            {{ $value->remarks ?? '' }}
+                        </td>
 
                     </tr>
                     @endforeach
@@ -182,7 +199,16 @@
                         <td>{{ $value->qty }}</td>
                         <td>{{ $value->unit }}</td>
                         <td>{{ $value->hazmat_type === 'Contained' ? 'C' : 'P' }}</td>
-                        <td>Check No:; {{ $value->lab_remarks }}</td>
+                        <td>
+                            Check Type: {{ $value->check->type ?? '' }}
+                            @if(!empty($value->check->type) && (!empty($value->check->name) || !empty($value->remarks))),@endif
+
+                            Check Name: {{ $value->check->name ?? '' }}
+                            @if(!empty($value->check->name) && !empty($value->remarks)),@endif
+
+                            {{ $value->remarks ?? '' }}
+                        </td>
+
 
                     </tr>
                     @endforeach

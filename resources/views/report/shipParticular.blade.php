@@ -169,7 +169,7 @@
             </tr>
              <tr>
                 <td>
-                    <p class="sufont">Company Name</p>
+                    <p class="sufont">Prepared By (Company Name)</p>
                 </td>
                 <td>
                     <p class="sufont">{{ $shipDetail['prepared_by'] }}</p>
@@ -185,7 +185,7 @@
             </tr>
              <tr>
                 <td>
-                    <p class="sufont">Approved By(Class)</p>
+                    <p class="sufont">Approved By (Class)</p>
                 </td>
                 <td>
                     <p class="sufont">{{ $shipDetail['approved_by'] }}</p>

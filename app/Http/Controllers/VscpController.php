@@ -16,6 +16,7 @@ use Illuminate\Support\Str;
 use App\Traits\ImageUpload;
 use Dompdf\Dompdf;
 use Mpdf\Mpdf;
+
 ini_set("pcre.backtrack_limit", "1000000");
 ini_set('exif.decode_jpeg', '0');
 class VscpController extends Controller
@@ -23,7 +24,7 @@ class VscpController extends Controller
     use ImageUpload;
 
     //
-    public function index($ship_id, $amended=null)
+    public function index($ship_id, $amended = null)
     {
         $ship = Ship::with('decks')->find($ship_id);
         $checks = Check::with('hazmats.hazmat')->where('ship_id', $ship_id)->get();
@@ -161,11 +162,11 @@ class VscpController extends Controller
             return response()->json(["isStatus" => false, 'error' => $th->getMessage()], 500);
         }
     }
-    public function check($deck_id,$amended = null)
+    public function check($deck_id, $amended = null)
     {
         $deck = Deck::with('checks')->find($deck_id);
         $hazmats = Hazmat::get(['id', 'name', 'table_type']);
-        return view('ships.vscp.check.check', ['deck' => $deck, 'hazmats' => $hazmats,'amended' => $amended ]);
+        return view('ships.vscp.check.check', ['deck' => $deck, 'hazmats' => $hazmats, 'amended' => $amended]);
     }
     public function checkSave(Request $request)
     {
@@ -229,7 +230,7 @@ class VscpController extends Controller
                     $file->move($imagePath, $strike_document);
                     $value['strike_document'] = $strike_document;
                 }
-                CheckHazmat::updateOrCreate(['id' => $key,'check_id'=>$id], $value);
+                CheckHazmat::updateOrCreate(['id' => $key, 'check_id' => $id], $value);
             }
         }
         if (@$inputData['check_deleted_id']) {
@@ -274,12 +275,12 @@ class VscpController extends Controller
         }
     }
 
-    public function checkHazmat($check_id,$amended = null)
+    public function checkHazmat($check_id, $amended = null)
     {
         $check = Check::with('hazmats')->find($check_id);
         $checkhazmat = $check->hazmats ?? [];
         $hazmats = Hazmat::get(['id', 'name', 'table_type']);
-        $htmllist = view('components.check-add-model', compact('checkhazmat', 'hazmats','amended'))->render();
+        $htmllist = view('components.check-add-model', compact('checkhazmat', 'hazmats', 'amended'))->render();
         $response = [
             'html' => $htmllist,
             'check' => [
@@ -387,7 +388,7 @@ class VscpController extends Controller
             $updateData['ihm_version_updated_date'] = $post['new_version_date'];
         }
         Ship::where('id', $post['ship_id'])->update($updateData);
-        $redirecctUrl = url('ship/vscp/' . $post['ship_id']."/amended");
+        $redirecctUrl = url('ship/vscp/' . $post['ship_id'] . "/amended");
         return response()->json(data: ["isStatus" => true, "message" => "Save successfully", 'redirectUrl' => $redirecctUrl]);
     }
     public function summeryReport($ship_id)
@@ -401,10 +402,9 @@ class VscpController extends Controller
         $version  =  $shipDetail['current_ihm_version'];
         $date = $shipDetail['ihm_version_updated_date'];
         $html = '';
-        $logo = 'https://sosindi.com/IHM/public/assets/images/logo.png';
-        // $checkHazmatIHMPart = CheckHazmat::with(relations: 'hazmat')->where('ship_id',$ship_id)->get();
 
-        $checkHazmatIHMPart = CheckHazmat::with(relations: 'hazmat')->where('ship_id', $ship_id)->get();
+        $checkHazmatIHMPart = CheckHazmat::with(['check', 'hazmat'])->where('ship_id', $ship_id)->get();
+
         $filteredResults1 = $checkHazmatIHMPart->filter(function ($item) {
             return $item->ihm_part_table == 'i-1';
         });
@@ -422,7 +422,7 @@ class VscpController extends Controller
             $query->whereHas('hazmats', function ($query) {
                 $query->where('hazmat_type', 'PCHM')->orWhere('hazmat_type', 'Contained');
             });
-        }])->where('ship_id',$ship_id)->get();
+        }])->where('ship_id', $ship_id)->get();
 
         try {
             // Create an instance of mPDF with specified margins
@@ -461,7 +461,7 @@ class VscpController extends Controller
                 <tr>
                     <td width="10%"></td>
                     <td width="80%" align="center">' . $shipDetail['ship_name'] . '</td>
-                    <td width="10%" style="text-align: right;">' . $shipDetail['report_number'].'</td>
+                    <td width="10%" style="text-align: right;">' . $shipDetail['report_number'] . '</td>
                 </tr>
             </table>';
 
@@ -476,21 +476,20 @@ class VscpController extends Controller
             </table>';
             $mpdf->SetHTMLHeader($header);
             $mpdf->SetHTMLFooter($footer);
-            $shipImagePath = asset('uploads/ship/'.$shipDetail['ship_image']);
-     
-            $stylesheet = file_get_contents('public/assets/mpdf.css');
+
+            $shipImagePath = public_path('uploads/ship/' . $shipDetail['ship_image']);
+            $stylesheet = file_get_contents('assets/mpdf.css');
             $mpdf->WriteHTML($stylesheet, \Mpdf\HTMLParserMode::HEADER_CSS);
-            $mpdf->WriteHTML(view('report.cover', compact('shipDetail','shipImagePath')));
+            $mpdf->WriteHTML(view('report.cover', compact('shipDetail', 'shipImagePath')));
             $mpdf->WriteHTML(view('report.shipParticular', compact('shipDetail')));
             $mpdf->AddPage('L'); // Set landscape mode for the inventory page
             $mpdf->WriteHTML(view('report.Inventory', compact('filteredResults1', 'filteredResults2', 'filteredResults3')));
+
             foreach ($decks as $key => $value) {
                 if (count($value['checks']) > 0) {
                     $html = $this->drawDigarm($value);
                     $fileNameDiagram = $this->genrateDompdf($html['html'], $html['ori']);
-                    //    $mpdf = new Mpdf(['orientation' => 'L']); // Ensure landscape mode
                     $mpdf->setSourceFile($fileNameDiagram);
-
                     $pageCount = $mpdf->setSourceFile($fileNameDiagram);
                     for ($i = 1; $i <= $pageCount; $i++) {
 
@@ -504,10 +503,11 @@ class VscpController extends Controller
                         $mpdf->useTemplate($templateId, null, null, $mpdf->w, null); // Use the template with appropriate dimensions
 
                     }
+                    $mpdf->AddPage('L');
+                    $mpdf->writeHTML(view('report.vscpPrepration', ['checks' => $value['checks'], 'name' => $value['name']]));
                     unlink($fileNameDiagram);
-                }
+                 }
             }
-       
             $safeProjectNo = str_replace('/', '_', $shipDetail['project_no']);
             $fileName = "summary_" . $safeProjectNo . '.pdf';
 
@@ -517,7 +517,6 @@ class VscpController extends Controller
             $response->headers->set('X-File-Name', $fileName);
             return $response;
         } catch (\Mpdf\MpdfException $e) {
-            // Handle mPDF exception
             echo $e->getMessage();
         }
     }
@@ -526,7 +525,7 @@ class VscpController extends Controller
         $dompdf = new Dompdf();
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', $page);
-         $dompdf->render();
+        $dompdf->render();
         $mainContentPdf = $dompdf->output();
         $filename = "project" . uniqid() . "ab.pdf";
         $filePath = storage_path('app/pdf') . "/" . $filename;
@@ -543,7 +542,7 @@ class VscpController extends Controller
                 white-space: nowrap;z-index: 1;color:#4052d6;font-size:8px;text-align:center;';
         if (count($decks['checks']) > 0) {
             $chunks = array_chunk($decks['checks']->toArray(), 15);
-         
+
             $k = 0;
             $gap = 1;
             $ori = "landscape";
@@ -555,33 +554,31 @@ class VscpController extends Controller
                 $imageData = base64_encode(file_get_contents($imagePath));
                 $imageBase64 = 'data:image/' . pathinfo($imagePath, PATHINFO_EXTENSION) . ';base64,' . $imageData;
                 list($width, $height) = getimagesize($imagePath);
-                $containerWidth = "1024"; 
+                $containerWidth = "1024";
                 if ($width >= 1000) {
                     $html .= "<div class='maincontnt next' style='display: flex; justify-content: center; align-items: center; flex-direction: column; height:100vh;'>";
                 } else {
                     if ($height >= 380) {
                         $ori = "portrait";
-                        if($width >= 500){
+                        if ($width >= 500) {
                             $containerWidth = "794";
-
-                        }else{
+                        } else {
                             $containerWidth = "900";
-
                         }
                         $image_height =  $imageDesireHeight;
                         $image_width = ($image_height * $width) / $height;
                     } else {
                         $image_width = $width;
                     }
-                   
+
                     $leftPositionPixels = ($containerWidth - $image_width) / 2;
                     $leftPositionPercent = ($leftPositionPixels / 1024) * 100;
 
                     $html .= "<div class='maincontnt next' style='display: flex; justify-content: center; align-items: center; flex-direction: column;margin-left:{$leftPositionPercent}%;'>";
                 }
-                $topPer =  ( $ori == 'portrait') ? '40%':'20%';
+                $topPer =  ($ori == 'portrait') ? '40%' : '20%';
 
-                $html .= '<div style="margin-top:'.$topPer.';">';
+                $html .= '<div style="margin-top:' . $topPer . ';">';
 
                 $html .= '<div class="image-container " id="imgc' . $i . '" style="position: relative;width: 100%; ">';
                 $image_width  = 1024;
@@ -592,7 +589,7 @@ class VscpController extends Controller
                     $newImage = '<img src="' . $imageBase64 . '" id="imageDraw' . $i . '" style="width:' .  $image_width . 'px;" />';
                 } else {
                     if ($height >= 380) {
-                       $image_height =$imageDesireHeight;
+                        $image_height = $imageDesireHeight;
                         $image_width = ($image_height * $width) / $height;
                         $newImage = '<img src="' . $imageBase64 . '" id="imageDraw' . $i . '"  style="width:' .  $image_width . 'px;"/>';
                     } else {
@@ -614,13 +611,13 @@ class VscpController extends Controller
                 $chunkcount = 0;
                 foreach ($chunk as $key => $value) {
                     $chunkcount++;
-                    if($chunkcount == 1){
+                    if ($chunkcount == 1) {
                         $oddincreaseGap = 18;
                     }
                     $top = $value['position_top'];
                     $left = $value['position_left'];
 
-                   
+
                     $tooltipText = ($value['type'] == 'sample' ? 's' : 'v') . $value['name'] . "<br/>";
                     if (@$value['check_hazmats']) {
                         $hazmatCount = count($value['check_hazmats']); // Get the total number of elements
@@ -687,21 +684,21 @@ class VscpController extends Controller
                         $tooltipStart = $image_height + $gap;
                         $sameLocation = 0;
                         $findLeft = abs($maxLength * 5 + 100);
-                    
+
 
                         foreach ($evenarrayLeft as $key => $evenvalue) {
                             if (abs($lineLeftPosition - $evenvalue) < $findLeft && abs($topshow - $evenarrayTop[$key]) < 100) {
                                 $sameLocation++;
                                 $tooltipStart = $tooltipStart + $evenincreaseGap;
                                 $lineHeight = $lineHeight + $evenincreaseGap;
-                            }else{
-                                
-                                    $tooltipStart = $tooltipStart  + $evenincreaseGap; // Example of subtracting for odd
-                                    $lineHeight = $lineHeight + $evenincreaseGap ;    // Adjust this logic as per your needs
-                                
+                            } else {
+
+                                $tooltipStart = $tooltipStart  + $evenincreaseGap; // Example of subtracting for odd
+                                $lineHeight = $lineHeight + $evenincreaseGap;    // Adjust this logic as per your needs
+
                             }
                         }
-                       
+
                         if ($sameLocation > 1) {
                             foreach ($sameLocationevenarray as $sameLocationValue) {
                                 if ($sameLocationValue == $tooltipStart) {
@@ -714,12 +711,12 @@ class VscpController extends Controller
                         $evenarrayLeft[$value['id']] = $lineLeftPosition;
                         $evenarrayTop[$value['id']] =  $topshow;
                     }
-                     $html .= '<div class="dot" style="top:' . $topshow . 'px; left:' . $leftshow . 'px; position: absolute;border: 4px solid #4052d6;background: #4052d6;border-radius: 50%;"></div>';
+                    $html .= '<div class="dot" style="top:' . $topshow . 'px; left:' . $leftshow . 'px; position: absolute;border: 4px solid #4052d6;background: #4052d6;border-radius: 50%;"></div>';
 
-                     $html .= '<span class="line" style="top:' . $lineTopPosition  . 'px;left:' . $lineLeftPosition . 'px;height:' . $lineHeight . 'px;' . $lineCss . '"></span>';
+                    $html .= '<span class="line" style="top:' . $lineTopPosition  . 'px;left:' . $lineLeftPosition . 'px;height:' . $lineHeight . 'px;' . $lineCss . '"></span>';
 
 
-                     $html .= '<span class="tooltip" style="' . $tooltipCss . 'top:' . $tooltipStart . 'px; left:' . ($lineLeftPosition - 15) . 'px">' . $tooltipText . '</span>';
+                    $html .= '<span class="tooltip" style="' . $tooltipCss . 'top:' . $tooltipStart . 'px; left:' . ($lineLeftPosition - 15) . 'px">' . $tooltipText . '</span>';
                 }
                 $html .= '</div>';
                 $html .= '</div>';
@@ -731,6 +728,6 @@ class VscpController extends Controller
         }
 
 
-        return ['html'=>$html,'ori'=>$ori];
+        return ['html' => $html, 'ori' => $ori];
     }
 }
