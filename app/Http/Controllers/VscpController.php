@@ -458,9 +458,9 @@ class VscpController extends Controller
             $header = '
             <table width="100%" style="border-bottom: 1px solid #000000; vertical-align: middle; font-family: serif; font-size: 9pt; color: #000088;">
                 <tr>
-                    <td width="5%"></td>
-                    <td width="75%" align="center">' . $shipDetail['ship_name'] . '</td>
-                    <td width="15%" style="text-align: right;">Report Number: ' . $shipDetail['report_number'] . '<br/>Version: ' . $shipDetail['current_ihm_version'] . '</td>
+                    <td width="15%" style="fot-weight:bold">'. $shipDetail['ship_name'] .'</td>
+                   
+                    <td width="70%" style="text-align: right;">Report Number: ' . $shipDetail['report_number'] . '<br/>Version: ' . $shipDetail['current_ihm_version'] . '</td>
                 </tr>
             </table>';
 
@@ -513,8 +513,9 @@ class VscpController extends Controller
             $ga_plan_pdf = $ship_id . "/" . $shipDetail['ga_plan_pdf'];
             $gaplan =  public_path('shipsVscp/' . $ga_plan_pdf);
             if (file_exists($gaplan)) {
+                $titleHtml = '<h3 style="text-align:center;font-size:12pt"> GA Plan</h3>';
 
-                $this->mergePdfAsImages($gaplan, 'GA Plan', $mpdf);
+                $this->mergePdfAsImages($gaplan,$titleHtml, $mpdf);
             }
             if (@$summary) {
                 foreach ($summary as $index => $sumvalue) {
@@ -523,7 +524,7 @@ class VscpController extends Controller
 
                     if (file_exists($filePathsum) && @$sumvalue['document']) {
                         if ($index == 0) {
-                            $titleHtml = '<h3 style="text-align:center;font-size:12pt">3.2 Supplement to initial IHM Part</h3>';
+                            $titleHtml = '<h3 style="text-align:center;font-size:12pt"> Supplement to initial IHM Part</h3>';
                         } else {
                             $titleHtml = "Title:".$sumvalue['title'];
                         }
