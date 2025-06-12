@@ -29,8 +29,8 @@
             <tr>
                 <th style="width:10%">Check Name</th>
                 <th style="width:10%">Check Type</th>
-                <th>Close Image</th>
-                <th>Away Image</th>
+                <th style="width:30%">Close Image</th>
+                <th style="width:30%">Away Image</th>
             </tr>
 
         </thead>
