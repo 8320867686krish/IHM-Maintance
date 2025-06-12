@@ -1,6 +1,6 @@
 <div>
     <div style="text-align: center;">
-        <h1 style="padding-top: 10px; font-weight: bold;">Summary Report</h1>
+        <h1 style="padding-top: 10px; font-weight: bold;">IHM Part1 Summary Report</h1>
         <div>
             <img src="{{$shipImagePath}}" alt="Your Imagess">
         </div>

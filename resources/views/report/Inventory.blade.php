@@ -58,7 +58,7 @@
                     <td>{{ $value->hazmat->name ?? '' }}</td>
                     <td>{{ $value->qty }}</td>
                     <td>{{ $value->unit }}</td>
-                    <td>{{ $value->hazmat_type === 'Contained' ? 'C' : 'P' }}</td>
+                    <td>{{ $value->hazmat_type}}</td>
                     <td>
                         Check Type: {{ $value->check->type ?? '' }}
                         @if(!empty($value->check->type) && (!empty($value->check->name) || !empty($value->remarks))),@endif
@@ -85,7 +85,7 @@
                         <th>No</th>
                         <th>Name of equipment and machinery</th>
                         <th>Location</th>
-                        <th>Materials (classification in appendix 1)</th>
+                         <th>Materials (classification in appendix 1 of MEPC.379(80) & Annex-B of EMSA Guidelines)</th>
                         <th>Parts where used</th>
                         <th colspan="2">Approximate quantity</th>
                         <th>CHM/PCHM</th>
@@ -127,7 +127,7 @@
 
                         <td>{{ $value->qty }}</td>
                         <td>{{ $value->unit }}</td>
-                        <td>{{ $value->hazmat_type === 'Contained' ? 'C' : 'P' }}</td>
+                        <td>{{ $value->hazmat_type}}</td>
                         <td>
                             Check Type: {{ $value->check->type ?? '' }}
                             @if(!empty($value->check->type) && (!empty($value->check->name) || !empty($value->remarks))),@endif
@@ -156,7 +156,7 @@
                         <th>No</th>
                         <th>Name of structural element</th>
                         <th>Location</th>
-                        <th>Materials (classification in appendix 1)</th>
+                        <th>Materials (classification in appendix 1 of MEPC.379(80) & Annex-B of EMSA Guidelines)</th>
                         <th>Parts where used</th>
                         <th colspan="2">Approximate quantity</th>
                         <th>CHM/PCHM</th>
@@ -198,7 +198,7 @@
                         <td>{{ $value->hazmat->name ?? '' }}</td>
                         <td>{{ $value->qty }}</td>
                         <td>{{ $value->unit }}</td>
-                        <td>{{ $value->hazmat_type === 'Contained' ? 'C' : 'P' }}</td>
+                        <td>{{ $value->hazmat_type}}</td>
                         <td>
                             Check Type: {{ $value->check->type ?? '' }}
                             @if(!empty($value->check->type) && (!empty($value->check->name) || !empty($value->remarks))),@endif

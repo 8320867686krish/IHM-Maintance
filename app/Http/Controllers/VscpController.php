@@ -451,14 +451,17 @@ class VscpController extends Controller
             $mpdf->use_kwt = true;
             $mpdf->defaultPageNumStyle = '1';
             $mpdf->SetDisplayMode('fullpage');
+            $version =$shipDetail['current_ihm_version'];
 
+            
             // Define header content with logo
             $header = '
             <table width="100%" style="border-bottom: 1px solid #000000; vertical-align: middle; font-family: serif; font-size: 9pt; color: #000088;">
                 <tr>
                     <td width="10%"></td>
                     <td width="80%" align="center">' . $shipDetail['ship_name'] . '</td>
-                    <td width="10%" style="text-align: right;">' . $shipDetail['report_number'] . '</td>
+                    <td width="10%" style="text-align: right;">Report Number: ' . $shipDetail['report_number'] . '<br/>Version: ' . $shipDetail['current_ihm_version'] . '</td>
+
                 </tr>
             </table>';
 
