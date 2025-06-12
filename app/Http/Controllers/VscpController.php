@@ -478,7 +478,7 @@ class VscpController extends Controller
             $mpdf->SetHTMLFooter($footer);
 
             $shipImagePath = public_path('uploads/ship/' . $shipDetail['ship_image']);
-            $stylesheet = file_get_contents('assets/mpdf.css');
+            $stylesheet = file_get_contents('public/assets/mpdf.css');
             $mpdf->WriteHTML($stylesheet, \Mpdf\HTMLParserMode::HEADER_CSS);
             $mpdf->WriteHTML(view('report.cover', compact('shipDetail', 'shipImagePath')));
             $mpdf->WriteHTML(view('report.shipParticular', compact('shipDetail')));
