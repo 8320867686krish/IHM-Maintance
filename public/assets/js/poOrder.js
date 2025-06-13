@@ -349,11 +349,11 @@ $('#suspected_hazmat').on('changed.bs.select', function (e, clickedIndex, isSele
                             <select class="form-control table_type tableType${selectedValue}" id="table_type_${selectedValue}" name="hazmats[${selectedValue}][hazmat_type]"  data-findTable="${tableType[0]}" data-divValue="${selectedValue}">
                                 <option value="Contained">Contained
                                 </option>
-                                <option value="Not Contained" selected="" >
+                                <option value="Not Contained" >
                                     Not Contained</option>
                                 <option value="PCHM">
                                     PCHM</option>
-                                <option value="Unknown">
+                                <option value="Unknown" selected="" >
                                     Unknown</option>
                             </select>
                         </div>
@@ -490,6 +490,7 @@ $("#showTableTypeDiv").on("change", ".cloneTableTypeDiv select.table_type", func
         cloneTableTypeDiv.find(`.ihmUpdated${divValue}`).remove();
         cloneTableTypeDiv.find(`.itemInstall${divValue}`).remove();
         cloneTableTypeDiv.find(`.returnItemDetails${divValue}`).remove();
+        cloneTableTypeDiv.find(`.ihmItemDetails${divValue}`).remove();
 
 
     }
