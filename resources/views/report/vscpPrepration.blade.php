@@ -47,7 +47,8 @@
     <h4>List Of Checks For {{ $name }}</h4>
 
     @foreach($checks as $check)
-    <table class="next">
+   <table class="{{ !$loop->first ? 'next' : '' }}">
+
         <tbody>
             <tr>
                 <td width="20%"><strong>Material</strong></td>

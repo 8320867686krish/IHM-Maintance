@@ -499,12 +499,13 @@ class VscpController extends Controller
                             $mpdf->useTemplate($templateId, null, null, $mpdf->w, null); // Use the template with appropriate dimensions
 
                         }
-                        $mpdf->AddPage('L');
+
                         $deck_id = $value['id'];
-                        echo $deck_id;
-                       $filterDecks = $checkHazmatIHMPart->filter(function ($item) use ($deck_id) {
-    return $item->deck_id == (int) $deck_id;
-});
+                            $mpdf->AddPage('L');
+
+                        $filterDecks = $checkHazmatIHMPart->filter(function ($item) use ($deck_id) {
+                            return $item->deck_id == (int) $deck_id;
+                        });
 
                         $mpdf->writeHTML(view('report.vscpPrepration', ['checks' => $filterDecks, 'name' => $value['name']]));
                         unlink($fileNameDiagram);
@@ -517,20 +518,18 @@ class VscpController extends Controller
             if (file_exists($gaplan)) {
                 $titleHtml = '<h3 style="text-align:center;font-size:12px;"> Supplement to initial IHM Part</h3>';
                 $this->mergePdfAsImages($gaplan, $titleHtml, $mpdf);
-
             }
             if (@$summary) {
-              
+
                 foreach ($summary as $index => $sumvalue) {
                     $filePathsum = public_path('uploads/shipsVscp') . "/" . $ship_id . "/partmanual/" . basename($sumvalue['document']);
 
 
                     if (file_exists($filePathsum) && @$sumvalue['document']) {
                         if ($index == 0) {
-                            $titleHtml = '<h3 style="text-align:center;font-size:12pt">Title : '.$sumvalue['title'].'</h3>';
+                            $titleHtml = '<h3 style="text-align:center;font-size:12pt">Title : ' . $sumvalue['title'] . '</h3>';
                         } else {
-                        $titleHtml = '<h3 style="text-align:center;font-size:12pt">Title : '.$sumvalue['title'].'</h3>';
-
+                            $titleHtml = '<h3 style="text-align:center;font-size:12pt">Title : ' . $sumvalue['title'] . '</h3>';
                         }
                         $this->mergePdfAttachment($filePathsum, $titleHtml, $mpdf);
                     }
@@ -769,7 +768,7 @@ class VscpController extends Controller
             throw new \Exception("PDF file not found: {$filePath}");
         }
         if (!is_readable($filePath)) {
-         
+
             throw new \Exception("PDF file is not readable: {$filePath}");
         }
         $fileContent = @file_get_contents($filePath, false, null, 0, 4);
@@ -789,7 +788,7 @@ class VscpController extends Controller
             }
 
             for ($i = 1; $i <= $pageCount; $i++) {
-               
+
                 $template = $fpdi->importPage($i);
                 $size = $fpdi->getTemplateSize($template);
                 if (!is_array($size)) {
@@ -866,37 +865,36 @@ class VscpController extends Controller
             }
         }
     }
-    
-  protected function mergePdfAsImages($filePath, $title, $mpdf, $page = null)
-{
-    try {
-        $pdf = new \Spatie\PdfToImage\Pdf($filePath);
-        $pageCount = $pdf->getNumberOfPages();
 
-        if ($pageCount > 0) {
-            for ($i = 1; $i <= $pageCount; $i++) {
-                $imagePath = storage_path("app/temp_pdf_page_{$i}.jpg");
+    protected function mergePdfAsImages($filePath, $title, $mpdf, $page = null)
+    {
+        try {
+            $pdf = new \Spatie\PdfToImage\Pdf($filePath);
+            $pageCount = $pdf->getNumberOfPages();
 
-                $pdf->setPage($i)
-                    ->setOutputFormat('jpg')
-                    ->saveImage($imagePath);
+            if ($pageCount > 0) {
+                for ($i = 1; $i <= $pageCount; $i++) {
+                    $imagePath = storage_path("app/temp_pdf_page_{$i}.jpg");
 
-                $mpdf->AddPage($page);
+                    $pdf->setPage($i)
+                        ->setOutputFormat('jpg')
+                        ->saveImage($imagePath);
 
-                if ($i === 1 && !empty($title)) {
-                    $mpdf->WriteHTML($title);
+                    $mpdf->AddPage($page);
+
+                    if ($i === 1 && !empty($title)) {
+                        $mpdf->WriteHTML($title);
+                    }
+
+                    // Option 1: Image below title (not full page)
+                    $mpdf->Image($imagePath, 0, ($i === 1 && !empty($title) ? 15 : 0), 210, 277, 'jpg', '', true, false);
+
+                    // Clean up
+                    @unlink($imagePath);
                 }
-
-                // Option 1: Image below title (not full page)
-                $mpdf->Image($imagePath, 0, ($i === 1 && !empty($title) ? 15 : 0), 210, 277, 'jpg', '', true, false);
-
-                // Clean up
-                @unlink($imagePath);
             }
+        } catch (\Exception $e) {
+            throw new \Exception("PDF to Image conversion failed: " . $e->getMessage());
         }
-    } catch (\Exception $e) {
-        throw new \Exception("PDF to Image conversion failed: " . $e->getMessage());
     }
-}
-
 }
