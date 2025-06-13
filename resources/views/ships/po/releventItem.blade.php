@@ -1,6 +1,9 @@
 @extends('layouts.app')
 @section('shiptitle','Po Records')
+@section('css')
+<link rel="stylesheet" type="text/css" href="{{ asset('assets/vendor/bootstrap-select/css/bootstrap-select.css') }}">
 
+@endsection
 @section('content')
 @include('ships.po.modals.sendMail')
 
