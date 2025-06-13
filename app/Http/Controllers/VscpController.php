@@ -28,7 +28,7 @@ class VscpController extends Controller
     public function index($ship_id, $amended = null)
     {
         $ship = Ship::with('decks')->find($ship_id);
-        $checks = Check::with('hazmats.hazmat')->where('ship_id', $ship_id)->get();
+        $checks = Check::with('hazmat.hazmat')->where('ship_id', $ship_id)->get();
 
 
         $hazmats = Hazmat::get(['id', 'name', 'table_type']);
@@ -566,14 +566,14 @@ class VscpController extends Controller
         $tooltipCss = 'position: absolute;background-color: #fff;border: 1px solid #4052d6;padding: 1px;border-radius: 2px;
                 white-space: nowrap;z-index: 1;color:#4052d6;font-size:8px;text-align:center;';
         if (count($decks['checks']) > 0) {
-            $chunks = array_chunk($decks['checks']->toArray(), 15);
+            $chunks = array_chunk($decks['checks']->toArray(), 8);
 
             $k = 0;
             $gap = 1;
             $ori = "landscape";
             $oddincreaseGap = 18;
             $evenincreaseGap = 29;
-            $imageDesireHeight = 500;
+            $imageDesireHeight = 400;
             foreach ($chunks as $chunkIndex => $chunk) {
                 $imagePath = $decks['image'];
                 $imageData = base64_encode(file_get_contents($imagePath));
@@ -647,7 +647,7 @@ class VscpController extends Controller
                     if (@$value['check_hazmats']) {
                         $hazmatCount = count($value['check_hazmats']); // Get the total number of elements
                         foreach ($value['check_hazmats'] as $index => $hazmet) {
-                            $tooltipText .= '<span style="font-size:8px;color:' . $hazmet['hazmat']['color']   . '">' . $hazmet['hazmat']['short_name'] . '</span>';
+                            $tooltipText .= '<span style="font-size:12px;color:' . $hazmet['hazmat']['color']   . '">' . $hazmet['hazmat']['short_name'] . '</span>';
                             if ($index < $hazmatCount - 1) {
                                 $tooltipText .= ',';
                             }
