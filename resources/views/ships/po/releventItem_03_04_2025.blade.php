@@ -234,7 +234,7 @@
 															@endif
 															@if( $hazmetTable == 'A')
 															<div class="col-12 col-md-12 col-lg-12  mb-2  returnItem{{$value['hazmat_id']}}">
-																<h5>return of item initiated ?</h5>
+																<h5>Return of item initiated ?</h5>
 																<label class="custom-control custom-radio custom-control-inline">
 																	<input type="radio" id="isReturn_yes{{$value['hazmat_id']}}" name="hazmats[{{$value['hazmat_id']}}][isReturn]" value="yes" class="custom-control-input isReturnChoice" data-isReturn="{{$value['hazmat_id']}}" {{ $value->isReturn === 'yes' ? 'checked' : ''}}><span class="custom-control-label">Yes</span>
 																</label>

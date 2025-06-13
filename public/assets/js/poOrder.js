@@ -471,7 +471,7 @@ $("#showTableTypeDiv").on("change", ".cloneTableTypeDiv select.table_type", func
             </div>
 
              <div class="col-12 col-md-12 col-lg-12  mb-1  removeItem${divValue}" style="display:none">
-                <h5>remove the item?</h5>
+                <h5>Remove the item?</h5>
                <label class="custom-control custom-radio custom-control-inline">
                  <input type="radio" id="isRemove${divValue}" name="hazmats[${divValue}][isRemove]" value="yes" class="custom-control-input isRemoveChoice" data-isRemove="${divValue}"><span class="custom-control-label">Yes</span>
                 </label>
@@ -657,7 +657,7 @@ $("#showTableTypeDiv").on("change", ".cloneTableTypeDiv input[type=radio].isArri
     if (tabValue === 'A') {
         isReturnDiv += `
         <div class="col-12 col-md-12 col-lg-12  mb-1  returnItem${divValue}">
-            <h5>return of item initiated ?</h5>
+            <h5>Return of item initiated ?</h5>
            <label class="custom-control custom-radio custom-control-inline">
              <input type="radio" id="isReturn_yes${divValue}" name="hazmats[${divValue}][isReturn]" value="yes" class="custom-control-input isReturnChoice" data-isReturn="${divValue}"><span class="custom-control-label">Yes</span>
             </label>
@@ -869,7 +869,7 @@ function tableBFiled(divValue) {
          <div class="col-2 mb-2">
                        <div class="form-group input-label-group">
                        <input type="date" name="hazmats[${divValue}][ihm_date]" id="ihm_date${divValue}" class="form-control" placeHolder="">
-                        <label for="">Date</label>
+                        <label for="">Previous Date</label>
                        </div>
        </div>
     <div class="col-3 mb-2">

@@ -404,7 +404,7 @@
 															@endif
 															
 															<div class="col-12 col-md-12 col-lg-12  mb-2  removeItem{{$value['hazmat_id']}}">
-																<h5>remove the item?</h5>
+																<h5>Remove the item?</h5>
 																<label class="custom-control custom-radio custom-control-inline">
 																	<input type="radio" id="isRemove{{$value['hazmat_id']}}" name="hazmats[{{$value['hazmat_id']}}][isRemove]" value="yes" class="custom-control-input isRemoveChoice" data-isRemove="{{$value['hazmat_id']}}" {{ $value->isRemove === 'yes' ? 'checked' : '' }}><span class="custom-control-label">Yes</span>
 																</label>
