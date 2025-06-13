@@ -402,13 +402,8 @@
 															</div>
 
 															@endif
-															@if($value->isArrived == 'yes')
-															@php $style="display:block" @endphp
-															@else
-															@php $style="display:none" @endphp
-
-															@endif
-															<div class="col-12 col-md-12 col-lg-12  mb-2  removeItem{{$value['hazmat_id']}}" style="{{$style}}">
+															
+															<div class="col-12 col-md-12 col-lg-12  mb-2  removeItem{{$value['hazmat_id']}}">
 																<h5>remove the item?</h5>
 																<label class="custom-control custom-radio custom-control-inline">
 																	<input type="radio" id="isRemove{{$value['hazmat_id']}}" name="hazmats[{{$value['hazmat_id']}}][isRemove]" value="yes" class="custom-control-input isRemoveChoice" data-isRemove="{{$value['hazmat_id']}}" {{ $value->isRemove === 'yes' ? 'checked' : '' }}><span class="custom-control-label">Yes</span>
@@ -419,7 +414,7 @@
 
 															</div>
 															@if( $value->isRemove === 'yes')
-															<div class="row  col-12 mb-2  removeItemDetails{{$value['hazmat_id']}}" style="{{$style}}">
+															<div class="row  col-12 mb-2  removeItemDetails{{$value['hazmat_id']}}">
 																<div class="col-4 mb-2">
 																	<div class="form-group input-label-group">
 																		<input type="text" name="hazmats[{{$value['hazmat_id']}}][service_supplier_name]" id="service_supplier_name{{$value['hazmat_id']}}" class="form-control" placeHolder="" value="{{$value['service_supplier_name']}}">
