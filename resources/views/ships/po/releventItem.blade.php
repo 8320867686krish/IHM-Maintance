@@ -1,60 +1,6 @@
 @extends('layouts.app')
 @section('shiptitle','Po Records')
-@section('css')
-<link rel="stylesheet" type="text/css" href="{{ asset('assets/vendor/bootstrap-select/css/bootstrap-select.css') }}">
-<style>
-	.input-label-group {
-		position: relative;
-		width: 100%;
-	}
 
-	.input-label-group input {
-		width: 100%;
-		padding: 12px 15px;
-		border: 1px solid #ccc;
-		border-radius: 4px;
-		font-size: 14px;
-		background: white;
-		transition: all 0.3s ease;
-		outline: none;
-	}
-
-	.input-label-group label {
-		position: absolute;
-		left: 15px;
-		top: 50%;
-		transform: translateY(-50%);
-		font-size: 14px;
-		color: #999;
-		background: white;
-		padding: 0 5px;
-		transition: 0.3s ease;
-		pointer-events: none;
-	}
-
-	/* Border cut effect */
-	.input-label-group input:focus {
-		border-top-color: #2563eb;
-		border-color: #2563eb;
-		box-shadow: none !important;
-	}
-
-	/* Move label up when focused or has value */
-	.input-label-group input:focus+label,
-	.input-label-group input:not(:placeholder-shown)+label {
-		top: 1px;
-		left: 10px;
-		font-size: 13px;
-		color: #2563eb;
-	}
-
-	/* Creating the cut-out effect */
-	.input-label-group input:focus {
-		border-radius: 4px 4px 0 0;
-		/* Maintain a soft top cut */
-	}
-</style>
-@endsection
 @section('content')
 @include('ships.po.modals.sendMail')
 
@@ -116,7 +62,7 @@
 								</div>
 							</div>
 
-							
+
 
 							<div class="col-12 col-md-6 mb-2">
 								<div class="form-group input-label-group">
@@ -225,7 +171,7 @@
 																<div class=" col-4  documentLoad1 mb-1" id="documentLoad1_{{$value['hazmat_id']}}">
 																	<div class="form-group input-label-group">
 																		@if(@$value['doc1'])
-																		<input type="hidden" name="hazmats[{{$value['hazmat_id']}}][doc1]" value="{{$value['doc1']}}"><a>MD NO.{{$value->makeModel->md_no}}</a>
+																		<input type="hidden" name="hazmats[{{$value['hazmat_id']}}][doc1]" value="{{$value['doc1']}}"><a>MD NO.{{@$value->makeModel->md_no ?? ''}}</a>
 
 																		@endif
 																	</div>
@@ -234,7 +180,7 @@
 																<div class=" col-4  documentLoad2 mb-1" id="documentLoad2_{{$value['hazmat_id']}}">
 																	<div class="form-group input-label-group">
 																		@if(@$value['doc2'])
-																		<input type="hidden" name="hazmats[{{$value['hazmat_id']}}][doc2]" value="{{$value['doc2']}}"><a>SDoC No.{{$value->makeModel->sdoc_no}}</a>
+																		<input type="hidden" name="hazmats[{{$value['hazmat_id']}}][doc2]" value="{{$value['doc2']}}"><a>SDoC No.{{@$value->makeModel->sdoc_no ?? ''}}</a>
 
 																		@endif
 																	</div>
@@ -350,7 +296,7 @@
 															@endif
 															@if($value->isIHMUpdated == 'yes' && $value->isArrived == 'yes')
 															<div class="row col-12 mb-2 ihmItemDetails{{$value['hazmat_id']}}">
-															<div class="col-4 mb-2">
+																<div class="col-4 mb-2">
 																	<div class="form-group input-label-group">
 																		<select name="hazmats[{{$value['hazmat_id']}}][ihm_table_type]" id="ihm_table_type{{$value['hazmat_id']}}" class="form-control">
 																			<option value="">Select Table</option>
@@ -401,7 +347,7 @@
 
 																	</div>
 																</div>
-																
+
 																@else
 																<div class="col-4 mb-2">
 																	<div class="form-group input-label-group">
@@ -433,7 +379,7 @@
 																<div class="col-3 mb-2">
 																	<div class="form-group input-label-group">
 																		<input type="text" name="hazmats[{{$value['hazmat_id']}}][ihm_unit]" id="ihm_unit{{$value['hazmat_id']}}" class="form-control" placeHolder="" value="{{$value['ihm_unit']}}">
-																		
+
 
 																	</div>
 																</div>
@@ -534,7 +480,7 @@
 															@endif
 
 															@endif
-															
+
 
 														</div>
 													</div>
