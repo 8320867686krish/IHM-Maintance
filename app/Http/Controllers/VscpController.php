@@ -28,7 +28,7 @@ class VscpController extends Controller
     public function index($ship_id, $amended = null)
     {
         $ship = Ship::with('decks')->find($ship_id);
-        $checks = Check::with('hazmat.hazmat')->where('ship_id', $ship_id)->get();
+        $checks = Check::with('hazmats.hazmat')->where('ship_id', $ship_id)->get();
         $hazmats = Hazmat::get(['id', 'name', 'table_type']);
         return view('ships.vscp.index', compact('ship', 'ship_id', 'checks', 'hazmats', 'amended'));
     }
@@ -506,7 +506,7 @@ class VscpController extends Controller
                         });
 
 
-                        // $mpdf->writeHTML(view('report.vscpPrepration', ['checks' => $filterDecks, 'name' => $value['name']]));
+                        $mpdf->writeHTML(view('report.vscpPrepration', ['checks' => $filterDecks, 'name' => $value['name']]));
                         unlink($fileNameDiagram);
                     }
                 }
