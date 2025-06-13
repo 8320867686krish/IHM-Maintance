@@ -25,37 +25,58 @@
 <div class="section-1-1">
     <h4>List Of Checks For {{$name}}</h4>
     <table>
-        <thead>
-            <tr>
-                <th style="width:10%">Check Name</th>
-                <th style="width:10%">Check Type</th>
-                <th style="width:30%">Close Image</th>
-                <th style="width:30%">Away Image</th>
-            </tr>
 
-        </thead>
         <tbody>
 
             @foreach($checks as $check)
             <tr>
-                <td>{{$check->name}}</td>
-                <td>{{ $check->type }}</td>
-                <td>
-                    @if($check->close_image)
-                    <img src="{{ $check->close_image }}" width="130px" height="130px" />
-                    @else
-                    &nbsp;
-                    @endif
-                </td>
-                <td>
-                    @if($check->away_image)
-                    <img src="{{ $check->away_image }}" width="130px" height="130px" />
-                    @else
-                    &nbsp;
-                    @endif
+                <td>Material</td>
+                <td>{{ $check->hazmat->name ?? '' }}</td>
+                <td>Sample No</td>
+                <td>{{ $check->check->name}}</td>
 
-                </td>
+            </tr>
+            <tr>
+                <td>Type</td>
+                <td>{{ $check->check->type}}</td>
+                <td>IHM Table</td>
+                <td>{{ $check->ihm_part_table}}</td>
 
+            </tr>
+            <tr>
+                <td>Application of paint</td>
+                <td>{{ $check->application_of_paint}}</td>
+                <td>Location</td>
+                <td>{{ $check->location}}</td>
+
+            </tr>
+
+            <tr>
+                <td>Materials(classification in appendix 1)</td>
+                <td>{{ $check->parts_where_used}}</td>
+                <td>Quantity</td>
+                <td>{{ $check->qty}}</td>
+
+            </tr>
+
+            <tr>
+                <td>Unit</td>
+                <td>{{ $check->unit}}</td>
+                <td>Hazmat Type</td>
+                <td>{{ $check->hazmat_type}}</td>
+
+            </tr>
+            <tr colspan="2">
+                <td>Remarks</td>
+                <td>{{ $check->remarks}}</td>
+            </tr>
+            <tr>
+                <td colspan="2">Close Image</td>
+                <td colspan="2">Away Image</td>
+            </tr>
+             <tr>
+                <td colspan="2">Close Image</td>
+                <td colspan="2">Away Image</td>
             </tr>
 
             @endforeach

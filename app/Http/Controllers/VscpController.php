@@ -29,10 +29,7 @@ class VscpController extends Controller
     {
         $ship = Ship::with('decks')->find($ship_id);
         $checks = Check::with('hazmat.hazmat')->where('ship_id', $ship_id)->get();
-
-
         $hazmats = Hazmat::get(['id', 'name', 'table_type']);
-
         return view('ships.vscp.index', compact('ship', 'ship_id', 'checks', 'hazmats', 'amended'));
     }
     public function uploadGaPlan(Request $request)
@@ -42,7 +39,6 @@ class VscpController extends Controller
                 'image' => 'required|image|mimes:jpeg,png,jpg,gif',
                 'ship_id' => 'required|exists:ships,id',
             ]);
-
             $project = Ship::findOrFail($request->input('ship_id'));
             $projectName = Str::slug($project->ship_name);
             $projectId = $request->input('ship_id');
@@ -458,7 +454,7 @@ class VscpController extends Controller
             $header = '
             <table width="100%" style="border-bottom: 1px solid #000000; vertical-align: middle; font-family: serif; font-size: 9pt; color: #000088;">
                 <tr>
-                    <td width="15%" style="fot-weight:bold">'. $shipDetail['ship_name'] .'</td>
+                    <td width="15%" style="fot-weight:bold">' . $shipDetail['ship_name'] . '</td>
                    
                     <td width="70%" style="text-align: right;">Report Number: ' . $shipDetail['report_number'] . '<br/>Version: ' . $shipDetail['current_ihm_version'] . '</td>
                 </tr>
@@ -504,7 +500,13 @@ class VscpController extends Controller
 
                         }
                         $mpdf->AddPage('L');
-                        $mpdf->writeHTML(view('report.vscpPrepration', ['checks' => $value['checks'], 'name' => $value['name']]));
+                        $deck_id = $value['id'];
+                        $filterDecks =  $checkHazmatIHMPart->filter(function ($item,$deck_id) {
+                            return $item->deck_id == $deck_id;
+                        });
+
+
+                        $mpdf->writeHTML(view('report.vscpPrepration', ['checks' => $filterDecks, 'name' => $value['name']]));
                         unlink($fileNameDiagram);
                     }
                 }
@@ -515,7 +517,7 @@ class VscpController extends Controller
             if (file_exists($gaplan)) {
                 $titleHtml = '<h3 style="text-align:center;font-size:12pt"> GA Plan</h3>';
 
-                $this->mergePdfAsImages($gaplan,$titleHtml, $mpdf);
+                $this->mergePdfAsImages($gaplan, $titleHtml, $mpdf);
             }
             if (@$summary) {
                 foreach ($summary as $index => $sumvalue) {
@@ -526,7 +528,7 @@ class VscpController extends Controller
                         if ($index == 0) {
                             $titleHtml = '<h3 style="text-align:center;font-size:12pt"> Supplement to initial IHM Part</h3>';
                         } else {
-                            $titleHtml = "Title:".$sumvalue['title'];
+                            $titleHtml = "Title:" . $sumvalue['title'];
                         }
                         $this->mergePdfAttachment($filePathsum, $titleHtml, $mpdf);
                     }
