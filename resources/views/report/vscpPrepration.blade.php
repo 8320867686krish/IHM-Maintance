@@ -25,8 +25,8 @@
     }
 
     .section-1-1 .img-cell img {
-        width: 150px;
-        height: 150px;
+        width: 100px;
+        height: 100px;
         object-fit: contain;
     }
 

@@ -516,7 +516,7 @@ class VscpController extends Controller
             $ga_plan_pdf = $ship_id . "/" . $shipDetail['ga_plan_pdf'];
             $gaplan =  public_path('shipsVscp/' . $ga_plan_pdf);
             if (file_exists($gaplan)) {
-                $titleHtml = '<h3 style="text-align:center;font-size:12px;"> Supplement to initial IHM Part</h3>';
+                $titleHtml = '<h3 style="text-align:center;font-size:12pt;">Supplement to initial IHM Part</h3>';
                 $this->mergePdfAsImages($gaplan, $titleHtml, $mpdf);
             }
             if (@$summary) {
