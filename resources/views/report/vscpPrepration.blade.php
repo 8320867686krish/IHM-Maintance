@@ -18,17 +18,16 @@
 
     .section-1-1 th,
     .section-1-1 td {
-        font-size: 12pt;
+        font-size: 18x;
         /* Exact font size for TD elements */
-        padding: 8px 10px;
         vertical-align: top;
+        color:#000;
     }
 
-    .section-1-1 .img-cell img {
-        width: 100px;
-        height: 100px;
-        object-fit: contain;
-    }
+    .section-1-1 .img-cell {
+    vertical-align: middle;
+    text-align: center;
+}
 
     .section-1-1 .img-cell span {
         color: #888;
@@ -40,6 +39,7 @@
         page-break-inside: avoid;
         display: block;
     }
+   
 </style>
 
 
@@ -90,20 +90,25 @@
                 <td colspan="2" width="50%"><strong>Away Image:</strong></td>
             </tr>
             <tr>
-                <td colspan="2" width="50%">
-                    @if($check->check->close_image)
-                    <img src="{{ $check->check->close_image }}" alt="Close Image">
-                    @else
-                    <span>No image available</span>
-                    @endif
-                </td>
-                <td colspan="2" width="50%">
-                    @if($check->check->away_image)
-                    <img src="{{ $check->check->away_image }}" alt="Away Image">
-                    @else
-                    <span>No image available</span>
-                    @endif
-                </td>
+                <td colspan="2" width="50%" class="img-cell">
+    @if($check->check->close_image)
+   <img src="{{ $check->check->close_image }}"
+     alt="Close Image"
+     style="width: 48%; height: 48%; object-fit: cover;margin:auto;">
+    @else
+    <span>No image available</span>
+    @endif
+</td>
+<td colspan="2" width="50%" class="img-cell">
+    @if($check->check->away_image)
+  <img src="{{ $check->check->away_image }}"
+     alt="Close Image"
+     style="width: 48%; height:48%; object-fit: cover;margin:auto;">
+    @else
+    <span>No image available</span>
+    @endif
+</td>
+
             </tr>
         </tbody>
     </table>

@@ -501,7 +501,7 @@ class VscpController extends Controller
                         }
 
                         $deck_id = $value['id'];
-                            $mpdf->AddPage('L');
+                            $mpdf->AddPage('P');
 
                         $filterDecks = $checkHazmatIHMPart->filter(function ($item) use ($deck_id) {
                             return $item->deck_id == (int) $deck_id;
