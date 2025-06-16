@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Intervention\Image\Facades\Image as Image;
 use App\Http\Requests\ShipRequest;
 use App\Jobs\sendUserRegisterMail;
 use App\Models\Brifing;
@@ -164,8 +165,70 @@ class ShipController extends Controller
                         $oldImagePath = $this->deleteImage('uploads/ship/', $shipData->ship_image);
                     }
                 }
-                $image = $this->upload($request, 'ship_image', 'uploads/ship');
-                $inputData['ship_image'] = $image;
+                $imageFile = $request->file('ship_image');
+                $imageName = time() . '.' . $imageFile->getClientOriginalExtension();
+                $targetSize = 300;
+
+                // Get original dimensions
+                list($width, $height) = getimagesize($imageFile);
+
+                // Create image from uploaded file
+                $extension = strtolower($imageFile->getClientOriginalExtension());
+
+                switch ($extension) {
+                    case 'jpeg':
+                    case 'jpg':
+                        $source = imagecreatefromjpeg($imageFile);
+                        break;
+                    case 'png':
+                        $source = imagecreatefrompng($imageFile);
+                        break;
+                    case 'gif':
+                        $source = imagecreatefromgif($imageFile);
+                        break;
+                    default:
+                        throw new \Exception("Unsupported image type.");
+                }
+
+                // Step 1: Resize proportionally
+                if ($width >= $height) {
+                    $new_width = $targetSize;
+                    $new_height = ($height * $targetSize) / $width;
+                } else {
+                    $new_height = $targetSize;
+                    $new_width = ($width * $targetSize) / $height;
+                }
+
+                // Resize image
+                $resized = imagecreatetruecolor($new_width, $new_height);
+                imagecopyresampled($resized, $source, 0, 0, 0, 0, $new_width, $new_height, $width, $height);
+
+                // Step 2: Create 400x400 square canvas
+                $square = imagecreatetruecolor($targetSize, $targetSize);
+
+                // Fill background (white)
+                $white = imagecolorallocate($square, 255, 255, 255);
+                imagefill($square, 0, 0, $white);
+
+                // Center resized image
+                $x = ($targetSize - $new_width) / 2;
+                $y = ($targetSize - $new_height) / 2;
+                imagecopy($square, $resized, $x, $y, 0, 0, $new_width, $new_height);
+
+                // Step 3: Save to public path
+                $path = public_path('uploads/ship/' . $imageName);
+                imagejpeg($square, $path, 90); // change to imagepng or imagegif if needed
+
+                // Cleanup
+                imagedestroy($source);
+                imagedestroy($resized);
+                imagedestroy($square);
+
+                // Optionally return path
+
+
+                // Save filename
+                $inputData['ship_image'] = $imageName;
             }
 
             $ship = Ship::updateOrCreate(['id' => $id], $inputData);

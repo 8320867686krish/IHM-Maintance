@@ -290,7 +290,7 @@
 															</div>
 															@endif
 															@else
-															<div class=" col-12 col-md-12 col-lg-12 mb-2 noitemInstalled{{$value['hazmat_id']}}">
+															<div class=" col-12 col-md-12 col-lg-12 mb-3 noitemInstalled{{$value['hazmat_id']}}">
 																<p>Waiting for return to initiate
 																</p>
 

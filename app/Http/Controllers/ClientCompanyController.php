@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use App\Traits\ImageUpload;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class ClientCompanyController extends Controller
 {
@@ -60,6 +61,7 @@ class ClientCompanyController extends Controller
     }
     public function store(ClientCompanyRequest $request)
     {
+          DB::beginTransaction(); // Start transaction
         try {
             $id = $request->input('id');
             $inputData = $request->all();
@@ -116,11 +118,12 @@ class ClientCompanyController extends Controller
 
             $userMailData = [
                 'name' => $inputData['name'],
-                'last_name' => $inputData['last_name'],
+                'last_name' =>'',
                 'email' => $inputData['email'],
                 'password' => $inputData['password'],
             ];
             ClientCompany::updateOrCreate(['id' => $id], $inputData);
+            DB::commit(); // Commit DB transaction
             $message = empty($id) ? "Client Comapny added successfully" : "Client Company updated successfully";
 
             try {
@@ -133,8 +136,9 @@ class ClientCompanyController extends Controller
             // return redirect('clients')->with('message', $message);
             return response()->json(['isStatus' => true, 'message' => $message]);
         } catch (\Throwable $th) {
-            print_r($th->getMessage());
-            return response()->json(['isStatus' => false, 'message' => 'An error occurred while processing your request.']);
+             DB::rollBack(); // Rollback DB transaction
+          //  print_r($th->getMessage());
+            return response()->json(['isStatus' => false, 'message' => $th->getMessage()]);
         }
     }
 

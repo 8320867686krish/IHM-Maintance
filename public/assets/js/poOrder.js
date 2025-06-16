@@ -1,4 +1,15 @@
 $(document).ready(function () {
+    let editorInstance = null;
+    document.getElementById('attachments').addEventListener('change', function (event) {
+        const files = event.target.files;
+        const fileList = document.getElementById('fileList');
+        fileList.innerHTML = '';
+        for (let i = 0; i < files.length; i++) {
+            const li = document.createElement('li');
+            li.textContent = files[i].name;
+            fileList.appendChild(li);
+        }
+    });
     $("#sendtovendor").click(function () {
         let index = 1;
         var po_id = $("#po_id").val();
@@ -40,13 +51,25 @@ $(document).ready(function () {
 
         // Insert the content with HTML tags
 
-
+        console.log(content);
         // Show the modal
         $("#sendVendorMail").modal('show');
         $('#sendVendorMail').on('shown.bs.modal', function () {
-            if (editorInstance) {
-                editorInstance.html.set(content);
-            }
+            $('#summernote').summernote('code', content);
+            //     if (!editorInstance) {
+            //     ClassicEditor
+            //         .create(document.querySelector('#email_body'))
+            //         .then(editor => {
+            //             editorInstance = editor;
+            //             editor.setData(content); // now safe to set
+            //         })
+            //         .catch(error => {
+            //             console.error(error);
+            //         });
+            // } else {
+            //     // Editor already created
+            //     editorInstance.setData(content);
+            // }
         });
     });
 
@@ -274,7 +297,7 @@ $(document).ready(function () {
             success: function (response) {
                 if (response.message) {
                     successMsg(response.message);
-                    location.reload();
+                    window.location.href = response.url;
                 }
             },
             error: function (xhr, status, error) {
@@ -745,8 +768,8 @@ $("#showTableTypeDiv").on("change", ".cloneTableTypeDiv input[type=radio].isInst
 
     } else {
         let isInstalledDiv = `
-        <div class=" col-12 col-md-12 col-lg-12  mb-1 noitemInstalled${divValue}">
-           <p>Waiting for return to initiate
+        <div class=" col-12 col-md-12 col-lg-12  mb-3 noitemInstalled${divValue}">
+           <p><b>Waiting for return to initiate</b>
             </p>
            
            
@@ -989,4 +1012,5 @@ function getDocument(modelId, hazmetId) {
         }
 
     });
+
 }

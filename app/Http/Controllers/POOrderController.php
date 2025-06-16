@@ -70,8 +70,8 @@ class POOrderController extends Controller
                 poOrderItem::updateOrCreate(['id' => $key, 'po_order_id' => $poOrder->id], $value);
             }
         }
-
-        return response()->json(['isStatus' => true, 'message' => 'Po Order save successfully']);
+        $url = url('ship/view/' . $post['ship_id'] . '#po-records');
+        return response()->json(['isStatus' => true, 'message' => 'Po Order save successfully', 'url' => $url]);
     }
     public function viewReleventItem($poiteam_id)
     {
@@ -247,9 +247,17 @@ class POOrderController extends Controller
     public function getEquipMent($hazmat_id)
     {
         try {
-            $equipments = MakeModel::selectRaw('MIN(id) as id, equipment')
-                ->groupBy('equipment')
-                ->get();
+            $user = Auth::user();
+            $currentUserRoleLevel = $user->roles->first()->level;
+
+            $equipmentsQuery = MakeModel::selectRaw('MIN(id) as id, equipment')
+                ->groupBy('equipment');
+
+            if ($currentUserRoleLevel != 1) {
+                $equipmentsQuery->where('hazmat_companies_id', $user->hazmat_companies_id);
+            }
+
+            $equipments = $equipmentsQuery->get();
 
             return response()->json(['isStatus' => true, 'message' => 'Equipment retrieved successfully.', 'equipments' => $equipments]);
         } catch (Throwable $th) {
@@ -295,9 +303,10 @@ class POOrderController extends Controller
     public function sendMail(Request $request)
     {
         $data = $request->input();
-        $shipsData = Ship::with(['client.userDetail', 'hazmatComapny:id,email,name'])->find($data['shipId']);
+        $shipsData = Ship::with(['client.userDetail', 'hazmatComapny:id,email,name','shipStaff:id,email'])->find($data['shipId']);
         $accounting_team_email = $shipsData['client']['accounting_team_email'];
         $client_company_email = $shipsData['client']['userDetail']['email'];
+        $shipstaff_email = $shipsData['shipStaff']['email'];
 
         $from_email = $shipsData['hazmatComapny']['email'];
         $vendor = poOrder::select('email')->find($data['order_id']);
@@ -322,24 +331,25 @@ class POOrderController extends Controller
             'from_email' => $from_email,
             'ship_id' =>  $data['shipId'],
             'po_order_id' => $data['order_id'],
+            'shipstaff_email' => $shipstaff_email
         ];
         emailHistory::create($email_history_arry);
         $mailData = ['title' => $data['email_subject'], 'body' => $data['email_body'], 'attachments' => $attachments];
 
         Mail::to($to)
-        ->cc([$client_company_email, $accounting_team_email])
-        ->queue(new sendMail($mailData,$from));
+            ->cc([$client_company_email, $accounting_team_email])
+            ->queue(new sendMail($mailData, $from));
         return response()->json(['isStatus' => true, 'message' => 'sent email successfully.']);
     }
-    public function recivedDoc(Request $request){
+    public function recivedDoc(Request $request)
+    {
         $post = $request->input();
-        $poorder = poOrder::where('id',$post['recived_order_id'])->update([
+        $poorder = poOrder::where('id', $post['recived_order_id'])->update([
             'isRecivedDoc' => 1,
             'recived_document_comment' => $post['recived_document_comment'],
             'recived_document_date' => $post['recived_document_date']
         ]);
         return response()->json(['isStatus' => true, 'message' => 'save successfully.']);
-
     }
     public function poOrderSample()
     {

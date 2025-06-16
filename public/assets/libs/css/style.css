@@ -2343,7 +2343,10 @@ Pageheader
 
 .product-img {
     text-align: center;
-    padding: 35px 0px;
+    padding: 10px 0px;
+}
+.img-fluid{
+    width:100% !important;
 }
 
 .product-img-head {
@@ -2401,12 +2404,12 @@ Pageheader
 
 .product-content {
     border-top: 1px solid #e6e6f2;
-    padding: 23px;
+    padding: 10px 20px;
 }
 
 .product-content-head {
     position: relative;
-    margin-bottom: 25px;
+    margin-bottom: 10px;
 }
 
 .product-title {

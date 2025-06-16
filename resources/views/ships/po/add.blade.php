@@ -2,6 +2,9 @@
 @section('shiptitle','Po Records')
 
 @section('content')
+
+<link rel="stylesheet" href="{{ asset('assets/vendor/summernote/css/summernote-bs4.css')}}">
+
 <div class="container-fluid dashboard-content">
     <div class="row">
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
@@ -233,6 +236,7 @@
                                             <th>To Email(Supplier Email)</th>
                                             <th>CC Email(Company Email)</th>
                                             <th>CC Email (Accounting Email)</th>
+                                            <th>CC Email (Ship Staff Email)</th>
                                             <th>Sent Date</th>
 
                                         </tr>
@@ -245,6 +249,8 @@
                                             <td>{{$history['suppliear_email']}}</td>
                                             <td>{{$history['company_email']}}</td>
                                             <td>{{$history['accounting_email']}}</td>
+                                            <td>{{$history['shipstaff_email']}}</td>
+
                                             <td>{{ \Carbon\Carbon::parse(trim($history['created_at']))->setTimezone('Asia/Kolkata')->format('d/m/y g:i A') }}
 
                                             </td>
@@ -286,21 +292,25 @@
 @include('ships.po.modals.recivedDocModel')
 
 @push('js')
-<script type="text/javascript"
-    src="https://cdn.jsdelivr.net/npm/froala-editor@latest/js/froala_editor.pkgd.min.js"></script>
+<!-- <script type="text/javascript"
+    src="https://cdn.jsdelivr.net/npm/froala-editor@latest/js/froala_editor.pkgd.min.js"></script> -->
+<script src="{{ asset('assets/vendor/summernote/js/summernote-bs4.js') }}"></script>
+
 <script>
     var poItemGrid = "{{ url('ship/view') }}/{{ $ship_id }}#po-records"
     var itemIndex = "{{ isset($poData->poOrderItems) ? count($poData->poOrderItems) : 0 }}";
     var editorInstance;
 
     document.addEventListener('DOMContentLoaded', function() {
-        editorInstance = new FroalaEditor('#email_body', {
-            events: {
-                'initialized': function() {
-                    console.log("Froala initialized");
-                }
+        $('#summernote').summernote({
+            height: 300,
+            lineHeights: ['0.5', '1.0', '1.2', '1.5', '2.0'],
+            codemirror: { // codemirror options
+                theme: 'monokai'
             }
         });
+     
+
     });
 </script>
 <script src="{{ asset('assets/vendor/bootstrap-select/js/bootstrap-select.js') }}"></script>

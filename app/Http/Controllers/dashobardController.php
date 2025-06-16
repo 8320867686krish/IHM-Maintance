@@ -62,23 +62,29 @@ class dashobardController extends Controller
             $title = "Client Company";
             $routename = 'clientcompany.ships';
             $path = asset('uploads/clientcompany');
+            $addRoute = 'clientCompany.add';
+             $permission = "clientCompany.add";
         } else if ($currentUserRoleLevel == 1) {
             $hazmatCompany = HazmatCompany::select('id', 'logo', 'name')->get()->toArray();
         
             $path = asset('uploads/hazmatCompany');
             $imagekey = 'logo';
             $title = "Hazmat Company";
+            $addRoute = 'hazmatCompany.add';
             $routename = "clientcompany";
+            $permission = "hazmatCompany.add";
         } else if ($currentUserRoleLevel == 5) {
             $hazmatCompany = Ship::where('client_user_id', $user->id)->get();
             $path = asset('uploads/ship');
             $imagekey = 'ship_image';
             $title = "Ships";
+            $addRoute = 'ships.add';
             $routename = "ship.dashboard";
+            $permission = 'ships.add';
         } else {
             return  $this->shipDashboard($user->shipClient->id);
         }
-        return view('dashboard', compact('hazmatCompany', 'path', 'imagekey', 'title', 'routename','chartData'));
+        return view('dashboard', compact('hazmatCompany', 'path', 'imagekey', 'title', 'routename','chartData','addRoute','permission'));
     }
     public function clientcompany($id)
     {
@@ -89,8 +95,9 @@ class dashobardController extends Controller
         $title = "Client Company";
         $routename = 'clientcompany.ships';
         $path = asset('uploads/clientcompany');
-
-        return view('dashboard', compact('hazmatCompany', 'path', 'imagekey', 'title', 'routename'));
+        $addRoute = 'clientCompany.add';
+        $permission = 'clientCompany.add';
+        return view('dashboard', compact('hazmatCompany', 'path', 'imagekey', 'title', 'routename','addRoute','permission'));
     }
     public function clientcompanyShips($id)
     {
@@ -101,10 +108,11 @@ class dashobardController extends Controller
         $imagekey = 'ship_image';
         $title = "Ships";
         $routename = "ship.dashboard";
-
+        $addRoute = 'ships.add';
         $path = asset('uploads/ship');
+        $permission = 'ships.add';
 
-        return view('dashboard', compact('hazmatCompany', 'path', 'imagekey', 'title', 'routename','client_company_id'));
+        return view('dashboard', compact('hazmatCompany', 'path', 'imagekey', 'title', 'routename','client_company_id','addRoute','permission'));
     }
     public function shipDashboard($id)
     {

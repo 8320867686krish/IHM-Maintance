@@ -86,7 +86,7 @@
 
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 
-            <x-swiper-slide :data=$hazmatCompany :path=$path :imagekey=$imagekey :routename=$routename></x-swiper-slide>
+            <x-swiper-slide :data=$hazmatCompany :path=$path :imagekey=$imagekey :routename=$routename :title=$title :addRoute=$addRoute :permission=$permission></x-swiper-slide>
         </div>
 
 

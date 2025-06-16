@@ -29,17 +29,25 @@
                         <div class="col-12 col-md-12" id="chkName">
                                <div class="form-group mb-4">
                                    <label for="name">Description</label>
-                                   <textarea  id="email_body" name="email_body" rows="3"></textarea>
+                                <textarea class="form-control" id="summernote" name="email_body" rows="6" placeholder="Write Descriptions"></textarea>
                                </div>
                            </div>
                         <div class="col-12 col-md-12 col-lg-12 mb-2">
                             <div class="form-group">
                                 <label for="name">Attachments <span class="text-danger">*</span></label>
                                 <input type="file" id="attachments" name="attachments[]" multiple class="form-control">
+                              
                                 <div class="invalid-feedback error" id="attachmentsError"></div>
 
                             </div>
+                            
                         </div>
+                        <div class="row">
+                            <div class="col-12 ml-4">
+                                  <ul id="fileList"></ul>
+                            </div>
+                        </div>
+                        
                       
                        
                       

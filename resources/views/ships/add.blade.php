@@ -160,7 +160,7 @@
 
                            
                             <div class="form-group col-4 mb-1">
-                                <label for="project_no">Managers <span class="text-danger">*</span></label>
+                                <label for="project_no">IHM Managers</label>
                                 <select class="selectpicker show-tick form-control form-control-lg" name="maneger_id[]"
                                     id="manager_id" multiple data-live-search="true" data-actions-box="true"
                                     onchange="removeInvalidClass(this)">
@@ -178,7 +178,7 @@
                                 <div class="invalid-feedback error" id="user_idError"></div>
                             </div>
                             <div class="form-group col-4 mb-1">
-                                <label for="project_no">Experts <span class="text-danger">*</span></label>
+                                <label for="project_no">IHM Experts</label>
                                 <select class="selectpicker show-tick form-control form-control-lg" name="expert_id[]"
                                     id="expert_id" multiple data-live-search="true" data-actions-box="true"
                                     onchange="removeInvalidClass(this)">

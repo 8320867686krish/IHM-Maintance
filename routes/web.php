@@ -73,6 +73,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/avilabletemplate/save', [HelpCenterController::class, 'avilabletemplateeSave'])->name('avilabletemplate.save');
 
     Route::get('/helpcenter', [HelpCenterController::class, 'index'])->name('helpcenter.list');
+    Route::get('/helpcenter', [HelpCenterController::class, 'index'])->name('helpcenter.list');
     Route::post('/correspondence/save', [HelpCenterController::class, 'correspondenceSave'])->name('correspondence.save');
     Route::post('/credential/save', [HelpCenterController::class, 'credentialSave'])->name('credential.save');
     Route::get('/credential/delete/{id}', [HelpCenterController::class, 'deleteCredential'])->name('credential.remove');
