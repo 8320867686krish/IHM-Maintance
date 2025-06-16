@@ -167,7 +167,7 @@ class ShipController extends Controller
                 }
                 $imageFile = $request->file('ship_image');
                 $imageName = time() . '.' . $imageFile->getClientOriginalExtension();
-                $targetSize = 250;
+                $targetSize = 400;
 
                 // Get original dimensions
                 list($width, $height) = getimagesize($imageFile);
