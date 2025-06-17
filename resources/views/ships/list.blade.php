@@ -41,7 +41,8 @@
     $(window).resize(matchHeight);
 
     // Handle delete ship button
-    $('.deleteship').on('click', function(e) {
+    $(document).on('click', '.deleteship', function(e) {
+
         e.preventDefault();
 
         var shipId = $(this).data('id');
@@ -51,8 +52,9 @@
         // Confirm delete
         confirmDelete(deleteUrl, confirmMessage,
             function(response) {
+                $("#shipslist").html();
                 // Success: Remove the ship card from DOM
-                $('#shipid' + shipId).remove();
+                $("#shipslist").html(response.ships_html);
             },
             function(response) {
                 // Error: Log failure

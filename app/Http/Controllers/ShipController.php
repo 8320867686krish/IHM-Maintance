@@ -40,15 +40,11 @@ class ShipController extends Controller
     public function index(request $request)
     {
         $user = Auth::user();
-
         $currentUserRoleLevel = $user->roles->first()->level;
 
-        // Initialize the query for ships
         if ($currentUserRoleLevel == 3 || $currentUserRoleLevel == 4) {
             $ships = $user->ships->load('client');
         } else {
-            // Otherwise, start with a query builder
-
             $shipsQuery = Ship::with('client', 'hazmatComapny');
             if ($request->has('search')) {
                 $search = $request->search;
@@ -70,8 +66,6 @@ class ShipController extends Controller
                 return $query->where('hazmat_companies_id', $user['hazmat_companies_id'])
                     ->where('user_id', $user['id']);
             });
-
-            // Execute the query and get the ships
             $ships = $shipsQuery->paginate(8);
             if ($request->has('search')) {
                 $ships->appends(['search' => $request->search]);
@@ -168,11 +162,7 @@ class ShipController extends Controller
                 $imageFile = $request->file('ship_image');
                 $imageName = time() . '.' . $imageFile->getClientOriginalExtension();
                 $targetSize = 372;
-
-                // Get original dimensions
                 list($width, $height) = getimagesize($imageFile);
-
-                // Create image from uploaded file
                 $extension = strtolower($imageFile->getClientOriginalExtension());
 
                 switch ($extension) {
@@ -189,8 +179,6 @@ class ShipController extends Controller
                     default:
                         throw new \Exception("Unsupported image type.");
                 }
-
-                // Step 1: Resize proportionally
                 if ($width >= $height) {
                     $new_width = $targetSize;
                     $new_height = ($height * $targetSize) / $width;
@@ -199,35 +187,19 @@ class ShipController extends Controller
                     $new_width = ($width * $targetSize) / $height;
                 }
 
-                // Resize image
                 $resized = imagecreatetruecolor($new_width, $new_height);
                 imagecopyresampled($resized, $source, 0, 0, 0, 0, $new_width, $new_height, $width, $height);
-
-                // Step 2: Create 400x400 square canvas
                 $square = imagecreatetruecolor($targetSize, $targetSize);
-
-                // Fill background (white)
                 $white = imagecolorallocate($square, 255, 255, 255);
                 imagefill($square, 0, 0, $white);
-
-                // Center resized image
                 $x = ($targetSize - $new_width) / 2;
                 $y = ($targetSize - $new_height) / 2;
                 imagecopy($square, $resized, $x, $y, 0, 0, $new_width, $new_height);
-
-                // Step 3: Save to public path
                 $path = public_path('uploads/ship/' . $imageName);
                 imagejpeg($square, $path, 90); // change to imagepng or imagegif if needed
-
-                // Cleanup
                 imagedestroy($source);
                 imagedestroy($resized);
                 imagedestroy($square);
-
-                // Optionally return path
-
-
-                // Save filename
                 $inputData['ship_image'] = $imageName;
             }
 
@@ -314,10 +286,40 @@ class ShipController extends Controller
     {
         try {
             $ship = Ship::findOrFail($id);
-            $user = User::findOrFail($ship['user_id']);
-            $user->delete();
+            $userdelete = User::findOrFail($ship['user_id']);
+            $userdelete->delete();
             $ship->delete();
-            return response()->json(['isStatus' => true, 'message' => 'Ship deleted successfully']);
+            $user = Auth::user();
+            $currentUserRoleLevel = $user->roles->first()->level;
+
+            if ($currentUserRoleLevel == 3 || $currentUserRoleLevel == 4) {
+                $ships = $user->ships->load('client');
+            } else {
+
+                $shipsQuery = Ship::with('client', 'hazmatComapny');
+
+                $shipsQuery->when($currentUserRoleLevel == 2, function ($query) use ($user) {
+                    return $query->where('hazmat_companies_id', $user['hazmat_companies_id']);
+                });
+
+                $shipsQuery->when($currentUserRoleLevel == 5, function ($query) use ($user) {
+                    return $query->where('hazmat_companies_id', $user['hazmat_companies_id'])
+                        ->where('client_user_id', $user['id']);
+                });
+
+                $shipsQuery->when($currentUserRoleLevel == 6, function ($query) use ($user) {
+                    return $query->where('hazmat_companies_id', $user['hazmat_companies_id'])
+                        ->where('user_id', $user['id']);
+                });
+
+                // Execute the query and get the ships
+                $ships = $shipsQuery->paginate(8);
+            }
+            return response()->json([
+                'isStatus' => true,
+                'message' => 'Ship deleted successfully',
+                'ships_html' => view('components.ships-list', compact('ships'))->render()
+            ]);
         } catch (\Throwable $th) {
             return back()->withError($th->getMessage())->withInput();
         }
