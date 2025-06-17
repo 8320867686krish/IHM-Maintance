@@ -514,19 +514,21 @@ class VscpController extends Controller
             $summary = partManuel::where('ship_id', $ship_id)->get();
             $ga_plan_pdf = $ship_id . "/" . $shipDetail['ga_plan_pdf'];
             $gaplan =  public_path('shipsVscp/' . $ga_plan_pdf);
-            $index = 0;
+            $index = 1;
             if (file_exists($gaplan)) {
-              $index++;
+             
                 $titleHtml = '<h3 style="text-align:center;font-size:12pt;">'.$index.'. GA PLAN</h3>';
                 $this->mergePdfAsImages($gaplan, $titleHtml, $mpdf);
+                 $index++;
             }
             if (@$summary) {
                 foreach ($summary as $index => $sumvalue) {
-                    $index++;
+                   
                     $filePathsum = public_path('uploads/shipsVscp') . "/" . $ship_id . "/partmanual/" . basename($sumvalue['document']);
                     if (file_exists($filePathsum) && @$sumvalue['document']) {
                         $titleHtml = '<h3 style="text-align:center;font-size:12pt">'.$index.'. '. $sumvalue['title'] . '</h3>';
                         $this->mergePdfAttachment($filePathsum, $titleHtml, $mpdf);
+                         $index++;
                     }
                 }
             }
