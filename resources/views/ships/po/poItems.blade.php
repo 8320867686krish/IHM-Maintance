@@ -18,6 +18,7 @@
                                         <th width="20%">Supplier Name</th>
                                         <th width="20%">Machinery</th>
                                         <th width="20%">Total No Of Items</th>
+                                        <th>PO Status</th>
                                         @can('ships.edit')
                                         <th>Action</th>
                                         @endcan

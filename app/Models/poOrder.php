@@ -26,7 +26,8 @@ class poOrder extends Model
         'onboard_reciving_date',
         'isRecivedDoc',
         'recived_document_comment',
-        'recived_document_date'
+        'recived_document_date',
+        'postatus'
     ];
    
    

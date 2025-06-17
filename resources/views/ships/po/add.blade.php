@@ -18,79 +18,119 @@
 
                         <input type="hidden" name="ship_id" id="ship_id" value="{{$ship_id}}">
                         <input type="hidden" name="po_id" id="po_id" value="{{@$poData->id}}">
+                        <div class="row mb-5">
+                          <div class="col-12 text-center">
+                            <label class="mr-2">Status: </label>
+                            <select class="form-control-lg" name="postatus">
+                                <option value="PO Created">Po Created</option>
+                                <option value="Communication In Progress">Communication In Progress</option>
+                                <option value="Completed">Completed</option>
+
+                            </select>
+                          </div>
+
+                        </div>
                         <div class="row">
-                            <div class="form-group col-6 mb-3">
-                                <label for="assign_date">PO NO<span class="text-danger">*</span></label>
-                                <input type="text" class="form-control form-control-lg" id="po_no" value="{{@$poData->po_no}}" name="po_no" autocomplete="off" onchange="removeInvalidClass(this)">
-                                <div class="invalid-feedback error" id="po_noError"></div>
+
+                            <div class="col-4 mb-2">
+                                <div class="form-group input-label-group">
+
+                                    <input type="text" class="form-control form-control-lg" id="po_no" value="{{@$poData->po_no}}" name="po_no" autocomplete="off" onchange="removeInvalidClass(this)" placeholder="">
+                                    <label for="assign_date">PO NO<span class="text-danger">*</span></label>
+                                    <div class="invalid-feedback error" id="po_noError"></div>
+                                </div>
+                            </div>
+                            <div class="col-4 mb-2">
+                                <div class="form-group input-label-group">
+
+                                    <input type="date" class="form-control form-control-lg" id="po_date" value="{{@$poData->po_date}}" name="po_date" autocomplete="off" onchange="removeInvalidClass(this)" placeholder="">
+                                    <label for="assign_date">PO Date<span class="text-danger">*</span></label>
+                                    <div class="invalid-feedback error" id="po_dateError"></div>
+                                </div>
                             </div>
 
-                            <div class="form-group col-6 mb-3">
-                                <label for="assign_date">PO Date<span class="text-danger">*</span></label>
-                                <input type="date" class="form-control form-control-lg" id="po_date" value="{{@$poData->po_date}}" name="po_date" autocomplete="off" onchange="removeInvalidClass(this)">
-                                <div class="invalid-feedback error" id="po_dateError"></div>
+                            <div class="col-4 mb-2">
+                                <div class="form-group input-label-group">
+
+                                    <input type="text" class="form-control form-control-lg" id="machinery" name="machinery" autocomplete="off" onchange="removeInvalidClass(this)" value="{{@$poData->machinery}}" placeholder="">
+                                    <label for="machinery">Machinery</label>
+                                    <div class="invalid-feedback error" id="machineryError"></div>
+                                </div>
                             </div>
+                            <div class="col-4 mb-2">
+                                <div class="form-group input-label-group">
 
-
-
-                            <div class="form-group col-6 mb-3">
-                                <label for="machinery">Machinery</label>
-                                <input type="text" class="form-control form-control-lg" id="machinery" name="machinery" autocomplete="off" onchange="removeInvalidClass(this)" value="{{@$poData->machinery}}">
-                                <div class="invalid-feedback error" id="machineryError"></div>
-                            </div>
-                            <div class="form-group col-6 mb-3">
-                                <label for="make_model">Make Model</label>
-                                <input type="text" class="form-control form-control-lg" id="make_model" name="make_model" autocomplete="off" onchange="removeInvalidClass(this)" value="{{@$poData->make_model}}">
-                                <div class="invalid-feedback error" id="make_modelError"></div>
-                            </div>
-
-
-
-
-                            <div class="form-group col-6 mb-3">
-                                <label for="supplier_name">Supplier Name</label>
-                                <input type="text" class="form-control form-control-lg" id="supplier_name" name="supplier_name" autocomplete="off" onchange="removeInvalidClass(this)" value="{{@$poData->supplier_name}}">
-                                <div class="invalid-feedback error" id="supplier_nameError"></div>
-                            </div>
-
-                            <div class="form-group col-6 mb-3">
-                                <label for="supplier_name">Supplier Address</label>
-                                <input type="text" class="form-control form-control-lg" id="address" name="address" autocomplete="off" onchange="removeInvalidClass(this)" value="{{@$poData->address}}">
-                                <div class="invalid-feedback error" id="addressError"></div>
-                            </div>
-
-                            <div class="form-group col-6 mb-3">
-                                <label for="supplier_name">Supplier Contact Person</label>
-                                <input type="text" class="form-control form-control-lg" id="contact_person" name="contact_person" autocomplete="off" onchange="removeInvalidClass(this)" value="{{@$poData->contact_person}}">
-                                <div class="invalid-feedback error" id="contact_personError"></div>
-                            </div>
-
-
-                            <div class="form-group col-6 mb-3">
-                                <label for="supplier_name">Supplier Phone Number</label>
-                                <input type="text" class="form-control form-control-lg" id="phone" name="phone" autocomplete="off" onchange="removeInvalidClass(this)" value="{{@$poData->phone}}">
-                                <div class="invalid-feedback error" id="phoneError"></div>
+                                    <input type="text" class="form-control form-control-lg" id="make_model" name="make_model" autocomplete="off" onchange="removeInvalidClass(this)" value="{{@$poData->make_model}}" placeholder="">
+                                    <label for="make_model">Make Model</label>
+                                    <div class="invalid-feedback error" id="make_modelError"></div>
+                                </div>
                             </div>
 
 
 
 
-                            <div class="form-group col-6 mb-3">
-                                <label for="supplier_name">Supplier Email <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control form-control-lg" id="email" name="email" autocomplete="off" onchange="removeInvalidClass(this)" value="{{@$poData->email}}">
-                                <div class="invalid-feedback error" id="emailError"></div>
+                            <div class="col-4 mb-2">
+                                <div class="form-group input-label-group">
+
+                                    <input type="text" class="form-control form-control-lg" id="supplier_name" name="supplier_name" autocomplete="off" onchange="removeInvalidClass(this)" value="{{@$poData->supplier_name}}" placeholder="">
+                                    <label for="supplier_name">Supplier Name</label>
+                                    <div class="invalid-feedback error" id="supplier_nameError"></div>
+                                </div>
                             </div>
 
-                            <div class="form-group col-6 mb-3">
-                                <label for="onboard_reciving_date">Onboard reciving date</label>
-                                <input type="date" class="form-control form-control-lg" id="onboard_reciving_date" name="onboard_reciving_date" autocomplete="off" onchange="removeInvalidClass(this)" value="{{@$poData->onboard_reciving_date}}">
-                                <div class="invalid-feedback error" id="onboard_reciving_dateError"></div>
+                            <div class="col-4 mb-2">
+                                <div class="form-group input-label-group">
+
+                                    <input type="text" class="form-control form-control-lg" id="address" name="address" autocomplete="off" onchange="removeInvalidClass(this)" value="{{@$poData->address}}" placeholder="">
+                                    <label for="supplier_name">Supplier Address</label>
+                                    <div class="invalid-feedback error" id="addressError"></div>
+                                </div>
+                            </div>
+                            <div class="col-4 mb-2">
+                                <div class="form-group   input-label-group">
+                                    <input type="text" class="form-control form-control-lg" id="contact_person" name="contact_person" autocomplete="off" onchange="removeInvalidClass(this)" value="{{@$poData->contact_person}}" placeholder="">
+                                    <label for="supplier_name">Supplier Contact Person</label>
+
+                                    <div class="invalid-feedback error" id="contact_personError"></div>
+                                </div>
                             </div>
 
-                            <div class="form-group col-6 mb-3">
-                                <label for="delivery_location">Delivery Location</label>
-                                <input type="text" class="form-control form-control-lg" id="delivery_location" name="delivery_location" autocomplete="off" onchange="removeInvalidClass(this)" value="{{@$poData->delivery_location}}">
-                                <div class="invalid-feedback error" id="delivery_locationError"></div>
+                            <div class="col-4 mb-2">
+                                <div class="form-group input-label-group">
+
+                                    <input type="text" class="form-control form-control-lg" id="phone" name="phone" autocomplete="off" onchange="removeInvalidClass(this)" value="{{@$poData->phone}}" placeholder=" ">
+                                    <label for="supplier_name">Supplier Phone Number</label>
+                                    <div class="invalid-feedback error" id="phoneError"></div>
+                                </div>
+                            </div>
+
+
+
+                            <div class="col-4 mb-2">
+                                <div class="form-group input-label-group">
+                                    <input type="text" class="form-control form-control-lg" id="email" name="email" autocomplete="off" onchange="removeInvalidClass(this)" value="{{@$poData->email}}" placeholder="">
+                                    <label for="supplier_name">Supplier Email <span class="text-danger">*</span></label>
+
+                                    <div class="invalid-feedback error" id="emailError"></div>
+                                </div>
+                            </div>
+
+                            <div class="col-4 mb-2">
+                                <div class="form-group input-label-group">
+
+                                    <input type="date" class="form-control form-control-lg" id="onboard_reciving_date" name="onboard_reciving_date" autocomplete="off" onchange="removeInvalidClass(this)" value="{{@$poData->onboard_reciving_date}}" placeholder="">
+                                    <label for="onboard_reciving_date">Onboard reciving date</label>
+                                    <div class="invalid-feedback error" id="onboard_reciving_dateError"></div>
+                                </div>
+                            </div>
+
+                            <div class="col-4 mb-2">
+                                <div class="form-group input-label-group">
+
+                                    <input type="text" class="form-control form-control-lg" id="delivery_location" name="delivery_location" autocomplete="off" onchange="removeInvalidClass(this)" value="{{@$poData->delivery_location}}" placeholder="">
+                                    <label for="delivery_location">Delivery Location</label>
+                                    <div class="invalid-feedback error" id="delivery_locationError"></div>
+                                </div>
                             </div>
 
 
@@ -309,7 +349,7 @@
                 theme: 'monokai'
             }
         });
-     
+
 
     });
 </script>

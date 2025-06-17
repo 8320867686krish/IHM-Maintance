@@ -1,4 +1,5 @@
 $(document).ready(function () {
+   
     let editorInstance = null;
     document.getElementById('attachments').addEventListener('change', function (event) {
         const files = event.target.files;

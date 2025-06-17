@@ -5,7 +5,17 @@
     <td>{{$order['supplier_name']}}</td>
     <td>{{$order['machinery']}}</td>
     <td>{{$order['po_order_items_count']}}</td>
-    @can('ships.edit')
+    @php
+    $status = $order['postatus'];
+    $color = match ($status) {
+    'PO Created' => 'red',
+    'Communication In Progress' => 'orange',
+    'Completed' => 'green',
+    default => 'black',
+    };
+    @endphp
+
+    <td style="color: {{ $color }};">{{ $status }}</td> @can('ships.edit')
     <td>
 
         <a title="Edit" href="{{ route('po.add', ['ship_id' => $order['ship_id'], 'po_order_id' => $order['id'] ?? 0]) }}">

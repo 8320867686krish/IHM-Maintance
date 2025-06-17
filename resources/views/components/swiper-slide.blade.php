@@ -23,35 +23,7 @@
 
         <div class="emotions-slider__slider swiper">
             <div class="emotions-slider__wrapper swiper-wrapper" style="gap: {{ count($data)<=3 ? '40px' : 0 }};">
-                @can($permission)
-                <div class="emotions-slider__slide swiper-slide">
 
-                    <div class="emotions-slider__item emotions-slider-item">
-                        <a href="{{route($addRoute)}}">
-                            <div class="text-center">
-                                <div class="icon-circle-medium  rounded-circle user-avatar-xxl bg-primary-light mt-2">
-                                    <i class="fa fa-plus fa-fw fa-sm text-primary mt-4"></i>
-                                </div>
-                            </div>
-
-                            <div class="emotions-slider-item__content text-center">
-                                <div class="emotions-slider-item__header text-center">
-                                    <div class="emotions-slider-item__header-inner">
-                                        <div class="emotions-slider-item__author">
-                                            <div class="emotions-slider-item__author-name text-center">
-                                                {{$title}}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                            </div>
-                        </a>
-                    </div>
-
-                </div>
-                @endcan
                 <!-- Slider: Slide 1 -->
                 @foreach($data as $value)
 
@@ -91,6 +63,33 @@
 
                 </div>
                 @endforeach
+                @can($permission)
+                <div class="emotions-slider__slide swiper-slide">
+
+                    <div class="emotions-slider__item emotions-slider-item">
+                        <a href="{{route($addRoute)}}">
+                            <div class="text-center mt-2">
+                                <img src="{{asset('images/circle.png')}}" class="rounded-circle user-avatar-xxl">
+                            </div>
+
+                            <div class="emotions-slider-item__content text-center">
+                                <div class="emotions-slider-item__header text-center">
+                                    <div class="emotions-slider-item__header-inner">
+                                        <div class="emotions-slider-item__author">
+                                            <div class="emotions-slider-item__author-name text-center">
+                                                {{$title}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </a>
+                    </div>
+
+                </div>
+                @endcan
 
 
 
