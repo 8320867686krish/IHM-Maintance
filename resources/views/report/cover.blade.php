@@ -7,6 +7,7 @@
         <h4 style="padding-top: 1px;">Report No: {{$shipDetail['report_number']}}</h4>
         <h4 style="padding-top: 1px;">SHIP NAME- {{$shipDetail['ship_name']}}</h4>
         <h4 style="padding-top: 1px;">IMO No: {{$shipDetail['imo_number']}}</h4>
+        <h4 style="padding-top: 1px;">Version: {{$shipDetail['current_ihm_version']}}</h4>
     </div>
 
     <div style="pading-top:30px">

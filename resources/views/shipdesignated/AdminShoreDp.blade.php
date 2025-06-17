@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="DesignatedModellLabel">Designated Person Details</h5>
+                <h5 class="modal-title" id="DesignatedModellLabel">Shore</h5>
                 <button type="button" class="close DesignatedModelClose" data-dismiss="modal" aria-label="Close">
                     <span>&times;</span>
                 </button>
@@ -20,7 +20,7 @@
 
                         <input type="hidden" id="currentUserRoleLevel" name="currentUserRoleLevel" value="{{$currentUserRoleLevel}}">
 
-                        <div class="col-12 col-md-12 col-lg-12 mb-2">
+                        <div class="col-6 col-md-6 col-lg-6 mb-2">
                             <div class="form-group">
                                 <label for="name">Name <span class="text-danger">*</span></label>
                                 <input type="text" id="name" name="name" class="form-control @error('name') is-invalid @enderror">
@@ -28,7 +28,7 @@
 
                             </div>
                         </div>
-                        <div class="col-12 col-md-12 col-lg-12 mb-2">
+                        <div class="col-6 col-md-6 col-lg-6 mb-2">
                             <div class="form-group">
                                 <label for="name">Rank <span class="text-danger">*</span></label>
                                 <input type="text" id="rank" name="rank" class="form-control">
@@ -55,7 +55,7 @@
 
                             </div>
                         </div>
-                        <div class="col-12 col-md-12 col-lg-12 mb-2">
+                        <div class="col-6 col-md-6 col-lg-6 mb-2">
                             <div class="form-group">
                                 <label for="name">Start Date <span class="text-danger">*</span></label>
                                 <input type="date" id="sign_on_date" name="sign_on_date" class="form-control">
@@ -63,7 +63,7 @@
 
                             </div>
                         </div>
-                        <div class="col-12 col-md-12 col-lg-12 mb-2">
+                        <div class="col-6 col-md-6 col-lg-6 mb-2">
                             <div class="form-group">
                                 <label for="name">End Date</label>
                                 <input type="date" id="sign_off_date" name="sign_off_date" class="form-control">

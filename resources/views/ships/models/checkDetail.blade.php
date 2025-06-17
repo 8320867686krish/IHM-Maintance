@@ -48,7 +48,7 @@
                                
                                 <div class="col-3 col-md-3 mb-2" id="chkName">
                                     <div class="form-group">
-                                        <label for="name">Cloase Image</label>
+                                        <label for="name">Close Image</label>
                                         <input type="file" id="close_image" name="close_image" class="form-control">
                                         <span class="showcloseUpImage"></span>
                                     </div>

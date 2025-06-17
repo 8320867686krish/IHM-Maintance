@@ -368,21 +368,20 @@ class ShipController extends Controller
 
 
         $trainingRecoreds = DesignatedPersionShip::with('designatedPersonDetail')
-            ->where('ship_id', $ship_id)
-            ->whereHas('designatedPersonDetail', function ($query) {
-                $query->whereIn('position', ['SuperDP', 'Other']); // Fetch both in one go
+            ->whereHas('designatedPersonDetail', function ($query) use ($ship_id) {
+                $query->where('ship_id', $ship_id);
             })
             ->get();
 
+
         // Separate results in PHP
         $designatedPerson = $trainingRecoreds->filter(function ($record) {
-            return $record->designatedPersonDetail->position !== 'SuperDP';
+            return $record->designatedPersonDetail->position !== 'SuperDp';
         });
 
         $dpsore = $trainingRecoreds->filter(function ($record) {
-            return $record->designatedPersonDetail->position === 'SuperDP';
+            return $record->designatedPersonDetail->position === 'SuperDp';
         });
-
         $trainingRecoredHistory = Exam::where('ship_id', $ship_id)->orderBy('id', 'desc')->get();
 
 
