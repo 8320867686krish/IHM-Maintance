@@ -441,6 +441,7 @@ $(document).on('change', '.ihm_part_table', function (e) {
     var value = $(this).val();
     const cloneTableTypeDiv = $(this).closest(".cloneCheck");
     cloneTableTypeDiv.find(`#itemsData${id}`).remove();
+    cloneTableTypeDiv.find(`#strikethroughDiv${id}`).remove();
     var divitem = creteFiledforI1(id, value);
     $(cloneTableTypeDiv).append(divitem);
 
