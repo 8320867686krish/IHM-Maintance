@@ -522,7 +522,7 @@ class VscpController extends Controller
                  $index++;
             }
             if (@$summary) {
-                foreach ($summary as $index => $sumvalue) {
+                foreach ($summary as $sumvalue) {
                    
                     $filePathsum = public_path('uploads/shipsVscp') . "/" . $ship_id . "/partmanual/" . basename($sumvalue['document']);
                     if (file_exists($filePathsum) && @$sumvalue['document']) {
