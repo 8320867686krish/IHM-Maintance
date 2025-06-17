@@ -21,13 +21,13 @@
         font-size: 18x;
         /* Exact font size for TD elements */
         vertical-align: top;
-        color:#000;
+        color: #000;
     }
 
     .section-1-1 .img-cell {
-    vertical-align: middle;
-    text-align: center;
-}
+        vertical-align: middle;
+        text-align: center;
+    }
 
     .section-1-1 .img-cell span {
         color: #888;
@@ -39,7 +39,6 @@
         page-break-inside: avoid;
         display: block;
     }
-   
 </style>
 
 
@@ -47,67 +46,78 @@
     <h4>List Of Checks For {{ $name }}</h4>
 
     @foreach($checks as $check)
-   <table class="{{ !$loop->first ? 'next' : '' }}">
+    <table class="{{ !$loop->first ? 'next' : '' }}">
 
         <tbody>
             <tr>
-                <td width="20%"><strong>Material</strong></td>
-                <td width="30%">{{ $check->hazmat->name ?? '' }}</td>
-                <td width="20%"><strong>Sample No</strong></td>
-                <td width="30%">{{ $check->check->name }}</td>
+                <td><strong>Sample No</strong></td>
+                <td>{{ $loop->iteration}}</td>
+
+                <td><strong>Sample Name</strong></td>
+                <td>{{ $check->check->name }}</td>
+
+
+
             </tr>
             <tr>
-                <td><strong>Type</strong></td>
+                <td><strong>Sample Type</strong></td>
                 <td>{{ $check->check->type }}</td>
-                <td><strong>IHM Table</strong></td>
-                <td>{{ $check->ihm_part_table }}</td>
+
+                <td><strong>Hazmat</strong></td>
+                <td>{{ $check->hazmat->name ?? '' }}</td>
+
             </tr>
             <tr>
-                <td><strong>Application of Paint</strong></td>
+                <td><strong>Hazmat Table</strong></td>
+                <td>{{ $check->hazmat->table_type }}</td>
+
+                <td><strong>Name Of Equipment & Machinery</strong></td>
                 <td>{{ $check->application_of_paint }}</td>
+            </tr>
+            <tr>
+
                 <td><strong>Location</strong></td>
                 <td>{{ $check->location }}</td>
-            </tr>
-            <tr>
+
                 <td><strong>Parts Where Used</strong></td>
                 <td>{{ $check->parts_where_used }}</td>
+            </tr>
+            <tr>
+
                 <td><strong>Quantity</strong></td>
                 <td>{{ $check->qty }}</td>
-            </tr>
-            <tr>
-                <td><strong>Unit</strong></td>
+
+                 <td><strong>Unit</strong></td>
                 <td>{{ $check->unit }}</td>
-                <td><strong>Hazmat Type</strong></td>
-                <td>{{ $check->hazmat_type }}</td>
             </tr>
+           
 
             <tr>
-                <td colspan="2"><strong>Remarks</strong></td>
-                <td colspan="2">{{ $check->remarks }}</td>
+                <td colspan="4"><strong>Remarks: </strong>{{ $check->remarks }}</td>
             </tr>
             <tr>
-                <td colspan="2" width="50%"><strong>Close Image:</strong></td>
-                <td colspan="2" width="50%"><strong>Away Image:</strong></td>
+                <td colspan="2" width="50%"><strong>CheckPoint Image 1:</strong></td>
+                <td colspan="2" width="50%"><strong>CheckPoint Image 2:</strong></td>
             </tr>
             <tr>
                 <td colspan="2" width="50%" class="img-cell">
-    @if($check->check->close_image)
-   <img src="{{ $check->check->close_image }}"
-     alt="Close Image"
-     style="width: 48%; height: 48%; object-fit: cover;margin:auto;">
-    @else
-    <span>No image available</span>
-    @endif
-</td>
-<td colspan="2" width="50%" class="img-cell">
-    @if($check->check->away_image)
-  <img src="{{ $check->check->away_image }}"
-     alt="Close Image"
-     style="width: 48%; height:48%; object-fit: cover;margin:auto;">
-    @else
-    <span>No image available</span>
-    @endif
-</td>
+                    @if($check->check->close_image)
+                    <img src="{{ $check->check->close_image }}"
+                        alt="Close Image"
+                        style="width: 48%; height: 48%; object-fit: cover;margin:auto;">
+                    @else
+                    <span>No image available</span>
+                    @endif
+                </td>
+                <td colspan="2" width="50%" class="img-cell">
+                    @if($check->check->away_image)
+                    <img src="{{ $check->check->away_image }}"
+                        alt="Close Image"
+                        style="width: 48%; height:48%; object-fit: cover;margin:auto;">
+                    @else
+                    <span>No image available</span>
+                    @endif
+                </td>
 
             </tr>
         </tbody>

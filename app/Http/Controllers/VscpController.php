@@ -494,14 +494,13 @@ class VscpController extends Controller
                                 $mpdf->WriteHTML('<h3 style="font-size:14px">2.1 Location Diagram of Contained HazMat & PCHM.</h3>');
                             }
                             $mpdf->WriteHTML('<h5 style="font-size:14px;">Area: ' . $value['name'] . '</h5>');
-
                             $templateId = $mpdf->importPage($i);
                             $mpdf->useTemplate($templateId, null, null, $mpdf->w, null); // Use the template with appropriate dimensions
 
                         }
 
                         $deck_id = $value['id'];
-                            $mpdf->AddPage('P');
+                        $mpdf->AddPage('P');
 
                         $filterDecks = $checkHazmatIHMPart->filter(function ($item) use ($deck_id) {
                             return $item->deck_id == (int) $deck_id;
@@ -515,27 +514,22 @@ class VscpController extends Controller
             $summary = partManuel::where('ship_id', $ship_id)->get();
             $ga_plan_pdf = $ship_id . "/" . $shipDetail['ga_plan_pdf'];
             $gaplan =  public_path('shipsVscp/' . $ga_plan_pdf);
+            $index = 0;
             if (file_exists($gaplan)) {
-                $titleHtml = '<h3 style="text-align:center;font-size:12pt;">Supplement to initial IHM Part</h3>';
+              $index++;
+                $titleHtml = '<h3 style="text-align:center;font-size:12pt;">'.$index.'. GA PLAN</h3>';
                 $this->mergePdfAsImages($gaplan, $titleHtml, $mpdf);
             }
             if (@$summary) {
-
                 foreach ($summary as $index => $sumvalue) {
+                    $index++;
                     $filePathsum = public_path('uploads/shipsVscp') . "/" . $ship_id . "/partmanual/" . basename($sumvalue['document']);
-
-
                     if (file_exists($filePathsum) && @$sumvalue['document']) {
-                        if ($index == 0) {
-                            $titleHtml = '<h3 style="text-align:center;font-size:12pt">Title : ' . $sumvalue['title'] . '</h3>';
-                        } else {
-                            $titleHtml = '<h3 style="text-align:center;font-size:12pt">Title : ' . $sumvalue['title'] . '</h3>';
-                        }
+                        $titleHtml = '<h3 style="text-align:center;font-size:12pt">'.$index.'. '. $sumvalue['title'] . '</h3>';
                         $this->mergePdfAttachment($filePathsum, $titleHtml, $mpdf);
                     }
                 }
             }
-
             $safeProjectNo = str_replace('/', '_', $shipDetail['project_no']);
             $fileName = "summary_" . $safeProjectNo . '.pdf';
 
