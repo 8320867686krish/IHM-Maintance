@@ -310,7 +310,7 @@
                 </div>
                 <div id="collapsema5" class="collapse" aria-labelledby="headingma5" data-parent="#accordion">
                     <div class="card-body mb-4">
-                        @can('previousperson.add')
+                        @can('previousihmmaintance.add')
                         <a href="#"
                             class="btn btn-primary float-right btn addPreviousBtn mb-4">Add</a>
                         @endcan

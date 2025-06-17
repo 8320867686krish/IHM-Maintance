@@ -46,7 +46,7 @@
                                         <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12">
                                             <div class="card" style="background-color:transparent !important">
                                                 <div class="card-body">
-                                                    <h6 class="mb-2">{{ ucfirst($permission['name']) }}</h6>
+                                                    <h6 class="mb-2">{{ ucfirst($permission['full_name']) }}</h6>
                                                     @foreach ($allPermissions as $submenu)
                                                         @if ($submenu['group_type'] === $permission['name'])
                                                             <label
