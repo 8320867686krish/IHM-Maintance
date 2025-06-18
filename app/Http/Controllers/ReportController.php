@@ -417,68 +417,61 @@ class ReportController extends Controller
         $dompdf = new Dompdf($options);
 
         // HTML content for PDF
-        $html = '<!DOCTYPE html>
-            <html lang="en">
-            <head>
-                <meta charset="UTF-8">
-                <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <title>QR Codes</title>
-                <style>
-                    body {
-                        font-family: Arial, sans-serif;
-                    }
-                    table {
-                        width: 100%;
-                        border-collapse: collapse;
-                    }
-                    th, td {
-                        padding: 10px;
-                        text-align: left;
-                        border: 1px solid #ddd;
-                        font-size:14px;
-                    }
-                    .left { text-align: left; font-weight: bold; }
-                    .right { text-align: right; font-weight: normal; }
-                </style>
-            </head>
-            <body>';
-
-        $html .= '<div><center><h3>Ship : ' . htmlspecialchars($ship['ship_name']) . '</h3></center></div>';
-        $html .= '<table>';
-
-        // Track columns per row
-        $colspan = 2;
-        $counter = 0;
-
-        foreach ($checks as $key => $check) {
-            if ($counter % $colspan == 0) {
-                $html .= '<tr>'; // Open new row
-            }
-
-            $html .= '<td width="50%">'; // Each column is 50% width
-
-            $html .= '<div><span class="left">Check Name:</span> <span class="right">' . $check['check']['name'] . '</span></div>';
-            $html .= '<div style="margin-top: 5px;"><span class="left">Location:</span> <span class="right">' . $check['location'] . '</span></div>';
-
-            // Hazmat Type (Left) & Hazmat (Right)
-            $html .= '<div style="margin-top: 5px;"><span class="left">Hazmat Type:</span> <span class="right">' . $check['hazmat_type'] . '</span></div>';
-            $html .= '<div style="margin-top: 5px;"><span class="left">Hazmat:</span> <span class="right">' . $check['hazmat']['name'] . '</span></div>';
-
-            $html .= '</td>'; // Close column
-
-            if (($counter + 1) % $colspan == 0 || $key == $checks->count() - 1) {
-                $html .= '</tr>'; // Close row
-            }
-
-            $counter++;
+    $html = '<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Codes</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
         }
+        .box {
+            border: 1px solid #333;
+            padding: 12px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+        .left {
+            font-weight: bold;
+        }
+        .row {
+            margin-bottom: 5px;
+            display: flex;
+            justify-content: space-between;
+             line-height: 1.6
+        }
+        .page-break {
+            page-break-after: always;
+        }
+    </style>
+</head>
+<body>';
 
-        $html .= '</table>';
-        $html .= '</body></html>';
+$html .= '<div><center><h3>Ship : ' . htmlspecialchars($ship['ship_name']) . '</h3></center></div>';
 
-        // Load HTML content into Dompdf
-        $dompdf->loadHtml($html);
+foreach ($checks as $index => $check) {
+    $html .= '<div class="box">';
+    $html .= '<div class="row"><span class="left">Check Point ID:</span> <span>' . $check['check']['name'] . '</span></div>';
+    $html .= '<div class="row"><span class="left">Check Point Type:</span> <span>' . $check['check']['type'] . '</span></div>';
+    $html .= '<div class="row"><span class="left">Location:</span> <span>' . $check['location'] . '</span></div>';
+    $html .= '<div class="row"><span class="left">Hazmat Status:</span> <span>' . $check['hazmat_type'] . '</span></div>';
+    $html .= '<div class="row"><span class="left">Hazmat:</span> <span>' . $check['hazmat']['name'] . '</span></div>';
+    $html .= '<div class="row"><span class="left">Hazmat Type:</span> <span>' . $check['hazmat']['table_type'] . '</span></div>';
+    $html .= '</div>'; // Close box
 
+    // Page break after every 4 checks
+    if (($index + 1) % 4 == 0 && ($index + 1) < count($checks)) {
+        $html .= '<div class="page-break"></div>';
+    }
+}
+
+$html .= '</body></html>';
+
+
+// Load HTML content into Dompdf
+$dompdf->loadHtml($html);
         // Set paper size and orientation
         $dompdf->setPaper('A4', 'portrait');
 
