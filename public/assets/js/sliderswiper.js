@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
         ];
 
         const swiper = new Swiper(sliderEl, {
-            slidesPerView: 'auto',
+            slidesPerView: 4,
             spaceBetween: 40,
             speed: 600,
             navigation: {
