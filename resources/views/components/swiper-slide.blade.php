@@ -22,7 +22,7 @@
         <!-- Slider Content -->
 
         <div class="emotions-slider__slider swiper">
-            <div class="emotions-slider__wrapper swiper-wrapper" style="gap: {{ count($data)<=3 ? '40px' : 0 }};">
+            <div class="emotions-slider__wrapper swiper-wrapper">
                 <!-- START: Slides loop -->
                 @foreach($data as $value)
                 <div class="emotions-slider__slide swiper-slide">
@@ -64,8 +64,7 @@
                         <a href="{{ route($addRoute) }}">
                             <div class="text-center mt-2">
                                 <div class="add-new-slide d-flex justify-content-center align-items-center rounded-circle mx-auto" style="width: 115px; height: 115px; background-color: #293042 !important;">
-                                    <span style="font-size: 50
-                                    px; line-height: 1; color: #fff;">+</span>
+                                    <span style="font-size: 50px; line-height: 1; color: #fff;">+</span>
                                 </div>
                             </div>
 

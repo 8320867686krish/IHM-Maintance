@@ -10,13 +10,10 @@ document.addEventListener("DOMContentLoaded", () => {
         ];
 
         const slidesCount = slider.querySelectorAll(".swiper-slide").length;
-console.log(slidesCount);
-if(slidesCount <= 3){
-    return false;
-}
+
         new Swiper(slider, {
-            slidesPerView: 4, // Adjust dynamically
-            spaceBetween: 40, // Reduce space for 2 slides
+            slidesPerView: 'auto',
+            spaceBetween: 40,
             speed: 600,
             navigation: {
                 nextEl,
@@ -25,9 +22,10 @@ if(slidesCount <= 3){
             },
             breakpoints: {
                 768: {
-                    spaceBetween: 40, // Adjust space on larger screens
+                    spaceBetween: 25,
                 },
             },
         });
+
     });
 });
