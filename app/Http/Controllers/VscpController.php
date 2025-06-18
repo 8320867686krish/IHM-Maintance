@@ -191,6 +191,8 @@ class VscpController extends Controller
             }
             $closeimage = $this->upload($request, 'close_image', 'uploads/shipsVscp/' . $inputData['ship_id'] . '/check');
             $finalData['close_image'] = $closeimage;
+        }else{
+            unset($finalData['close_image']);
         }
         if ($request->hasFile('away_image')) {
             if ($inputData['id'] != 0) {
@@ -201,6 +203,8 @@ class VscpController extends Controller
             $image = $this->upload($request, 'away_image', 'uploads/shipsVscp/' . $inputData['ship_id'] . '/check');
 
             $finalData['away_image'] = $image;
+        }else{
+            unset($finalData['away_image']);
         }
         $data = Check::updateOrCreate(['id' => $id], $finalData);
         $updatedData = $data->getAttributes();

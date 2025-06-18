@@ -51,7 +51,7 @@ return $item['ihm_part_table'] == $type;
                 @endif
                 <td>{{$value['name_of_paint']}}</td>
                 <td>{{$value['location']}}</td>
-                <td>{{$value->hazmat->name}}</td>
+                <td>{{$value->hazmat->name ?? ''}}</td>
                 @if($type == 'i-2' || $type == 'i-3')
                 <td>{{$value->parts_where_used}}</td>
                 @endif

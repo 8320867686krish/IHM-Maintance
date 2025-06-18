@@ -64,49 +64,42 @@
                     </div>
                 </div>
             </div>
-            <div class="card">
-                <div class="card-header" id="soreDpRecoreds">
+              <div class="card">
+                <div class="card-header" id="headingmacrew">
                     <h5 class="mb-0">
-                        <button class="btn btn-link collapsed d-flex justify-content-between w-100" data-toggle="collapse" data-target="#sordp" aria-expanded="false" aria-controls="soreDpRecoreds">
-                            ShoreDP Recoreds
+                        <button class="btn btn-link collapsed d-flex justify-content-between w-100" data-toggle="collapse" data-target="#collapsemacrew" aria-expanded="false" aria-controls="collapsemacrew">
+                            OnBoard Crew Briefing
                             <span class="fas fa-angle-down mr-3"></span>
 
                         </button>
                     </h5>
                 </div>
-                <div id="sordp" class="collapse" aria-labelledby="soreDpRecoreds" data-parent="#accordion">
-
+                <div id="collapsemacrew" class="collapse" aria-labelledby="headingmacrew" data-parent="#accordion">
                     <div class="card-body mb-4">
-                        @can('ships.edit')
-
-                        <a href="#" class="btn btn-primary float-right addadminShoreDp mb-3 ml-2" title="Add">Add</a>
-                        @endcan
+                    <button class="btn btn-primary float-right mb-4" type="button" id="startBrifing">Start Briefing
+                        </button>
                         <div class="table-responsive">
-
                             <table class="table table-striped table-bordered first">
                                 <thead>
                                     <tr>
-                                        <th width="15%">SR NO</th>
-                                        <th>Name</th>
-                                        <th width="20%">Designation</th>
-                                        <th width="20%">Start Date</th>
-                                        <th width="20%">End Date</th>
-                                        @can('ships.edit')
-
+                                        <th>SR NO</th>
+                                        <th>Number Of Attendance</th>
+                                        <th>Briefing Date</th>
+                                        <th>Briefing By</th>
                                         <th>Action</th>
-                                        @endcan
-
                                     </tr>
                                 </thead>
-                                <tbody class="shoredplist">
-                                    <x-soredp-list :dpsore="$dpsore"></x-soredp-list>
+                                <tbody class="brifingHistory">
+                                    <x-brifing-history :brifingHistory=$brifingHistory></x-brifing-history>
+
                                 </tbody>
                             </table>
                         </div>
-
                     </div>
                 </div>
             </div>
+
+           
             <div class="card">
                 <div class="card-header" id="OnbaordTraining">
                     <h5 class="mb-0">
@@ -142,7 +135,7 @@
                                     </tr>
                                 </thead>
                                 <tbody class="admindprecoreds">
-                                    <x-trainning-record :trainingRecoreds="$trainingRecoreds"></x-trainning-record>
+                                    <x-trainning-record :trainingRecoreds="$designatedPerson"></x-trainning-record>
                                 </tbody>
                             </table>
                         </div>
@@ -150,41 +143,51 @@
                     </div>
                 </div>
             </div>
-            <div class="card">
-                <div class="card-header" id="headingmacrew">
+
+             <div class="card">
+                <div class="card-header" id="soreDpRecoreds">
                     <h5 class="mb-0">
-                        <button class="btn btn-link collapsed d-flex justify-content-between w-100" data-toggle="collapse" data-target="#collapsemacrew" aria-expanded="false" aria-controls="collapsemacrew">
-                            OnBoard Crew Briefing
+                        <button class="btn btn-link collapsed d-flex justify-content-between w-100" data-toggle="collapse" data-target="#sordp" aria-expanded="false" aria-controls="soreDpRecoreds">
+                            ShoreDP Recoreds
                             <span class="fas fa-angle-down mr-3"></span>
 
                         </button>
                     </h5>
                 </div>
-                <div id="collapsemacrew" class="collapse" aria-labelledby="headingmacrew" data-parent="#accordion">
+                <div id="sordp" class="collapse" aria-labelledby="soreDpRecoreds" data-parent="#accordion">
+
                     <div class="card-body mb-4">
-                    <button class="btn btn-primary float-right mb-4" type="button" id="startBrifing">Start Briefing
-                        </button>
+                        @can('ships.edit')
+
+                        <a href="#" class="btn btn-primary float-right addadminShoreDp mb-3 ml-2" title="Add">Add</a>
+                        @endcan
                         <div class="table-responsive">
+
                             <table class="table table-striped table-bordered first">
                                 <thead>
                                     <tr>
-                                        <th>SR NO</th>
-                                        <th>Number Of Attendance</th>
-                                        <th>Briefing Date</th>
-                                        <th>Briefing By</th>
+                                        <th width="15%">SR NO</th>
+                                        <th>Name</th>
+                                        <th width="20%">Designation</th>
+                                        <th width="20%">Start Date</th>
+                                        <th width="20%">End Date</th>
+                                        @can('shoredp.edit')
+
                                         <th>Action</th>
+                                        @endcan
+
                                     </tr>
                                 </thead>
-                                <tbody class="brifingHistory">
-                                    <x-brifing-history :brifingHistory=$brifingHistory></x-brifing-history>
-
+                                <tbody class="shoredplist">
+                                    <x-soredp-list :dpsore="$dpsore"></x-soredp-list>
                                 </tbody>
                             </table>
                         </div>
+
                     </div>
                 </div>
             </div>
-
+          
 
             <div class="card">
                 <div class="card-header" id="headingma3">

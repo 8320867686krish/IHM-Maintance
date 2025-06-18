@@ -6,6 +6,7 @@
     <td>{{$value['designatedPersonDetail']['rank']}}</td>
     <td>{{$value['designatedPersonDetail']['sign_on_date']}}</td>
     <td>{{$value['designatedPersonDetail']['sign_off_date']}}</td>
+    @can('shoredp.edit')
     <td>
 
         <a href="#" class="adminShoreDp" data-designated="{{$value}}"
@@ -13,6 +14,7 @@
             <i class="fas fa-edit text-primary" style="font-size: 1rem"></i>
         </a>
     </td>
+    @endcan
 
 </tr>
 @endforeach
