@@ -168,7 +168,7 @@ class ShipController extends Controller
                
 
 
-                $targetSize = 100;
+                $targetSize = 372;
                 list($width, $height) = getimagesize($imageFile);
                 $extension = strtolower($imageFile->getClientOriginalExtension());
 
