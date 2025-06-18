@@ -50,19 +50,21 @@
 
         <tbody>
             <tr>
-                <td><strong>Sample No</strong></td>
-                <td>{{ $loop->iteration}}</td>
+               
 
-                <td><strong>Sample Name</strong></td>
+                <td><strong>Check Point ID</strong></td>
                 <td>{{ $check->check->name }}</td>
+
+                <td><strong>Check Point  Type</strong></td>
+                <td>{{ $check->check->type }}</td>
 
 
 
             </tr>
             <tr>
-                <td><strong>Sample Type</strong></td>
-                <td>{{ $check->check->type }}</td>
-
+              <td><strong>Hazma Statust</strong></td>
+                <td>{{ $check->hazmat_type ?? '' }}</td>
+                
                 <td><strong>Hazmat</strong></td>
                 <td>{{ $check->hazmat->name ?? '' }}</td>
 
