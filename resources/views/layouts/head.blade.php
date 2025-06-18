@@ -8,7 +8,6 @@
     <title>{{ ucfirst(Request::segment(1)) }}</title>
     <!-- Bootstrap CSS -->
     <link href="{{ asset('assets/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
- 
 
     <link href="{{ asset('assets/vendor/fonts/circular-std/style.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('assets/libs/css/style.css') }}">
@@ -18,8 +17,11 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/libs/css/sweet-alert.css') }}">
     
     {{-- <link rel="stylesheet" type="text/css" href="https://common.olemiss.edu/_js/sweet-alert/sweet-alert.css"> --}}
+   
 
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;1,300&display=swap');
+
         .navbar-center {
     position: absolute;
     left: 55%;

@@ -38,7 +38,9 @@
                         @endif
                     </div>
                     <div class="campaign-info mt-2">
+                         @if($currentUserRoleLevel != 5)
                         <p class="mb-1">Client Company:<span class="text-dark font-medium ml-2"> {{ $ship->client->name }}</span></p>
+                        @endif
                         <p>IMO Number: <span class="text-dark font-medium ml-2">{{ $ship->imo_number }}</span></p>
                     </div>
                 </div>

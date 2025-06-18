@@ -422,7 +422,7 @@ class ShipController extends Controller
 
         $brifingHistory = Brifing::with('DesignatedPersonDetail')->where('ship_id', operator: $ship_id)->get();
 
-        return view('ships.view', compact('experts', 'managers', 'isBack', 'ship', 'readonly', 'users', 'poOrders', 'ship_id', 'checkHazmatIHMPart', 'hazmat_companies_id', 'partMenual', 'summary', 'trainingRecoreds', 'mdnoresults', 'dpsore', 'trainingRecoredHistory', 'ships', 'majorrepair', 'brifingHistory', 'designatedPerson', 'sdocresults', 'previousAttachment','designatedPerson'));
+        return view('ships.view', compact('experts', 'managers', 'isBack', 'ship', 'readonly', 'users', 'poOrders', 'ship_id', 'checkHazmatIHMPart', 'hazmat_companies_id', 'partMenual', 'summary', 'trainingRecoreds', 'mdnoresults', 'dpsore', 'trainingRecoredHistory', 'ships', 'majorrepair', 'brifingHistory', 'designatedPerson', 'sdocresults', 'previousAttachment', 'designatedPerson'));
     }
 
     public function assignShip(Request $request)

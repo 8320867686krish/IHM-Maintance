@@ -111,7 +111,7 @@
 
                                 <input type="number" class="form-control @error('phone') is-invalid @enderror"
                                     id="phone" name="phone" value="{{ old('phone', $user->phone ?? '') }}"
-                                    placeholder="User Phone..." autocomplete="off"
+                                    placeholder="" autocomplete="off"
                                     onchange="removeInvalidClass(this)">
                                 <label for="phone">Phone</label>
                                 <div class="invalid-feedback error" id="phoneError"></div>

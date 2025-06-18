@@ -1,16 +1,19 @@
 $(document).ready(function () {
-   
+
     let editorInstance = null;
-    document.getElementById('attachments').addEventListener('change', function (event) {
-        const files = event.target.files;
-        const fileList = document.getElementById('fileList');
-        fileList.innerHTML = '';
-        for (let i = 0; i < files.length; i++) {
-            const li = document.createElement('li');
-            li.textContent = files[i].name;
-            fileList.appendChild(li);
-        }
-    });
+    const input = document.getElementById('attachments');
+    if (input) {
+        input.addEventListener('change', function (event) {
+            const files = event.target.files;
+            const fileList = document.getElementById('fileList');
+            fileList.innerHTML = '';
+            for (let i = 0; i < files.length; i++) {
+                const li = document.createElement('li');
+                li.textContent = files[i].name;
+                fileList.appendChild(li);
+            }
+        });
+    }
     $("#sendtovendor").click(function () {
         let index = 1;
         var po_id = $("#po_id").val();
@@ -57,20 +60,6 @@ $(document).ready(function () {
         $("#sendVendorMail").modal('show');
         $('#sendVendorMail').on('shown.bs.modal', function () {
             $('#summernote').summernote('code', content);
-            //     if (!editorInstance) {
-            //     ClassicEditor
-            //         .create(document.querySelector('#email_body'))
-            //         .then(editor => {
-            //             editorInstance = editor;
-            //             editor.setData(content); // now safe to set
-            //         })
-            //         .catch(error => {
-            //             console.error(error);
-            //         });
-            // } else {
-            //     // Editor already created
-            //     editorInstance.setData(content);
-            // }
         });
     });
 

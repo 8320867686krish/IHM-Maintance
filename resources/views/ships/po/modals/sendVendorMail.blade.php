@@ -2,7 +2,7 @@
 
 
    <div class="modal fade" id="sendVendorMail" tabindex="-1" role="dialog" aria-labelledby="sendVendorMail">
-    <div class="modal-dialog modal-lg" role="document" style="max-width:60%">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="sendVendorMail">Send Email</h5>
@@ -17,6 +17,7 @@
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 row">
                     <input type="hidden" name="shipId" id="shipId" value="{{$ship_id}}">
                     <input type="hidden" name="order_id" id="order_id" value="{{@$poData->id}}">
+                    <input type="hidden" name="history_type" id="history_type" value="vendor">
 
                         <div class="col-12 col-md-12 col-lg-12 mb-2">
                             <div class="form-group">

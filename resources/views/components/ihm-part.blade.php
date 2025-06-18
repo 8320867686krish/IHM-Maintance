@@ -45,7 +45,7 @@ return $item['ihm_part_table'] == $type;
             @if($filteredData->isNotEmpty())
             @foreach($filteredData as $value)
             <tr>
-                <td>{{$value['id']}}</td>
+                <td>{{$loop->iteration}}</td>
                 @if($type == 'i-1')
                 <td>{{$value['application_of_paint']}}</td>
                 @endif

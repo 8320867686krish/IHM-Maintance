@@ -27,10 +27,16 @@ class AuditRecordssController extends Controller
                 'clientCompany:user_id,name,id',
                 'hazmatCompany:id,name',
             ]);
-            $client_company_id = $user['clientCompany']['id'];
+            if(@$user['clientCompany']){
+                  $client_company_id = $user['clientCompany']['id'];
             $auditiname = $user['clientCompany']['name'];
           
             $auditRecords = AuditRecords::where('client_company_id',$client_company_id)->get();
+            }else{
+                abort(403, 'Forbidden');
+
+            }
+          
 
         }
         $auditieename = $user['hazmatCompany']['name'];

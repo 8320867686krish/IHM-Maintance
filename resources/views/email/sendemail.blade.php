@@ -11,8 +11,6 @@
 <body>
 
     {!!  $mailData['body'] !!}
-    <p>Thank you</p>
-
 </body>
 
 </html>

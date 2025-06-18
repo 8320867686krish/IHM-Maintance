@@ -17,6 +17,7 @@ class emailHistory extends Model
         'from_email',
         'company_email',
         'accounting_email',
-        'shipstaff_email'
+        'shipstaff_email',
+        'history_type'
     ];
 }

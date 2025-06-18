@@ -23,19 +23,16 @@
 
         <div class="emotions-slider__slider swiper">
             <div class="emotions-slider__wrapper swiper-wrapper" style="gap: {{ count($data)<=3 ? '40px' : 0 }};">
-
-                <!-- Slider: Slide 1 -->
+                <!-- START: Slides loop -->
                 @foreach($data as $value)
-
                 <div class="emotions-slider__slide swiper-slide">
-
                     <div class="emotions-slider__item emotions-slider-item">
-                        <a href="{{route($routename,['id' => $value['id']])}}">
+                        <a href="{{ route($routename, ['id' => $value['id']]) }}">
                             @if($imagekey == 'ship_image')
-                            <img src="{{asset($path.'/'.$value[$imagekey])}}" alt="Andrew Kelman" class="card-img-top" />
+                            <img src="{{ asset($path . '/' . $value[$imagekey]) }}" alt="{{ $value['ship_name'] ?? 'Image' }}" class="card-img-top" />
                             @else
                             <div class="text-center mt-2">
-                                <img src="{{asset($path.'/'.$value[$imagekey])}}" alt="Andrew Kelman" class="rounded-circle user-avatar-xxl" />
+                                <img src="{{ asset($path . '/' . $value[$imagekey]) }}" alt="{{ $value['name'] ?? 'Avatar' }}" class="rounded-circle user-avatar-xxl" />
                             </div>
                             @endif
 
@@ -43,33 +40,33 @@
                                 <div class="emotions-slider-item__header text-center">
                                     <div class="emotions-slider-item__header-inner">
                                         <div class="emotions-slider-item__author">
-
                                             <div class="emotions-slider-item__author-name text-center">
                                                 @if($imagekey == 'ship_image')
-                                                {{$value['ship_name']}}
+                                                {{ $value['ship_name'] }}
                                                 @else
-                                                {{$value['name']}}
+                                                {{ $value['name'] }}
                                                 @endif
-
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-
-
                             </div>
                         </a>
                     </div>
-
                 </div>
                 @endforeach
-                @can($permission)
-                <div class="emotions-slider__slide swiper-slide">
+                <!-- END: Slides loop -->
 
+                <!-- START: Add Slide -->
+                @can($permission)
+                <div class="emotions-slider__slide swiper-slide add-slide">
                     <div class="emotions-slider__item emotions-slider-item">
-                        <a href="{{route($addRoute)}}">
+                        <a href="{{ route($addRoute) }}">
                             <div class="text-center mt-2">
-                                <img src="{{asset('images/circle.png')}}" class="rounded-circle user-avatar-xxl">
+                                <div class="add-new-slide d-flex justify-content-center align-items-center rounded-circle mx-auto" style="width: 115px; height: 115px; background-color: #293042 !important;">
+                                    <span style="font-size: 50
+                                    px; line-height: 1; color: #fff;">+</span>
+                                </div>
                             </div>
 
                             <div class="emotions-slider-item__content text-center">
@@ -77,27 +74,19 @@
                                     <div class="emotions-slider-item__header-inner">
                                         <div class="emotions-slider-item__author">
                                             <div class="emotions-slider-item__author-name text-center">
-                                                {{$title}}
+                                                {{ $title }}
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-
-
                             </div>
                         </a>
                     </div>
-
                 </div>
                 @endcan
-
-
-
-
-
-
-
+                <!-- END: Add Slide -->
             </div>
+
         </div>
 
         <!-- Slider Pagination -->

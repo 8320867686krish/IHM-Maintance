@@ -244,10 +244,10 @@
                 </form>
                 @if(@$poData->id)
                 <hr />
-                <div class="card-body mb-4">
+                <div class="card-body mb-2">
                     <div class="row">
                         <div class="col-6">
-                            <h4>Email History</h4>
+                            <h4>Email History With Vendor</h4>
                         </div>
                         @if($currentUserRoleLevel == 2)
                         <div class="col-6">
@@ -267,16 +267,74 @@
                                 : \Carbon\Carbon::parse($poData['recived_document_date'])->format('d/m/y') !!}</h5>
                         </div>
                         <div class="col-12">
-                            <div class="table-responsive mt-2 mb-4">
-                                <table class="table table-striped table-bordered first dataTable">
+                            <div class="mt-2 mb-4">
+                                <table class="table table-striped table-bordered first dataTable no-footer">
+
+                                    <thead>
+                                        <tr>
+                                            <th>From</th>
+                                            <th>To Email(Supplier)</th>
+                                            <th>CC Email(Company)</th>
+                                            <th>CC Email (Accounting)</th>
+                                            <th>Sent Date</th>
+
+                                        </tr>
+
+                                    </thead>
+                                    <tbody>
+                                        @forelse(@$poData->emailHistory as $history)
+                                        <tr>
+                                            <td>{{$history['from_email']}}</td>
+                                            <td>{{$history['suppliear_email']}}</td>
+                                            <td>{{$history['company_email']}}</td>
+                                            <td>{{$history['accounting_email']}}</td>
+
+                                            <td>{{ \Carbon\Carbon::parse(trim($history['created_at']))->setTimezone('Asia/Kolkata')->format('d/m/y g:i A') }}
+
+                                            </td>
+
+
+                                        </tr>
+                                        @empty
+                                        <tr>
+                                            <td colspan="5" class="text-center">No email history available.</td>
+                                        </tr>
+                                        @endforelse
+
+
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="col-12 text-right">
+                            <div class="form-group ">
+                                <button class="btn btn-primary" type="button" id="FromVendor">
+                                    <i class="fas fa-inbox"></i>&nbsp;&nbsp;Received Documents
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <hr/>
+                 <div class="card-body mb-4">
+                    <div class="row">
+                        <div class="col-6">
+                            <h4>Email History With Ship</h4>
+                        </div>
+                       
+                        <div class="col-12">
+                            <div class="mt-2 mb-4">
+                                <table class="table table-striped table-bordered first dataTable no-footer">
 
                                     <thead>
                                         <tr>
                                             <th>From Email</th>
-                                            <th>To Email(Supplier Email)</th>
-                                            <th>CC Email(Company Email)</th>
-                                            <th>CC Email (Accounting Email)</th>
-                                            <th>CC Email (Ship Staff Email)</th>
+                                            <th>To Email(Supplier)</th>
+                                            <th>CC Email(Company)</th>
+                                            <th>CC Email (Accounting)</th>
+                                            <th>CC Email (Ship Staff)</th>
                                             <th>Sent Date</th>
 
                                         </tr>
@@ -309,13 +367,7 @@
                                 </table>
                             </div>
                         </div>
-                        <div class="col-12 text-right">
-                            <div class="form-group ">
-                                <button class="btn btn-primary" type="button" id="FromVendor">
-                                    <i class="fas fa-inbox"></i>&nbsp;&nbsp;Received Documents
-                                </button>
-                            </div>
-                        </div>
+                       
                     </div>
                 </div>
                 @endif

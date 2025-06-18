@@ -70,7 +70,7 @@ class POOrderController extends Controller
                 poOrderItem::updateOrCreate(['id' => $key, 'po_order_id' => $poOrder->id], $value);
             }
         }
-        $url = url('ship/view/' . $post['ship_id'] . '#po-records');
+        $url = url('ships/po-order/add/'. $post['ship_id']."/".$poOrder->id );
         return response()->json(['isStatus' => true, 'message' => 'Po Order save successfully', 'url' => $url]);
     }
     public function viewReleventItem($poiteam_id)
@@ -189,8 +189,7 @@ class POOrderController extends Controller
     {
         poOrder::where('id', $po_id)->delete();
         $ship_id = Session::get('ship_id');
-        $poOrders = poOrder::withCount(['poOrderItems'])->where('ship_id', $ship_id)->get();
-
+        $poOrders = poOrder::withCount(['poOrderItems'])->where('ship_id', $ship_id)->OrderBy('id', 'desc')->get();
         $html = view('components.po-order-item', compact('poOrders'))->render();
         return response()->json(['isStatus' => true, 'message' => 'Po Order Delete successfully', 'html' => $html]);
     }
@@ -303,7 +302,7 @@ class POOrderController extends Controller
     public function sendMail(Request $request)
     {
         $data = $request->input();
-        $shipsData = Ship::with(['client.userDetail', 'hazmatComapny:id,email,name','shipStaff:id,email'])->find($data['shipId']);
+        $shipsData = Ship::with(['client.userDetail', 'hazmatComapny:id,email,name', 'shipStaff:id,email'])->find($data['shipId']);
         $accounting_team_email = $shipsData['client']['accounting_team_email'];
         $client_company_email = $shipsData['client']['userDetail']['email'];
         $shipstaff_email = $shipsData['shipStaff']['email'];
@@ -331,13 +330,22 @@ class POOrderController extends Controller
             'from_email' => $from_email,
             'ship_id' =>  $data['shipId'],
             'po_order_id' => $data['order_id'],
-            'shipstaff_email' => $shipstaff_email
         ];
+        if (!@$data['history_type']) {
+            $email_history_arry['history_type'] = 'ship';
+            $email_history_arry['shipstaff_email'] =  $shipstaff_email;
+        } else {
+            $email_history_arry['history_type'] = $data['history_type'];
+        }
+
         emailHistory::create($email_history_arry);
         $mailData = ['title' => $data['email_subject'], 'body' => $data['email_body'], 'attachments' => $attachments];
-
+        $ccEmails = [$client_company_email, $accounting_team_email];
+        if (!empty($data['history_type'])) {
+            $ccEmails[] = $shipstaff_email;
+        }
         Mail::to($to)
-            ->cc([$client_company_email, $accounting_team_email])
+            ->cc($ccEmails)
             ->queue(new sendMail($mailData, $from));
         return response()->json(['isStatus' => true, 'message' => 'sent email successfully.']);
     }
