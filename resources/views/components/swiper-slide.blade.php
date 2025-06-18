@@ -4,7 +4,7 @@
     <div class="emotions-slider">
 
 
-        @if(count($data) >= 4)
+        <!-- @if(count($data) >= 4)
         <div class="emotions-slider__nav slider-nav">
             <div tabindex="0" class="slider-nav__item slider-nav__item_prev">
                 <svg width="16" height="28" viewBox="0 0 16 28" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -17,7 +17,7 @@
                 </svg>
             </div>
         </div>
-        @endif
+        @endif -->
 
         <!-- Slider Content -->
 
