@@ -44,7 +44,8 @@ class Ship extends Model
         'ship_owner_name_initial',
         'ship_owner_address_initial',
         'manager_address_initial',
-        'manager_name_initial'
+        'manager_name_initial',
+        'orignal_image'
     ];
 
     public function shipTeams()
