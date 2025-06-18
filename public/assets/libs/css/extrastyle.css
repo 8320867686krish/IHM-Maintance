@@ -152,7 +152,7 @@
 .table thead th,
 .table th {
     color: #6c757d;
-    font-family: 'Circular Std Medium';
+    font-family: 'Roboto', sans-serif;
     font-size:14px;
 }
 
