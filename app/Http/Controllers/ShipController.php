@@ -168,7 +168,7 @@ class ShipController extends Controller
                
 
 
-                $targetSize = 372;
+                $targetSize = 100;
                 list($width, $height) = getimagesize($imageFile);
                 $extension = strtolower($imageFile->getClientOriginalExtension());
 
@@ -208,8 +208,8 @@ class ShipController extends Controller
                 imagedestroy($resized);
                 imagedestroy($square);
                 $inputData['ship_image'] = $imageName;
-                 $originalName = $this->upload($request, 'ship_image', 'uploads/ship/orignal');
-             $inputData['orignal_image'] = $originalName;
+                $originalName = $this->upload($request, 'ship_image', 'uploads/ship/orignal');
+                $inputData['orignal_image'] = $originalName;
             }
 
             $ship = Ship::updateOrCreate(['id' => $id], $inputData);

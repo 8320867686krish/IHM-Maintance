@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 
 use App\Exports\POExport;
 use App\Http\Requests\POrderRequest;
@@ -70,7 +71,7 @@ class POOrderController extends Controller
                 poOrderItem::updateOrCreate(['id' => $key, 'po_order_id' => $poOrder->id], $value);
             }
         }
-        $url = url('ships/po-order/add/'. $post['ship_id']."/".$poOrder->id );
+        $url = url('ships/po-order/add/' . $post['ship_id'] . "/" . $poOrder->id);
         return response()->json(['isStatus' => true, 'message' => 'Po Order save successfully', 'url' => $url]);
     }
     public function viewReleventItem($poiteam_id)
@@ -127,10 +128,11 @@ class POOrderController extends Controller
                     ->first();
                 // Prepare data for insertion
                 $po_no = (string)$rowWithHeaders['PO NO'];
+
                 $insert = [
                     'po_no' =>  $po_no,
                     'ship_id' => $ship_id,
-                    'po_date' => Carbon::createFromFormat('d/m/Y', $rowWithHeaders['PO Date'])->format('Y-m-d'), // Date format
+                    'po_date' => $this->parseExcelDate($rowWithHeaders['PO Date']),
                     'machinery' => $rowWithHeaders['Machinery'],
                     'make_model' => $rowWithHeaders['Make Model'],
                     'supplier_name' => $rowWithHeaders['Supplier Name'],
@@ -138,7 +140,7 @@ class POOrderController extends Controller
                     'contact_person' => $rowWithHeaders['Supplier Contact Person'],
                     'phone' => $rowWithHeaders['Supplier Phone Number'],
                     'email' => $rowWithHeaders['Supplier Email'],
-                    'onboard_reciving_date' => Carbon::createFromFormat('d/m/Y', $rowWithHeaders['Onboard reciving date'])->format('Y-m-d'),
+                    'onboard_reciving_date' => $this->parseExcelDate($rowWithHeaders['Onboard Receiving Date']),
                     'delivery_location' => $rowWithHeaders['Delivery Location']
                 ];
 
@@ -165,8 +167,7 @@ class POOrderController extends Controller
                     'part_no' => $rowWithHeaders['Part No'],
                     'qty' => $rowWithHeaders['Qty'],
                     'unit' => $rowWithHeaders['Unit'],
-                    'impa_no' => $rowWithHeaders['IMPA NO.(if available)'],
-                    'type_category' => $rowWithHeaders['Type']
+                    'impa_no' => $rowWithHeaders['IMPA NO.(if available)']
                 ];
 
                 if ($poItemsCheck) {
@@ -184,6 +185,23 @@ class POOrderController extends Controller
         }
 
         return redirect()->to(url("/ship/view/{$ship_id}#po-records"))->with('success', 'Record inserted successfully');
+    }
+    function parseExcelDate($date)
+    {
+        $formats = ['d/m/Y', 'd-m-Y', 'Y-m-d', 'm/d/Y']; // Add more if needed
+
+        foreach ($formats as $format) {
+            try {
+                $dt = Carbon::createFromFormat($format, $date);
+                if ($dt !== false) {
+                    return $dt->format('Y-m-d');
+                }
+            } catch (\Exception $e) {
+                continue;
+            }
+        }
+
+        return null; // Or throw an exception if you prefer
     }
     public function poDelete($po_id)
     {
@@ -361,6 +379,56 @@ class POOrderController extends Controller
     }
     public function poOrderSample()
     {
-        return Excel::download(new  POExport, 'sample.xlsx');
+        $data = [
+            ['1111', '30/10/2024', 'Marine Supplies Ltd', 'test', 'test', 'test', 'test', '982524981', 'test@gmail.com', '13/11/2024', 'test', 'test', 'imp111', 'pa111', '5', 'kg']
+        ];
+
+        array_unshift($data, [
+            'PO NO',
+            'PO Date',
+            'Machinery',
+            'Make Model',
+            'Supplier Name',
+            'Supplier Address',
+            'Supplier Contact Person',
+            'Supplier Phone Number',
+            'Supplier Email',
+            'Onboard Receiving Date',
+            'Delivery Location',
+            'Description',
+            'IMPA NO.(if available)',
+            'Part No',
+            'Qty',
+            'Unit'
+        ]);
+
+        $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        foreach ($data as $rowIndex => $row) {
+            foreach ($row as $colIndex => $value) {
+                $columnLetter = Coordinate::stringFromColumnIndex($colIndex + 1); // e.g., A, B, C...
+        $cell = $columnLetter . ($rowIndex + 1); // e.g., A1, B2...
+        $sheet->setCellValue($cell, $value);
+            }
+        }
+
+        // Add comments
+        $sheet->getComment('B1')->getText()->createTextRun("Please enter date in dd/mm/yyyy format (30/10/2024) ");
+        $sheet->getComment('J1')->getText()->createTextRun("Please enter date in dd/mm/yyyy format (13/11/2024) ");
+
+        // Output directly to browser
+        $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
+        $filename = 'sample-po-template.xlsx';
+
+        // Set headers for download
+        return response()->streamDownload(function () use ($writer) {
+            $writer->save('php://output');
+        }, $filename, [
+            'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            'Cache-Control' => 'no-cache, no-store, must-revalidate',
+            'Pragma' => 'no-cache',
+            'Expires' => '0',
+        ]);
     }
 }

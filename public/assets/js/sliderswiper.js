@@ -3,11 +3,11 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!sliders.length) return;
 
     sliders.forEach((element) => {
-        const [slider, prevEl, nextEl] = [
-            element.querySelector(".swiper"),
-            element.querySelector(".slider-nav__item_prev"),
-            element.querySelector(".slider-nav__item_next"),
-        ];
+        // const [slider, prevEl, nextEl] = [
+        //  //   element.querySelector(".swiper"),
+        //     element.querySelector(".slider-nav__item_prev"),
+        //     element.querySelector(".slider-nav__item_next"),
+        // ];
 
         const slidesCount = slider.querySelectorAll(".swiper-slide").length;
 
@@ -15,11 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
             slidesPerView: 'auto',
             spaceBetween: 40,
             speed: 600,
-            navigation: {
-                nextEl,
-                prevEl,
-                disabledClass: "disabled",
-            },
+            navigation:true,
             breakpoints: {
                 768: {
                     spaceBetween: 25,
