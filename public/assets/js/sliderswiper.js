@@ -3,8 +3,8 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!sliders.length) return;
 
     sliders.forEach((element) => {
-        const [slider, prevEl, nextEl] = [
-         //   element.querySelector(".swiper"),
+        const [slider] = [
+           element.querySelector(".swiper"),
           //  element.querySelector(".slider-nav__item_prev"),
 //element.querySelector(".slider-nav__item_next"),
         ];
