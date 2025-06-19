@@ -493,7 +493,6 @@ class VscpController extends Controller
                         $mpdf->setSourceFile($fileNameDiagram);
                         $pageCount = $mpdf->setSourceFile($fileNameDiagram);
                         for ($i = 1; $i <= $pageCount; $i++) {
-
                             $mpdf->AddPage($html['ori']);
                             if ($key == 0) {
                                 $mpdf->WriteHTML('<h3 style="font-size:14px">2.1 Location Diagram of Contained HazMat & PCHM.</h3>');
@@ -501,16 +500,12 @@ class VscpController extends Controller
                             $mpdf->WriteHTML('<h5 style="font-size:14px;">Area: ' . $value['name'] . '</h5>');
                             $templateId = $mpdf->importPage($i);
                             $mpdf->useTemplate($templateId, null, null, $mpdf->w, null); // Use the template with appropriate dimensions
-
                         }
-
                         $deck_id = $value['id'];
                         $mpdf->AddPage('P');
-
                         $filterDecks = $checkHazmatIHMPart->filter(function ($item) use ($deck_id) {
                             return $item->deck_id == (int) $deck_id;
                         });
-
                         $mpdf->writeHTML(view('report.vscpPrepration', ['checks' => $filterDecks, 'name' => $value['name']]));
                         unlink($fileNameDiagram);
                     }
@@ -521,14 +516,12 @@ class VscpController extends Controller
             $gaplan =  public_path('shipsVscp/' . $ga_plan_pdf);
             $index = 1;
             if (file_exists($gaplan)) {
-             
                 $titleHtml = '<h3 style="text-align:center;font-size:12pt;">'.$index.'. GA PLAN</h3>';
                 $this->mergePdfAsImages($gaplan, $titleHtml, $mpdf);
                  $index++;
             }
             if (@$summary) {
                 foreach ($summary as $sumvalue) {
-                   
                     $filePathsum = public_path('uploads/shipsVscp') . "/" . $ship_id . "/partmanual/" . basename($sumvalue['document']);
                     if (file_exists($filePathsum) && @$sumvalue['document']) {
                         $titleHtml = '<h3 style="text-align:center;font-size:12pt">'.$index.'. '. $sumvalue['title'] . '</h3>';
