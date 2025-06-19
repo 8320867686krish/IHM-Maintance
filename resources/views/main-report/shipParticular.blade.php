@@ -1,5 +1,5 @@
 <div class="container">
-    <div class="section-1-1 next">
+    <div class="section-1-1">
         <h2>1 Ship Particular</h2>
         <table>
             <tr>
