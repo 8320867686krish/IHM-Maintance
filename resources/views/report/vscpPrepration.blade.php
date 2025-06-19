@@ -106,7 +106,7 @@
                     @if($check->check->close_image)
                     <img src="{{ $check->check->close_image }}"
                         alt="Close Image"
-                        style="width: 48%; height: 48%; object-fit: cover;margin:auto;">
+                        style="width: 48%;height: 48%;">
                     @else
                     <span>No image available</span>
                     @endif
@@ -115,7 +115,7 @@
                     @if($check->check->away_image)
                     <img src="{{ $check->check->away_image }}"
                         alt="Close Image"
-                        style="width: 48%; height:48%; object-fit: cover;margin:auto;">
+                        style="width: 48%;height:48%;">
                     @else
                     <span>No image available</span>
                     @endif
