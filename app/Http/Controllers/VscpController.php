@@ -508,7 +508,7 @@ class VscpController extends Controller
                         });
                       
                              $mpdf->AddPage('P');
-                            $mpdf->writeHTML(view('report.vscpPrepration', ['check' => $filterDecks, 'name' => $value['name']]));
+                            $mpdf->writeHTML(view('report.vscpPrepration', ['checks' => $filterDecks, 'name' => $value['name']]));
                         
                        
                         unlink($fileNameDiagram);
