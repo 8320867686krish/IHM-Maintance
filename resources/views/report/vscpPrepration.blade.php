@@ -128,5 +128,5 @@
             </tbody>
         </table>
     </div>
-    @endforech
+@endforeach
 </div>
