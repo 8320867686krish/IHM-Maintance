@@ -219,4 +219,132 @@ trait PdfGenerator
 
         return ['html'=>$html,'ori'=>$ori];
     }
+      protected function mergePdfAttachment($filePath, $title, $mpdf, $page = null)
+    {
+
+        // Validate input file
+        if (!file_exists($filePath)) {
+            throw new \Exception("PDF file not found: {$filePath}");
+        }
+        if (!is_readable($filePath)) {
+
+            throw new \Exception("PDF file is not readable: {$filePath}");
+        }
+        $fileContent = @file_get_contents($filePath, false, null, 0, 4);
+        if ($fileContent === false || $fileContent !== '%PDF') {
+            throw new \Exception("File is not a valid PDF: {$filePath}");
+        }
+
+        $mergedPdfPath = storage_path('app/merged_output_' . uniqid() . '.pdf');
+
+        // Process with Fpdi
+        $fpdi = new \setasign\Fpdi\Fpdi(); // Explicitly create new instance
+        try {
+            $pageCount = $fpdi->setSourceFile($filePath);
+            if ($pageCount === false || $pageCount === 0) {
+                throw new \Exception("Invalid PDF file: {$filePath}");
+            }
+
+            for ($i = 1; $i <= $pageCount; $i++) {
+
+                $template = $fpdi->importPage($i);
+                $size = $fpdi->getTemplateSize($template);
+                if (!is_array($size)) {
+                    continue;
+                }
+                $fpdi->AddPage($size['orientation'], [$size['width'], $size['height']]);
+                $fpdi->useTemplate($template);
+            }
+            $fpdi->Output('F', $mergedPdfPath);
+            if (!file_exists($mergedPdfPath) || filesize($mergedPdfPath) === 0) {
+                throw new \Exception("Merged PDF not created or empty");
+            }
+        } catch (\Exception $e) {
+            unset($fpdi); // Ensure FPDI object is destroyed
+            $this->mergePdfAsImages($filePath, $title, $mpdf, $page);
+            return;
+        } finally {
+            unset($fpdi); // Explicitly destroy FPDI object
+        }
+
+        // Process with mPDF
+        try {
+            if (!is_readable($mergedPdfPath)) {
+                throw new \Exception("Merged PDF is not readable: {$mergedPdfPath}");
+            }
+         
+            $pageCount = $mpdf->setSourceFile($mergedPdfPath);
+
+            for ($i = 1; $i <= $pageCount; $i++) {
+                $templateId = $mpdf->importPage($i);
+                if (!$templateId) {
+                    continue;
+                }
+
+                $size = $mpdf->getTemplateSize($templateId);
+                if (!is_array($size)) {
+                    continue;
+                }
+
+                $mpdf->AddPage($page);
+                if ($i === 1 && !empty($title)) {
+                    $mpdf->WriteHTML($title);
+                    $lmargin = 10;
+                    $tMargin = 20;
+                } else {
+                    $lmargin = $mpdf->lMargin;
+                    $tMargin = $mpdf->tMargin;
+                }
+
+                $scale = min(
+                    ($mpdf->w - $mpdf->lMargin - $mpdf->rMargin) / $size['width'],
+                    ($mpdf->h - $mpdf->tMargin - $mpdf->bMargin) / $size['height']
+                );
+
+                $mpdf->useTemplate($templateId, $lmargin, $tMargin, $size['width'] * $scale, $size['height'] * $scale);
+            }
+        } catch (\Exception $e) {
+
+            $this->mergePdfAsImages($filePath, $title, $mpdf, $page);
+        } finally {
+            // Clean up temporary file
+            if (file_exists($mergedPdfPath)) {
+                if (@unlink($mergedPdfPath)) {
+                } else {
+                }
+            }
+        }
+    }
+
+    protected function mergePdfAsImages($filePath, $title, $mpdf, $page = null)
+    {
+        try {
+            $pdf = new \Spatie\PdfToImage\Pdf($filePath);
+            $pageCount = $pdf->getNumberOfPages();
+
+            if ($pageCount > 0) {
+                for ($i = 1; $i <= $pageCount; $i++) {
+                    $imagePath = storage_path("app/temp_pdf_page_{$i}.jpg");
+
+                    $pdf->setPage($i)
+                        ->setOutputFormat('jpg')
+                        ->saveImage($imagePath);
+
+                    $mpdf->AddPage($page);
+
+                    if ($i === 1 && !empty($title)) {
+                        $mpdf->WriteHTML($title);
+                    }
+
+                    // Option 1: Image below title (not full page)
+                    $mpdf->Image($imagePath, 0, ($i === 1 && !empty($title) ? 15 : 0), 210, 277, 'jpg', '', true, false);
+
+                    // Clean up
+                    @unlink($imagePath);
+                }
+            }
+        } catch (\Exception $e) {
+            throw new \Exception("PDF to Image conversion failed: " . $e->getMessage());
+        }
+    }
 }

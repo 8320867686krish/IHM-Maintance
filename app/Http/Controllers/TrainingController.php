@@ -405,10 +405,9 @@ class TrainingController extends Controller
                         $filterDecks = $checkHazmatIHMPart->filter(function ($item) use ($deck_id) {
                             return $item->deck_id == (int) $deck_id;
                         });
-                        foreach($filterDecks as $indexhazmat=>$hazmatcheck){
-                             $mpdf->AddPage('P');
-                            $mpdf->writeHTML(view('report.vscpPrepration', ['check' => $hazmatcheck, 'name' => $value['name'],'indexhazmat'=>$indexhazmat]));
-                        }
+                         $mpdf->AddPage('P');
+                        $mpdf->writeHTML(view('report.vscpPrepration', ['checks' => $filterDecks, 'name' => $value['name']]));
+                        
                        
                         unlink($fileNameDiagram);
                     }
@@ -471,7 +470,7 @@ class TrainingController extends Controller
         try {
             $pageCount = $fpdi->setSourceFile($filePath);
             if ($pageCount === false || $pageCount === 0) {
-                Log::error("Failed to load PDF: {$filePath}");
+              
                 throw new \Exception("Invalid PDF file: {$filePath}");
             }
 
@@ -480,7 +479,6 @@ class TrainingController extends Controller
                 $template = $fpdi->importPage($i);
                 $size = $fpdi->getTemplateSize($template);
                 if (!is_array($size)) {
-                    Log::error("Invalid template size for page {$i}");
                     continue;
                 }
                 $fpdi->AddPage($size['orientation'], [$size['width'], $size['height']]);
@@ -488,10 +486,8 @@ class TrainingController extends Controller
             }
             $fpdi->Output('F', $mergedPdfPath);
             if (!file_exists($mergedPdfPath) || filesize($mergedPdfPath) === 0) {
-                Log::error("Failed to create merged PDF or file is empty: {$mergedPdfPath}");
                 throw new \Exception("Merged PDF not created or empty");
             }
-            Log::info("Generated merged PDF: {$mergedPdfPath}, Size: " . filesize($mergedPdfPath));
         } catch (\Exception $e) {
             unset($fpdi); // Ensure FPDI object is destroyed
             $this->mergePdfAsImages($filePath, $title, $mpdf, $page);
@@ -503,24 +499,18 @@ class TrainingController extends Controller
         // Process with mPDF
         try {
             if (!is_readable($mergedPdfPath)) {
-                Log::error("Merged PDF is not readable: {$mergedPdfPath}");
                 throw new \Exception("Merged PDF is not readable: {$mergedPdfPath}");
             }
-            Log::info("Opening merged PDF for mPDF: {$mergedPdfPath}");
             $pageCount = $mpdf->setSourceFile($mergedPdfPath);
-            Log::info("Merged PDF page count: {$pageCount}");
 
             for ($i = 1; $i <= $pageCount; $i++) {
-                Log::info("Processing mpdf page {$i}");
                 $templateId = $mpdf->importPage($i);
                 if (!$templateId) {
-                    Log::error("Failed to import page {$i} from merged PDF");
                     continue;
                 }
 
                 $size = $mpdf->getTemplateSize($templateId);
                 if (!is_array($size)) {
-                    Log::error("Invalid template size for page {$i} in merged PDF");
                     continue;
                 }
 
