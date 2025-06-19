@@ -13,6 +13,7 @@ use App\Models\Deck;
 use App\Models\DesignatedPerson;
 use App\Models\Exam;
 use App\Models\hazmatCompany;
+use App\Models\partManuel;
 use App\Models\QuestionSets;
 use App\Models\Ship;
 use App\Models\Training;
@@ -23,6 +24,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Traits\PdfGenerator;
 use Dompdf\Dompdf;
 use Dompdf\Options;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 use Mpdf\Mpdf;
 
@@ -351,14 +353,14 @@ class TrainingController extends Controller
             $mpdf->use_kwt = true;
             $mpdf->defaultPageNumStyle = '1';
             $mpdf->SetDisplayMode('fullpage');
-
+            $version = $shipDetail['current_ihm_version'];
             // Define header content with logo
-            $header = '
+             $header = '
             <table width="100%" style="border-bottom: 1px solid #000000; vertical-align: middle; font-family: serif; font-size: 9pt; color: #000088;">
                 <tr>
-                    <td width="10%"><img src="' . $logo . '" width="50" /></td>
-                    <td width="80%" align="center">' . $shipDetail['ship_name'] . '</td>
-                    <td width="10%" style="text-align: right;">' . $shipDetail['project_no'] . '<br/>' . $date . '</td>
+                    <td width="15%" style="fot-weight:bold">' . $shipDetail['ship_name'] . '</td>
+                   
+                    <td width="70%" style="text-align: right;">Report Number: ' . $shipDetail['report_number'] . '<br/>Version: ' . $shipDetail['current_ihm_version'] . '</td>
                 </tr>
             </table>';
 
@@ -366,8 +368,8 @@ class TrainingController extends Controller
             $footer = '
             <table width="100%" style="vertical-align: bottom; font-family: serif; font-size: 8pt; color: #000000;">
                 <tr>
-                    <td width="33%" style="text-align: left;">' . $shipDetail['ihm_table'] . 'Summary</td>
-                    <td width="33%" style="text-align: center;">Revision:' . $version . '</td>
+                    <td width="33%" style="text-align: left;">&nbsp;</td>
+                    <td width="33%" style="text-align: center;"></td>
                     <td width="33%" style="text-align: right;">{PAGENO}/{nbpg}</td>
                 </tr>
             </table>';
@@ -382,27 +384,53 @@ class TrainingController extends Controller
             $mpdf->WriteHTML(view('report.shipParticular', compact('shipDetail')));
             $mpdf->AddPage('L'); // Set landscape mode for the inventory page
             $mpdf->WriteHTML(view('report.Inventory', compact('filteredResults1', 'filteredResults2', 'filteredResults3')));
-            foreach ($decks as $key => $value) {
-                if (count($value['checks']) > 0) {
-                    $html = $this->drawDigarm($value);
-                    $fileNameDiagram = $this->genrateDompdf($html['html'], $html['ori']);
-                    //    $mpdf = new Mpdf(['orientation' => 'L']); // Ensure landscape mode
-                    $mpdf->setSourceFile($fileNameDiagram);
-
-                    $pageCount = $mpdf->setSourceFile($fileNameDiagram);
-                    for ($i = 1; $i <= $pageCount; $i++) {
-
-                        $mpdf->AddPage($html['ori']);
-                        if ($key == 0) {
-                            $mpdf->WriteHTML('<h3 style="font-size:14px">2.1 Location Diagram of Contained HazMat & PCHM.</h3>');
+             if (count($decks) > 0) {
+                foreach ($decks as $key => $value) {
+                    if (count($value['checks']) > 0) {
+                         $html = $this->drawDigarm($value);
+                        $fileNameDiagram = $this->genrateDompdf($html['html'], $html['ori']);
+                        $mpdf->setSourceFile($fileNameDiagram);
+                        $pageCount = $mpdf->setSourceFile($fileNameDiagram);
+                        for ($i = 1; $i <= $pageCount; $i++) {
+                            $mpdf->AddPage($html['ori']);
+                            if ($key == 0) {
+                                $mpdf->WriteHTML('<h3 style="font-size:14px">2.1 Location Diagram of Contained HazMat & PCHM.</h3>');
+                            }
+                            $mpdf->WriteHTML('<h5 style="font-size:14px;">Area: ' . $value['name'] . '</h5>');
+                            $templateId = $mpdf->importPage($i);
+                            $mpdf->useTemplate($templateId, null, null, $mpdf->w, null); // Use the template with appropriate dimensions
                         }
-                        $mpdf->WriteHTML('<h5 style="font-size:14px;">Area: ' . $value['name'] . '</h5>');
-
-                        $templateId = $mpdf->importPage($i);
-                        $mpdf->useTemplate($templateId, null, null, $mpdf->w, null); // Use the template with appropriate dimensions
-
+                        $deck_id = $value['id'];
+                       
+                        $filterDecks = $checkHazmatIHMPart->filter(function ($item) use ($deck_id) {
+                            return $item->deck_id == (int) $deck_id;
+                        });
+                        foreach($filterDecks as $indexhazmat=>$hazmatcheck){
+                             $mpdf->AddPage('P');
+                            $mpdf->writeHTML(view('report.vscpPrepration', ['check' => $hazmatcheck, 'name' => $value['name'],'indexhazmat'=>$indexhazmat]));
+                        }
+                       
+                        unlink($fileNameDiagram);
                     }
-                    unlink($fileNameDiagram);
+                }
+            }
+             $summary = partManuel::where('ship_id', $ship_id)->get();
+            $ga_plan_pdf = $ship_id . "/" . $shipDetail['ga_plan_pdf'];
+            $gaplan =  public_path('shipsVscp/' . $ga_plan_pdf);
+            $index = 1;
+            if (file_exists($gaplan)) {
+                $titleHtml = '<h3 style="text-align:center;font-size:12pt;">'.$index.'. GA PLAN</h3>';
+                $this->mergePdfAsImages($gaplan, $titleHtml, $mpdf);
+                 $index++;
+            }
+            if (@$summary) {
+                foreach ($summary as $sumvalue) {
+                    $filePathsum = public_path('uploads/shipsVscp') . "/" . $ship_id . "/partmanual/" . basename($sumvalue['document']);
+                    if (file_exists($filePathsum) && @$sumvalue['document']) {
+                        $titleHtml = '<h3 style="text-align:center;font-size:12pt">'.$index.'. '. $sumvalue['title'] . '</h3>';
+                        $this->mergePdfAttachment($filePathsum, $titleHtml, $mpdf);
+                         $index++;
+                    }
                 }
             }
 
@@ -416,6 +444,145 @@ class TrainingController extends Controller
         } catch (\Mpdf\MpdfException $e) {
             // Handle mPDF exception
             echo $e->getMessage();
+        }
+    }
+     protected function mergePdfAttachment($filePath, $title, $mpdf, $page = null)
+    {
+        Log::info("Starting merge for: {$filePath}");
+
+        // Validate input file
+        if (!file_exists($filePath)) {
+            Log::error("PDF file not found: {$filePath}");
+            throw new \Exception("PDF file not found: {$filePath}");
+        }
+        if (!is_readable($filePath)) {
+
+            throw new \Exception("PDF file is not readable: {$filePath}");
+        }
+        $fileContent = @file_get_contents($filePath, false, null, 0, 4);
+        if ($fileContent === false || $fileContent !== '%PDF') {
+            throw new \Exception("File is not a valid PDF: {$filePath}");
+        }
+
+        $mergedPdfPath = storage_path('app/merged_output_' . uniqid() . '.pdf');
+
+        // Process with Fpdi
+        $fpdi = new \setasign\Fpdi\Fpdi(); // Explicitly create new instance
+        try {
+            $pageCount = $fpdi->setSourceFile($filePath);
+            if ($pageCount === false || $pageCount === 0) {
+                Log::error("Failed to load PDF: {$filePath}");
+                throw new \Exception("Invalid PDF file: {$filePath}");
+            }
+
+            for ($i = 1; $i <= $pageCount; $i++) {
+
+                $template = $fpdi->importPage($i);
+                $size = $fpdi->getTemplateSize($template);
+                if (!is_array($size)) {
+                    Log::error("Invalid template size for page {$i}");
+                    continue;
+                }
+                $fpdi->AddPage($size['orientation'], [$size['width'], $size['height']]);
+                $fpdi->useTemplate($template);
+            }
+            $fpdi->Output('F', $mergedPdfPath);
+            if (!file_exists($mergedPdfPath) || filesize($mergedPdfPath) === 0) {
+                Log::error("Failed to create merged PDF or file is empty: {$mergedPdfPath}");
+                throw new \Exception("Merged PDF not created or empty");
+            }
+            Log::info("Generated merged PDF: {$mergedPdfPath}, Size: " . filesize($mergedPdfPath));
+        } catch (\Exception $e) {
+            unset($fpdi); // Ensure FPDI object is destroyed
+            $this->mergePdfAsImages($filePath, $title, $mpdf, $page);
+            return;
+        } finally {
+            unset($fpdi); // Explicitly destroy FPDI object
+        }
+
+        // Process with mPDF
+        try {
+            if (!is_readable($mergedPdfPath)) {
+                Log::error("Merged PDF is not readable: {$mergedPdfPath}");
+                throw new \Exception("Merged PDF is not readable: {$mergedPdfPath}");
+            }
+            Log::info("Opening merged PDF for mPDF: {$mergedPdfPath}");
+            $pageCount = $mpdf->setSourceFile($mergedPdfPath);
+            Log::info("Merged PDF page count: {$pageCount}");
+
+            for ($i = 1; $i <= $pageCount; $i++) {
+                Log::info("Processing mpdf page {$i}");
+                $templateId = $mpdf->importPage($i);
+                if (!$templateId) {
+                    Log::error("Failed to import page {$i} from merged PDF");
+                    continue;
+                }
+
+                $size = $mpdf->getTemplateSize($templateId);
+                if (!is_array($size)) {
+                    Log::error("Invalid template size for page {$i} in merged PDF");
+                    continue;
+                }
+
+                $mpdf->AddPage($page);
+                if ($i === 1 && !empty($title)) {
+                    $mpdf->WriteHTML($title);
+                    $lmargin = 10;
+                    $tMargin = 20;
+                } else {
+                    $lmargin = $mpdf->lMargin;
+                    $tMargin = $mpdf->tMargin;
+                }
+
+                $scale = min(
+                    ($mpdf->w - $mpdf->lMargin - $mpdf->rMargin) / $size['width'],
+                    ($mpdf->h - $mpdf->tMargin - $mpdf->bMargin) / $size['height']
+                );
+
+                $mpdf->useTemplate($templateId, $lmargin, $tMargin, $size['width'] * $scale, $size['height'] * $scale);
+            }
+        } catch (\Exception $e) {
+
+            $this->mergePdfAsImages($filePath, $title, $mpdf, $page);
+        } finally {
+            // Clean up temporary file
+            if (file_exists($mergedPdfPath)) {
+                if (@unlink($mergedPdfPath)) {
+                } else {
+                }
+            }
+        }
+    }
+
+    protected function mergePdfAsImages($filePath, $title, $mpdf, $page = null)
+    {
+        try {
+            $pdf = new \Spatie\PdfToImage\Pdf($filePath);
+            $pageCount = $pdf->getNumberOfPages();
+
+            if ($pageCount > 0) {
+                for ($i = 1; $i <= $pageCount; $i++) {
+                    $imagePath = storage_path("app/temp_pdf_page_{$i}.jpg");
+
+                    $pdf->setPage($i)
+                        ->setOutputFormat('jpg')
+                        ->saveImage($imagePath);
+
+                    $mpdf->AddPage($page);
+
+                    if ($i === 1 && !empty($title)) {
+                        $mpdf->WriteHTML($title);
+                    }
+
+                    // Option 1: Image below title (not full page)
+                    $mpdf->Image($imagePath, 0, ($i === 1 && !empty($title) ? 15 : 0), 210, 277, 'jpg', '', true, false);
+
+                    // Clean up
+                    @unlink($imagePath);
+                }
+            }
+        } catch (\Exception $e) {
+            throw new \Exception("PDF to Image conversion failed: " . $e->getMessage());
         }
     }
     public function saveResult(Request $request)
