@@ -23,7 +23,7 @@ $(document).ready(function () {
         let content = '';
 
         // Add PO details
-        content += `PO NO: ${po_no}<br>`;
+        content += `<b>PO NO: ${po_no}<br>`;
         content += `PO Date: ${po_date}<br>`;
 
         content += `Items:<br><ul style="padding-left:15px">`;
@@ -51,11 +51,11 @@ $(document).ready(function () {
             }
         });
 
-        content += `</ul>`; // Close the unordered list
+        content += `</ul></b>`; // Close the unordered list
 
         // Insert the content with HTML tags
 
-        console.log(content);
+        content +="<p>Dear Sir / Madam,<br/>Good day.<br/>We are in need of a Material Declaration (MD) and the Supplier's Declaration of Conformity (SDoC) for the supplied item to confirmation of presence of any HazMat.Kindly reply to our Material Declaration requests.</br>Feel free to contact us if you have any questions.Thanks and Warm Regards.</p>";
         // Show the modal
         $("#sendVendorMail").modal('show');
         $('#sendVendorMail').on('shown.bs.modal', function () {
@@ -73,7 +73,7 @@ $(document).ready(function () {
         $("#order_id").val(po_order_id);
         $("#email_body").val(text + ' is ' + hazmat_type)
         $("#shipId").val($("#ship_id").val());
-        $("#email_subject").val(po_no);
+        $("#email_subject").val(`PO Number: ${po_no}`);
         $("#hazmat_id").val(hazmatId);
         $('#relevantModal').modal('show');
 
