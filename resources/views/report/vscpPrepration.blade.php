@@ -17,20 +17,7 @@
         margin-top: 20px;
     }
 
-    .section-1-1 .img-cell img {
-        width: 100%;
-        /* Fill the cell */
-        height: auto;
-        /* Keep aspect ratio */
-        max-height: 200px;
-        /* Prevent images from being too tall */
-        object-fit: cover;
-        /* Crop to fit */
-        display: block;
-        /* Remove inline spacing */
-        margin: 0 auto;
-        /* Center the image */
-    }
+   
 
     .section-1-1 th,
     .section-1-1 td {
@@ -50,18 +37,13 @@
         font-style: italic;
     }
 
-    .section-1-1 table.next {
-        page-break-before: always;
-        page-break-inside: avoid;
-        display: block;
-    }
 </style>
 
 
 <div class="section-1-1">
     <h4>List Of Checks For {{ $name }}</h4>
-
-    @foreach($checks as $check)
+    <br/>
+     <div style="padding-top: 40px;">
     <table class="{{ !$loop->first ? 'next' : '' }}">
 
         <tbody>
@@ -118,23 +100,32 @@
                 <td colspan="2" width="50%"><strong>CheckPoint Image 2:</strong></td>
             </tr>
             <tr>
-              <td colspan="2" width="50%" class="img-cell">
+             <td colspan="2" width="50%" class="img-cell">
     @if($check->check->close_image)
-        <img src="{{ $check->check->close_image }}" alt="Close Image">
+        <img src="{{ $check->check->close_image }}"
+             alt="Close Image"
+             width="350" height="300"
+             style="display: block; margin: 0 auto;">
     @else
         <span>No image available</span>
     @endif
 </td>
+
+
 <td colspan="2" width="50%" class="img-cell">
     @if($check->check->away_image)
-        <img src="{{ $check->check->away_image }}" alt="Close Image">
+        <img src="{{ $check->check->away_image }}"
+             alt="Close Image"
+             width="350" height="300"
+             style="display: block; margin: 0 auto;">
     @else
         <span>No image available</span>
     @endif
 </td>
+
                 
             </tr>
         </tbody>
     </table>
-    @endforeach
+    </div>
 </div>

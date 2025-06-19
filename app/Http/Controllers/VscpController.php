@@ -502,11 +502,15 @@ class VscpController extends Controller
                             $mpdf->useTemplate($templateId, null, null, $mpdf->w, null); // Use the template with appropriate dimensions
                         }
                         $deck_id = $value['id'];
-                        $mpdf->AddPage('P');
+                       
                         $filterDecks = $checkHazmatIHMPart->filter(function ($item) use ($deck_id) {
                             return $item->deck_id == (int) $deck_id;
                         });
-                        $mpdf->writeHTML(view('report.vscpPrepration', ['checks' => $filterDecks, 'name' => $value['name']]));
+                        foreach($filterDecks as $value){
+                             $mpdf->AddPage('P');
+                            $mpdf->writeHTML(view('report.vscpPrepration', ['check' => $value, 'name' => $value['name']]));
+                        }
+                       
                         unlink($fileNameDiagram);
                     }
                 }
