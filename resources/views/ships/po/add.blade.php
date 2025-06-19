@@ -282,7 +282,7 @@
 
                                     </thead>
                                     <tbody>
-                                        @forelse(@$poData->emailHistory as $history)
+                                        @forelse(@$filteredEmailHVendoristory as $history)
                                         <tr>
                                             <td>{{$history['from_email']}}</td>
                                             <td>{{$history['suppliear_email']}}</td>
@@ -341,7 +341,7 @@
 
                                     </thead>
                                     <tbody>
-                                        @forelse(@$poData->emailHistory as $history)
+                                        @forelse(@$filteredEmailHistory as $history)
                                         <tr>
                                             <td>{{$history['from_email']}}</td>
                                             <td>{{$history['suppliear_email']}}</td>
@@ -357,7 +357,7 @@
                                         </tr>
                                         @empty
                                         <tr>
-                                            <td colspan="5" class="text-center">No email history available.</td>
+                                            <td colspan="6" class="text-center">No email history available.</td>
                                         </tr>
                                         @endforelse
 

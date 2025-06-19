@@ -376,7 +376,7 @@ class TrainingController extends Controller
 
             $stylesheet = file_get_contents('public/assets/mpdf.css');
             $mpdf->WriteHTML($stylesheet, \Mpdf\HTMLParserMode::HEADER_CSS);
-            $shipImagePath = asset('uploads/ship/' . $shipDetail['ship_image']);
+            $shipImagePath = asset('uploads/ship/orignal/' . $shipDetail['orignal_image']);
 
             $mpdf->WriteHTML(view('report.cover', compact('shipDetail', 'shipImagePath')));
             $mpdf->WriteHTML(view('report.shipParticular', compact('shipDetail')));

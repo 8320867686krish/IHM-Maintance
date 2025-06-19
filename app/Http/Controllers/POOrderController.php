@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 
 use App\Exports\POExport;
@@ -41,7 +42,13 @@ class POOrderController extends Controller
         }
         $backurl = "ship/view" . "/" . $ship_id . "#po-records";
         $poData = poOrder::with('poOrderItems', 'emailHistory')->find($po_order_id);
-        return view('ships.po.add', compact('head_title', 'ship_id', 'poData', 'backurl', 'client_name', 'currentUserRoleLevel'));
+        $filteredEmailHistory = $poData->emailHistory->filter(function ($history) {
+            return $history->history_type == 'ship';
+        });
+         $filteredEmailHVendoristory = $poData->emailHistory->filter(function ($history) {
+            return $history->history_type == 'vendor';
+        });
+        return view('ships.po.add', compact('head_title', 'ship_id', 'poData', 'backurl', 'client_name', 'currentUserRoleLevel','filteredEmailHVendoristory','filteredEmailHistory'));
     }
 
     public function store(POrderRequest $request)
@@ -408,8 +415,8 @@ class POOrderController extends Controller
         foreach ($data as $rowIndex => $row) {
             foreach ($row as $colIndex => $value) {
                 $columnLetter = Coordinate::stringFromColumnIndex($colIndex + 1); // e.g., A, B, C...
-        $cell = $columnLetter . ($rowIndex + 1); // e.g., A1, B2...
-        $sheet->setCellValue($cell, $value);
+                $cell = $columnLetter . ($rowIndex + 1); // e.g., A1, B2...
+                $sheet->setCellValue($cell, $value);
             }
         }
 

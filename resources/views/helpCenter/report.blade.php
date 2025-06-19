@@ -36,9 +36,6 @@
                                 <tr>
                                     <th width="15%">SR NO</th>
                                     <th>Title</th>
-                                    <th>Version</th>
-                                    <th width="20%">Updated By</th>
-                                    <th width="20%">Date</th>
                                     <th width="20%">Document</th>
                                     <th>Action</th>
                                 </tr>
@@ -47,9 +44,7 @@
                                 <tr>
                                     <td>1</td>
                                     <td>GA Plan</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
+
                                     <td><a href="{{asset('uploads/shipsVscp/'.$ship->id.'/'.$ship->ga_plan_pdf)}}" target="_blank" download>{{$ship->ga_plan_pdf}}</a></td>
                                     <td>
                                         <a href="{{asset('uploads/shipsVscp/'.$ship->id.'/'.$ship->ga_plan_pdf)}}" title="download" download target="_blank" class="mr-2">
@@ -85,8 +80,13 @@
                                 </tr>
                             </thead>
                             <tbody id="PreviousAttachmentList">
-                                @if($previousAttachment)
+                                @if(count($previousAttachment)>0)
                                 <x-previous-attachment-list :previousAttachment=$previousAttachment></x-previous-attachment-list>
+                                @else
+                                <tr>
+                                    <td colspan="6" class="text-center">No HM Previous Maintance available.</td>
+
+                                </tr>
                                 @endif
                             </tbody>
 
@@ -151,7 +151,7 @@
                     <h5>MD & SD Recort Report</h5>
                     <div class="col-12">
                         <div class="form-group">
-                            <a href="{{ url('md-sd-records/'.$ship->id) }}" target="_blank"><button class="btn btn-primary float-right mb-3"  id="genratereportbtn">Download MD & SD </button></a>
+                            <a href="{{ url('md-sd-records/'.$ship->id) }}" target="_blank"><button class="btn btn-primary float-right mb-3" id="genratereportbtn">Download MD & SD </button></a>
                         </div>
                     </div>
                 </div>

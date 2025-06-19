@@ -15,10 +15,10 @@
 
 
 
-    <div class="row  mb-1 mt-2">
-        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+    <div class="row  mb-1 mt-2 text-center">
+        <div class="col-xl-11 col-lg-11 col-md-11 col-sm-11 col-11 ">
             <div class="page-header">
-            <h2 class="pageheader-title text-center">{{ ucfirst($anyliticsdata['ship']) }} Dashboard</h2>
+            <h2 class="pageheader-title">{{ ucfirst($anyliticsdata['ship']) }}</h2>
 
             </div>
         </div>

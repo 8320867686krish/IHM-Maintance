@@ -188,7 +188,7 @@ class ReportController extends Controller
         $stylesheet = file_get_contents('public/assets/mpdf.css');
 
         $mpdf->WriteHTML($stylesheet, \Mpdf\HTMLParserMode::HEADER_CSS);
-        $shipImagePath = public_path('uploads/ship/' . $projectDetail['ship_image']);
+        $shipImagePath = public_path('uploads/ship/orignal/' . $projectDetail['orignal_image']);
 
         $html = view('main-report.cover', compact('projectDetail', 'shipImagePath'))->render();
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
@@ -431,7 +431,7 @@ class ReportController extends Controller
             border: 1px solid #333;
             padding: 12px;
             margin-bottom: 20px;
-            font-size: 14px;
+            font-size: 16px;
         }
         .left {
             font-weight: bold;

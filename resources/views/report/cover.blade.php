@@ -8,10 +8,10 @@
         <h4 style="padding-top: 1px;">SHIP NAME- {{$shipDetail['ship_name']}}</h4>
         <h4 style="padding-top: 1px;">IMO No: {{$shipDetail['imo_number']}}</h4>
         <h4 style="padding-top: 1px;">Version: {{$shipDetail['current_ihm_version']}}</h4>
-    </div>
+    </div> 
 
     <div style="pading-top:30px">
-        <h4>Prepared by SOS INDIA As Per:</h4>
+        <h4>Prepared As Per:</h4>
         <ul class="ulIteam">
             <li>Hong Kong International Convention for the Safe and Environmentally Sound Recycling of
                 Ships (SR/CONF 45)</li>
