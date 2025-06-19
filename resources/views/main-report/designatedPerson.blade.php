@@ -13,7 +13,7 @@
                 </tr>
             </thead>
             <tbody>
-                @if(@$superDpResult)
+                @if(count($superDpResult) > 0)
                 @foreach($superDpResult as $value)
                 <tr>
                   
@@ -49,7 +49,7 @@
                 </tr>
             </thead>
             <tbody>
-                @if(@$responsibleResult)
+                @if(count($responsibleResult) > 0)
                 @foreach($responsibleResult as $value)
                 <tr>
                    

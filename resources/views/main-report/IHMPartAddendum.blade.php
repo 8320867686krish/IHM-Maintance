@@ -130,7 +130,7 @@
                 @else
                 @foreach($filteredResultsAddendum3 as $value)
                 <tr>
-                    <td>{{ $loops->iteration}}</td>
+                    <td>{{ $loop->iteration}}</td>
                     <td>{{ $value->ihm_machinery_equipment ?? '' }}</td>
                     <td>{{ $value->ihm_location ?? '' }}</td>
                     <td>{{ $value->hazmat->name ?? '' }}</td>
