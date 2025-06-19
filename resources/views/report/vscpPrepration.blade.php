@@ -43,7 +43,11 @@
   
     <h2 style="padding-top:20px;text-align:center">List Of Checks For {{ $name }}</h2>
     @foreach($checks as $check)
-    <div style="padding-top: 40px;">
+     @if($index !== 0)
+        <div style="page-break-before: always; padding-top: 40px;">
+    @else
+        <div style="padding-top: 40px;">
+    @endif
         <table>
 
             <tbody>
