@@ -506,9 +506,9 @@ class VscpController extends Controller
                         $filterDecks = $checkHazmatIHMPart->filter(function ($item) use ($deck_id) {
                             return $item->deck_id == (int) $deck_id;
                         });
-                        foreach($filterDecks as $value){
+                        foreach($filterDecks as $indexhazmat=>$hazmatcheck){
                              $mpdf->AddPage('P');
-                            $mpdf->writeHTML(view('report.vscpPrepration', ['check' => $value, 'name' => $value['name']]));
+                            $mpdf->writeHTML(view('report.vscpPrepration', ['check' => $hazmatcheck, 'name' => $value['name'],'indexhazmat'=>$indexhazmat]));
                         }
                        
                         unlink($fileNameDiagram);

@@ -41,10 +41,12 @@
 
 
 <div class="section-1-1">
-    <h4>List Of Checks For {{ $name }}</h4>
-    <br/>
+    @if($indexhazmat == 0)
+    <h2 style="padding-top:10px;">List Of Checks For {{ $name }}</h2>
+    @endif
+    
      <div style="padding-top: 40px;">
-    <table class="{{ !$loop->first ? 'next' : '' }}">
+    <table>
 
         <tbody>
             <tr>
