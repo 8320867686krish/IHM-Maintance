@@ -11,7 +11,7 @@ trait PdfGenerator
         $dompdf = new Dompdf();
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', $page);
-         $dompdf->render();
+        $dompdf->render();
         $mainContentPdf = $dompdf->output();
         $filename = "project" . uniqid() . "ab.pdf";
         $filePath = storage_path('app/pdf') . "/" . $filename;
@@ -26,48 +26,47 @@ trait PdfGenerator
         $html = "";
         $lineCss = 'position:absolute;background-color:#4052d6;border:solid #4052d6 1px;';
         $tooltipCss = 'position: absolute;background-color: #fff;border: 1px solid #4052d6;padding: 1px;border-radius: 2px;
-                white-space: nowrap;z-index: 1;color:#4052d6;font-size:14px;text-align:center;';
+                white-space: nowrap;z-index: 1;color:#4052d6;font-size:12px;text-align:center;';
         if (count($decks['checks']) > 0) {
             $chunks = array_chunk($decks['checks']->toArray(), 8);
-         
+
             $k = 0;
             $gap = 1;
             $ori = "landscape";
-            $oddincreaseGap = 18;
+            $oddincreaseGap = 29;
             $evenincreaseGap = 29;
-            $imageDesireHeight = 400;
+            $imageDesireHeight = 500;
             foreach ($chunks as $chunkIndex => $chunk) {
                 $imagePath = $decks['image'];
                 $imageData = base64_encode(file_get_contents($imagePath));
                 $imageBase64 = 'data:image/' . pathinfo($imagePath, PATHINFO_EXTENSION) . ';base64,' . $imageData;
                 list($width, $height) = getimagesize($imagePath);
-                $containerWidth = "1024"; 
+                $containerWidth = "1024";
                 if ($width >= 1000) {
                     $html .= "<div class='maincontnt next' style='display: flex; justify-content: center; align-items: center; flex-direction: column; height:100vh;'>";
                 } else {
-                    if ($height >= 380) {
+                    if ($height >= 320) {
                         $ori = "portrait";
-                        if($width >= 500){
-                            $containerWidth = "794";
-
-                        }else{
-                            $containerWidth = "900";
-
-                        }
                         $image_height =  $imageDesireHeight;
-                        $image_width = ($image_height * $width) / $height;
+                        if ($width >= 500) {
+                            $containerWidth = "794";
+                            $image_width = ($image_height * 500) / $height;
+                        } else {
+                            $containerWidth = "900";
+                            $image_width = ($image_height * $width) / $height;
+                        }
                     } else {
                         $image_width = $width;
                     }
-                   
+
                     $leftPositionPixels = ($containerWidth - $image_width) / 2;
                     $leftPositionPercent = ($leftPositionPixels / 1024) * 100;
 
                     $html .= "<div class='maincontnt next' style='display: flex; justify-content: center; align-items: center; flex-direction: column;margin-left:{$leftPositionPercent}%;'>";
                 }
-                $topPer =  ( $ori == 'portrait') ? '40%':'20%';
+                $topPer =  ($ori == 'portrait') ? '40%' : '20%';
 
-                $html .= '<div style="margin-top:'.$topPer.';">';
+                $html .= '<div style="margin-top:' . $topPer . ';">';
 
                 $html .= '<div class="image-container " id="imgc' . $i . '" style="position: relative;width: 100%; ">';
                 $image_width  = 1024;
@@ -77,9 +76,13 @@ trait PdfGenerator
 
                     $newImage = '<img src="' . $imageBase64 . '" id="imageDraw' . $i . '" style="width:' .  $image_width . 'px;" />';
                 } else {
-                    if ($height >= 380) {
-                       $image_height =$imageDesireHeight;
-                        $image_width = ($image_height * $width) / $height;
+                    if ($height >= 320) {
+                        $image_height = $imageDesireHeight;
+                        if ($width >= 500) {
+                            $image_width = ($image_height * 500) / $height;
+                        } else {
+                            $image_width = ($image_height * $width) / $height;
+                        }
                         $newImage = '<img src="' . $imageBase64 . '" id="imageDraw' . $i . '"  style="width:' .  $image_width . 'px;"/>';
                     } else {
                         $image_height = $height;
@@ -100,18 +103,18 @@ trait PdfGenerator
                 $chunkcount = 0;
                 foreach ($chunk as $key => $value) {
                     $chunkcount++;
-                    if($chunkcount == 1){
+                    if ($chunkcount == 1) {
                         $oddincreaseGap = 18;
                     }
                     $top = $value['position_top'];
                     $left = $value['position_left'];
 
-                   
-                    $tooltipText = ($value['type'] == 'sample' ? 's' : 'v') . $value['name'] . "<br/>";
+                    $explode = explode("#", $value['name']);
+                    $tooltipText = ($value['type'] == 'sample' ? 's' : 'v') . $explode[1] . "<br/>";
                     if (@$value['check_hazmats']) {
                         $hazmatCount = count($value['check_hazmats']); // Get the total number of elements
                         foreach ($value['check_hazmats'] as $index => $hazmet) {
-                            $tooltipText .= '<span style="font-size:14px;color:' . $hazmet['hazmat']['color']   . '">' . $hazmet['hazmat']['short_name'] . '</span>';
+                            $tooltipText .= '<span style="font-size:8px;color:' . $hazmet['hazmat']['color']   . '">' . $hazmet['hazmat']['short_name'] . '</span>';
                             if ($index < $hazmatCount - 1) {
                                 $tooltipText .= ',';
                             }
@@ -142,12 +145,14 @@ trait PdfGenerator
                         $lineHeight = ($topshow + $gap);
                         $tooltipStart = $lineTopPosition - $oddincreaseGap;
                         $oddsameLocation = 0;
+                        $findLeft = abs($maxLength * 3);
+
                         foreach ($oddarrayLeft as $key => $oddvalue) {
-                            if (abs($lineLeftPosition - $oddvalue) < 100 && abs($topshow - $oddarrayTop[$key]) < 100) {
+                            if (abs($lineLeftPosition - $oddvalue) <   $findLeft && abs($topshow - $oddarrayTop[$key]) < 100) {
                                 $oddsameLocation++;
-                                $tooltipStart = $tooltipStart - $oddincreaseGap;
-                                $lineHeight = $lineHeight + $oddincreaseGap;
-                                $lineTopPosition = $lineTopPosition - $oddincreaseGap;
+                                $tooltipStart = $tooltipStart - $findLeft;
+                                $lineHeight = $lineHeight + $findLeft;
+                                $lineTopPosition = $lineTopPosition - $findLeft;
                             } else {
                                 //for else odd i mean line in same place
                                 $tooltipStart = $tooltipStart - 29;
@@ -158,6 +163,7 @@ trait PdfGenerator
                         if ($oddsameLocation > 1) {
                             foreach ($sameLocationoddarray as $sameLocationoddValue) {
                                 if ($sameLocationoddValue == $tooltipStart) {
+
                                     $tooltipStart = $tooltipStart - 29;
                                     $lineHeight =  $topshow +  abs($tooltipStart);
                                     $lineTopPosition = $tooltipStart;
@@ -173,21 +179,21 @@ trait PdfGenerator
                         $tooltipStart = $image_height + $gap;
                         $sameLocation = 0;
                         $findLeft = abs($maxLength * 5 + 100);
-                    
+
 
                         foreach ($evenarrayLeft as $key => $evenvalue) {
                             if (abs($lineLeftPosition - $evenvalue) < $findLeft && abs($topshow - $evenarrayTop[$key]) < 100) {
                                 $sameLocation++;
                                 $tooltipStart = $tooltipStart + $evenincreaseGap;
                                 $lineHeight = $lineHeight + $evenincreaseGap;
-                            }else{
-                                
-                                    $tooltipStart = $tooltipStart  + $evenincreaseGap; // Example of subtracting for odd
-                                    $lineHeight = $lineHeight + $evenincreaseGap ;    // Adjust this logic as per your needs
-                                
+                            } else {
+
+                                $tooltipStart = $tooltipStart  + $evenincreaseGap; // Example of subtracting for odd
+                                $lineHeight = $lineHeight + $evenincreaseGap;    // Adjust this logic as per your needs
+
                             }
                         }
-                       
+
                         if ($sameLocation > 1) {
                             foreach ($sameLocationevenarray as $sameLocationValue) {
                                 if ($sameLocationValue == $tooltipStart) {
@@ -200,12 +206,12 @@ trait PdfGenerator
                         $evenarrayLeft[$value['id']] = $lineLeftPosition;
                         $evenarrayTop[$value['id']] =  $topshow;
                     }
-                     $html .= '<div class="dot" style="top:' . $topshow . 'px; left:' . $leftshow . 'px; position: absolute;border: 4px solid #4052d6;background: #4052d6;border-radius: 50%;"></div>';
+                    $html .= '<div class="dot" style="top:' . $topshow . 'px; left:' . $leftshow . 'px; position: absolute;border: 4px solid #4052d6;background: #4052d6;border-radius: 50%;"></div>';
 
-                     $html .= '<span class="line" style="top:' . $lineTopPosition  . 'px;left:' . $lineLeftPosition . 'px;height:' . $lineHeight . 'px;' . $lineCss . '"></span>';
+                    $html .= '<span class="line" style="top:' . $lineTopPosition  . 'px;left:' . $lineLeftPosition . 'px;height:' . $lineHeight . 'px;' . $lineCss . '"></span>';
 
 
-                     $html .= '<span class="tooltip" style="' . $tooltipCss . 'top:' . $tooltipStart . 'px; left:' . ($lineLeftPosition - 15) . 'px">' . $tooltipText . '</span>';
+                    $html .= '<span class="tooltip" style="' . $tooltipCss . 'top:' . $tooltipStart . 'px; left:' . ($lineLeftPosition - 15) . 'px">' . $tooltipText . '</span>';
                 }
                 $html .= '</div>';
                 $html .= '</div>';
@@ -217,6 +223,6 @@ trait PdfGenerator
         }
 
 
-        return ['html'=>$html,'ori'=>$ori];
+        return ['html' => $html, 'ori' => @$ori ?? ''];
     }
 }
