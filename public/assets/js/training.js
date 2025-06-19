@@ -21,7 +21,7 @@ $("#addQuestion").click(function () {
                     <input type="text" class="form-control form-control-lg" 
                         name="questions[` + iteamQuestion + `][question_name]" 
                         autocomplete="off" placeholder="Enter Question">
-                    <div id="questions_`+iteamQuestion+`_question_nameError" class="invalid-feedback error"></div>
+                    <div id="questions_`+ iteamQuestion + `_question_nameError" class="invalid-feedback error"></div>
 
                 </div>
 
@@ -40,7 +40,7 @@ $("#addQuestion").click(function () {
                         <option value="text">Text</option>
                         <option value="file">File</option>
                     </select>
-                <div id="questions_`+iteamQuestion+`_answer_typeError" class="invalid-feedback error"></div>
+                <div id="questions_`+ iteamQuestion + `_answer_typeError" class="invalid-feedback error"></div>
 
                 
                 </div>
@@ -54,14 +54,17 @@ $("#addQuestion").click(function () {
                     <div class="row align-items-center">
                         <label class="col-md-2">Correct Answer</label>
                         <div class="col-md-5">
-                            <input type="text" class="form-control form-control-lg" 
-                                name="questions[` + iteamQuestion + `][correct_answer]" 
-                                autocomplete="off" placeholder="Correct Answer">
-                    <div id="questions_`+iteamQuestion+`_correct_answerError" class="invalid-feedback error"></div>
-
+                             <select class="form-control form-control-lg" name="questions[` + iteamQuestion + `][correct_answer]">
+                                <option value="">Choose Answer</option>
+                                <option value="A">A</option>
+                                <option value="B">B</option>
+                                <option value="C">C</option>
+                                <option value="D">D</option>
+                              </select>
+                            <div id="questions_`+ iteamQuestion + `_correct_answerError" class="invalid-feedback error"></div>
                         </div>
                     </div>
-                </div>
+            </div>
     </div>
     `;
 
@@ -108,19 +111,19 @@ $(".assignSets").click(function () {
     }
     return false;
 })
-    $(document).on("click", "#startBrifing", function () {
+$(document).on("click", "#startBrifing", function () {
 
     $("#startBrifingModel").modal('show');
 
 });
-$(document).on("click","#startExam",function(){
+$(document).on("click", "#startExam", function () {
     $("#satrtExamModel").modal('show');
 });
-$(document).on("click","#finalstart",function(){
+$(document).on("click", "#finalstart", function () {
     $("#stratExamForm").submit();
 });
-$(document).on("click","#dontread",function(){
-  $("#satrtExamModel").modal('hide');
+$(document).on("click", "#dontread", function () {
+    $("#satrtExamModel").modal('hide');
 });
 
 
@@ -136,7 +139,7 @@ $(document).on("click", "#startTraining", function () {
 
 $(document).on("click", ".editBrif", function () {
 
-    var data = $(this).data('brief'); 
+    var data = $(this).data('brief');
     console.log(data.designated_people_id);
     $("#startBrifingForm").find('#id').val(data.id);
     $("#startBrifingForm").find('#number_of_attendance').val(data.number_of_attendance);
@@ -147,9 +150,9 @@ $(document).on("click", ".editBrif", function () {
 });
 $(document).on("click", ".uploadBrief", function () {
     var briefid = $(this).data("briefid");
-    
+
     // Find the corresponding file input for the current row
-    $("#fileInput_" + briefid).click();  
+    $("#fileInput_" + briefid).click();
 });
 
 // Handle file input change
@@ -157,12 +160,12 @@ $(document).on("change", ".fileInput", function () {
     var briefid = $(this).data("briefid");
     var file = this.files[0];
     if (file) {
-        console.log(baseUrl+'/briefing/upload');
+        console.log(baseUrl + '/briefing/upload');
         var formData = new FormData();
         formData.append("brief_id", briefid);  // Add brief ID to the data
         formData.append("brifing_document", file);  // Append the file to the FormData
         $.ajax({
-            url: baseUrl+'/briefing/upload',  // Replace with your route for handling file upload
+            url: baseUrl + '/briefing/upload',  // Replace with your route for handling file upload
             type: 'POST',
             data: formData,
             contentType: false,  // This is important to send the file correctly
@@ -170,15 +173,15 @@ $(document).on("change", ".fileInput", function () {
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')  // Add the CSRF token here
             },
-            success: function(response) {
-                if(response.isStatus) {
+            success: function (response) {
+                if (response.isStatus) {
                     successMsg(response.message);
                     $(".brifingHistory").html("");
                     $(".brifingHistory").html(response.html);
                     // You can update the UI or notify the user of success here
-                } 
+                }
             },
-           
+
         });
     }
 });
@@ -223,7 +226,7 @@ $(document).on("click", "#saveBrifing", function () {
             var errors = xhr.responseJSON.errors;
 
             if (errors) {
-                $.each(errors, function(field, messages) {
+                $.each(errors, function (field, messages) {
                     $form.find('[name="' + field + '"]').addClass('is-invalid');
                     $form.find('#' + field + 'Error').text(messages[0]).show();
                 });
@@ -272,7 +275,7 @@ $('#assignTrainingForm').submit(function (e) {
         error: function (xhr, status, error) {
             // If there are errors, display them
             let errors = xhr.responseJSON.errors;
-           // console.log(errors);
+            // console.log(errors);
             if (errors) {
                 $.each(errors, function (field, messages) {
                     $('#' + field + 'Error').text(messages[0]).show();
@@ -305,7 +308,7 @@ $(document).on('change', '.answer-type-select', function () {
                             <input type="${selectedType}" class="form-control form-control-lg" 
                                 name="questions[` + itemId + `][option_a]" 
                                 autocomplete="off" placeholder="Option A">
-                            <div id="questions_`+iteamQuestion+`_option_aError" class="invalid-feedback error"></div>
+                            <div id="questions_`+ iteamQuestion + `_option_aError" class="invalid-feedback error"></div>
 
                         </div>
                     </div>
@@ -317,7 +320,7 @@ $(document).on('change', '.answer-type-select', function () {
                             <input type="${selectedType}" class="form-control form-control-lg" 
                                 name="questions[` + itemId + `][option_b]" 
                                 autocomplete="off" placeholder="Option B">
-                        <div id="questions_`+iteamQuestion+`_option_bError" class="invalid-feedback error"></div>
+                        <div id="questions_`+ iteamQuestion + `_option_bError" class="invalid-feedback error"></div>
 
                         </div>
                     </div>
@@ -329,7 +332,7 @@ $(document).on('change', '.answer-type-select', function () {
                             <input type="${selectedType}" class="form-control form-control-lg" 
                                 name="questions[` + itemId + `][option_c]" 
                                 autocomplete="off" placeholder="Option C">
-                         <div id="questions_`+iteamQuestion+`_option_cError" class="invalid-feedback error"></div>
+                         <div id="questions_`+ iteamQuestion + `_option_cError" class="invalid-feedback error"></div>
 
                         </div>
                     </div>
@@ -341,7 +344,7 @@ $(document).on('change', '.answer-type-select', function () {
                             <input type="${selectedType}" class="form-control form-control-lg" 
                                 name="questions[` + itemId + `][option_d]" 
                                 autocomplete="off" placeholder="Option D">
-                            <div id="questions_`+iteamQuestion+`_option_dError" class="invalid-feedback error"></div>
+                            <div id="questions_`+ iteamQuestion + `_option_dError" class="invalid-feedback error"></div>
 
                         </div>
                     </div>
@@ -398,7 +401,7 @@ $('#trainingFormBtn').click(function (e) {
             if (response.message) {
                 successMsg(response.message);
                 window.location.reload();
-            }else{
+            } else {
                 $.each(response.message, function (field, messages) {
                     $form.find('[name="' + field + '"]').addClass('is-invalid');
                     $form.find('#' + field + 'Error').text(messages[0]).show();
@@ -415,7 +418,7 @@ $('#trainingFormBtn').click(function (e) {
                     let escapedField = field.replace(/\./g, '_').replace(/\[/g, '\\[').replace(/\]/g, '\\]');
                     $('#' + escapedField).addClass('is-invalid');
 
-                   
+
                     $('#' + escapedField + 'Error').text(messages[0]).show();
                 });
             } else {

@@ -90,7 +90,7 @@
                                             <label class="col-md-2">Answer Type</label>
                                             <div class="col-md-5">
                                                 <select class="form-control form-control-lg answer-type-select"
-                                                    name="questions[{{$quesvalue['id']}}][answer_type]"   id="questions[{{$quesvalue['id']}}][answer_type]"
+                                                    name="questions[{{$quesvalue['id']}}][answer_type]" id="questions[{{$quesvalue['id']}}][answer_type]"
                                                     data-item-id="{{$quesvalue['id']}}">
                                                     <option value="text" {{ $quesvalue['answer_type'] == 'text' ? 'selected' : '' }}>Text</option>
                                                     <option value="file" {{ $quesvalue['answer_type'] == 'file' ? 'selected' : '' }}>File</option>
@@ -111,8 +111,8 @@
                                                     <div class="col-md-5">
 
                                                         <input type="{{$quesvalue['answer_type']}}" class="form-control form-control-lg"
-                                                            name="questions[{{$quesvalue['id']}}][option_a]"  id="questions_{{$quesvalue['id']}}_option_a"
-                                                            autocomplete="off" placeholder="Option A" value="{{$quesvalue['option_a']}}" >
+                                                            name="questions[{{$quesvalue['id']}}][option_a]" id="questions_{{$quesvalue['id']}}_option_a"
+                                                            autocomplete="off" placeholder="Option A" value="{{$quesvalue['option_a']}}">
                                                         <div id="questions_{{$quesvalue['id']}}_option_aError" class="invalid-feedback error"></div>
                                                     </div>
                                                     @if($quesvalue['answer_type'] == 'file')
@@ -131,7 +131,7 @@
 
                                                     <div class="col-md-5">
                                                         <input type="{{$quesvalue['answer_type']}}" class="form-control form-control-lg"
-                                                            name="questions[{{$quesvalue['id']}}][option_b]"   id="questions_{{$quesvalue['id']}}_option_b"
+                                                            name="questions[{{$quesvalue['id']}}][option_b]" id="questions_{{$quesvalue['id']}}_option_b"
                                                             autocomplete="off" placeholder="Option B" value="{{$quesvalue['option_b']}}">
                                                         <div id="questions_{{$quesvalue['id']}}_option_bError" class="invalid-feedback error"></div>
                                                     </div>
@@ -150,7 +150,7 @@
 
                                                     <div class="col-md-5">
                                                         <input type="{{$quesvalue['answer_type']}}" class="form-control form-control-lg"
-                                                            name="questions[{{$quesvalue['id']}}][option_c]"   id="questions_{{$quesvalue['id']}}_option_c"
+                                                            name="questions[{{$quesvalue['id']}}][option_c]" id="questions_{{$quesvalue['id']}}_option_c"
                                                             autocomplete="off" placeholder="Option C" value="{{$quesvalue['option_c']}}">
                                                         <div id="questions_{{$quesvalue['id']}}_option_cError" class="invalid-feedback error"></div>
                                                     </div>
@@ -169,7 +169,7 @@
 
                                                     <div class="col-md-5">
                                                         <input type="{{$quesvalue['answer_type']}}" class="form-control form-control-lg"
-                                                            name="questions[{{$quesvalue['id']}}][option_d]"    id="questions_{{$quesvalue['id']}}_option_d"
+                                                            name="questions[{{$quesvalue['id']}}][option_d]" id="questions_{{$quesvalue['id']}}_option_d"
                                                             autocomplete="off" placeholder="Option D" value="{{$quesvalue['option_d']}}">
                                                         <div id="questions_{{$quesvalue['id']}}_option_dError" class="invalid-feedback error"></div>
                                                     </div>
@@ -190,9 +190,17 @@
                                         <div class="row align-items-center">
                                             <label class="col-md-2">Correct Answer</label>
                                             <div class="col-md-5">
-                                                <input type="text" class="form-control form-control-lg"
-                                                    name="questions[{{$quesvalue['id']}}][correct_answer]"
-                                                    autocomplete="off" placeholder="Correct Answer" value="{{$quesvalue['correct_answer']}}">
+                                                @php
+                                                $options = ['A', 'B', 'C', 'D'];
+                                                @endphp
+
+                                                <select name="questions[{{$quesvalue['id']}}][correct_answer]" class="form-control form-control-lg">
+                                                    <option value="">Choose Answer</option>
+                                                    @foreach ($options as $option)
+                                                    <option value="{{ $option }}" {{ $quesvalue['correct_answer'] == $option ? 'selected' : '' }}>{{ $option }}</option>
+                                                    @endforeach
+                                                </select>
+                                              
                                                 <div id="questions_{{$quesvalue['id']}}_correct_answerError" class="invalid-feedback error"></div>
 
                                             </div>
