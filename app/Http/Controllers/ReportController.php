@@ -212,7 +212,7 @@ class ReportController extends Controller
         $hazmats = Hazmat::get();
         $html = view('main-report.abbreviation', compact('hazmats'))->render();
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
-       
+
         $sectionText = '3 Initial IHM Part1 Summary Report';
         $html = view('main-report.ihmpart1', compact('sectionText'))->render();
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
@@ -263,13 +263,12 @@ class ReportController extends Controller
             }
         }
         $summary = partManuel::where('ship_id', $ship_id)->get();
-        $ga_plan_pdf = $ship_id ."/".$projectDetail['ga_plan_pdf'];
+        $ga_plan_pdf = $ship_id . "/" . $projectDetail['ga_plan_pdf'];
         $gaplan =  public_path('uploads/shipsVscp/' . $ga_plan_pdf);
-        
-        if(file_exists($gaplan)){
-           
-            $this->mergeImageToPdf($gaplan, 'GA Plan', $mpdf);
 
+        if (file_exists($gaplan)) {
+
+            $this->mergeImageToPdf($gaplan, 'GA Plan', $mpdf);
         }
         if (@$summary) {
             foreach ($summary as $index => $sumvalue) {
@@ -289,9 +288,9 @@ class ReportController extends Controller
         $sectionText = '4 IHM Maintance Report';
         $html = view('main-report.ihmpartMaintance1', compact('sectionText'))->render();
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
-      
-      
-      
+
+
+
         // //Addended IHM Part
         $checkHazmatIHMAddendum = PoOrderItemsHazmats::with(relations: 'hazmat')->where('ship_id', $ship_id)->whereNotNull('ihm_table_type')->get();
         $filteredResultsAddendum1 = $checkHazmatIHMAddendum->filter(function ($item) {
@@ -305,8 +304,8 @@ class ReportController extends Controller
         $filteredResultsAddendum3 = $checkHazmatIHMAddendum->filter(function ($item) {
             return $item->ihm_table_type == 'i-3';
         });
-        
-        
+
+
         $html = view('main-report.IHMPartAddendum', compact('filteredResultsAddendum1', 'filteredResultsAddendum2', 'filteredResultsAddendum3'))->render();
         $mpdf->AddPage('L'); // Set landscape mode for the inventory page
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
@@ -320,15 +319,17 @@ class ReportController extends Controller
         $responsibleResult = $mergedData->filter(function ($item) {
             return $item->position != 'SuperDp';
         });
-         $html = view('main-report.designatedPerson', compact('responsibleResult','superDpResult'))->render();
-         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
+                $previousAttachment = PreviousAttachment::where('ship_id', $ship_id)->get();
 
+        $html = view('main-report.designatedPerson', compact('responsibleResult', 'superDpResult','previousAttachment'))->render();
+        $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
+       
         // //shipstaff recored
         $exam = Exam::where('ship_id', $ship_id)->orderBy('id', 'desc')->get();
         $html = view('main-report.trainingRecored', compact('exam'))->render();
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
 
-        
+
 
         $mdnoresults = DB::table('po_order_items_hazmats as p')
             ->join('make_models as m', 'm.id', '=', 'p.model_make_part_id')
@@ -365,18 +366,19 @@ class ReportController extends Controller
         $html = view('main-report.sdoc-recoreds', compact('sdocresults'))->render();
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
 
-        $previousAttachment = PreviousAttachment::where('ship_id', $ship_id)->get();
-        if (@$previousAttachment) {
-            foreach ($previousAttachment as $value) {
-                $filePath = public_path('uploads/previousattachment') . "/" . $value['attachment'];
-                if (file_exists($filePath) && @$value['attachment']) {
-                    $titleHtml = '<h4 style="text-align:center;font-size:13px;font-weight:bold">Previous Attachment ' . $value['attachment_name'] . '</h4>';
-                    $this->mergePdfAttachment($filePath, $titleHtml, $mpdf);
-                }
-            }
-        }
 
-   
+
+        // if (@$previousAttachment) {
+        //     foreach ($previousAttachment as $value) {
+        //         $filePath = public_path('uploads/previousattachment') . "/" . $value['attachment'];
+        //         if (file_exists($filePath) && @$value['attachment']) {
+        //             $titleHtml = '<h4 style="text-align:center;font-size:13px;font-weight:bold">Previous Attachment ' . $value['attachment_name'] . '</h4>';
+        //             $this->mergePdfAttachment($filePath, $titleHtml, $mpdf);
+        //         }
+        //     }
+        // }
+
+
         $safeProjectNo = str_replace('/', '_', $projectDetail['project_no']);
 
         $fileName = $safeProjectNo . '.pdf';
@@ -417,7 +419,7 @@ class ReportController extends Controller
         $dompdf = new Dompdf($options);
 
         // HTML content for PDF
-    $html = '<!DOCTYPE html>
+        $html = '<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -449,29 +451,29 @@ class ReportController extends Controller
 </head>
 <body>';
 
-$html .= '<div><center><h3>Ship : ' . htmlspecialchars($ship['ship_name']) . '</h3></center></div>';
+        $html .= '<div><center><h3>Ship : ' . htmlspecialchars($ship['ship_name']) . '</h3></center></div>';
 
-foreach ($checks as $index => $check) {
-    $html .= '<div class="box">';
-    $html .= '<div class="row"><span class="left">Check Point ID:</span> <span>' . $check['check']['name'] . '</span></div>';
-    $html .= '<div class="row"><span class="left">Check Point Type:</span> <span>' . $check['check']['type'] . '</span></div>';
-    $html .= '<div class="row"><span class="left">Location:</span> <span>' . $check['location'] . '</span></div>';
-    $html .= '<div class="row"><span class="left">Hazmat Status:</span> <span>' . $check['hazmat_type'] . '</span></div>';
-    $html .= '<div class="row"><span class="left">Hazmat:</span> <span>' . $check['hazmat']['name'] . '</span></div>';
-    $html .= '<div class="row"><span class="left">Hazmat Type:</span> <span>' . $check['hazmat']['table_type'] . '</span></div>';
-    $html .= '</div>'; // Close box
+        foreach ($checks as $index => $check) {
+            $html .= '<div class="box">';
+            $html .= '<div class="row"><span class="left">Check Point ID:</span> <span>' . $check['check']['name'] . '</span></div>';
+            $html .= '<div class="row"><span class="left">Check Point Type:</span> <span>' . $check['check']['type'] . '</span></div>';
+            $html .= '<div class="row"><span class="left">Location:</span> <span>' . $check['location'] . '</span></div>';
+            $html .= '<div class="row"><span class="left">Hazmat Status:</span> <span>' . $check['hazmat_type'] . '</span></div>';
+            $html .= '<div class="row"><span class="left">Hazmat:</span> <span>' . $check['hazmat']['name'] . '</span></div>';
+            $html .= '<div class="row"><span class="left">Hazmat Type:</span> <span>' . $check['hazmat']['table_type'] . '</span></div>';
+            $html .= '</div>'; // Close box
 
-    // Page break after every 4 checks
-    if (($index + 1) % 4 == 0 && ($index + 1) < count($checks)) {
-        $html .= '<div class="page-break"></div>';
-    }
-}
+            // Page break after every 4 checks
+            if (($index + 1) % 4 == 0 && ($index + 1) < count($checks)) {
+                $html .= '<div class="page-break"></div>';
+            }
+        }
 
-$html .= '</body></html>';
+        $html .= '</body></html>';
 
 
-// Load HTML content into Dompdf
-$dompdf->loadHtml($html);
+        // Load HTML content into Dompdf
+        $dompdf->loadHtml($html);
         // Set paper size and orientation
         $dompdf->setPaper('A4', 'portrait');
 
@@ -525,7 +527,8 @@ $dompdf->loadHtml($html);
             throw new \Exception("PDF file not found: {$filePath}");
         }
         if (!is_readable($filePath)) {
-           Log:error("PDF file is not readable: {$filePath}");
+            Log:
+            error("PDF file is not readable: {$filePath}");
             throw new \Exception("PDF file is not readable: {$filePath}");
         }
         $fileContent = @file_get_contents($filePath, false, null, 0, 4);
@@ -565,7 +568,7 @@ $dompdf->loadHtml($html);
                 Log::error("Failed to create merged PDF or file is empty: {$mergedPdfPath}");
                 throw new \Exception("Merged PDF not created or empty");
             }
-           Log::info("Generated merged PDF: {$mergedPdfPath}, Size: " . filesize($mergedPdfPath));
+            Log::info("Generated merged PDF: {$mergedPdfPath}, Size: " . filesize($mergedPdfPath));
         } catch (\Exception $e) {
             Log::error("FPDI error with {$filePath}: " . $e->getMessage());
             Log::info("Attempting image fallback for: {$filePath}");
@@ -618,7 +621,7 @@ $dompdf->loadHtml($html);
                 $mpdf->useTemplate($templateId, $lmargin, $tMargin, $size['width'] * $scale, $size['height'] * $scale);
             }
         } catch (\Exception $e) {
-           
+
             $this->mergePdfAsImages($filePath, $title, $mpdf, $page);
         } finally {
             // Clean up temporary file
@@ -628,13 +631,12 @@ $dompdf->loadHtml($html);
                 }
             }
         }
-
     }
     protected function mergePdfAsImages($filePath, $title, $mpdf, $page = null)
     {
 
         try {
-          
+
             $pdf = new \Spatie\PdfToImage\Pdf($filePath);
             $pageCount = $pdf->getNumberOfPages();
 

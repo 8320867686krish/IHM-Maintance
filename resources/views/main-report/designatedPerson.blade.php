@@ -1,7 +1,7 @@
 <div class="container next">
     <div class="section-1-1">
         <h2> 5. Responsible Parties For IHM Maintance: </h2>
-        <h4>Designated Person On Shore</h4>
+        <h3>5.1 Designated Person On Board</h3>
         <table>
             <thead>
                 <tr>
@@ -16,7 +16,7 @@
                 @if(count($superDpResult) > 0)
                 @foreach($superDpResult as $value)
                 <tr>
-                  
+
                     <td>{{$loop->iteration}}</td>
                     <td>{{$value['name']}}</td>
                     <td>{{$value['position']}}</td>
@@ -25,8 +25,8 @@
                 </tr>
                 @endforeach
                 @else
-                  <tr>
-                  
+                <tr>
+
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
@@ -37,7 +37,7 @@
             </tbody>
         </table>
 
-         <h4>Responsible Person On Shore</h4>
+        <h3>5.2 Responsible Person On Board</h3>
         <table>
             <thead>
                 <tr>
@@ -52,16 +52,16 @@
                 @if(count($responsibleResult) > 0)
                 @foreach($responsibleResult as $value)
                 <tr>
-                   
+
                     <td>{{$loop->iteration}}</td>
-                    <td >{{$value['name']}}</td>
+                    <td>{{$value['name']}}</td>
                     <td>
                         @if($value['position'] == 'incharge')
                         Overall-incharge (Captain)
                         @else
                         Responsible Person
                         @endif
-                       
+
                     </td>
                     <td>{{$value['sign_on_date']}}</td>
                     <td>{{$value['sign_off_date']}}</td>
@@ -69,7 +69,7 @@
                 @endforeach
                 @else
                 <tr>
-                  
+
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
@@ -79,6 +79,48 @@
                 @endif
             </tbody>
         </table>
-        
+
+        <h3>5.3 Hazmat Company Details</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>SR No</th>
+                    <th>Name</th>
+                    <th>Date From</th>
+                    <th>Date Till</th>
+                    <th>Maintained By</th>
+                    <th>Attachment</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if(count($previousAttachment) > 0)
+                @foreach($previousAttachment as $value)
+                <tr>
+
+                    <td>{{$loop->iteration}}</td>
+                    <td>{{$value['attachment_name']}}</td>
+                    <td>{{$value['date_from']}}</td>
+                    <td>{{$value['date_till']}}</td>
+                    <td>{{$value['maintained_by']}}</td>
+                    <td>
+                        <a href="{{ asset('uploads/previousattachment/' . $value['attachment']) }}" target="_blank">
+                            {{ $value['attachment'] }}
+                        </a>
+                    </td>
+                </tr>
+                @endforeach
+                @else
+                <tr>
+
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+                @endif
+            </tbody>
+        </table>
+
     </div>
 </div>
