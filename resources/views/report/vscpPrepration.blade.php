@@ -1,7 +1,6 @@
 <style>
     .section-1-1 {
         font-family: Arial, sans-serif;
-        margin-top:10px;
     }
 
     .section-1-1 h4 {
@@ -15,6 +14,7 @@
         width: 100%;
         margin-bottom: 40px;
         border-collapse: collapse;
+        margin-top:20px;
     }
 
     .section-1-1 th,
@@ -107,7 +107,7 @@
                     @if($check->check->close_image)
                     <img src="{{ $check->check->close_image }}"
                         alt="Close Image"
-                        style="width: 48%;height: 48%;">
+                        style="width: 40%;height: 40%;">
                     @else
                     <span>No image available</span>
                     @endif
