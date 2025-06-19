@@ -40,10 +40,9 @@
 
 
 <div class="section-1-1">
-    @if($indexhazmat == 0)
+  
     <h2 style="padding-top:20px;text-align:center">List Of Checks For {{ $name }}</h2>
-    @endif
-
+    @foreach($checks as $check)
     <div style="padding-top: 40px;">
         <table>
 
@@ -129,4 +128,5 @@
             </tbody>
         </table>
     </div>
+    @endforech
 </div>

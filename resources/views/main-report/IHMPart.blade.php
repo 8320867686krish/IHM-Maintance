@@ -58,7 +58,7 @@
         <div style="padding-top: 20px;">
 
             <h4>I-2 Equipment and machinery containing materials listed in table A and table B of appendix 1 of these guidelines </h4>
-            <table>
+            <table class="page-break-inside:avoid">
                 <thead>
                     <tr>
                         <th>No</th>
@@ -107,7 +107,7 @@
 
         <div style="padding-top: 20px;">
             <h4>I-3 Structure and hull containing materials listed in table A and table B of appendix 1 of these guidelines </h4>
-            <table>
+            <table class="page-break-inside:avoidpage-break-inside:avoid">
                 <thead>
                     <tr>
                         <th>SR No</th>
