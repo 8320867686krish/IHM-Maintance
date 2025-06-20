@@ -107,10 +107,10 @@ trait PdfGenerator
                     if($value['type'] == 'sample'){
                         $newColor = '#003366';
                     }else{
-                         $newColor = '#663366';
+                         $newColor = '#990033';
                     }
                    
-                  $lineCss = 'position:absolute;background-color:#4052d6;border:solid '.$newColor.' 1px;';
+                  $lineCss = 'position:absolute;background-color:'.$newColor.';border:solid '.$newColor.' 1px;';
 
                     $tooltipText = '<span style="font-size:12px;color:' . $newColor   . '">'.($value['type'] == 'sample' ? 's' : 'v') . $value['name'] . "</span><br/>";
                     if (@$value['check_hazmats']) {
