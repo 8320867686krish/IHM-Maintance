@@ -104,7 +104,7 @@ trait PdfGenerator
                     $top = $value['position_top'];
                     $left = $value['position_left'];
                     if($value['type'] == 'sample'){
-                        $newColor = '#003399';
+                        $newColor = '#003299';
                     }else{
                          $newColor = '#990033';
                     }
