@@ -24,9 +24,8 @@ trait PdfGenerator
     {
         $i = 1;
         $html = "";
-        $lineCss = 'position:absolute;background-color:#4052d6;border:solid #4052d6 1px;';
         $tooltipCss = 'position: absolute;background-color: #fff;border: 1px solid #4052d6;padding: 1px;border-radius: 2px;
-                white-space: nowrap;z-index: 1;color:#4052d6;font-size:11px;text-align:center;';
+                white-space: nowrap;z-index: 1;color:#4052d6;font-size:12px;text-align:center;';
         if (count($decks['checks']) > 0) {
             $chunks = array_chunk($decks['checks']->toArray(), 8);
          
@@ -106,17 +105,18 @@ trait PdfGenerator
                     $top = $value['position_top'];
                     $left = $value['position_left'];
                     if($value['type'] == 'sample'){
-                        $newColor = '#B158C6';
+                        $newColor = '#003366';
                     }else{
-                         $newColor = '#02595A';
+                         $newColor = '#663366';
                     }
                    
-                   
-                    $tooltipText = '<span style="font-size:11px;color:' . $newColor   . '">'.($value['type'] == 'sample' ? 's' : 'v') . $value['name'] . "</span><br/>";
+                  $lineCss = 'position:absolute;background-color:#4052d6;border:solid '.$newColor.' 1px;';
+
+                    $tooltipText = '<span style="font-size:12px;color:' . $newColor   . '">'.($value['type'] == 'sample' ? 's' : 'v') . $value['name'] . "</span><br/>";
                     if (@$value['check_hazmats']) {
                         $hazmatCount = count($value['check_hazmats']); // Get the total number of elements
                         foreach ($value['check_hazmats'] as $index => $hazmet) {
-                            $tooltipText .= '<span style="font-size:11px;color:' . $hazmet['hazmat']['color']   . '">' . $hazmet['hazmat']['short_name'] . '</span>';
+                            $tooltipText .= '<span style="font-size:12px;color:' . $hazmet['hazmat']['color']   . '">' . $hazmet['hazmat']['short_name'] . '</span>';
                             if ($index < $hazmatCount - 1) {
                                 $tooltipText .= ',';
                             }
@@ -205,7 +205,7 @@ trait PdfGenerator
                         $evenarrayLeft[$value['id']] = $lineLeftPosition;
                         $evenarrayTop[$value['id']] =  $topshow;
                     }
-                     $html .= '<div class="dot" style="top:' . $topshow . 'px; left:' . $leftshow . 'px; position: absolute;border: 4px solid #4052d6;background: #4052d6;border-radius: 50%;"></div>';
+                     $html .= '<div class="dot" style="top:' . $topshow . 'px; left:' . $leftshow . 'px; position: absolute;border: 4px solid '.$newColor.';background: '.$newColor.';border-radius: 50%;"></div>';
 
                      $html .= '<span class="line" style="top:' . $lineTopPosition  . 'px;left:' . $lineLeftPosition . 'px;height:' . $lineHeight . 'px;' . $lineCss . '"></span>';
 
