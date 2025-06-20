@@ -25,8 +25,7 @@ trait PdfGenerator
         $i = 1;
         $html = "";
         $lineCss = 'position:absolute;background-color:#4052d6;border:solid #4052d6 1px;';
-        $tooltipCss = 'position: absolute;background-color: #fff;border: 1px solid #4052d6;padding: 1px;border-radius: 2px;
-                white-space: nowrap;z-index: 1;color:#4052d6;font-size:11px;text-align:center;';
+
         if (count($decks['checks']) > 0) {
             $chunks = array_chunk($decks['checks']->toArray(), 8);
          
@@ -108,15 +107,14 @@ trait PdfGenerator
 
                    
                     $tooltipText = ($value['type'] == 'sample' ? 's' : 'v') . $value['name'] . "<br/>";
-                     $newColor = '';
                     if($value['type'] == 'sample'){
-                        $newColor = 'color:#B158C6';
-                    }else{
-                         $newColor = 'color:#02595A';
-                    }
-                   
-                    $finalTooltipCss = $tooltipCss . $newColor;
-
+                                $tooltipCss = 'position: absolute;background-color: #fff;border: 1px solid #4052d6;padding: 1px;border-radius: 2px;
+                white-space: nowrap;z-index: 1;color:#B158C6;font-size:11px;text-align:center;';
+                    }else
+                           $tooltipCss = 'position: absolute;background-color: #fff;border: 1px solid #4052d6;padding: 1px;border-radius: 2px;
+                white-space: nowrap;z-index: 1;color:#02595A;font-size:11px;text-align:center;';
+                    
+                }
                     if (@$value['check_hazmats']) {
                         $hazmatCount = count($value['check_hazmats']); // Get the total number of elements
                         foreach ($value['check_hazmats'] as $index => $hazmet) {
@@ -214,7 +212,7 @@ trait PdfGenerator
                      $html .= '<span class="line" style="top:' . $lineTopPosition  . 'px;left:' . $lineLeftPosition . 'px;height:' . $lineHeight . 'px;' . $lineCss . '"></span>';
 
 
-                     $html .= '<span class="tooltip" style="' . $finalTooltipCss . 'top:' . $tooltipStart . 'px; left:' . ($lineLeftPosition - 15) . 'px">' . $tooltipText . '</span>';
+                     $html .= '<span class="tooltip" style="' . $tooltipCss . 'top:' . $tooltipStart . 'px; left:' . ($lineLeftPosition - 15) . 'px">' . $tooltipText . '</span>';
                 }
                 $html .= '</div>';
                 $html .= '</div>';
