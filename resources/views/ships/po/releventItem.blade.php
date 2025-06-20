@@ -2,6 +2,7 @@
 @section('shiptitle','Po Records')
 @section('css')
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/vendor/bootstrap-select/css/bootstrap-select.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/vendor/summernote/css/summernote-bs4.css')}}">
 
 @endsection
 @section('content')
@@ -402,7 +403,7 @@
 															</div>
 
 															@endif
-															
+
 															<div class="col-12 col-md-12 col-lg-12  mb-2  removeItem{{$value['hazmat_id']}}">
 																<h5>Remove the item?</h5>
 																<label class="custom-control custom-radio custom-control-inline">
@@ -515,6 +516,7 @@
 @endsection
 @push('js')
 <script src="{{ asset('assets/vendor/bootstrap-select/js/bootstrap-select.js') }}"></script>
+<script src="{{ asset('assets/vendor/summernote/js/summernote-bs4.js') }}"></script>
 
 <script src="{{ asset('assets/js/poOrder.js') }}"></script>
 <script>
@@ -524,6 +526,13 @@
 	console.log(itemIndex);
 	$(document).ready(function() {
 		$('#checkHazmatAddForm #suspected_hazmat').selectpicker('val', hazmatIdsvalue);
+		$('#summernote').summernote({
+			height: 300,
+			lineHeights: ['0.5', '1.0', '1.2', '1.5', '2.0'],
+			codemirror: { // codemirror options
+				theme: 'monokai'
+			}
+		});
 
 	});
 </script>

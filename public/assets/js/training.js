@@ -6,67 +6,62 @@ $("#addQuestion").click(function () {
 
         return false;
     }
+    const key = `new_${iteamQuestion}`;
     let newItemRow = `
-    <div class="row new-question-row mb-3">
-        <!-- Remove Button -->
-        <div class="form-group col-12 text-right">
-            <i class="fas fa-trash-alt text-danger mt-3 remove-item-btn" style="font-size: 1.5rem; cursor: pointer;"></i>
-        </div>
-
-        <!-- Question Row -->
-        <div class="form-group col-12">
-            <div class="row align-items-center">
-                <label class="col-md-2">Q - ${iteamQuestion}</label>
-                <div class="col-md-5">
-                    <input type="text" class="form-control form-control-lg" 
-                        name="questions[` + iteamQuestion + `][question_name]" 
-                        autocomplete="off" placeholder="Enter Question">
-                    <div id="questions_`+ iteamQuestion + `_question_nameError" class="invalid-feedback error"></div>
-
-                </div>
-
-            </div>
-        </div>
-
-        <!-- Answer Type Selection -->
-        <div class="form-group col-12">
-            <div class="row align-items-center">
-                <label class="col-md-2">Answer Type</label>
-                <div class="col-md-5">
-                    <select class="form-control form-control-lg answer-type-select" 
-                        name="questions[` + iteamQuestion + `][answer_type]" 
-                        data-item-id="` + iteamQuestion + `">
-                         <option value="">Select Type</option>
-                        <option value="text">Text</option>
-                        <option value="file">File</option>
-                    </select>
-                <div id="questions_`+ iteamQuestion + `_answer_typeError" class="invalid-feedback error"></div>
-
-                
-                </div>
-            </div>
-        </div>
-
-      
-
-      
-          <div class="form-group col-12" id="correctAnswerContainer` + iteamQuestion + `">
-                    <div class="row align-items-center">
-                        <label class="col-md-2">Correct Answer</label>
-                        <div class="col-md-5">
-                             <select class="form-control form-control-lg" name="questions[` + iteamQuestion + `][correct_answer]">
-                                <option value="">Choose Answer</option>
-                                <option value="A">A</option>
-                                <option value="B">B</option>
-                                <option value="C">C</option>
-                                <option value="D">D</option>
-                              </select>
-                            <div id="questions_`+ iteamQuestion + `_correct_answerError" class="invalid-feedback error"></div>
-                        </div>
-                    </div>
-            </div>
+<div class="row new-question-row mb-3" data-question-key="${key}">
+    <!-- Remove Button -->
+    <div class="form-group col-12 text-right">
+        <i class="fas fa-trash-alt text-danger mt-3 remove-item-btn" style="font-size: 1.5rem; cursor: pointer;"   data-removequestion="${key}"></i>
     </div>
-    `;
+
+    <!-- Question Row -->
+    <div class="form-group col-12">
+        <div class="row align-items-center">
+            <label class="col-md-2">Q - ${iteamQuestion}</label>
+            <div class="col-md-5">
+                <input type="text" class="form-control form-control-lg" 
+                    name="questions[${key}][question_name]" 
+                    autocomplete="off" placeholder="Enter Question">
+                <div id="questions_${key}_question_nameError" class="invalid-feedback error"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Answer Type Selection -->
+    <div class="form-group col-12">
+        <div class="row align-items-center">
+            <label class="col-md-2">Answer Type</label>
+            <div class="col-md-5">
+                <select class="form-control form-control-lg answer-type-select" 
+                    name="questions[${key}][answer_type]" 
+                    data-item-id="${key}">
+                    <option value="">Select Type</option>
+                    <option value="text">Text</option>
+                    <option value="file">File</option>
+                </select>
+                <div id="questions_${key}_answer_typeError" class="invalid-feedback error"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Correct Answer -->
+    <div class="form-group col-12" id="correctAnswerContainer_${key}">
+        <div class="row align-items-center">
+            <label class="col-md-2">Correct Answer</label>
+            <div class="col-md-5">
+                <select class="form-control form-control-lg" name="questions[${key}][correct_answer]">
+                    <option value="">Choose Answer</option>
+                    <option value="A">A</option>
+                    <option value="B">B</option>
+                    <option value="C">C</option>
+                    <option value="D">D</option>
+                </select>
+                <div id="questions_${key}_correct_answerError" class="invalid-feedback error"></div>
+            </div>
+        </div>
+    </div>
+</div>
+`;
 
     $('.questionContainer').append(newItemRow);
 });
@@ -297,65 +292,69 @@ $(document).on('change', '.answer-type-select', function () {
     const itemId = $(this).data('item-id');
     const selectedType = $(this).val();
     const cloneTableTypeDiv = $(this).closest(".new-question-row");
+
+    // Remove old option fields if they exist
     cloneTableTypeDiv.find("[id^='options-']").remove();
 
-    var textOptions = `<div class="options-container col-12 mb-3" id="options-` + iteamQuestion + `">
-            <div class="row">
-                <div class="form-group col-12">
-                    <div class="row align-items-center">
-                        <label class="col-md-2">Option A</label>
-                        <div class="col-md-5">
-                            <input type="${selectedType}" class="form-control form-control-lg" 
-                                name="questions[` + itemId + `][option_a]" 
-                                autocomplete="off" placeholder="Option A">
-                            <div id="questions_`+ iteamQuestion + `_option_aError" class="invalid-feedback error"></div>
-
-                        </div>
-                    </div>
+    // Append new options block
+    const textOptions = `
+<div class="options-container col-12 mb-3" id="options-${itemId}">
+    <div class="row">
+        <div class="form-group col-12">
+            <div class="row align-items-center">
+                <label class="col-md-2">Option A</label>
+                <div class="col-md-5">
+                    <input type="${selectedType}" class="form-control form-control-lg" 
+                        name="questions[${itemId}][option_a]" 
+                        autocomplete="off" placeholder="Option A">
+                    <div id="questions_${itemId}_option_aError" class="invalid-feedback error"></div>
                 </div>
-                <div class="form-group col-12">
-                    <div class="row align-items-center">
-                        <label class="col-md-2">Option B</label>
-                        <div class="col-md-5">
-                            <input type="${selectedType}" class="form-control form-control-lg" 
-                                name="questions[` + itemId + `][option_b]" 
-                                autocomplete="off" placeholder="Option B">
-                        <div id="questions_`+ iteamQuestion + `_option_bError" class="invalid-feedback error"></div>
-
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group col-12">
-                    <div class="row align-items-center">
-                        <label class="col-md-2">Option C</label>
-                        <div class="col-md-5">
-                            <input type="${selectedType}" class="form-control form-control-lg" 
-                                name="questions[` + itemId + `][option_c]" 
-                                autocomplete="off" placeholder="Option C">
-                         <div id="questions_`+ iteamQuestion + `_option_cError" class="invalid-feedback error"></div>
-
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group col-12">
-                    <div class="row align-items-center">
-                        <label class="col-md-2">Option D</label>
-                        <div class="col-md-5">
-                            <input type="${selectedType}" class="form-control form-control-lg" 
-                                name="questions[` + itemId + `][option_d]" 
-                                autocomplete="off" placeholder="Option D">
-                            <div id="questions_`+ iteamQuestion + `_option_dError" class="invalid-feedback error"></div>
-
-                        </div>
-                    </div>
-                </div>
-              
             </div>
-        </div>`
+        </div>
 
+        <div class="form-group col-12">
+            <div class="row align-items-center">
+                <label class="col-md-2">Option B</label>
+                <div class="col-md-5">
+                    <input type="${selectedType}" class="form-control form-control-lg" 
+                        name="questions[${itemId}][option_b]" 
+                        autocomplete="off" placeholder="Option B">
+                    <div id="questions_${itemId}_option_bError" class="invalid-feedback error"></div>
+                </div>
+            </div>
+        </div>
 
+        <div class="form-group col-12">
+            <div class="row align-items-center">
+                <label class="col-md-2">Option C</label>
+                <div class="col-md-5">
+                    <input type="${selectedType}" class="form-control form-control-lg" 
+                        name="questions[${itemId}][option_c]" 
+                        autocomplete="off" placeholder="Option C">
+                    <div id="questions_${itemId}_option_cError" class="invalid-feedback error"></div>
+                </div>
+            </div>
+        </div>
 
-    $(textOptions).insertBefore(`#correctAnswerContainer${itemId}`).fadeIn('slow');
+        <div class="form-group col-12">
+            <div class="row align-items-center">
+                <label class="col-md-2">Option D</label>
+                <div class="col-md-5">
+                    <input type="${selectedType}" class="form-control form-control-lg" 
+                        name="questions[${itemId}][option_d]" 
+                        autocomplete="off" placeholder="Option D">
+                    <div id="questions_${itemId}_option_dError" class="invalid-feedback error"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+`;
+
+    // Append new options block right after the answer type field
+    $(this).closest('.form-group').after(textOptions);
+
+    // $(textOptions).insertBefore(`#correctAnswerContainer${itemId}`).fadeIn('slow');
 
 });
 
@@ -363,14 +362,20 @@ $(document).on('change', '.answer-type-select', function () {
 var deletedIds = []; // Array to store deleted IDs
 
 $(document).on('click', '.remove-item-btn', function () {
-    itemId = $(this).data('removequestion');
-    console.log(itemId);
-    if (!deletedIds.includes(itemId)) {
-        deletedIds.push(itemId);
-    }
-    $('#deleted_questions_id').val(deletedIds.join(', '));
+    const itemId = $(this).data('removequestion'); // Ensure this is set when adding the row
+    const row = $(this).closest('.new-question-row');
 
-    $(this).closest('.new-question-row').remove();
+    // Track deleted question IDs if they exist
+    if (itemId && !deletedIds.includes(itemId)) {
+        deletedIds.push(itemId);
+        $('#deleted_questions_id').val(deletedIds.join(','));
+    }
+
+    // Decrease question counter only if needed
+    iteamQuestion--;
+
+    // Remove the question block
+    row.remove();
 });
 $('#trainingFormBtn').click(function (e) {
 
@@ -378,10 +383,14 @@ $('#trainingFormBtn').click(function (e) {
 
     let $form = $("#trainingForm");
 
-    var $submitButton = $(this).find('button[type="submit"]');
-    var originalText = $submitButton.html();
-    $submitButton.text('Wait...');
-    $submitButton.prop('disabled', true);
+   
+    
+
+   let $submitButton = $('#trainingFormBtn'); // Use your actual button ID or class
+    let originalText = $submitButton.html();
+
+    // Set "Wait..." text and disable button
+    $submitButton.text('Wait...').prop('disabled', true);
 
     // Clear previous error messages and invalid classes
     $('.error').empty().hide();
@@ -400,7 +409,7 @@ $('#trainingFormBtn').click(function (e) {
         success: function (response) {
             if (response.message) {
                 successMsg(response.message);
-                window.location.reload();
+                 window.location.reload();
             } else {
                 $.each(response.message, function (field, messages) {
                     $form.find('[name="' + field + '"]').addClass('is-invalid');

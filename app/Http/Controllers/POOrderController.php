@@ -45,10 +45,10 @@ class POOrderController extends Controller
         $filteredEmailHistory = $poData->emailHistory->filter(function ($history) {
             return $history->history_type == 'ship';
         });
-         $filteredEmailHVendoristory = $poData->emailHistory->filter(function ($history) {
+        $filteredEmailHVendoristory = $poData->emailHistory->filter(function ($history) {
             return $history->history_type == 'vendor';
         });
-        return view('ships.po.add', compact('head_title', 'ship_id', 'poData', 'backurl', 'client_name', 'currentUserRoleLevel','filteredEmailHVendoristory','filteredEmailHistory'));
+        return view('ships.po.add', compact('head_title', 'ship_id', 'poData', 'backurl', 'client_name', 'currentUserRoleLevel', 'filteredEmailHVendoristory', 'filteredEmailHistory'));
     }
 
     public function store(POrderRequest $request)

@@ -35,7 +35,7 @@
                            <div class="col-12 col-md-12" id="chkName">
                                <div class="form-group mb-4">
                                    <label for="name">Description</label>
-                                   <textarea class="form-control" id="email_body" name="email_body" rows="3"></textarea>
+                                   <textarea class="form-control" id="summernote" name="email_body" rows="6"></textarea>
                                </div>
                            </div>
                        </div>

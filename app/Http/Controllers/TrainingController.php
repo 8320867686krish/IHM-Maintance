@@ -73,23 +73,26 @@ class TrainingController extends Controller
             $imagePath = 'uploads/trainingRecored/';
 
             foreach ($post['questions'] as $key => $value) {
-                if ($value['answer_type'] == 'file') {
-                    if ($request->hasFile("questions.$key.option_a")) {
-                        $value['option_a'] = $request->file("questions.$key.option_a");
+               
+                    if ($value['answer_type'] == 'file') {
+                        foreach (['option_a', 'option_b', 'option_c', 'option_d'] as $opt) {
+                            if ($request->hasFile("questions.$key.$opt")) {
+                                $value[$opt] = $request->file("questions.$key.$opt");
+                            }
+                        }
                     }
-                    if ($request->hasFile("questions.$key.option_b")) {
-                        $value['option_b'] = $request->file("questions.$key.option_b");
-                    }
-                    if ($request->hasFile("questions.$key.option_c")) {
-                        $value['option_c'] = $request->file("questions.$key.option_c");
-                    }
-                    if ($request->hasFile("questions.$key.option_d")) {
-                        $value['option_d'] = $request->file("questions.$key.option_d");
+
+                    $value['training_sets_id'] = $training->id;
+
+                    if (is_numeric($key)) {
+                        // Existing question, update
+                        QuestionSets::updateOrCreate(['id' => $key], $value);
+                    } else {
+                        // New question, create
+                        QuestionSets::create($value);
                     }
                 }
-                $value['training_sets_id'] = $training->id;
-                QuestionSets::updateOrCreate(['id' => $key], $value);
-            }
+            
         }
         return response()->json(['isStatus' => true, 'message' => 'Questions save successfully!!']);
     }
@@ -219,9 +222,9 @@ class TrainingController extends Controller
         }
         $Brifing->save();
         $brifingHistory = Brifing::with('DesignatedPersonDetail:id,name')->where('ship_id', Session::get('ship_id'))
-        ->orderBy('id', 'desc')->get();
+            ->orderBy('id', 'desc')->get();
         $html = view('components.brifing-history', compact('brifingHistory'))->render();
-        return response()->json(['isStatus' => true, 'message' => 'save successfully','html'=>$html]);
+        return response()->json(['isStatus' => true, 'message' => 'save successfully', 'html' => $html]);
     }
     public function briefingDownload($id)
     {
@@ -272,13 +275,13 @@ class TrainingController extends Controller
         for ($i = 1; $i <= $pageCount; $i++) {
             $templateId = $mpdf->ImportPage($i);
             $size = $mpdf->GetTemplateSize($templateId);
-        
+
             if ($size['width'] > $size['height']) {
                 $mpdf->AddPage('L'); // Landscape
             } else {
                 $mpdf->AddPage('P'); // Portrait
             }
-        
+
             $mpdf->UseTemplate($templateId);
         }
         unlink($filePath);
@@ -355,7 +358,7 @@ class TrainingController extends Controller
             $mpdf->SetDisplayMode('fullpage');
             $version = $shipDetail['current_ihm_version'];
             // Define header content with logo
-             $header = '
+            $header = '
             <table width="100%" style="border-bottom: 1px solid #000000; vertical-align: middle; font-family: serif; font-size: 9pt; color: #000088;">
                 <tr>
                     <td width="15%" style="fot-weight:bold">' . $shipDetail['ship_name'] . '</td>
@@ -384,10 +387,10 @@ class TrainingController extends Controller
             $mpdf->WriteHTML(view('report.shipParticular', compact('shipDetail')));
             $mpdf->AddPage('L'); // Set landscape mode for the inventory page
             $mpdf->WriteHTML(view('report.Inventory', compact('filteredResults1', 'filteredResults2', 'filteredResults3')));
-             if (count($decks) > 0) {
+            if (count($decks) > 0) {
                 foreach ($decks as $key => $value) {
                     if (count($value['checks']) > 0) {
-                         $html = $this->drawDigarm($value);
+                        $html = $this->drawDigarm($value);
                         $fileNameDiagram = $this->genrateDompdf($html['html'], $html['ori']);
                         $mpdf->setSourceFile($fileNameDiagram);
                         $pageCount = $mpdf->setSourceFile($fileNameDiagram);
@@ -401,34 +404,34 @@ class TrainingController extends Controller
                             $mpdf->useTemplate($templateId, null, null, $mpdf->w, null); // Use the template with appropriate dimensions
                         }
                         $deck_id = $value['id'];
-                       
+
                         $filterDecks = $checkHazmatIHMPart->filter(function ($item) use ($deck_id) {
                             return $item->deck_id == (int) $deck_id;
                         });
-                         $mpdf->AddPage('P');
+                        $mpdf->AddPage('P');
                         $mpdf->writeHTML(view('report.vscpPrepration', ['checks' => $filterDecks, 'name' => $value['name']]));
-                        
-                       
+
+
                         unlink($fileNameDiagram);
                     }
                 }
             }
-             $summary = partManuel::where('ship_id', $ship_id)->get();
+            $summary = partManuel::where('ship_id', $ship_id)->get();
             $ga_plan_pdf = $ship_id . "/" . $shipDetail['ga_plan_pdf'];
             $gaplan =  public_path('shipsVscp/' . $ga_plan_pdf);
             $index = 1;
             if (file_exists($gaplan)) {
-                $titleHtml = '<h3 style="text-align:center;font-size:12pt;">'.$index.'. GA PLAN</h3>';
+                $titleHtml = '<h3 style="text-align:center;font-size:12pt;">' . $index . '. GA PLAN</h3>';
                 $this->mergePdfAsImages($gaplan, $titleHtml, $mpdf);
-                 $index++;
+                $index++;
             }
             if (@$summary) {
                 foreach ($summary as $sumvalue) {
                     $filePathsum = public_path('uploads/shipsVscp') . "/" . $ship_id . "/partmanual/" . basename($sumvalue['document']);
                     if (file_exists($filePathsum) && @$sumvalue['document']) {
-                        $titleHtml = '<h3 style="text-align:center;font-size:12pt">'.$index.'. '. $sumvalue['title'] . '</h3>';
+                        $titleHtml = '<h3 style="text-align:center;font-size:12pt">' . $index . '. ' . $sumvalue['title'] . '</h3>';
                         $this->mergePdfAttachment($filePathsum, $titleHtml, $mpdf);
-                         $index++;
+                        $index++;
                     }
                 }
             }
@@ -445,7 +448,7 @@ class TrainingController extends Controller
             echo $e->getMessage();
         }
     }
-  
+
     public function saveResult(Request $request)
     {
         $post = $request->input();
