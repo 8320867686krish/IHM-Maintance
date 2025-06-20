@@ -108,17 +108,19 @@ trait PdfGenerator
 
                    
                     $tooltipText = ($value['type'] == 'sample' ? 's' : 'v') . $value['name'] . "<br/>";
+                     $newColor = '';
                     if($value['type'] == 'sample'){
-                        $newColor = '#B158C6';
+                        $newColor = 'color:#B158C6';
                     }else{
-                         $newColor = 'green';
+                         $newColor = 'color:#02595A';
                     }
                    
-                   
+                    $finalTooltipCss = $tooltipCss . $newColor;
+
                     if (@$value['check_hazmats']) {
                         $hazmatCount = count($value['check_hazmats']); // Get the total number of elements
                         foreach ($value['check_hazmats'] as $index => $hazmet) {
-                            $tooltipText .= '<span style="font-size:11px;color:' . $newColor   . '">' . $hazmet['hazmat']['short_name'] . '</span>';
+                            $tooltipText .= '<span style="font-size:11px;color:' . $hazmet['hazmat']['color']   . '">' . $hazmet['hazmat']['short_name'] . '</span>';
                             if ($index < $hazmatCount - 1) {
                                 $tooltipText .= ',';
                             }
@@ -212,7 +214,7 @@ trait PdfGenerator
                      $html .= '<span class="line" style="top:' . $lineTopPosition  . 'px;left:' . $lineLeftPosition . 'px;height:' . $lineHeight . 'px;' . $lineCss . '"></span>';
 
 
-                     $html .= '<span class="tooltip" style="' . $tooltipCss . 'top:' . $tooltipStart . 'px; left:' . ($lineLeftPosition - 15) . 'px">' . $tooltipText . '</span>';
+                     $html .= '<span class="tooltip" style="' . $finalTooltipCss . 'top:' . $tooltipStart . 'px; left:' . ($lineLeftPosition - 15) . 'px">' . $tooltipText . '</span>';
                 }
                 $html .= '</div>';
                 $html .= '</div>';
