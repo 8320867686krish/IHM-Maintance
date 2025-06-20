@@ -90,7 +90,6 @@ class ReportController extends Controller
                 }
             }
         }
-        $mpdf->AddPage('P');
         $sectionText = 'SD Records';
         $html = view('main-report.ihmpart1', compact('sectionText'))->render();
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
