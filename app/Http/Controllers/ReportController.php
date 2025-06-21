@@ -120,6 +120,7 @@ class ReportController extends Controller
 
         $date = date('y-m-d');
         $projectDetail = Ship::with('client.hazmatCompaniesId')->find($ship_id);
+        $$shipDetail = $projectDetail;
         $is_report_logo = $projectDetail['client']['is_report_logo'];
         if ($is_report_logo == 0) {
             $image = $projectDetail['client']['hazmatCompaniesId']['logo'];
