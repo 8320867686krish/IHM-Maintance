@@ -205,7 +205,7 @@ class ReportController extends Controller
 
 
         // //ship particular
-        $html = view('main-report.shipParticular', compact('projectDetail'))->render();
+        $html = view('main-report.shipParticular', compact('shipDetail'))->render();
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
 
         $hazmats = Hazmat::get();
