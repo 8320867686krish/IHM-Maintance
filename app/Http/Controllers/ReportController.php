@@ -12,6 +12,7 @@ use App\Models\DesignatedPerson;
 use App\Models\Exam;
 use App\Models\Hazmat;
 use App\Models\partManuel;
+use App\Models\poOrderItem;
 use App\Models\PoOrderItemsHazmats;
 use App\Models\PreviousAttachment;
 use App\Models\Ship;
@@ -213,7 +214,7 @@ class ReportController extends Controller
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
 
         $sectionText = '3 Initial IHM Part1 Summary Report';
-        $html = view('main-report.ihmpart1', compact('sectionText','projectDetail'))->render();
+        $html = view('main-report.ihmpart1', compact('sectionText', 'projectDetail'))->render();
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
 
         $checkHazmatIHMPart = CheckHazmat::with(relations: 'hazmat')->where('ship_id', $ship_id)->get();
@@ -250,7 +251,7 @@ class ReportController extends Controller
 
                     $mpdf->AddPage($html['ori']);
                     if ($key == 0) {
-                        $mpdf->WriteHTML('<h4 style="font-size:14px">3.1 Location Diagram of Contained HazMat & PCHM.</h4>');
+                        $mpdf->WriteHTML('<h5 style="font-size:14px">3.1 Location Diagram of Contained HazMat & PCHM.</h5>');
                     }
                     $mpdf->WriteHTML('<h5 style="font-size:14px;">Area: ' . $value['name'] . '</h5>');
 
@@ -361,7 +362,12 @@ class ReportController extends Controller
         $html = view('main-report.sdoc-recoreds', compact('sdocresults'))->render();
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
 
-
+        $counts = poOrderItem::select('type_category', DB::raw('COUNT(*) as total'))
+            ->whereIn('type_category', ['Relevant', 'Non relevant'])
+            ->groupBy('type_category')
+            ->pluck('total', 'type_category');
+        $html = view('main-report.POHistory', compact('counts'))->render();
+        $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
 
         // if (@$previousAttachment) {
         //     foreach ($previousAttachment as $value) {
