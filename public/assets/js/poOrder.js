@@ -21,7 +21,7 @@ $(document).ready(function () {
         var po_date = $("#po_date").val();
 
         let content = '';
-        content+='<p>Dear Sir / Madam,<br/>Good day.<br/>The following is for your kind attention:<br/><br/><br/>';
+        content += '<p>Dear Sir / Madam,<br/>Good day.<br/>The following is for your kind attention:<br/><br/><br/>';
         // Add PO details
         content += `<b>PO NO: ${po_no}<br>`;
         content += `PO Date: ${po_date}<br>`;
@@ -55,11 +55,11 @@ $(document).ready(function () {
 
         // Insert the content with HTML tags
 
-        content +="We are in need of a Material Declaration (MD) and the Supplier's Declaration of Conformity (SDoC) for the supplied item to confirmation of presence of any HazMat.Kindly reply to our Material Declaration requests.</br>Feel free to contact us if you have any questions.<br/><b>Thanks and Warm Regards</b>.</p>";
+        content += "We are in need of a Material Declaration (MD) and the Supplier's Declaration of Conformity (SDoC) for the supplied item to confirmation of presence of any HazMat.Kindly reply to our Material Declaration requests.</br>Feel free to contact us if you have any questions.<br/><b>Thanks and Warm Regards</b>.</p>";
         // Show the modal
         $("#sendVendorMail").modal('show');
         $('#sendVendorMail').on('shown.bs.modal', function () {
-        $('#summernote').summernote('code', content);
+            $('#summernote').summernote('code', content);
         });
     });
 
@@ -76,7 +76,7 @@ $(document).ready(function () {
         $("#email_subject").val(`PO Number: ${po_no}`);
         $("#hazmat_id").val(hazmatId);
         var content = "<p>Dear Sir/Ma'am,<br/>Good day.<br/><br/>With reference to the Subject of the mail, we would like to inform you that as per Hong Kong Convention Inventory of Hazmat guidelines MEPC 379(80) and European Union Ship Recycling Regulation- EMSA guidelines, the items from table A (Such as Asbestos, PCB, ODS, TBT-Cybutryne & PFOS) are prohibited to install onboard ships.<br/><br/>If such items are still utilized, the IHM part-1 shall be amended accordingly and accordingly the Classification Society shall be notified for the changes in in IHM part-1 for their concurrence.<br/><br/>For further clarification, our team will reach out to you.</br><br/>Thanks & Regards,</p>"
-         $('#summernote').summernote('code', content);
+        $('#summernote').summernote('code', content);
         $('#relevantModal').modal('show');
 
     });
@@ -236,7 +236,10 @@ $(document).ready(function () {
 
 
              <div class="form-group col-2 mb-1">
-                <select  class="form-control form-control-lg" name="items[` + itemIndex + `][type_category]"><option value="Relevant">Relevant</option><option value="Non relevant">Non relevant</option></select>
+                <select  class="form-control form-control-lg" name="items[` + itemIndex + `][type_category]">
+                <option value="">Please select relevancy</option>
+
+                <option value="Relevant">Relevant</option><option value="Non relevant">Non relevant</option></select>
                 <div class="invalid-feedback error"></div>
             </div>
 
@@ -298,9 +301,15 @@ $(document).ready(function () {
                 }
                 let errors = xhr.responseJSON.errors;
                 if (errors) {
+                    console.log(errors);
                     $.each(errors, function (field, messages) {
-                        $('#' + field + 'Error').text(messages[0]).show();
-                        $('[name="' + field + '"]').addClass('is-invalid');
+                        // $('#' + field + 'Error').text(messages[0]).show();
+                        // $('[name="' + field + '"]').addClass('is-invalid');
+                        let escapedField = field.replace(/\./g, '_').replace(/\[/g, '\\[').replace(/\]/g, '\\]');
+                        console.log(escapedField);
+                        $('#' + escapedField).addClass('is-invalid');
+                        $('#' + escapedField + 'Error').text(messages[0]).show();
+
                     });
                     var $errorDiv = $(".error:visible:first");
                     if ($errorDiv.length) {

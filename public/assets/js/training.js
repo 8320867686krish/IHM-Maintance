@@ -1,14 +1,17 @@
 
 $("#addQuestion").click(function () {
-    iteamQuestion++;
-    if (iteamQuestion > 10) {
-        errorMsg("You can't add more than 10 items.");
+    const totalRows = $(".new-question-row").length;
 
+    if (totalRows >= 10) {
+        errorMsg("You can't add more than 10 items.");
         return false;
     }
+    iteamQuestion++;
+
     const key = `new_${iteamQuestion}`;
-    let newItemRow = `
-<div class="row new-question-row mb-3" data-question-key="${key}">
+    const labelIndex = totalRows + 1; // for "Q - x" label
+
+    let newItemRow = `<div class="row new-question-row mb-3" data-question-key="${key}">
     <!-- Remove Button -->
     <div class="form-group col-12 text-right">
         <i class="fas fa-trash-alt text-danger mt-3 remove-item-btn" style="font-size: 1.5rem; cursor: pointer;"   data-removequestion="${key}"></i>
@@ -17,7 +20,7 @@ $("#addQuestion").click(function () {
     <!-- Question Row -->
     <div class="form-group col-12">
         <div class="row align-items-center">
-            <label class="col-md-2">Q - ${iteamQuestion}</label>
+              <label class="col-md-2">Q - ${labelIndex}</label>
             <div class="col-md-5">
                 <input type="text" class="form-control form-control-lg" 
                     name="questions[${key}][question_name]" 
@@ -360,33 +363,37 @@ $(document).on('change', '.answer-type-select', function () {
 
 // Remove Question Row
 var deletedIds = []; // Array to store deleted IDs
-
+function reindexQuestionLabels() {
+    $('.new-question-row').each(function (i) {
+        $(this).find('label:contains("Q -")').first().text('Q - ' + (i + 1));
+    });
+}
 $(document).on('click', '.remove-item-btn', function () {
-    const itemId = $(this).data('removequestion'); // Ensure this is set when adding the row
+    const itemId = $(this).data('removequestion');
     const row = $(this).closest('.new-question-row');
 
-    // Track deleted question IDs if they exist
     if (itemId && !deletedIds.includes(itemId)) {
         deletedIds.push(itemId);
         $('#deleted_questions_id').val(deletedIds.join(','));
     }
 
-    // Decrease question counter only if needed
-    iteamQuestion--;
-
-    // Remove the question block
     row.remove();
+    reindexQuestionLabels(); // update labels
 });
 $('#trainingFormBtn').click(function (e) {
 
     let formData = new FormData($("#trainingForm")[0]);
 
     let $form = $("#trainingForm");
+    const totalRows = $(".new-question-row").length;
 
-   
-    
+    if (totalRows !== 10) {
+        errorMsg("Please select at least 10 items.");
+        return false;
+    }
 
-   let $submitButton = $('#trainingFormBtn'); // Use your actual button ID or class
+
+    let $submitButton = $('#trainingFormBtn'); // Use your actual button ID or class
     let originalText = $submitButton.html();
 
     // Set "Wait..." text and disable button
@@ -409,7 +416,7 @@ $('#trainingFormBtn').click(function (e) {
         success: function (response) {
             if (response.message) {
                 successMsg(response.message);
-                 window.location.reload();
+                window.location.reload();
             } else {
                 $.each(response.message, function (field, messages) {
                     $form.find('[name="' + field + '"]').addClass('is-invalid');
@@ -417,6 +424,7 @@ $('#trainingFormBtn').click(function (e) {
                 });
                 $submitButton.html(originalText);
                 $submitButton.prop('disabled', false);
+
             }
         },
         error: function (xhr, status, error) {
@@ -429,6 +437,7 @@ $('#trainingFormBtn').click(function (e) {
 
 
                     $('#' + escapedField + 'Error').text(messages[0]).show();
+
                 });
             } else {
                 console.error('Error submitting form:', error);

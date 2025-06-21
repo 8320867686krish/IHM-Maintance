@@ -107,7 +107,7 @@
                             @if($check->check->close_image)
                             <img src="{{ $check->check->close_image }}"
                                 alt="Close Image"
-                                width="350" height="300"
+                                width="320" height="300"
                                 style="display: block; margin: 0 auto;">
                             @else
                             <span>No image available</span>
@@ -119,7 +119,7 @@
                             @if($check->check->away_image)
                             <img src="{{ $check->check->away_image }}"
                                 alt="Close Image"
-                                width="350" height="300"
+                                width="320" height="300"
                                 style="display: block; margin: 0 auto;">
                             @else
                             <span>No image available</span>

@@ -114,9 +114,6 @@ class POOrderController extends Controller
                 $rowErrors = [];
 
                 $requiredFields = ['PO NO', 'PO Date'];
-
-
-
                 foreach ($requiredFields as $field) {
 
                     if (empty($rowWithHeaders[$field])) {
@@ -124,31 +121,27 @@ class POOrderController extends Controller
 
                     }
                 }
-                // If there are errors, continue to the next row
                 if (!empty($rowErrors)) {
                     $errors = array_merge($errors, $rowErrors);
                     continue;
                 }
-                // Check if PO order exists
+                $po_no = (string)$rowWithHeaders['PO NO'];
                 $poorder = poOrder::where('po_no', $rowWithHeaders['PO NO'])
                     ->where('ship_id', $ship_id)
                     ->first();
-                // Prepare data for insertion
-                $po_no = (string)$rowWithHeaders['PO NO'];
-
                 $insert = [
-                    'po_no' =>  $po_no,
+                    'po_no' => (string)($rowWithHeaders['PO NO'] ?? ''),
                     'ship_id' => $ship_id,
-                    'po_date' => $this->parseExcelDate($rowWithHeaders['PO Date']),
-                    'machinery' => $rowWithHeaders['Machinery'],
-                    'make_model' => $rowWithHeaders['Make Model'],
-                    'supplier_name' => $rowWithHeaders['Supplier Name'],
-                    'address' => $rowWithHeaders['Supplier Address'],
-                    'contact_person' => $rowWithHeaders['Supplier Contact Person'],
-                    'phone' => $rowWithHeaders['Supplier Phone Number'],
-                    'email' => $rowWithHeaders['Supplier Email'],
-                    'onboard_reciving_date' => $this->parseExcelDate($rowWithHeaders['Onboard Receiving Date']),
-                    'delivery_location' => $rowWithHeaders['Delivery Location']
+                    'po_date' => !empty($rowWithHeaders['PO Date']) ? $this->parseExcelDate($rowWithHeaders['PO Date']) : '',
+                    'machinery' => $rowWithHeaders['Machinery'] ?? '',
+                    'make_model' => $rowWithHeaders['Make Model'] ?? '',
+                    'supplier_name' => $rowWithHeaders['Supplier Name'] ?? '',
+                    'address' => $rowWithHeaders['Supplier Address'] ?? '',
+                    'contact_person' => $rowWithHeaders['Supplier Contact Person'] ?? '',
+                    'phone' => $rowWithHeaders['Supplier Phone Number'] ?? '',
+                    'email' => $rowWithHeaders['Supplier Email'] ?? '',
+                    'onboard_reciving_date' => !empty($rowWithHeaders['Onboard Receiving Date']) ? $this->parseExcelDate($rowWithHeaders['Onboard Receiving Date']) : '',
+                    'delivery_location' => $rowWithHeaders['Delivery Location'] ?? '',
                 ];
 
                 if (!$poorder) {

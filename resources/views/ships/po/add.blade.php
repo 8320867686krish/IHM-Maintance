@@ -19,15 +19,15 @@
                         <input type="hidden" name="ship_id" id="ship_id" value="{{$ship_id}}">
                         <input type="hidden" name="po_id" id="po_id" value="{{@$poData->id}}">
                         <div class="row mb-5">
-                          <div class="col-12 text-center">
-                            <label class="mr-2">Status: </label>
-                            <select class="form-control-lg" name="postatus">
-                                <option value="PO Created">Po Created</option>
-                                <option value="Communication In Progress">Communication In Progress</option>
-                                <option value="Completed">Completed</option>
+                            <div class="col-12 text-center">
+                                <label class="mr-2">Status: </label>
+                                <select class="form-control-lg" name="postatus">
+                                    <option value="PO Created">Po Created</option>
+                                    <option value="Communication In Progress">Communication In Progress</option>
+                                    <option value="Completed">Completed</option>
 
-                            </select>
-                          </div>
+                                </select>
+                            </div>
 
                         </div>
                         <div class="row">
@@ -173,7 +173,7 @@
                             </div>
 
                             <div class="form-group col-1 mb-3">
-                                <label for="contact_person">Type</label>
+                                <label for="contact_person">Relevancy</label>
 
                             </div>
                         </div>
@@ -207,10 +207,14 @@
 
 
                                 <div class="form-group col-2 mb-3">
-                                    <select class="form-control form-control-lg" name="items[{{$item->id}}][type_category]">
+                                    <select class="form-control form-control-lg" name="items[{{$item->id}}][type_category]" required>
+                                        <option value="">Please select relevancy</option>
                                         <option value="Relevant" {{ $item->type_category === 'Relevant' ? 'selected' : '' }}>Relevant</option>
                                         <option value="Non relevant" {{ $item->type_category === 'Non relevant' ? 'selected' : '' }}>Non relevant</option>
+
                                     </select>
+                                                                            <div id="items_{{$item->id}}_type_categoryError" class="invalid-feedback error"></div>
+
                                 </div>
                                 <div class="form-group col-1 mb-3">
                                     <i class="fas fa-trash-alt text-danger mt-3 remove-item-btn" title="Delete"></i>
@@ -317,13 +321,13 @@
                     </div>
                 </div>
 
-                <hr/>
-                 <div class="card-body mb-4">
+                <hr />
+                <div class="card-body mb-4">
                     <div class="row">
                         <div class="col-6">
                             <h4>Email History With Ship</h4>
                         </div>
-                       
+
                         <div class="col-12">
                             <div class="mt-2 mb-4">
                                 <table class="table table-striped table-bordered first dataTable no-footer">
@@ -367,7 +371,7 @@
                                 </table>
                             </div>
                         </div>
-                       
+
                     </div>
                 </div>
                 @endif

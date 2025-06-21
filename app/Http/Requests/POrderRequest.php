@@ -24,8 +24,17 @@ class POrderRequest extends FormRequest
         return [
             'po_no' => 'required',
             'po_date' => 'required',
-            'email' => 'required'
+            'email' => 'required',
+            'items.*.type_category' => 'required',
+
             //
+        ];
+    }
+    public function messages():array
+    {
+        return [
+                      'items.*.type_category.required' => 'Please select the type category for each item.',
+
         ];
     }
 }
