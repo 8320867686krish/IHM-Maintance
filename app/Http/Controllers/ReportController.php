@@ -250,7 +250,7 @@ class ReportController extends Controller
 
                     $mpdf->AddPage($html['ori']);
                     if ($key == 0) {
-                        $mpdf->WriteHTML('<h3 style="font-size:14px">3.1 Location Diagram of Contained HazMat & PCHM.</h3>');
+                        $mpdf->WriteHTML('<h4 style="font-size:14px">3.1 Location Diagram of Contained HazMat & PCHM.</h4>');
                     }
                     $mpdf->WriteHTML('<h5 style="font-size:14px;">Area: ' . $value['name'] . '</h5>');
 
@@ -266,7 +266,7 @@ class ReportController extends Controller
         $gaplan =  public_path('uploads/shipsVscp/' . $ga_plan_pdf);
         $index = 1;
         if (file_exists($gaplan)) {
-            $titleHtml = '<h3 style="text-align:center;font-size:12pt;">' . $index . '. GA PLAN</h3>';
+            $titleHtml = '<h4 style="text-align:center;font-size:12pt;">' . $index . '. GA PLAN</h4>';
             $this->mergePdfAsImages($gaplan, $titleHtml, $mpdf);
             $index++;
         }
@@ -274,7 +274,7 @@ class ReportController extends Controller
             foreach ($summary as  $sumvalue) {
                 $filePathsum = public_path('uploads/shipsVscp') . "/" . $ship_id . "/partmanual/" . basename($sumvalue['document']);
                 if (file_exists($filePathsum) && @$sumvalue['document']) {
-                    $titleHtml = '<h3 style="text-align:center;font-size:12pt">' . $index . '. ' . $sumvalue['title'] . '</h3>';
+                    $titleHtml = '<h4 style="text-align:center;font-size:12pt">' . $index . '. ' . $sumvalue['title'] . '</h4>';
                     $this->mergePdfAttachment($filePathsum, $titleHtml, $mpdf);
                     $index++;
                 }
