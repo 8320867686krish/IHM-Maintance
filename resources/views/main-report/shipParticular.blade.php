@@ -1,6 +1,6 @@
 <div class="container">
     <div class="section-1-1">
-        <h2> Ship Particular </h2>
+        <h2>1. Ship Particular </h2>
             <table>
                 <tr>
                     <td colspan="2" align="center">

@@ -46,8 +46,7 @@
 
 
  <div style="padding-top: 20px;">
-        <p>Addendum to IHM due to maintenance, changes in the structure & equipment of the ship
-            Hazardous materials contained in the ship’s structure and equipment</p>
+       
         <h4> Part I-2 – Equipment and machinery containing materials listed in table A and table B of appendix 1 of the IMO guidelines </h4>
         <table class="page-break-inside:avoid">
             <thead>
@@ -96,8 +95,7 @@
 
  <div style="padding-top: 20px;">
 
-        <p>Addendum to IHM due to maintenance, changes in the structure & equipment of the ship
-            Hazardous materials contained in the ship’s structure and equipment</p>
+        
         <h4> Part I-3 – Structure and hull containing materials listed in table A and table B of appendix 1 of the IMO guidelines </h4>
         <table class="page-break-inside:avoid">
             <thead>

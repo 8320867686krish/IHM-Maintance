@@ -213,7 +213,7 @@ class ReportController extends Controller
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
 
         $sectionText = '3 Initial IHM Part1 Summary Report';
-        $html = view('main-report.ihmpart1', compact('sectionText'))->render();
+        $html = view('main-report.ihmpart1', compact('sectionText',$projectDetail))->render();
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
 
         $checkHazmatIHMPart = CheckHazmat::with(relations: 'hazmat')->where('ship_id', $ship_id)->get();
@@ -374,7 +374,7 @@ class ReportController extends Controller
         // }
 
 
-        $safeProjectNo = str_replace('/', '_', $projectDetail['project_no']);
+        $safeProjectNo = str_replace('/', '_', $projectDetail['report_number']);
 
         $fileName = $safeProjectNo . '.pdf';
         $filePath = public_path('pdf/' . $fileName); // Adjust the directory and file name as needed
