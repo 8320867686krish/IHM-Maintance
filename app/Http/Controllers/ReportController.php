@@ -60,7 +60,7 @@ class ReportController extends Controller
         $mpdf->SetDisplayMode('fullpage');
         $mpdf->h2toc = ['H2' => 0, 'H3' => 1];
         $mpdf->h2bookmarks = ['H2' => 0, 'H3' => 1];
-        $stylesheet = file_get_contents('assets/mpdf.css');
+        $stylesheet = file_get_contents('public/assets/mpdf.css');
         $mpdf->WriteHTML($stylesheet, \Mpdf\HTMLParserMode::HEADER_CSS);
 
         $mpdf->TOCpagebreakByArray([
