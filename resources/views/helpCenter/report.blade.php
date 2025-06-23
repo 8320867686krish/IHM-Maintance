@@ -104,11 +104,11 @@
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
             <div class="card">
                 <div class="card-body">
-
+                    <h5>Records of IHM Previous Maintance</h5>
                     <form id="generatePdfForm" action="{{route('report')}}">
                         @csrf
                         <span class="dashboard-spinner spinner-sm" id="spinShow" style="display: none;  position: absolute;top: 50%;left: 35%;transform: translate(-50%, -50%);z-index:999999"></span>
-                        <div class="row">
+                        <div class="row mt-2">
 
 
                             <div class="form-group col-4 mb-3">
@@ -125,10 +125,7 @@
                                 <div class="invalid-feedback error" id="po_noError"></div>
                             </div>
                             <div class="form-group col-4 mb-3">
-                                <label for="assign_date">
-                                    Version<span class="text-danger">*</span></label>
-                                <input type="text" class="form-control form-control-lg" id="version" value="" name="version" autocomplete="off" onchange="removeInvalidClass(this)" required="">
-                                <div class="invalid-feedback error" id="po_noError"></div>
+                               
                             </div>
 
                             <div class="col-12">

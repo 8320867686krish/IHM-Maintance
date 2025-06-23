@@ -60,7 +60,7 @@ class ReportController extends Controller
         $mpdf->SetDisplayMode('fullpage');
         $mpdf->h2toc = ['H2' => 0, 'H3' => 1];
         $mpdf->h2bookmarks = ['H2' => 0, 'H3' => 1];
-        $stylesheet = file_get_contents('public/assets/mpdf.css');
+        $stylesheet = file_get_contents('assets/mpdf.css');
         $mpdf->WriteHTML($stylesheet, \Mpdf\HTMLParserMode::HEADER_CSS);
 
         $mpdf->TOCpagebreakByArray([
@@ -72,39 +72,62 @@ class ReportController extends Controller
             'suppress' => false, // This should prevent a new page from being created before and after TOC
             'toc-resetpagenum' => 1,
         ]);
-        $sectionText = 'MD Records';
-        $html = view('main-report.ihmpart1', compact('sectionText'))->render();
+        $sectionText = '1. MD Records Of Table Content';
+        $html = view('main-report.ihmpartMaintance1', compact('sectionText'))->render();
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
-        $mdnoresults = PoOrderItemsHazmats::with(['makeModel:id,md_no,document1'])
+        $mdnoresults = PoOrderItemsHazmats::with(['makeModel.hazmat'])
             ->where('ship_id', $ship_id)
             ->whereNotNull('doc1')
             ->get();
         if (@$mdnoresults) {
+            $html = view('mdReport.md-recoreds-report', compact('mdnoresults'))->render();
+            $mpdf->AddPage('P');
+            $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
+        }
+        $sectionText = '2.SD Records Of Table Content';
+        $mpdf->AddPage('P');
+        $html = view('main-report.ihmpartMaintance1', compact('sectionText'))->render();
+        $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
+
+             $sdocresults = PoOrderItemsHazmats::with(['makeModel.hazmat'])
+            ->where('ship_id', $ship_id)
+            ->whereNotNull('doc2')
+            ->get();
+        if (@$sdocresults) {
+            $html = view('mdReport.sd-recoreds-report', compact('sdocresults'))->render();
+            $mpdf->AddPage('P');
+            $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
+        }
+        if (@$mdnoresults) {
+            $sectionText = '3. MD Attachments';
+            $mpdf->AddPage('P');
+            $html = view('main-report.ihmpartMaintance1', compact('sectionText'))->render();
+            $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
+
             foreach ($mdnoresults as $mdvalue) {
                 if (@$mdvalue['makeModel']['document1']['name']) {
 
                     $filePathsum = public_path('images/modelDocument/') . $mdvalue['makeModel']['document1']['name'];
                     if ($mdvalue['makeModel']['document1']) {
-                        $titleHtml = '<h2 style="text-align:center;font-size:13px;font-weight:bold">Md Name ' . $mdvalue['makeModel']['md_no'] . '</h2>';
+                        $titleHtml = '<h4 style="text-align:center;font-size:13px;font-weight:bold">' . $mdvalue['makeModel']['md_no'] . '</h4>';
                         $this->mergePdf($filePathsum, $titleHtml, $mpdf);
                     }
                 }
             }
         }
-        $sectionText = 'SD Records';
-        $html = view('main-report.ihmpart1', compact('sectionText'))->render();
-        $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
-        $sdocresults = PoOrderItemsHazmats::with(['makeModel:id,sdoc_no,document2'])
-            ->where('ship_id', $ship_id)
-            ->whereNotNull('doc2')
-            ->get();
+      
+   
 
         if (@$sdocresults) {
+            $sectionText = '4. SD Attachments';
+            $mpdf->AddPage('P');
+            $html = view('main-report.ihmpartMaintance1', compact('sectionText'))->render();
+            $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
             foreach ($sdocresults as $sdValue) {
                 if (@$sdValue['makeModel']['document2']['name']) {
                     $filePathsum1 = public_path('images/modelDocument/') . $sdValue['makeModel']['document2']['name'];
                     if (file_exists($filePathsum1)) {
-                        $titleHtml = '<h2 style="text-align:center;font-size:13px;font-weight:bold">SDoC No.' . $sdValue['makeModel']['sdoc_no'] . '</h2>';
+                        $titleHtml = '<h4 style="text-align:center;font-size:13px;font-weight:bold">SDoC No.' . $sdValue['makeModel']['sdoc_no'] . '</h4    >';
                         $this->mergePdfAttachment($filePathsum1, $titleHtml, $mpdf);
                     }
                 }
@@ -215,6 +238,7 @@ class ReportController extends Controller
 
         $sectionText = '3 Initial IHM Part1 Summary Report';
         $html = view('main-report.ihmpart1', compact('sectionText', 'projectDetail'))->render();
+        $mpdf->AddPage('P');
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
 
         $checkHazmatIHMPart = CheckHazmat::with(relations: 'hazmat')->where('ship_id', $ship_id)->get();
@@ -282,6 +306,7 @@ class ReportController extends Controller
             }
         }
         $sectionText = '4 IHM Maintance Report';
+        $mpdf->AddPage('P');
         $html = view('main-report.ihmpartMaintance1', compact('sectionText'))->render();
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
 
@@ -324,41 +349,20 @@ class ReportController extends Controller
         $exam = Exam::where('ship_id', $ship_id)->orderBy('id', 'desc')->get();
         $html = view('main-report.trainingRecored', compact('exam'))->render();
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
-
-
-
-        $mdnoresults = DB::table('po_order_items_hazmats as p')
-            ->join('make_models as m', 'm.id', '=', 'p.model_make_part_id')
-            ->join('hazmats as h', 'h.id', '=', 'p.hazmat_id')
-            ->select([
-                'm.id',
-                'm.md_date',
-                'm.md_no',
-                'm.coumpany_name',
-                DB::raw('GROUP_CONCAT(DISTINCT h.short_name ORDER BY h.short_name ASC) AS hazmat_names')
-            ])
+        $mdnoresults = PoOrderItemsHazmats::with(['makeModel:id,md_no,document1'])
             ->where('ship_id', $ship_id)
-            ->whereNotNull('p.doc1')
-            ->groupBy('m.id', 'm.md_date', 'm.md_no', 'm.coumpany_name')
+            ->whereNotNull('doc1')
             ->get();
         $html = view('main-report.md-recoreds', compact('mdnoresults'))->render();
+
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
 
-        $sdocresults = DB::table('po_order_items_hazmats as p')
-            ->join('make_models as m', 'm.id', '=', 'p.model_make_part_id')
-            ->join('hazmats as h', 'h.id', '=', 'p.hazmat_id')
-            ->select([
-                'm.id',
-                'm.sdoc_date',
-                'm.sdoc_no',
-                'm.issuer_name',
-                'm.sdoc_objects',
-                DB::raw('GROUP_CONCAT(DISTINCT h.short_name ORDER BY h.short_name ASC) AS hazmat_names')
-            ])
-            ->where('p.ship_id', $ship_id)
-            ->whereNotNull('p.doc2')
-            ->groupBy('m.id', 'm.sdoc_date', 'm.sdoc_no', 'm.issuer_name', 'm.sdoc_objects')
+        $sdocresults = PoOrderItemsHazmats::with(['makeModel:id,sdoc_no,document2'])
+            ->where('ship_id', $ship_id)
+            ->whereNotNull('doc2')
             ->get();
+
+
         $html = view('main-report.sdoc-recoreds', compact('sdocresults'))->render();
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
 
@@ -369,15 +373,6 @@ class ReportController extends Controller
         $html = view('main-report.POHistory', compact('counts'))->render();
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
 
-        // if (@$previousAttachment) {
-        //     foreach ($previousAttachment as $value) {
-        //         $filePath = public_path('uploads/previousattachment') . "/" . $value['attachment'];
-        //         if (file_exists($filePath) && @$value['attachment']) {
-        //             $titleHtml = '<h4 style="text-align:center;font-size:13px;font-weight:bold">Previous Attachment ' . $value['attachment_name'] . '</h4>';
-        //             $this->mergePdfAttachment($filePath, $titleHtml, $mpdf);
-        //         }
-        //     }
-        // }
 
 
         $safeProjectNo = str_replace('/', '_', $projectDetail['report_number']);
