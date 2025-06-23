@@ -252,3 +252,40 @@ h3{
     font-size: 11pt;
     margin-left: 20px;
 }
+  .section-1-1 {
+        font-family: Arial, sans-serif;
+    }
+
+    .section-1-1 h4 {
+        margin-bottom: 20px;
+        margin-top: 20px;
+        text-align: center;
+        font-size: 18px;
+    }
+
+    .section-1-1 table {
+        width: 100%;
+        margin-bottom: 40px;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+
+
+    .section-1-1 th,
+    .section-1-1 td {
+        font-size: 18x;
+        /* Exact font size for TD elements */
+        vertical-align: top;
+        color: #000;
+    }
+
+    .section-1-1 .img-cell {
+        vertical-align: middle;
+        text-align: center;
+    }
+
+    .section-1-1 .img-cell span {
+        color: #888;
+        font-style: italic;
+    }
