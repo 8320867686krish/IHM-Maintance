@@ -15,8 +15,8 @@
 
                     <tr>
 
-                        <td>{{$counts['Relevant']}}</td>
-                        <td>{{$counts['Non relevant']}}</td>
+                        <td>{{@$counts['Relevant'] ?? 0}}</td>
+                        <td>{{@$counts['Non relevant'] ?? 0}}</td>
 
                     </tr>
 
