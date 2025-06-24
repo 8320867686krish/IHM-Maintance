@@ -120,6 +120,7 @@ Route::middleware('auth')->group(function () {
             Route::get('clientCompany/{id}/delete', 'destroy')->name('clientCompany.delete')->middleware('can:clientCompany.remove');
         });
     });
+    Route::get('/poorder-history-export/{ship_id}', [ReportController::class, 'poOrderHistory'])->name('poOrderHistory');
     Route::get('/report', [ReportController::class, 'reportCenter'])->name('reportCenter');
     Route::get('/generate-IHM-sticker/{ship_id}', [ReportController::class, 'generateIHMSticker'])
     ->name('generate-IHM-sticker');

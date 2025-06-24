@@ -114,18 +114,21 @@
                             <div class="form-group col-4 mb-3">
                                 <label for="assign_date">
                                     From Date<span class="text-danger">*</span></label>
-                                <input type="date" class="form-control form-control-lg" id="from_date" value="" name="from_date" autocomplete="off" onchange="updateToDate()" required="">
+                                <input type="date" class="form-control form-control-lg" id="from_date" value="" name="from_date" autocomplete="off" onchange="updateToDate()">
                                 <div class="invalid-feedback error" id="po_noError"></div>
                             </div>
 
                             <div class="form-group col-4 mb-3">
                                 <label for="assign_date">
                                     To Date<span class="text-danger">*</span></label>
-                                <input type="date" class="form-control form-control-lg" id="to_date" value="" name="to_date" autocomplete="off" onchange="removeInvalidClass(this)" required="">
+                                <input type="date" class="form-control form-control-lg" id="to_date" value="" name="to_date" autocomplete="off" onchange="removeInvalidClass(this)">
                                 <div class="invalid-feedback error" id="po_noError"></div>
                             </div>
-                            <div class="form-group col-4 mb-3">
-                               
+                            <div class="form-group col-4 mb-3 mt-4">
+                                
+                                 <label class="custom-control custom-checkbox custom-control-inline">
+                                                <input type="checkbox" name="till_today" checked="" class="custom-control-input"><span class="custom-control-label">Till Today</span>
+                                            </label>
                             </div>
 
                             <div class="col-12">
@@ -149,6 +152,21 @@
                     <div class="col-12">
                         <div class="form-group">
                             <a href="{{ url('md-sd-records/'.$ship->id) }}" target="_blank"><button class="btn btn-primary float-right mb-3" id="genratereportbtn">Download MD & SD </button></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+     <div class="row">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <div class="card">
+                <div class="card-body mb-4">
+                    <h5>Po Order History</h5>
+                    <div class="col-12">
+                        <div class="form-group">
+                            <a href="{{ url('poorder-history-export/'.$ship->id) }}" target="_blank"><button class="btn btn-primary float-right mb-3" id="genratereportbtn">Download PO History </button></a>
                         </div>
                     </div>
                 </div>
