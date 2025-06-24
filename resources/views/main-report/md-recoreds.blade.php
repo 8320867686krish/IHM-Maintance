@@ -27,9 +27,9 @@
                 @foreach($mdnoresults as $mdno)
                 <tr>
                     <td>{{$loop->iteration}}</td>
-                    <td>{{$mdno->md_date}}</td>
-                    <td>{{$mdno->md_no}}</td>
-                    <td>{{$mdno->coumpany_name}}</td>
+                    <td>{{$mdno->makeModel->md_date}}</td>
+                    <td>{{$mdno->makeModel->md_no}}</td>
+                    <td>{{$mdno->company_name}}</td>
                     <td>&nbsp;</td>
                     <td>{{$mdno->hazmat_names}}</td>
                 </tr>

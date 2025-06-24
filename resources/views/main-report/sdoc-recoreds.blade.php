@@ -29,8 +29,8 @@
                 @foreach($sdocresults as $sdoc)
                 <tr>
                     <td>{{$loop->iteration}}</td>
-                    <td>{{$sdoc->sdoc_date}}</td>
-                    <td>{{$sdoc->sdoc_no}}</td>
+                    <td>{{$sdoc->makeModel->sdoc_date}}</td>
+                    <td>{{$sdoc->makeModel->sdoc_no}}</td>
                     <td>{{$sdoc->issuer_name}}</td>
                     <td>{{$sdoc->sdoc_objects}}</td>
                     <td>{{$sdoc->hazmat_names}}</td>
