@@ -426,7 +426,6 @@ class ReportController extends Controller
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
 
         $counts = poOrderItem::select('type_category', DB::raw('COUNT(*) as total'))
-            ->whereIn('type_category', ['Relevant', 'Non relevant'])
             ->when($from_date && $to_date, function ($query) use ($from_date, $to_date) {
                 $query->whereBetween('created_at', [
                     Carbon::parse($from_date)->startOfDay(),
