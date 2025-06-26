@@ -11,7 +11,7 @@ trait PdfGenerator
         $dompdf = new Dompdf();
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', $page);
-         $dompdf->render();
+        $dompdf->render();
         $mainContentPdf = $dompdf->output();
         $filename = "project" . uniqid() . "ab.pdf";
         $filePath = storage_path('app/pdf') . "/" . $filename;
@@ -24,10 +24,10 @@ trait PdfGenerator
     {
         $i = 1;
         $html = "";
-      
+
         if (count($decks['checks']) > 0) {
             $chunks = array_chunk($decks['checks']->toArray(), 8);
-         
+
             $k = 0;
             $gap = 1;
             $ori = "landscape";
@@ -39,33 +39,31 @@ trait PdfGenerator
                 $imageData = base64_encode(file_get_contents($imagePath));
                 $imageBase64 = 'data:image/' . pathinfo($imagePath, PATHINFO_EXTENSION) . ';base64,' . $imageData;
                 list($width, $height) = getimagesize($imagePath);
-                $containerWidth = "1024"; 
+                $containerWidth = "1024";
                 if ($width >= 1000) {
                     $html .= "<div class='maincontnt next' style='display: flex; justify-content: center; align-items: center; flex-direction: column; height:100vh;'>";
                 } else {
                     if ($height >= 380) {
                         $ori = "portrait";
-                        if($width >= 500){
+                        if ($width >= 500) {
                             $containerWidth = "794";
-
-                        }else{
+                        } else {
                             $containerWidth = "900";
-
                         }
                         $image_height =  $imageDesireHeight;
                         $image_width = ($image_height * $width) / $height;
                     } else {
                         $image_width = $width;
                     }
-                   
+
                     $leftPositionPixels = ($containerWidth - $image_width) / 2;
                     $leftPositionPercent = ($leftPositionPixels / 1024) * 100;
 
                     $html .= "<div class='maincontnt next' style='display: flex; justify-content: center; align-items: center; flex-direction: column;margin-left:{$leftPositionPercent}%;'>";
                 }
-                $topPer =  ( $ori == 'portrait') ? '40%':'20%';
+                $topPer =  ($ori == 'portrait') ? '40%' : '20%';
 
-                $html .= '<div style="margin-top:'.$topPer.';">';
+                $html .= '<div style="margin-top:' . $topPer . ';">';
 
                 $html .= '<div class="image-container " id="imgc' . $i . '" style="position: relative;width: 100%; ">';
                 $image_width  = 1024;
@@ -76,7 +74,7 @@ trait PdfGenerator
                     $newImage = '<img src="' . $imageBase64 . '" id="imageDraw' . $i . '" style="width:' .  $image_width . 'px;" />';
                 } else {
                     if ($height >= 380) {
-                       $image_height =$imageDesireHeight;
+                        $image_height = $imageDesireHeight;
                         $image_width = ($image_height * $width) / $height;
                         $newImage = '<img src="' . $imageBase64 . '" id="imageDraw' . $i . '"  style="width:' .  $image_width . 'px;"/>';
                     } else {
@@ -98,21 +96,21 @@ trait PdfGenerator
                 $chunkcount = 0;
                 foreach ($chunk as $key => $value) {
                     $chunkcount++;
-                    if($chunkcount == 1){
+                    if ($chunkcount == 1) {
                         $oddincreaseGap = 18;
                     }
                     $top = $value['position_top'];
                     $left = $value['position_left'];
-                    if($value['type'] == 'sample'){
+                    if ($value['type'] == 'sample') {
                         $newColor = '#003299';
-                    }else{
-                         $newColor = '#990033';
+                    } else {
+                        $newColor = '#990033';
                     }
-                     $tooltipCss = 'position: absolute;background-color: #fff;border: 1px solid '.$newColor.';padding: 1px;border-radius: 2px;
+                    $tooltipCss = 'position: absolute;background-color: #fff;border: 1px solid ' . $newColor . ';padding: 1px;border-radius: 2px;
                 white-space: nowrap;z-index: 1;color:#4052d6;font-size:12px;text-align:center;';
-                  $lineCss = 'position:absolute;background-color:'.$newColor.';border:solid '.$newColor.' 1px;';
+                    $lineCss = 'position:absolute;background-color:' . $newColor . ';border:solid ' . $newColor . ' 1px;';
 
-                    $tooltipText = '<span style="font-size:12px;color:' . $newColor   . '">'.($value['type'] == 'sample' ? 's' : 'v') . $value['name'] . "</span><br/>";
+                    $tooltipText = '<span style="font-size:12px;color:' . $newColor   . '">' . ($value['type'] == 'sample' ? 's' : 'v') . $value['name'] . "</span><br/>";
                     if (@$value['check_hazmats']) {
                         $hazmatCount = count($value['check_hazmats']); // Get the total number of elements
                         foreach ($value['check_hazmats'] as $index => $hazmet) {
@@ -178,21 +176,21 @@ trait PdfGenerator
                         $tooltipStart = $image_height + $gap;
                         $sameLocation = 0;
                         $findLeft = abs($maxLength * 5 + 100);
-                    
+
 
                         foreach ($evenarrayLeft as $key => $evenvalue) {
                             if (abs($lineLeftPosition - $evenvalue) < $findLeft && abs($topshow - $evenarrayTop[$key]) < 100) {
                                 $sameLocation++;
                                 $tooltipStart = $tooltipStart + $evenincreaseGap;
                                 $lineHeight = $lineHeight + $evenincreaseGap;
-                            }else{
-                                
-                                    $tooltipStart = $tooltipStart  + $evenincreaseGap; // Example of subtracting for odd
-                                    $lineHeight = $lineHeight + $evenincreaseGap ;    // Adjust this logic as per your needs
-                                
+                            } else {
+
+                                $tooltipStart = $tooltipStart  + $evenincreaseGap; // Example of subtracting for odd
+                                $lineHeight = $lineHeight + $evenincreaseGap;    // Adjust this logic as per your needs
+
                             }
                         }
-                       
+
                         if ($sameLocation > 1) {
                             foreach ($sameLocationevenarray as $sameLocationValue) {
                                 if ($sameLocationValue == $tooltipStart) {
@@ -205,12 +203,12 @@ trait PdfGenerator
                         $evenarrayLeft[$value['id']] = $lineLeftPosition;
                         $evenarrayTop[$value['id']] =  $topshow;
                     }
-                     $html .= '<div class="dot" style="top:' . $topshow . 'px; left:' . $leftshow . 'px; position: absolute;border: 4px solid '.$newColor.';background: '.$newColor.';border-radius: 50%;"></div>';
+                    $html .= '<div class="dot" style="top:' . $topshow . 'px; left:' . $leftshow . 'px; position: absolute;border: 4px solid ' . $newColor . ';background: ' . $newColor . ';border-radius: 50%;"></div>';
 
-                     $html .= '<span class="line" style="top:' . $lineTopPosition  . 'px;left:' . $lineLeftPosition . 'px;height:' . $lineHeight . 'px;' . $lineCss . '"></span>';
+                    $html .= '<span class="line" style="top:' . $lineTopPosition  . 'px;left:' . $lineLeftPosition . 'px;height:' . $lineHeight . 'px;' . $lineCss . '"></span>';
 
 
-                     $html .= '<span class="tooltip" style="' . $tooltipCss . 'top:' . $tooltipStart . 'px; left:' . ($lineLeftPosition - 15) . 'px">' . $tooltipText . '</span>';
+                    $html .= '<span class="tooltip" style="' . $tooltipCss . 'top:' . $tooltipStart . 'px; left:' . ($lineLeftPosition - 15) . 'px">' . $tooltipText . '</span>';
                 }
                 $html .= '</div>';
                 $html .= '</div>';
@@ -222,9 +220,9 @@ trait PdfGenerator
         }
 
 
-        return ['html'=>$html,'ori'=>$ori];
+        return ['html' => $html, 'ori' => $ori];
     }
-      protected function mergePdfAttachment($filePath, $title, $mpdf, $page = null)
+    protected function mergePdfAttachment($filePath, $title, $mpdf, $page = null)
     {
 
         // Validate input file
@@ -277,7 +275,7 @@ trait PdfGenerator
             if (!is_readable($mergedPdfPath)) {
                 throw new \Exception("Merged PDF is not readable: {$mergedPdfPath}");
             }
-         
+
             $pageCount = $mpdf->setSourceFile($mergedPdfPath);
 
             for ($i = 1; $i <= $pageCount; $i++) {
@@ -336,14 +334,16 @@ trait PdfGenerator
                         ->saveImage($imagePath);
 
                     $mpdf->AddPage($page);
-                    if (@$title) {
-                        $mpdf->WriteHTML($title);
+
+                    if ($i === 1 && !empty($title)) {
+                        // Show title only on first page
+                        $mpdf->WriteHTML("<div style='font-weight:bold; font-size:18px; margin-bottom:10px;'>$title</div>");
+                        $mpdf->Image($imagePath, 0, 25, 210, 272, 'jpg', '', true, false);
+                    } else {
+                        // No title on other pages
+                        $mpdf->Image($imagePath, 0, 0, 210, 297, 'jpg', '', true, false);
                     }
 
-                    // Option 1: Image below title (not full page)
-                    $mpdf->Image($imagePath, 0, ($i === 1 && !empty($title) ? 15 : 0), 210, 277, 'jpg', '', true, false);
-
-                    // Clean up
                     @unlink($imagePath);
                 }
             }

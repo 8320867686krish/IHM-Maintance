@@ -41,7 +41,7 @@
 
 <div class="section-1-1">
 
-    <h2 style="padding-top:20px;text-align:center">List Of Checks For {{ $name }}</h2>
+    <h4 style="padding-top:20px;text-align:center">List Of Checks For {{ $name }}</h4>
     @foreach($checks as $index=>$check)
     @if($index !== 0)
     <div style="page-break-before: always; padding-top: 40px;">
