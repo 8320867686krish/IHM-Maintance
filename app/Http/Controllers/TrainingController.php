@@ -73,26 +73,25 @@ class TrainingController extends Controller
             $imagePath = 'uploads/trainingRecored/';
 
             foreach ($post['questions'] as $key => $value) {
-               
-                    if ($value['answer_type'] == 'file') {
-                        foreach (['option_a', 'option_b', 'option_c', 'option_d'] as $opt) {
-                            if ($request->hasFile("questions.$key.$opt")) {
-                                $value[$opt] = $request->file("questions.$key.$opt");
-                            }
+
+                if ($value['answer_type'] == 'file') {
+                    foreach (['option_a', 'option_b', 'option_c', 'option_d'] as $opt) {
+                        if ($request->hasFile("questions.$key.$opt")) {
+                            $value[$opt] = $request->file("questions.$key.$opt");
                         }
                     }
-
-                    $value['training_sets_id'] = $training->id;
-
-                    if (is_numeric($key)) {
-                        // Existing question, update
-                        QuestionSets::updateOrCreate(['id' => $key], $value);
-                    } else {
-                        // New question, create
-                        QuestionSets::create($value);
-                    }
                 }
-            
+
+                $value['training_sets_id'] = $training->id;
+
+                if (is_numeric($key)) {
+                    // Existing question, update
+                    QuestionSets::updateOrCreate(['id' => $key], $value);
+                } else {
+                    // New question, create
+                    QuestionSets::create($value);
+                }
+            }
         }
         return response()->json(['isStatus' => true, 'message' => 'Questions save successfully!!']);
     }
@@ -247,7 +246,21 @@ class TrainingController extends Controller
 
         file_put_contents($filePath, $briefingPdfContent);
         $mpdf = new \Mpdf\Mpdf();
+        $mpdf->SetSourceFile($filePath); // Add generated file
+        $pageCount = $mpdf->SetSourceFile($filePath);
 
+        for ($i = 1; $i <= $pageCount; $i++) {
+            $templateId = $mpdf->ImportPage($i);
+            $size = $mpdf->GetTemplateSize($templateId);
+
+            if ($size['width'] > $size['height']) {
+                $mpdf->AddPage('L'); // Landscape
+            } else {
+                $mpdf->AddPage('P'); // Portrait
+            }
+
+            $mpdf->UseTemplate($templateId);
+        }
         // Add the existing briefing plan PDF (briefing_plan)
         if (file_exists($briefingPdfPath)) {
 
@@ -269,21 +282,7 @@ class TrainingController extends Controller
                 $mpdf->UseTemplate($templateId);
             }
         }
-        $mpdf->SetSourceFile($filePath); // Add generated file
-        $pageCount = $mpdf->SetSourceFile($filePath);
 
-        for ($i = 1; $i <= $pageCount; $i++) {
-            $templateId = $mpdf->ImportPage($i);
-            $size = $mpdf->GetTemplateSize($templateId);
-
-            if ($size['width'] > $size['height']) {
-                $mpdf->AddPage('L'); // Landscape
-            } else {
-                $mpdf->AddPage('P'); // Portrait
-            }
-
-            $mpdf->UseTemplate($templateId);
-        }
         unlink($filePath);
 
         $pdfOutput = $mpdf->Output('', 'S');
