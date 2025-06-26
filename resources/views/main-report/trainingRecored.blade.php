@@ -30,7 +30,7 @@
                     <td>{{$history->designated_name}}</td>
                     <td>
                         
-                         @if($value['designatedPersonDetail']['position'] == 'incharge')
+                         @if($history['designatedPersonDetail']['position'] == 'incharge')
                             Overall-incharge (Captain)
                             @else
                             Responsible Person
