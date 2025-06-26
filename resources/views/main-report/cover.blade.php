@@ -1,6 +1,6 @@
 <div>
     <div style="text-align: center;margin-bottom:50px;">
-        <h1 style="padding-top: 10px;">
+        <h1 style="padding-top: 5px;">
             IHM Maintenance report of : {{$projectDetail['ship_name']}}
         </h1>
         <h4 style="padding-top: 1px;">IMO No: {{$projectDetail['imo_number']}}</h4>
@@ -17,7 +17,7 @@
     <div style="margin-auto:0;text-align:center">
         <img src="{{  @$shipImagePath }}" alt="Your Image">
     </div>
-    <div style="pading-top:30px;margin-top: 50px;">
+    <div style="pading-top:310px;margin-top: 30px;">
         <h4>Reports Prepared with refrence from:</h4>
         <ul class="ulIteam">
             <li>Hong Kong International Convention for the Safe and Environmentally Sound Recycling of
