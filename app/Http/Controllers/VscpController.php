@@ -23,7 +23,7 @@ ini_set("pcre.backtrack_limit", "1000000");
 ini_set('exif.decode_jpeg', '0');
 class VscpController extends Controller
 {
-    use ImageUpload,PdfGenerator;
+    use ImageUpload, PdfGenerator;
 
     //
     public function index($ship_id, $amended = null)
@@ -192,7 +192,7 @@ class VscpController extends Controller
             }
             $closeimage = $this->upload($request, 'close_image', 'uploads/shipsVscp/' . $inputData['ship_id'] . '/check');
             $finalData['close_image'] = $closeimage;
-        }else{
+        } else {
             unset($finalData['close_image']);
         }
         if ($request->hasFile('away_image')) {
@@ -204,7 +204,7 @@ class VscpController extends Controller
             $image = $this->upload($request, 'away_image', 'uploads/shipsVscp/' . $inputData['ship_id'] . '/check');
 
             $finalData['away_image'] = $image;
-        }else{
+        } else {
             unset($finalData['away_image']);
         }
         $data = Check::updateOrCreate(['id' => $id], $finalData);
@@ -488,7 +488,7 @@ class VscpController extends Controller
             if (count($decks) > 0) {
                 foreach ($decks as $key => $value) {
                     if (count($value['checks']) > 0) {
-                         $html = $this->drawDigarm($value);
+                        $html = $this->drawDigarm($value);
                         $fileNameDiagram = $this->genrateDompdf($html['html'], $html['ori']);
                         $mpdf->setSourceFile($fileNameDiagram);
                         $pageCount = $mpdf->setSourceFile($fileNameDiagram);
@@ -502,15 +502,15 @@ class VscpController extends Controller
                             $mpdf->useTemplate($templateId, null, null, $mpdf->w, null); // Use the template with appropriate dimensions
                         }
                         $deck_id = $value['id'];
-                       
+
                         $filterDecks = $checkHazmatIHMPart->filter(function ($item) use ($deck_id) {
                             return $item->deck_id == (int) $deck_id;
                         });
-                      
-                             $mpdf->AddPage('P');
-                            $mpdf->writeHTML(view('report.vscpPrepration', ['checks' => $filterDecks, 'name' => $value['name']]));
-                        
-                       
+
+                        $mpdf->AddPage('P');
+                        $mpdf->writeHTML(view('report.vscpPrepration', ['checks' => $filterDecks, 'name' => $value['name']]));
+
+
                         unlink($fileNameDiagram);
                     }
                 }
@@ -520,17 +520,17 @@ class VscpController extends Controller
             $gaplan =  public_path('shipsVscp/' . $ga_plan_pdf);
             $index = 1;
             if (file_exists($gaplan)) {
-                $titleHtml = '<h3 style="text-align:center;font-size:12pt;">'.$index.'. GA PLAN</h3>';
+                $titleHtml = '<h3 style="text-align:center;font-size:12pt;">' . $index . '. GA PLAN</h3>';
                 $this->mergePdfAsImages($gaplan, $titleHtml, $mpdf);
-                 $index++;
+                $index++;
             }
             if (@$summary) {
                 foreach ($summary as $sumvalue) {
                     $filePathsum = public_path('uploads/shipsVscp') . "/" . $ship_id . "/partmanual/" . basename($sumvalue['document']);
                     if (file_exists($filePathsum) && @$sumvalue['document']) {
-                        $titleHtml = '<h3 style="text-align:center;font-size:12pt">'.$index.'. '. $sumvalue['title'] . '</h3>';
+                        $titleHtml = '<h3 style="text-align:center;font-size:12pt">' . $index . '. ' . $sumvalue['title'] . '</h3>';
                         $this->mergePdfAttachment($filePathsum, $titleHtml, $mpdf);
-                         $index++;
+                        $index++;
                     }
                 }
             }
@@ -559,6 +559,4 @@ class VscpController extends Controller
         file_put_contents($filePath, $mainContentPdf);
         return $filePath;
     }
-    
-  
 }

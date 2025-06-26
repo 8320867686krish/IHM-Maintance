@@ -298,6 +298,15 @@ class ReportController extends Controller
                     $mpdf->useTemplate($templateId, null, null, $mpdf->w, null); // Use the template with appropriate dimensions
 
                 }
+                $deck_id = $value['id'];
+
+                $filterDecks = $checkHazmatIHMPart->filter(function ($item) use ($deck_id) {
+                    return $item->deck_id == (int) $deck_id;
+                });
+
+                $mpdf->AddPage('P');
+                $mpdf->writeHTML(view('report.vscpPrepration', ['checks' => $filterDecks, 'name' => $value['name']]));
+
                 unlink($fileNameDiagram);
             }
         }
