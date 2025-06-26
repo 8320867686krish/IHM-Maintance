@@ -258,7 +258,8 @@ class ReportController extends Controller
             return $item->ihm_part_table == 'i-3';
         });
 
-        $html = view('main-report.IHMPart', compact('filteredResults1', 'filteredResults2', 'filteredResults3'))->render();
+        $html = view('report.Inventory', compact('filteredResults1', 'filteredResults2', 'filteredResults3'));
+
         $mpdf->AddPage('L'); // Set landscape mode for the inventory page
 
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
@@ -435,7 +436,7 @@ class ReportController extends Controller
             ->groupBy('type_category')
             ->pluck('total', 'type_category');
         $html = view('main-report.POHistory', compact('counts'))->render();
-       $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
+        $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
 
         $safeProjectNo = str_replace('/', '_', $projectDetail['report_number']);
 
