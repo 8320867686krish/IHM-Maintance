@@ -35,8 +35,30 @@ class ReportController extends Controller
     {
         return Excel::download(new POHistoryExport, 'po_history.xlsx');
     }
-    public function mdSDRecord($ship_id)
+    public function mdSDRecord(Request $request)
     {
+        $post = $request->input();
+        $version = 1;
+
+        $ship_id = $post['ship_id'];
+        $logo    = public_path('assets/images/logo.png');
+
+        $date           = date('y-m-d');
+        $from_date      = $post['from_date'];
+        $to_date        = $post['to_date'];
+        $projectDetail  = Ship::with('client.hazmatCompaniesId')->find($ship_id);
+        $shipDetail     = $projectDetail;
+        $is_report_logo = $projectDetail['client']['is_report_logo'];
+        $till_today = $request->has('till_today') ? 1 : 0;
+
+        if ($is_report_logo == 0) {
+            $image = $projectDetail['client']['hazmatCompaniesId']['logo'];
+            $logo  = public_path('uploads/hazmatCompany/' . $image);
+        } else {
+            $image = $projectDetail['client']['client_image'];
+            $logo  = public_path('uploads/clientcompany/' . $image);
+        }
+
         // e.g., 2025-06-20
         $mpdf = new Mpdf([
             'format'                 => 'A4',
@@ -58,10 +80,39 @@ class ReportController extends Controller
         $mpdf->use_kwt             = true;
         $mpdf->defaultPageNumStyle = '1';
         $mpdf->SetDisplayMode('fullpage');
+
+        $header = '
+        <table width="100%" style="vertical-align: middle; font-family: serif; font-size: 12pt; color: #000088;">
+            <tr>
+                <td width="10%"><img src=' . $logo . ' width="50" /></td>
+                <td width="75%" align="center">' . $projectDetail['ship_name'] . '</td>
+                <td width="15%" style="text-align: right;">&nbsp;</td>
+        </tr>
+
+        </table>';
+
+        // Define footer content with page number
+        $footer = '
+        <table width="100%" style="vertical-align: bottom; font-family: serif; font-size: 8pt; color: #000000;">
+            <tr>
+                <td width="33%" style="text-align: left;">' . $projectDetail['ihm_table'] . '</td>
+                <td width="33%" style="text-align: center;">Revision:' . $version . '</td>
+                <td width="33%" style="text-align: right;">{PAGENO}/{nbpg}</td>
+            </tr>
+        </table>';
+
+        $mpdf->SetHTMLHeader($header);
+        $mpdf->SetHTMLFooter($footer);
+
+        // Load main HTML content
         $mpdf->h2toc       = ['H2' => 0, 'H3' => 1];
         $mpdf->h2bookmarks = ['H2' => 0, 'H3' => 1];
-        $stylesheet        = file_get_contents('public/assets/mpdf.css');
+        $stylesheet        = file_get_contents('assets/mpdf.css');
         $mpdf->WriteHTML($stylesheet, \Mpdf\HTMLParserMode::HEADER_CSS);
+        $shipImagePath = public_path('uploads/ship/orignal/' . $projectDetail['orignal_image']);
+
+        $html = view('mdReport.cover', compact('projectDetail', 'shipImagePath'))->render();
+        $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
 
         $mpdf->TOCpagebreakByArray([
             'links'             => true,
@@ -72,26 +123,40 @@ class ReportController extends Controller
             'suppress'          => false, // This should prevent a new page from being created before and after TOC
             'toc-resetpagenum'  => 1,
         ]);
-        $sectionText = '1. MD Records Of Table Content';
-        $html        = view('main-report.ihmpartMaintance1', compact('sectionText'))->render();
+        $sectionText = '1. MD Records';
+        $html = view('mdReport.heading', compact('sectionText'))->render();
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
         $mdnoresults = PoOrderItemsHazmats::with(['makeModel.hazmat'])
             ->where('ship_id', $ship_id)
             ->whereNotNull('doc1')
+             ->when($till_today == 0 && $from_date && $to_date, function ($query) use ($from_date, $to_date) {
+
+                $query->whereBetween('created_at', [
+                    Carbon::parse($from_date)->startOfDay(),
+                    Carbon::parse($to_date)->endOfDay(),
+                ]);
+            })
             ->get();
         if (@$mdnoresults) {
             $html = view('mdReport.md-recoreds-report', compact('mdnoresults'))->render();
             $mpdf->AddPage('P');
             $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
         }
-        $sectionText = '2.SD Records Of Table Content';
+        $sectionText = '2.SDOC Records';
         $mpdf->AddPage('P');
-        $html = view('main-report.ihmpartMaintance1', compact('sectionText'))->render();
+        $html  = view('mdReport.heading', compact('sectionText'))->render();
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
 
         $sdocresults = PoOrderItemsHazmats::with(['makeModel.hazmat'])
             ->where('ship_id', $ship_id)
             ->whereNotNull('doc2')
+            ->when($till_today == 0 && $from_date && $to_date, function ($query) use ($from_date, $to_date) {
+
+                $query->whereBetween('created_at', [
+                    Carbon::parse($from_date)->startOfDay(),
+                    Carbon::parse($to_date)->endOfDay(),
+                ]);
+            })
             ->get();
         if (@$sdocresults) {
             $html = view('mdReport.sd-recoreds-report', compact('sdocresults'))->render();
@@ -101,7 +166,7 @@ class ReportController extends Controller
         if (@$mdnoresults) {
             $sectionText = '3. MD Attachments';
             $mpdf->AddPage('P');
-            $html = view('main-report.ihmpartMaintance1', compact('sectionText'))->render();
+            $html        = view('mdReport.heading', compact('sectionText'))->render();
             $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
 
             foreach ($mdnoresults as $mdvalue) {
@@ -117,9 +182,9 @@ class ReportController extends Controller
         }
 
         if (@$sdocresults) {
-            $sectionText = '4. SD Attachments';
+            $sectionText = '4. SDOC Attachments';
             $mpdf->AddPage('P');
-            $html = view('main-report.ihmpartMaintance1', compact('sectionText'))->render();
+            $html  = view('mdReport.heading', compact('sectionText'))->render();
             $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
             foreach ($sdocresults as $sdValue) {
                 if (@$sdValue['makeModel']['document2']['name']) {
@@ -131,7 +196,14 @@ class ReportController extends Controller
                 }
             }
         }
-        $mpdf->Output('IHM-Report.pdf', 'I');
+        $safeProjectNo = str_replace('/', '_', $projectDetail['report_number']);
+
+        $fileName = "md-sd" . $safeProjectNo . '.pdf';
+        $filePath = public_path('pdf/' . $fileName); // Adjust the directory and file name as needed
+        $mpdf->Output($filePath, \Mpdf\Output\Destination::FILE);
+        $response = response()->download($filePath, $fileName)->deleteFileAfterSend(true);
+        $response->headers->set('X-File-Name', $fileName);
+        return $response;
     }
     public function genrateReport(Request $request)
     {
@@ -272,7 +344,7 @@ class ReportController extends Controller
                 $query->where('hazmat_type', 'PCHM')
                     ->orWhere('hazmat_type', 'Contained');
             });
-            if ($till_today == 0 ) {
+            if ($till_today == 0) {
                 if ($from_date && $to_date) {
                     $query->whereBetween('created_at', [
                         Carbon::parse($from_date)->startOfDay(),
@@ -421,7 +493,7 @@ class ReportController extends Controller
             })
             ->orderBy('id', 'desc') // Correct placement of orderBy
             ->get();
-        $html = view('main-report.trainingRecored', compact('exam','brifingHistory'))->render();
+        $html = view('main-report.trainingRecored', compact('exam', 'brifingHistory'))->render();
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
         $mdnoresults = PoOrderItemsHazmats::with(['makeModel:id,md_no,document1'])
             ->where('ship_id', $ship_id)
@@ -453,7 +525,7 @@ class ReportController extends Controller
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
 
         $counts = poOrderItem::select('type_category', DB::raw('COUNT(*) as total'))
-            ->when($till_today == 0 &&$from_date && $to_date, function ($query) use ($from_date, $to_date) {
+            ->when($till_today == 0 && $from_date && $to_date, function ($query) use ($from_date, $to_date) {
                 $query->whereBetween('created_at', [
                     Carbon::parse($from_date)->startOfDay(),
                     Carbon::parse($to_date)->endOfDay(),
