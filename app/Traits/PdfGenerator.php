@@ -336,7 +336,7 @@ trait PdfGenerator
                         ->saveImage($imagePath);
 
                     $mpdf->AddPage($page);
-
+echo  $title;
                     if (@$title) {
                         $mpdf->WriteHTML($title);
                     }

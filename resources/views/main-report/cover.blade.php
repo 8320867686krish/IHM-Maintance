@@ -10,7 +10,6 @@
         @if($till_today == 0)
         <h4 style="padding-top: 1px;">Report Duration From: {{$from_date}} To {{$to_date}}</h4>
         @else
-        <p>Current Date: {{ \Carbon\Carbon::now()->format('d-m-Y') }}</p>
         <h4 style="padding-top: 1px;">Report Duration Till: {{ \Carbon\Carbon::now()->format('d-m-Y') }}</h4>
         @endif
 
