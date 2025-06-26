@@ -85,7 +85,7 @@
             </table>
         </div>
         <div style="padding-top:20px;padding-bottom:20px;">
-            <h3>5.3 Hazmat Company rECORDS</h3>
+            <h3>5.3 Hazmat Company Records</h3>
             <table>
                 <thead>
                     <tr>

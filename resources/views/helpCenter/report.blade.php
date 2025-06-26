@@ -127,8 +127,8 @@
                             <div class="form-group col-4 mb-3 mt-4">
                                 
                                  <label class="custom-control custom-checkbox custom-control-inline">
-                                                <input type="checkbox" name="till_today" class="custom-control-input"><span class="custom-control-label">Till Today</span>
-                                            </label>
+                                <input type="checkbox" name="till_today" class="custom-control-input" id="till_today" value="1"><span class="custom-control-label">Till Today</span>
+                                </label>
                             </div>
 
                             <div class="col-12">
