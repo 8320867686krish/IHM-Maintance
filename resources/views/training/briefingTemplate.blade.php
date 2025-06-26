@@ -1,6 +1,8 @@
 <html>
     <body>
-        <h3 style="text-align: center;font-weight:bold">Briefing Recoreds </h3>
+        <h3 style="text-align: center;font-weight:bold">Annex Briefing Recoreds </h3>
+        <p><b>Note</b>Fill and scan the Annex – Crew Briefing Sheet from the briefing module.Only upload the Annex sheet – no need to upload the full module.
+        Thank you!</p>
         <div style="margin: 0 auto;width:90%">
             <p><b>Briefing Date</b> : {{ $briefing['brifing_date']}}</p>
             <p><b>Briefing By</b> : {{  $briefing->DesignatedPersonDetail->name}}</p>

@@ -1,10 +1,11 @@
 @foreach($previousAttachment as $value)
 <tr>
     <td>{{$loop->iteration}}</td>
+    <td>{{$value->maintained_by}}</td>
+
     <td>{{$value->attachment_name}}</td>
     <td>{{$value->date_from}}</td>
     <td>{{$value->date_till}}</td>
-    <td>{{$value->maintained_by}}</td>
     <td>
         @can('previousperson.previousihmmaintance')
         <a href="#" rel="noopener noreferrer" data-attachment={{$value}} title="Edit" class="text-center previousAttachmentEdit">

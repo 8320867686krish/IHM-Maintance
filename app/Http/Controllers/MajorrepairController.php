@@ -98,7 +98,7 @@ class MajorrepairController extends Controller
         }
         
         PreviousAttachment::updateOrCreate(['id' => $post['id']], $post);
-        $previousAttachment = PreviousAttachment::where('ship_id', $post['ship_id'])->orderBy('id','asc')->get();
+        $previousAttachment = PreviousAttachment::where('ship_id', $post['ship_id'])->orderBy('date_from','asc')->get();
         $html =  view('components.previous-attachment-list', compact('previousAttachment'))->render();
         return response()->json(['isStatus' => true, 'message' => 'save successfully', 'html' => $html]);
     }

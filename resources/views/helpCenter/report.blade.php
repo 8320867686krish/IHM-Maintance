@@ -166,7 +166,7 @@
                                 <input type="date" class="form-control form-control-lg" id="to_date" value="" name="to_date" autocomplete="off" onchange="removeInvalidClass(this)">
                                 <div class="invalid-feedback error" id="po_noError"></div>
                             </div>
-                            <div class="form-group col-4 mb-3 mt-4 text-center">
+                            <div class="form-group col-4 mb-3 mt-4">
 
                                 <label class="custom-control custom-checkbox custom-control-inline">
                                     <input type="checkbox" name="till_today" class="custom-control-input" id="till_today" value="1"><span class="custom-control-label">Till Today</span>

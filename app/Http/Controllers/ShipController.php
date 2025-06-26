@@ -427,7 +427,7 @@ class ShipController extends Controller
         $ships = Ship::get();
         $majorrepair = Majorrepair::where('ship_id', operator: $ship_id)->orderBy('id', 'desc')->get();
 
-        $previousAttachment = PreviousAttachment::where('ship_id', operator: $ship_id)->orderBy('id', 'desc')->get();
+        $previousAttachment = PreviousAttachment::where('ship_id', operator: $ship_id)->orderBy('date_from', 'desc')->get();
 
         $brifingHistory = Brifing::with('DesignatedPersonDetail')->where('ship_id', operator: $ship_id)->get();
 

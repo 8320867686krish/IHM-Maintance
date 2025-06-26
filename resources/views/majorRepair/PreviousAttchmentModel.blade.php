@@ -11,56 +11,56 @@
         <form method="post" action="{{route('previousAttachment.save')}}" id="PreviousAttachmentModelForm"
           enctype="multipart/form-data">
           @csrf
-          <input type="hidden" name="id" id="id"/>
-         
+          <input type="hidden" name="id" id="id" />
+
           <div class=" row">
+            <div class="form-group col-6 col-md-6 col-lg-6 mb-4">
+              <label for="name">Maintained By</label>
+              <input type="text" id="maintained_by" name="maintained_by" class="form-control @error('maintained_by') is-invalid @enderror" onchange="removeInvalidClass(this)">
+              <div class="invalid-feedback error" id="maintained_byError"></div>
 
-              <div class="form-group col-6 col-md-6 col-lg-6 mb-4">
+            </div>
+            <div class="form-group col-6 col-md-6 col-lg-6 mb-4">
 
-                <label for="name">Attachment Name</label>
-                <input type="text" id="attachment_name" name="attachment_name" class="form-control @error('attachment_name') is-invalid @enderror" onchange="removeInvalidClass(this)">
-                <div class="invalid-feedback error" id="attachment_nameError"></div>
-
-              </div>
-           
-
-              <div class="form-group col-6 col-md-6 col-lg-6 mb-4">
-                <label for="name">Date From</label>
-                <input type="date" id="date_from" name="date_from" class="form-control @error('date_from') is-invalid @enderror" onchange="removeInvalidClass(this)">
-                <div class="invalid-feedback error" id="date_fromError"></div>
-
-              </div>
-
-              <div class="form-group col-6 col-md-6 col-lg-6 mb-4">
-                <label for="name">Date Till</label>
-                <input type="date" id="date_till" name="date_till" class="form-control @error('date_till') is-invalid @enderror" onchange="removeInvalidClass(this)">
-                <div class="invalid-feedback error" id="date_tillError"></div>
-
-              </div>
-
-             
-
-              <div class="form-group col-6 col-md-6 col-lg-6 mb-4">
-                <label for="name">Maintained By</label>
-                <input type="text" id="maintained_by" name="maintained_by" class="form-control @error('maintained_by') is-invalid @enderror" onchange="removeInvalidClass(this)">
-                <div class="invalid-feedback error" id="maintained_byError"></div>
+              <label for="name">Attachment Name</label>
+              <input type="text" id="attachment_name" name="attachment_name" class="form-control @error('attachment_name') is-invalid @enderror" onchange="removeInvalidClass(this)">
+              <div class="invalid-feedback error" id="attachment_nameError"></div>
 
             </div>
 
-           
-              <div class="form-group col-6 col-md-6 col-lg-6 mb-4">
-                <label for="name">Attachment</label>
-                <input type="file" id="attachment" name="attachment" class="form-control @error('attachment') is-invalid @enderror" accept="application/pdf">
-                <div class="invalid-feedback error" id="attachmentError"></div>
+
+            <div class="form-group col-6 col-md-6 col-lg-6 mb-4">
+              <label for="name">Date From</label>
+              <input type="date" id="date_from" name="date_from" class="form-control @error('date_from') is-invalid @enderror" onchange="removeInvalidClass(this)">
+              <div class="invalid-feedback error" id="date_fromError"></div>
 
             </div>
 
-            
+            <div class="form-group col-6 col-md-6 col-lg-6 mb-4">
+              <label for="name">Date Till</label>
+              <input type="date" id="date_till" name="date_till" class="form-control @error('date_till') is-invalid @enderror" onchange="removeInvalidClass(this)">
+              <div class="invalid-feedback error" id="date_tillError"></div>
 
-             
-            
+            </div>
 
-           
+
+
+
+
+
+            <div class="form-group col-6 col-md-6 col-lg-6 mb-4">
+              <label for="name">Attachment</label>
+              <input type="file" id="attachment" name="attachment" class="form-control @error('attachment') is-invalid @enderror" accept="application/pdf">
+              <div class="invalid-feedback error" id="attachmentError"></div>
+
+            </div>
+
+
+
+
+
+
+
           </div>
         </form>
       </div>

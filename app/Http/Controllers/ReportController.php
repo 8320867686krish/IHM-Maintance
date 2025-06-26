@@ -111,7 +111,8 @@ class ReportController extends Controller
         $mpdf->WriteHTML($stylesheet, \Mpdf\HTMLParserMode::HEADER_CSS);
         $shipImagePath = public_path('uploads/ship/orignal/' . $projectDetail['orignal_image']);
 
-        $html = view('mdReport.cover', compact('projectDetail', 'shipImagePath'))->render();
+        $html = view('mdReport.cover', compact('projectDetail', 'shipImagePath','from_date', 'to_date', 'till_today'))->render();
+
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
 
         $mpdf->TOCpagebreakByArray([
@@ -467,6 +468,7 @@ class ReportController extends Controller
                     Carbon::parse($to_date)->endOfDay(),
                 ]);
             })
+            ->orderBy('date_from', 'desc')
             ->get();
 
         $html = view('main-report.designatedPerson', compact('responsibleResult', 'superDpResult', 'previousAttachment'))->render();

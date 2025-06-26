@@ -7,7 +7,7 @@
     <td>
         @if($historyValue->brifing_document)
         <a href="{{ asset('uploads/brifing_document/' . $historyValue['brifing_document']) }}" title="Download" download>
-            <i class="fas fa-download text-primary" style="font-size: 1rem"></i>
+           {{$historyValue['brifing_document']}} <i class="fas fa-download text-primary" style="font-size: 1rem"></i>
         </a>
         @endif
     </td>
