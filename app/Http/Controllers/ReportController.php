@@ -290,8 +290,8 @@ class ReportController extends Controller
 
                     $mpdf->AddPage($html['ori']);
                     if ($key == 0) {
-                        $mpdf->WriteHTML('<h5 style="font-size:14px">3.1 Location Diagram of Contained HazMat & PCHM.</h5>');
-                    }
+                        $mpdf->WriteHTML('<h5 style="font-size:14px">3.2 Location Diagram of Contained HazMat & PCHM.</h5>');
+                    
                     $mpdf->WriteHTML('<h5 style="font-size:14px;">Area: ' . $value['name'] . '</h5>');
 
                     $templateId = $mpdf->importPage($i);
@@ -321,7 +321,7 @@ class ReportController extends Controller
         $gaplan =  public_path('shipsVscp/' . $ga_plan_pdf);
         $index = 1;
         if (file_exists($gaplan)) {
-            $titleHtml = '<h3 style="text-align:center;font-size:12pt;">' . $index . '. GA PLAN</h3>';
+            $titleHtml = '<h4 style="text-align:center;font-size:12pt;">' . $index . '. GA PLAN</h4>';
             $this->mergePdfAsImages($gaplan, $titleHtml, $mpdf);
             $index++;
         }
