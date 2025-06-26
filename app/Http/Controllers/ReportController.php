@@ -337,7 +337,7 @@ class ReportController extends Controller
         }
         $sectionText = '4 IHM Maintance Report';
         $mpdf->AddPage('P');
-        $html = view('main-report.ihmpartMaintance1', compact('sectionText'))->render();
+        $html = view('main-report.ihmpartMaintance1', compact('sectionText','projectDetail','from_date','to_date'))->render();
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
 
         // //Addended IHM Part
