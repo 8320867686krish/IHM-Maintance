@@ -28,7 +28,14 @@
                 <tr>
                     <td>{{$loop->iteration}}</td>
                     <td>{{$history->designated_name}}</td>
-                    <td>{{$history['designatedPersonDetail']['position']}}</td>
+                    <td>
+                        
+                         @if($value['designatedPersonDetail']['position'] == 'incharge')
+                            Overall-incharge (Captain)
+                            @else
+                            Responsible Person
+                            @endif
+                    </td>
                     <td>{{ \Carbon\Carbon::parse($history['designatedPersonDetail']['sign_on_date'])->format('d/m/Y') }}</td>
                     <td>{{ $history->created_at->format('d/m/Y') }}</td>
 

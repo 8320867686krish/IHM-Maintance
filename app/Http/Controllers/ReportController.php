@@ -438,7 +438,7 @@ class ReportController extends Controller
 
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
 
-        $sdocresults = PoOrderItemsHazmats::with(['makeModel:id,sdoc_no,document2,sdoc_date'])
+        $sdocresults = PoOrderItemsHazmats::with(['makeModel:id,sdoc_no,document2,sdoc_date,issuer_name,sdoc_objects'])
             ->where('ship_id', $ship_id)
             ->whereNotNull('doc2')
             ->when($till_today == 0 && $from_date && $to_date, function ($query) use ($from_date, $to_date) {
