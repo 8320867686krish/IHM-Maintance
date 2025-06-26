@@ -103,17 +103,17 @@
                         <div class="form-group col-4 mb-1">
                             <label for="assign_date">
                                 From Date<span class="text-danger">*</span></label>
-                            <input type="date" class="form-control form-control-lg" id="from_date" value="" name="from_date" autocomplete="off" onchange="updateToDate()" required>
+                            <input type="date" class="form-control form-control-lg" id="from_date" value="" name="from_date" autocomplete="off" onchange="updateToDate()">
                             <div class="invalid-feedback error" id="po_noError"></div>
                         </div>
 
                         <div class="form-group col-4 mb-1">
                             <label for="assign_date">
                                 To Date<span class="text-danger">*</span></label>
-                            <input type="date" class="form-control form-control-lg" id="to_date" value="" name="to_date" autocomplete="off" onchange="removeInvalidClass(this)" required>
+                            <input type="date" class="form-control form-control-lg" id="to_date" value="" name="to_date" autocomplete="off" onchange="removeInvalidClass(this)">
                             <div class="invalid-feedback error" id="po_noError"></div>
                         </div>
-                        <div class="form-group col-4 mb-3">
+                        <div class="form-group col-4 mb-3 text-center mt-4  ">
 
                             <label class="custom-control custom-checkbox custom-control-inline">
                                 <input type="checkbox" name="till_today" class="custom-control-input" id="till_today" value="1"><span class="custom-control-label">Till Today</span>
@@ -131,6 +131,9 @@
                 </form>
             </div>
 
+
+        </div>
+        
             <div class="row">
                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                     <div class="card">
@@ -160,8 +163,6 @@
                     </div>
                 </div>
             </div>
-
-        </div>
     </div>
     <div class="main-content container-fluid p-0" id="assign_project" style="display: none;">
 
