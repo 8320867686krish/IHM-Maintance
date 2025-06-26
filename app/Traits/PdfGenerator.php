@@ -338,7 +338,7 @@ trait PdfGenerator
                     if ($i === 1 && !empty($title)) {
                         // Show title only on first page
                         $mpdf->WriteHTML("<div style='font-weight:bold; font-size:18px; margin-bottom:10px;'>$title</div>");
-                        $mpdf->Image($imagePath, 0, 25, 210, 272, 'jpg', '', true, false);
+                        $mpdf->Image($imagePath, 0, $mpdf->GetY(), 210, 0, 'jpg', '', true, false);
                     } else {
                         // No title on other pages
                         $mpdf->Image($imagePath, 0, 0, 210, 297, 'jpg', '', true, false);
