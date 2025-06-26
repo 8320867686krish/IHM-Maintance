@@ -1,7 +1,7 @@
 <?php
 namespace App\Exports;
 
-use App\Models\PoOrder;
+use App\Models\poOrder;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 
