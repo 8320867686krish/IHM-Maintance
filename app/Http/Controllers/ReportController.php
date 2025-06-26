@@ -180,7 +180,7 @@ class ReportController extends Controller
         $header = '
         <table width="100%" style="vertical-align: middle; font-family: serif; font-size: 9pt; color: #000088;">
             <tr>
-                <td width="10%"><img src=' . $logo . ' width="100" /></td>
+                <td width="10%"><img src=' . $logo . ' width="50" /></td>
                 <td width="75%" align="center">' . $projectDetail['ship_name'] . '</td>
                 <td width="15%" style="text-align: right;">&nbsp;</td>
         </tr>
@@ -211,7 +211,7 @@ class ReportController extends Controller
         $mpdf->WriteHTML($stylesheet, \Mpdf\HTMLParserMode::HEADER_CSS);
         $shipImagePath = public_path('uploads/ship/orignal/' . $projectDetail['orignal_image']);
 
-        $html = view('main-report.cover', compact('projectDetail', 'shipImagePath', 'from_date', 'to_date'))->render();
+        $html = view('main-report.cover', compact('projectDetail', 'shipImagePath','from_date','to_date'))->render();
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
 
         $mpdf->TOCpagebreakByArray([
@@ -258,7 +258,7 @@ class ReportController extends Controller
             return $item->ihm_part_table == 'i-3';
         });
 
-        $html = view('report.Inventory', compact('filteredResults1', 'filteredResults2', 'filteredResults3'));
+        $html = view('main-report.IHMPart', compact('filteredResults1', 'filteredResults2', 'filteredResults3'));
 
         $mpdf->AddPage('L'); // Set landscape mode for the inventory page
 
@@ -290,8 +290,8 @@ class ReportController extends Controller
 
                     $mpdf->AddPage($html['ori']);
                     if ($key == 0) {
-                        $mpdf->WriteHTML('<h5 style="font-size:14px">3.2 Location Diagram of Contained HazMat & PCHM.</h5>');
-                    
+                        $mpdf->WriteHTML('<h5 style="font-size:14px">3.1 Location Diagram of Contained HazMat & PCHM.</h5>');
+                    }
                     $mpdf->WriteHTML('<h5 style="font-size:14px;">Area: ' . $value['name'] . '</h5>');
 
                     $templateId = $mpdf->importPage($i);
@@ -317,7 +317,7 @@ class ReportController extends Controller
                     Carbon::parse($to_date)->endOfDay(),
                 ]);
             })->get();
-        $ga_plan_pdf = $ship_id . "/" . $projectDetail['ga_plan_pdf'];
+        $ga_plan_pdf = $ship_id . "/" . $shipDetail['ga_plan_pdf'];
         $gaplan =  public_path('shipsVscp/' . $ga_plan_pdf);
         $index = 1;
         if (file_exists($gaplan)) {
@@ -337,7 +337,7 @@ class ReportController extends Controller
         }
         $sectionText = '4 IHM Maintance Report';
         $mpdf->AddPage('P');
-        $html = view('main-report.ihmpartMaintance1', compact('sectionText', 'projectDetail', 'from_date', 'to_date'))->render();
+        $html = view('main-report.ihmpartMaintance1', compact('sectionText','projectDetail','from_date','to_date'))->render();
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
 
         // //Addended IHM Part
