@@ -6,8 +6,8 @@
             <thead>
                 <tr>
                     <th>SR NO</th>
-                    <th>Designated Person</th>
-                    <th>Designation</th>
+                    <th width="25%">Designated Person</th>
+                    <th width="25%">Designation</th>
                     <th>Date of Joining</th>
                     <th>Date of Training</th>
 

@@ -46,8 +46,8 @@
                 <thead>
                     <tr>
                         <th>SR No</th>
-                        <th>Name</th>
-                        <th>Designation</th>
+                        <th  width="25%">Name</th>
+                        <th  width="25%">Designation</th>
                         <th>Stat/Sign On Date</th>
                         <th>End/Sign Off Date</th>
                     </tr>
