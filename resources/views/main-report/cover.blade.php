@@ -3,13 +3,9 @@
         <h1 style="padding-top: 10px;">
             IHM Maintenance report of : {{$projectDetail['ship_name']}}
         </h1>
-
-
-
         <h4 style="padding-top: 1px;">IMO No: {{$projectDetail['imo_number']}}</h4>
-
         <h4 style="padding-top: 1px;">Report Number: {{$projectDetail['report_number']}}</h4>
-        <h4 style="padding-top: 1px;">Report Duration From: 20/05/2025 To 30/05/2025</h4>
+        <h4 style="padding-top: 1px;">Report Duration From: {{$from_date}} To {{$to_date}}</h4>
     </div>
     <div style="margin-auto:0;text-align:center">
         <img src="{{  @$shipImagePath }}" alt="Your Image">

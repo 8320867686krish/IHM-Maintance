@@ -211,7 +211,7 @@ class ReportController extends Controller
         $mpdf->WriteHTML($stylesheet, \Mpdf\HTMLParserMode::HEADER_CSS);
         $shipImagePath = public_path('uploads/ship/orignal/' . $projectDetail['orignal_image']);
 
-        $html = view('main-report.cover', compact('projectDetail', 'shipImagePath'))->render();
+        $html = view('main-report.cover', compact('projectDetail', 'shipImagePath','from_date','to_date'))->render();
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
 
         $mpdf->TOCpagebreakByArray([
@@ -233,7 +233,7 @@ class ReportController extends Controller
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
 
         $sectionText = '3 Initial IHM Part1 Summary Report';
-        $html        = view('main-report.ihmpart1', compact('sectionText', 'projectDetail'))->render();
+        $html = view('main-report.ihmpart1', compact('sectionText', 'projectDetail'))->render();
         $mpdf->AddPage('P');
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
 
@@ -317,11 +317,11 @@ class ReportController extends Controller
                     Carbon::parse($to_date)->endOfDay(),
                 ]);
             })->get();
-        $ga_plan_pdf = $ship_id . "/" . $projectDetail['ga_plan_pdf'];
-        $gaplan      = public_path('uploads/shipsVscp/' . $ga_plan_pdf);
-        $index       = 1;
+        $ga_plan_pdf = $ship_id . "/" . $shipDetail['ga_plan_pdf'];
+        $gaplan =  public_path('shipsVscp/' . $ga_plan_pdf);
+        $index = 1;
         if (file_exists($gaplan)) {
-            $titleHtml = '<h4 style="text-align:center;font-size:12pt;">' . $index . '. GA PLAN</h4>';
+            $titleHtml = '<h3 style="text-align:center;font-size:12pt;">' . $index . '. GA PLAN</h3>';
             $this->mergePdfAsImages($gaplan, $titleHtml, $mpdf);
             $index++;
         }
