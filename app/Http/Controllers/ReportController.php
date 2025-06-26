@@ -145,10 +145,10 @@ class ReportController extends Controller
         $projectDetail  = Ship::with('client.hazmatCompaniesId')->find($ship_id);
         $shipDetail     = $projectDetail;
         $is_report_logo = $projectDetail['client']['is_report_logo'];
-        if(@$post['till_today']){
+        if (@$post['till_today']) {
             $till_today = 1;
-        }else{
-             $till_today = 0;
+        } else {
+            $till_today = 0;
         }
         if ($is_report_logo == 0) {
             $image = $projectDetail['client']['hazmatCompaniesId']['logo'];
@@ -216,7 +216,7 @@ class ReportController extends Controller
         $mpdf->WriteHTML($stylesheet, \Mpdf\HTMLParserMode::HEADER_CSS);
         $shipImagePath = public_path('uploads/ship/orignal/' . $projectDetail['orignal_image']);
 
-        $html = view('main-report.cover', compact('projectDetail', 'shipImagePath','from_date','to_date','till_today'))->render();
+        $html = view('main-report.cover', compact('projectDetail', 'shipImagePath', 'from_date', 'to_date', 'till_today'))->render();
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
 
         $mpdf->TOCpagebreakByArray([
@@ -269,17 +269,18 @@ class ReportController extends Controller
 
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
 
-        $decks = Deck::with(['checks' => function ($query) use ($from_date, $to_date) {
+        $decks = Deck::with(['checks' => function ($query) use ($from_date, $to_date, $till_today) {
             $query->whereHas('hazmats', function ($query) {
                 $query->where('hazmat_type', 'PCHM')
                     ->orWhere('hazmat_type', 'Contained');
             });
-
-            if ($from_date && $to_date) {
-                $query->whereBetween('created_at', [
-                    Carbon::parse($from_date)->startOfDay(),
-                    Carbon::parse($to_date)->endOfDay(),
-                ]);
+            if ($till_today == 0) {
+                if ($from_date && $to_date) {
+                    $query->whereBetween('created_at', [
+                        Carbon::parse($from_date)->startOfDay(),
+                        Carbon::parse($to_date)->endOfDay(),
+                    ]);
+                }
             }
         }])
             ->where('ship_id', $ship_id)
@@ -327,7 +328,7 @@ class ReportController extends Controller
         $index = 1;
         if (file_exists($gaplan)) {
             $titleHtml = '<h4 style="text-align:center;font-size:12pt;">' . $index . '. GA PLAN</h4>';
-            $this->mergePdfAsImages($gaplan,$titleHtml,$mpdf);
+            $this->mergePdfAsImages($gaplan, $titleHtml, $mpdf);
             $index++;
         }
         if (@$summary) {
@@ -342,14 +343,15 @@ class ReportController extends Controller
         }
         $sectionText = '4 IHM Maintance Report';
         $mpdf->AddPage('P');
-        $html = view('main-report.ihmpartMaintance1', compact('sectionText','projectDetail','from_date','to_date','till_today'))->render();
+        $html = view('main-report.ihmpartMaintance1', compact('sectionText', 'projectDetail', 'from_date', 'to_date', 'till_today'))->render();
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
 
         // //Addended IHM Part
         $checkHazmatIHMAddendum = PoOrderItemsHazmats::with('hazmat')
             ->where('ship_id', $ship_id)
             ->whereNotNull('ihm_table_type')
-            ->when($from_date && $to_date, function ($query) use ($from_date, $to_date) {
+            ->when($till_today == 0 && $from_date && $to_date, function ($query) use ($from_date, $to_date) {
+
                 $query->whereBetween('created_at', [
                     Carbon::parse($from_date)->startOfDay(),
                     Carbon::parse($to_date)->endOfDay(),
@@ -373,7 +375,7 @@ class ReportController extends Controller
 
         $designatedPersonShip = DesignatedPersionShip::with('designatedPersonDetail')
             ->where('ship_id', $ship_id)
-            ->when($from_date && $to_date, function ($query) use ($from_date, $to_date) {
+            ->when($till_today == 0 && $from_date && $to_date, function ($query) use ($from_date, $to_date) {
                 $query->whereBetween('created_at', [
                     Carbon::parse($from_date)->startOfDay(),
                     Carbon::parse($to_date)->endOfDay(),
@@ -389,7 +391,7 @@ class ReportController extends Controller
             return $item->position != 'SuperDp';
         });
         $previousAttachment = PreviousAttachment::where('ship_id', $ship_id)
-            ->when($from_date && $to_date, function ($query) use ($from_date, $to_date) {
+            ->when($till_today == 0 && $from_date && $to_date, function ($query) use ($from_date, $to_date) {
                 $query->whereBetween('created_at', [
                     Carbon::parse($from_date)->startOfDay(),
                     Carbon::parse($to_date)->endOfDay(),
@@ -403,7 +405,7 @@ class ReportController extends Controller
         // //shipstaff recored
 
         $exam = Exam::where('ship_id', $ship_id)
-            ->when($from_date && $to_date, function ($query) use ($from_date, $to_date) {
+            ->when($till_today == 0 && $from_date && $to_date, function ($query) use ($from_date, $to_date) {
                 $query->whereBetween('created_at', [
                     Carbon::parse($from_date)->startOfDay(),
                     Carbon::parse($to_date)->endOfDay(),
@@ -416,7 +418,8 @@ class ReportController extends Controller
         $mdnoresults = PoOrderItemsHazmats::with(['makeModel:id,md_no,document1'])
             ->where('ship_id', $ship_id)
             ->whereNotNull('doc1')
-            ->when($from_date && $to_date, function ($query) use ($from_date, $to_date) {
+            ->when($till_today == 0 && $from_date && $to_date, function ($query) use ($from_date, $to_date) {
+
                 $query->whereBetween('created_at', [
                     Carbon::parse($from_date)->startOfDay(),
                     Carbon::parse($to_date)->endOfDay(),
@@ -430,7 +433,8 @@ class ReportController extends Controller
         $sdocresults = PoOrderItemsHazmats::with(['makeModel:id,sdoc_no,document2,sdoc_date'])
             ->where('ship_id', $ship_id)
             ->whereNotNull('doc2')
-            ->when($from_date && $to_date, function ($query) use ($from_date, $to_date) {
+            ->when($till_today == 0 && $from_date && $to_date, function ($query) use ($from_date, $to_date) {
+
                 $query->whereBetween('created_at', [
                     Carbon::parse($from_date)->startOfDay(),
                     Carbon::parse($to_date)->endOfDay(),
@@ -441,7 +445,7 @@ class ReportController extends Controller
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
 
         $counts = poOrderItem::select('type_category', DB::raw('COUNT(*) as total'))
-            ->when($from_date && $to_date, function ($query) use ($from_date, $to_date) {
+            ->when($till_today == 0 && $from_date && $to_date, function ($query) use ($from_date, $to_date) {
                 $query->whereBetween('created_at', [
                     Carbon::parse($from_date)->startOfDay(),
                     Carbon::parse($to_date)->endOfDay(),
