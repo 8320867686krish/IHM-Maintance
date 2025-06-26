@@ -133,36 +133,62 @@
 
 
         </div>
-        
-            <div class="row">
-                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                    <div class="card">
-                        <div class="card-body mb-4">
-                            <h5>MD & SD Recort Report</h5>
-                            <div class="col-12">
-                                <div class="form-group">
-                                    <a href="{{ url('md-sd-records/'.$ship->id) }}" target="_blank"><button class="btn btn-primary float-right mb-3" id="genratereportbtn">Download MD & SD </button></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
-            <div class="row">
-                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                    <div class="card">
-                        <div class="card-body mb-4">
-                            <h5>Po Order History</h5>
-                            <div class="col-12">
-                                <div class="form-group">
-                                    <a href="{{ url('poorder-history-export/'.$ship->id) }}" target="_blank"><button class="btn btn-primary float-right mb-3" id="genratereportbtn">Download PO History </button></a>
+        <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="card">
+                    <div class="card-body mb-4">
+                        <h5>MD & SD Recort Report</h5>
+                        <form id="generateMdForm" action="{{route('md&sd')}}" method="POST">
+                            @csrf
+                            <span class="dashboard-spinner spinner-sm" id="spinShowMd" style="display: none;  position: absolute;top: 50%;left: 35%;transform: translate(-50%, -50%);z-index:999999"></span>
+                            <div class="row">
+                                <div class="form-group col-4 mb-3">
+                                    <label for="assign_date">
+                                        From Date<span class="text-danger">*</span></label>
+                                    <input type="date" class="form-control form-control-lg" id="from_date" value="" name="from_date" autocomplete="off" onchange="updateToDate()">
+                                    <div class="invalid-feedback error" id="po_noError"></div>
                                 </div>
+
+                                <div class="form-group col-4 mb-3">
+                                    <label for="assign_date">
+                                        To Date<span class="text-danger">*</span></label>
+                                    <input type="date" class="form-control form-control-lg" id="to_date" value="" name="to_date" autocomplete="off" onchange="removeInvalidClass(this)">
+                                    <div class="invalid-feedback error" id="po_noError"></div>
+                                </div>
+                                <div class="form-group col-4 mb-3 mt-4 text-center">
+
+                                    <label class="custom-control custom-checkbox custom-control-inline">
+                                        <input type="checkbox" name="till_today" class="custom-control-input" id="till_today" value="1"><span class="custom-control-label">Till Today</span>
+                                    </label>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <button class="btn btn-primary float-right mb-3" type="submit" id="downloadMdSd">Download MD & SDOC</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="card">
+                    <div class="card-body mb-4">
+                        <h5>Po Order History</h5>
+                        <div class="col-12">
+                            <div class="form-group">
+                                <a href="{{ url('poorder-history-export/'.$ship->id) }}" target="_blank"><button class="btn btn-primary float-right mb-3" id="genratereportbtn">Download PO History </button></a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
     </div>
     <div class="main-content container-fluid p-0" id="assign_project" style="display: none;">
 

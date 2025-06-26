@@ -436,5 +436,70 @@
 
         });
     });
+     $('#generateMdForm').submit(function(event) {
+        $(".bg-overlay").show();
+        var ship_id = "{{$ship_id}}";
+        event.preventDefault(); // Prevent default form submission
+        let $submitButton = $('#downloadMdSd');
+
+        let originalText = $submitButton.html();
+
+
+        // Show loading spinner and disable the submit button
+        $('#spinShowMd').show();
+        $submitButton.text('Wait...');
+        $submitButton.prop('disabled', true);
+
+        let formData = new FormData(this);
+        formData.append('ship_id', ship_id); // Add action to formData
+
+        $.ajax({
+            url: $(this).attr('action'),
+            type: 'POST',
+            data: formData,
+            contentType: false,
+            processData: false,
+            xhrFields: {
+                responseType: 'blob' // Important
+            },
+            success: function(response, status, xhr) {
+                let fileName = xhr.getResponseHeader('X-File-Name');
+                $(".bg-overlay").hide();
+                if (!fileName) {
+                    console.log("dd");
+                    fileName = projectId + '.pdf';
+                }
+                // Create a Blob from the response
+                let blob = new Blob([response], {
+                    type: 'application/pdf'
+                });
+                let url = URL.createObjectURL(blob);
+
+                // Create a link element and trigger a download
+                let a = document.createElement('a');
+                a.href = url;
+                a.download = fileName; // Set the file name
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+
+                // Hide loading spinner and re-enable the submit button
+                $('#spinShowMd').hide();
+                $submitButton.text(originalText);
+                $submitButton.prop('disabled', false);
+
+                // Revoke the object URL after the download
+                URL.revokeObjectURL(url);
+            },
+            error: function(xhr, status, error) {
+                console.error('Error:', error);
+                // Handle errors or show an error message
+                $('#spinShowMd').hide();
+                $submitButton.text(originalText);
+                $submitButton.prop('disabled', false);
+            }
+
+        });
+    });
 </script>
 @endpush

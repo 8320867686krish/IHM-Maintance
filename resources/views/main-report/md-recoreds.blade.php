@@ -8,8 +8,8 @@
                     <th>Issue Date</th>
                     <th>MD-ID-No</th>
                     <th>Supplier Information</th>
-                    <th>Product Informatio</th>
-                    <th>Contained Material Informatio</th>
+                    <th>Product Information</th>
+                    <th>Contained Material Information</th>
                 </tr>
             </thead>
             <tbody>

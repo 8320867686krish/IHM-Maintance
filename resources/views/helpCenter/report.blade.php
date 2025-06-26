@@ -174,7 +174,7 @@
                             </div>
                             <div class="col-12">
                                 <div class="form-group">
-                                    <button class="btn btn-primary float-right mb-3" type="submit" id="downloadMdSd">Download MD & SD</button>
+                                    <button class="btn btn-primary float-right mb-3" type="submit" id="downloadMdSd">Download MD & SDOC</button>
                                 </div>
                             </div>
 
