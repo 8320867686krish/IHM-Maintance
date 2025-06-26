@@ -337,7 +337,7 @@ trait PdfGenerator
 
                     $mpdf->AddPage($page);
 
-                    if ($i === 1 && !empty($title)) {
+                    if (@$title) {
                         $mpdf->WriteHTML($title);
                     }
 

@@ -145,6 +145,11 @@ class ReportController extends Controller
         $projectDetail  = Ship::with('client.hazmatCompaniesId')->find($ship_id);
         $shipDetail     = $projectDetail;
         $is_report_logo = $projectDetail['client']['is_report_logo'];
+        if(@$post['till_today']){
+            $till_today = 1;
+        }else{
+             $till_today = 0;
+        }
         if ($is_report_logo == 0) {
             $image = $projectDetail['client']['hazmatCompaniesId']['logo'];
             $logo  = public_path('uploads/hazmatCompany/' . $image);
@@ -178,7 +183,7 @@ class ReportController extends Controller
 
         // Define header content with logo
         $header = '
-        <table width="100%" style="vertical-align: middle; font-family: serif; font-size: 9pt; color: #000088;">
+        <table width="100%" style="vertical-align: middle; font-family: serif; font-size: 12pt; color: #000088;">
             <tr>
                 <td width="10%"><img src=' . $logo . ' width="50" /></td>
                 <td width="75%" align="center">' . $projectDetail['ship_name'] . '</td>
@@ -211,7 +216,7 @@ class ReportController extends Controller
         $mpdf->WriteHTML($stylesheet, \Mpdf\HTMLParserMode::HEADER_CSS);
         $shipImagePath = public_path('uploads/ship/orignal/' . $projectDetail['orignal_image']);
 
-        $html = view('main-report.cover', compact('projectDetail', 'shipImagePath','from_date','to_date'))->render();
+        $html = view('main-report.cover', compact('projectDetail', 'shipImagePath','from_date','to_date','till_today'))->render();
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
 
         $mpdf->TOCpagebreakByArray([
@@ -322,7 +327,7 @@ class ReportController extends Controller
         $index = 1;
         if (file_exists($gaplan)) {
             $titleHtml = '<h4 style="text-align:center;font-size:12pt;">' . $index . '. GA PLAN</h4>';
-            $this->mergePdfAsImages($gaplan, $titleHtml, $mpdf);
+            $this->mergePdfAsImages($gaplan,$titleHtml,$mpdf);
             $index++;
         }
         if (@$summary) {
@@ -337,7 +342,7 @@ class ReportController extends Controller
         }
         $sectionText = '4 IHM Maintance Report';
         $mpdf->AddPage('P');
-        $html = view('main-report.ihmpartMaintance1', compact('sectionText','projectDetail','from_date','to_date'))->render();
+        $html = view('main-report.ihmpartMaintance1', compact('sectionText','projectDetail','from_date','to_date','till_today'))->render();
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
 
         // //Addended IHM Part
