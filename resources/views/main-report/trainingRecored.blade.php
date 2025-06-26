@@ -7,7 +7,9 @@
                 <tr>
                     <th>SR NO</th>
                     <th>Designated Person</th>
-                    <th>Date</th>
+                    <th>Designation</th>
+                    <th>Date of Joining</th>
+                    <th>Date of Training</th>
 
                 </tr>
             </thead>
@@ -17,6 +19,8 @@
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
+                     <td>&nbsp;</td>
+                    <td>&nbsp;</td>
 
                 </tr>
                 @else
@@ -24,6 +28,8 @@
                 <tr>
                     <td>{{$loop->iteration}}</td>
                     <td>{{$history->designated_name}}</td>
+                    <td>{{$history['designatedPersonDetail']['position']}}</td>
+                    <td>{{ \Carbon\Carbon::parse($history['designatedPersonDetail']['sign_on_date'])->format('d/m/Y') }}</td>
                     <td>{{ $history->created_at->format('d/m/Y') }}</td>
 
 

@@ -17,4 +17,8 @@ class Exam extends Model
         'designated_person_id',
         'designated_name'
     ];
+    public function designatedPersonDetail(){
+        return $this->belongsTo(DesignatedPerson::class,'designated_person_id','id');
+
+    }
 }

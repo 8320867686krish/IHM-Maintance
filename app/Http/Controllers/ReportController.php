@@ -402,7 +402,7 @@ class ReportController extends Controller
 
         // //shipstaff recored
 
-        $exam = Exam::where('ship_id', $ship_id)
+        $exam = Exam::with('designatedPersonDetail')->where('ship_id', $ship_id)
             ->when((int)$till_today === 0 && $from_date && $to_date, function ($query) use ($from_date, $to_date) {
                 $query->whereBetween('created_at', [
                     Carbon::parse($from_date)->startOfDay(),
