@@ -107,7 +107,7 @@ class ReportController extends Controller
         // Load main HTML content
         $mpdf->h2toc       = ['H2' => 0, 'H3' => 1];
         $mpdf->h2bookmarks = ['H2' => 0, 'H3' => 1];
-        $stylesheet        = file_get_contents('assets/mpdf.css');
+        $stylesheet        = file_get_contents('public/assets/mpdf.css');
         $mpdf->WriteHTML($stylesheet, \Mpdf\HTMLParserMode::HEADER_CSS);
         $shipImagePath = public_path('uploads/ship/orignal/' . $projectDetail['orignal_image']);
 
