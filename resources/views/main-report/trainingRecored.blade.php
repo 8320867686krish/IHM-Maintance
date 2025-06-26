@@ -56,7 +56,7 @@
 
                 </tr>
                 @else
-                @foreach($brifingHistory as $history)
+                @foreach($brifingHistory as $historyValue)
                 <tr>
                     <td>{{$loop->iteration}}</td>
                     <td>{{$historyValue->number_of_attendance}}</td>
