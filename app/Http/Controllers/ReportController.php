@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\POHistoryExport;
+use App\Models\Brifing;
 use App\Models\CheckHazmat;
 use App\Models\Deck;
 use App\Models\DesignatedPersionShip;
@@ -413,7 +414,17 @@ class ReportController extends Controller
             })
             ->orderBy('id', 'desc')
             ->get();
-        $html = view('main-report.trainingRecored', compact('exam'))->render();
+        $brifingHistory = Brifing::with('DesignatedPersonDetail:id,name')
+            ->where('ship_id', $ship_id)
+            ->when($till_today == 0 && $from_date && $to_date, function ($query) use ($from_date, $to_date) {
+                $query->whereBetween('created_at', [
+                    Carbon::parse($from_date)->startOfDay(),
+                    Carbon::parse($to_date)->endOfDay(),
+                ]);
+            })
+            ->orderBy('id', 'desc') // Correct placement of orderBy
+            ->get();
+        $html = view('main-report.trainingRecored', compact('exam','brifingHistory'))->render();
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
         $mdnoresults = PoOrderItemsHazmats::with(['makeModel:id,md_no,document1'])
             ->where('ship_id', $ship_id)
