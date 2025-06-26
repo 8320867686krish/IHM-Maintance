@@ -275,7 +275,7 @@ class ReportController extends Controller
                 $query->where('hazmat_type', 'PCHM')
                     ->orWhere('hazmat_type', 'Contained');
             });
-            if ($till_today == 0) {
+            if ((int)$till_today === 0) {
                 if ($from_date && $to_date) {
                     $query->whereBetween('created_at', [
                         Carbon::parse($from_date)->startOfDay(),
@@ -351,7 +351,7 @@ class ReportController extends Controller
         $checkHazmatIHMAddendum = PoOrderItemsHazmats::with('hazmat')
             ->where('ship_id', $ship_id)
             ->whereNotNull('ihm_table_type')
-            ->when($till_today == 0 && $from_date && $to_date, function ($query) use ($from_date, $to_date) {
+            ->when((int)$till_today === 0 && $from_date && $to_date, function ($query) use ($from_date, $to_date) {
 
                 $query->whereBetween('created_at', [
                     Carbon::parse($from_date)->startOfDay(),
@@ -376,7 +376,7 @@ class ReportController extends Controller
 
         $designatedPersonShip = DesignatedPersionShip::with('designatedPersonDetail')
             ->where('ship_id', $ship_id)
-            ->when($till_today == 0 && $from_date && $to_date, function ($query) use ($from_date, $to_date) {
+            ->when((int)$till_today === 0 && $from_date && $to_date, function ($query) use ($from_date, $to_date) {
                 $query->whereBetween('created_at', [
                     Carbon::parse($from_date)->startOfDay(),
                     Carbon::parse($to_date)->endOfDay(),
@@ -392,7 +392,7 @@ class ReportController extends Controller
             return $item->position != 'SuperDp';
         });
         $previousAttachment = PreviousAttachment::where('ship_id', $ship_id)
-            ->when($till_today == 0 && $from_date && $to_date, function ($query) use ($from_date, $to_date) {
+            ->when((int)$till_today === 0 && $from_date && $to_date, function ($query) use ($from_date, $to_date) {
                 $query->whereBetween('created_at', [
                     Carbon::parse($from_date)->startOfDay(),
                     Carbon::parse($to_date)->endOfDay(),
@@ -406,7 +406,7 @@ class ReportController extends Controller
         // //shipstaff recored
 
         $exam = Exam::where('ship_id', $ship_id)
-            ->when($till_today == 0 && $from_date && $to_date, function ($query) use ($from_date, $to_date) {
+            ->when((int)$till_today === 0 && $from_date && $to_date, function ($query) use ($from_date, $to_date) {
                 $query->whereBetween('created_at', [
                     Carbon::parse($from_date)->startOfDay(),
                     Carbon::parse($to_date)->endOfDay(),
@@ -416,7 +416,7 @@ class ReportController extends Controller
             ->get();
         $brifingHistory = Brifing::with('DesignatedPersonDetail:id,name')
             ->where('ship_id', $ship_id)
-            ->when($till_today == 0 && $from_date && $to_date, function ($query) use ($from_date, $to_date) {
+            ->when((int)$till_today === 0 && $from_date && $to_date, function ($query) use ($from_date, $to_date) {
                 $query->whereBetween('created_at', [
                     Carbon::parse($from_date)->startOfDay(),
                     Carbon::parse($to_date)->endOfDay(),
@@ -429,7 +429,7 @@ class ReportController extends Controller
         $mdnoresults = PoOrderItemsHazmats::with(['makeModel:id,md_no,document1'])
             ->where('ship_id', $ship_id)
             ->whereNotNull('doc1')
-            ->when($till_today == 0 && $from_date && $to_date, function ($query) use ($from_date, $to_date) {
+            ->when((int)$till_today === 0 && $from_date && $to_date, function ($query) use ($from_date, $to_date) {
 
                 $query->whereBetween('created_at', [
                     Carbon::parse($from_date)->startOfDay(),
@@ -444,7 +444,7 @@ class ReportController extends Controller
         $sdocresults = PoOrderItemsHazmats::with(['makeModel:id,sdoc_no,document2,sdoc_date'])
             ->where('ship_id', $ship_id)
             ->whereNotNull('doc2')
-            ->when($till_today == 0 && $from_date && $to_date, function ($query) use ($from_date, $to_date) {
+            ->when((int)$till_today === 0 && $from_date && $to_date, function ($query) use ($from_date, $to_date) {
 
                 $query->whereBetween('created_at', [
                     Carbon::parse($from_date)->startOfDay(),
@@ -456,7 +456,7 @@ class ReportController extends Controller
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
 
         $counts = poOrderItem::select('type_category', DB::raw('COUNT(*) as total'))
-            ->when($till_today == 0 && $from_date && $to_date, function ($query) use ($from_date, $to_date) {
+            ->when((int)$till_today === 0 && $from_date && $to_date, function ($query) use ($from_date, $to_date) {
                 $query->whereBetween('created_at', [
                     Carbon::parse($from_date)->startOfDay(),
                     Carbon::parse($to_date)->endOfDay(),
