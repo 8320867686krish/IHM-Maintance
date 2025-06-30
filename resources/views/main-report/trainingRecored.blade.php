@@ -19,7 +19,7 @@
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
-                     <td>&nbsp;</td>
+                    <td>&nbsp;</td>
                     <td>&nbsp;</td>
 
                 </tr>
@@ -29,12 +29,12 @@
                     <td>{{$loop->iteration}}</td>
                     <td>{{$history->designated_name}}</td>
                     <td>
-                        
-                         @if($history['designatedPersonDetail']['position'] == 'incharge')
-                            Overall-incharge (Captain)
-                            @else
-                            Responsible Person
-                            @endif
+
+                        @if($history['designatedPersonDetail']['position'] == 'incharge')
+                        Overall-incharge (Captain)
+                        @else
+                        Responsible Person
+                        @endif
                     </td>
                     <td>{{ \Carbon\Carbon::parse($history['designatedPersonDetail']['sign_on_date'])->format('d/m/Y') }}</td>
                     <td>{{ $history->created_at->format('d/m/Y') }}</td>
@@ -56,6 +56,7 @@
                     <th>Number Of Attendance</th>
                     <th>Briefing Date</th>
                     <th>Briefed By</th>
+                    <th>AttachMent</th>
 
                 </tr>
             </thead>
@@ -75,7 +76,11 @@
                     <td>{{$historyValue->number_of_attendance}}</td>
                     <td>{{$historyValue->brifing_date}}</td>
                     <td>{{$historyValue['DesignatedPersonDetail']['name']}}</td>
-
+                    @if($historyValue->brifing_document)
+                    <a href="{{ asset('uploads/brifing_document/' . $historyValue['brifing_document']) }}" title="Download" download>
+                        {{$historyValue['brifing_document']}}
+                    </a>
+                    @endif
 
                 </tr>
                 @endforeach

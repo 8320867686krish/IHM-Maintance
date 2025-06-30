@@ -83,11 +83,18 @@ class POOrderController extends Controller
     }
     public function viewReleventItem($poiteam_id)
     {
+            $user = Auth::user();
         $poItem = poOrderItem::with(['poOrder:id,po_no', 'poOrderItemsHazmets.hazmat', 'poOrderItemsHazmets.makeModel', 'poOrderItemsHazmets'])->find($poiteam_id);
+        $currentUserRoleLevel = $user->roles->first()->level;
 
-        $equipments = MakeModel::selectRaw('MIN(id) as id, equipment')
-            ->groupBy('equipment')
-            ->get();
+            $equipmentsQuery = MakeModel::selectRaw('MIN(id) as id, equipment')
+                ->groupBy('equipment');
+
+            if ($currentUserRoleLevel != 1) {
+                $equipmentsQuery->where('hazmat_companies_id', $user->hazmat_companies_id);
+            }
+              $equipments = $equipmentsQuery->get();
+     
         $backurl = 'ships/po-order/add/' . $poItem['ship_id'] . "/" . $poItem['po_order_id'];
         $table_type = Hazmat::select('table_type')->distinct()->pluck('table_type');
         $hazmats = [];

@@ -31,7 +31,7 @@
             <tbody>
                 <tr>
                     <td>Not Contained</td>
-                    <td>No</td>
+                    <td>NC</td>
                     <td>Analysed object has been <br/>found to not contain hazardous material</td>
                 </tr>
 
@@ -49,8 +49,8 @@
 
 
                 <tr>
-                    <td>Contained</td>
-                    <td>Yes</td>
+                    <td>Contained Hazardous Materials</td>
+                    <td>CHM</td>
                     <td>Analysed object contains hazardous material.</td>
                 </tr>
             </tbody>

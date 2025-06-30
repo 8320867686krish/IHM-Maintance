@@ -7,7 +7,6 @@
                 <p>IMO No: {{$projectDetail['imo_number']}}</p>
                 <p>Report Number: {{$projectDetail['report_number']}}</p>
             </div>
-            <h4 style="padding-top:15px;">(PTO)</h4>
         </div>
     </div>
 </div>

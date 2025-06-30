@@ -2,7 +2,7 @@
     <div class="section-1-1">
         <h2> 5. Responsible Parties For IHM Maintance: </h2>
         <div style="padding-top:20px;padding-bottom:20px;">
-            <h3>5.1 Designated Person On Shore Dp</h3>
+            <h3>5.1 Designated Person's(DP) On Shore</h3>
             <table>
                 <thead>
                     <tr>
@@ -41,13 +41,14 @@
 
 
         <div style="padding-top:20px;padding-bottom:20px;">
-            <h3>5.2 Responsible Person On Board</h3>
+            <h3>5.2 Responsible Person's On Board</h3>
             <table>
                 <thead>
                     <tr>
                         <th>SR No</th>
-                        <th  width="25%">Name</th>
-                        <th  width="25%">Designation</th>
+                        <th width="25%">Name</th>
+                        <th>Rank</th>
+                        <th width="25%">Designation</th>
                         <th>Stat/Sign On Date</th>
                         <th>End/Sign Off Date</th>
                     </tr>
@@ -90,11 +91,11 @@
                 <thead>
                     <tr>
                         <th width="10%">SR No</th>
-                         <th>Maintained By</th>
-                        <th>Attachment Name</th>
+                        <th>Maintained By</th>
+
                         <th>Date From</th>
                         <th>Date Till</th>
-                       
+                        <th>Attachment Name</th>
                         <th>Attachment File</th>
                     </tr>
                 </thead>
@@ -105,9 +106,10 @@
 
                         <td>{{$loop->iteration}}</td>
                         <td>{{$value['maintained_by']}}</td>
-                        <td>{{$value['attachment_name']}}</td>
+                       
                         <td>{{@$value['date_from'] ?? ''}}</td>
                         <td>{{@$value['date_till'] ?? ''}}</td>
+                         <td>{{$value['attachment_name']}}</td>
                         <td>
                             <a href="{{ asset('uploads/previousattachment/' . $value['attachment']) }}" target="_blank">
                                 {{ $value['attachment'] }}

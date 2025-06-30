@@ -15,7 +15,6 @@
                 @endif
 
             </div>
-            <h4 style="padding-top:15px;">(PTO)</h4>
         </div>
     </div>
 </div>

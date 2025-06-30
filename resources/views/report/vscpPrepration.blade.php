@@ -63,7 +63,7 @@
 
                     </tr>
                     <tr>
-                        <td><strong>Hazma Statust</strong></td>
+                        <td><strong>Hazmat Status</strong></td>
                         <td>{{ $check->hazmat_type ?? '' }}</td>
 
                         <td><strong>Hazmat</strong></td>
@@ -75,7 +75,7 @@
                         <td>{{ $check->hazmat->table_type }}</td>
 
                         <td><strong>Name Of Equipment & Machinery</strong></td>
-                        <td>{{ $check->application_of_paint }}</td>
+                        <td>{{ $check->name_of_paint }}</td>
                     </tr>
                     <tr>
 

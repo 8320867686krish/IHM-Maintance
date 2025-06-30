@@ -123,7 +123,7 @@
 
                         <div class="col-12">
                             <div class="form-group">
-                                <button class="btn btn-primary float-right mb-3" type="submit" id="genratereportbtn">Genrate Report</button>
+                                <button class="btn btn-primary float-right mb-3" type="submit" id="genratereportbtn">Download</button>
                             </div>
                         </div>
                     </div>

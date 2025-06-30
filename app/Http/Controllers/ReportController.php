@@ -37,7 +37,6 @@ class ReportController extends Controller
     }
     public function mdSDRecord($post)
     {
-        $version = 1;
 
         $ship_id = $post['ship_id'];
         $logo    = public_path('assets/images/logo.png');
@@ -49,6 +48,7 @@ class ReportController extends Controller
         $shipDetail     = $projectDetail;
         $is_report_logo = $projectDetail['client']['is_report_logo'];
         $till_today = isset($post['till_today']) ? 1 : 0;
+        $version = $projectDetail['current_ihm_version'];
 
         if ($is_report_logo == 0) {
             $image = $projectDetail['client']['hazmatCompaniesId']['logo'];
@@ -95,7 +95,7 @@ class ReportController extends Controller
         <table width="100%" style="vertical-align: bottom; font-family: serif; font-size: 8pt; color: #000000;">
             <tr>
                 <td width="33%" style="text-align: left;">' . $projectDetail['ihm_table'] . '</td>
-                <td width="33%" style="text-align: center;">Revision:' . $version . '</td>
+                <td width="33%" style="text-align: center;">IHM Part1 Revision:' . $version . '</td>
                 <td width="33%" style="text-align: right;">{PAGENO}/{nbpg}</td>
             </tr>
         </table>';
