@@ -119,7 +119,7 @@
                                         onchange="removeInvalidClass(this)">
                                     <label for="level">Briefing Plan <span class="text-danger">*</span></label>
                                     @if(@$hazmatCompany->briefing_plan)
-                                    <a href="{{ url('uploads/briefing_plan/' . $hazmatCompany->briefing_plan) }}" target="_blank" class="ml-1 mt-2">View</a>
+                                    <a href="{{ url('uploads/briefing_plan/' . $hazmatCompany->briefing_plan) }}" target="_blank" class="ml-1">{{$hazmatCompany->briefing_plan}}</a>
                                     @endif
                                     <div class="invalid-feedback error" id="briefing_planError"></div>
 
@@ -133,7 +133,7 @@
                                         onchange="removeInvalidClass(this)">
                                     <label for="level">Training Material <span class="text-danger">*</span></label>
                                     @if(@$hazmatCompany->training_material)
-                                        <a href="{{ url('uploads/training_material/'.$hazmatCompany->training_material) }}" target="_blank" class="ml-1 mt-2">View</a>
+                                        <a href="{{ url('uploads/training_material/'.$hazmatCompany->training_material) }}" target="_blank" class="ml-1 mt-2">{{$hazmatCompany->training_material}}</a>
                                     @endif
                                     <div class="invalid-feedback error" id="training_materialError"></div>
                                 </div>

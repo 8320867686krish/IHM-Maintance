@@ -35,9 +35,8 @@ class ReportController extends Controller
     {
         return Excel::download(new POHistoryExport, 'po_history.xlsx');
     }
-    public function mdSDRecord(Request $request)
+    public function mdSDRecord($post)
     {
-        $post = $request->input();
         $version = 1;
 
         $ship_id = $post['ship_id'];
@@ -49,7 +48,7 @@ class ReportController extends Controller
         $projectDetail  = Ship::with('client.hazmatCompaniesId')->find($ship_id);
         $shipDetail     = $projectDetail;
         $is_report_logo = $projectDetail['client']['is_report_logo'];
-        $till_today = $request->has('till_today') ? 1 : 0;
+        $till_today = isset($post['till_today']) ? 1 : 0;
 
         if ($is_report_logo == 0) {
             $image = $projectDetail['client']['hazmatCompaniesId']['logo'];
@@ -111,7 +110,7 @@ class ReportController extends Controller
         $mpdf->WriteHTML($stylesheet, \Mpdf\HTMLParserMode::HEADER_CSS);
         $shipImagePath = public_path('uploads/ship/orignal/' . $projectDetail['orignal_image']);
 
-        $html = view('mdReport.cover', compact('projectDetail', 'shipImagePath','from_date', 'to_date', 'till_today'))->render();
+        $html = view('mdReport.cover', compact('projectDetail', 'shipImagePath', 'from_date', 'to_date', 'till_today'))->render();
 
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
 
@@ -130,7 +129,7 @@ class ReportController extends Controller
         $mdnoresults = PoOrderItemsHazmats::with(['makeModel.hazmat'])
             ->where('ship_id', $ship_id)
             ->whereNotNull('doc1')
-             ->when($till_today == 0 && $from_date && $to_date, function ($query) use ($from_date, $to_date) {
+            ->when($till_today == 0 && $from_date && $to_date, function ($query) use ($from_date, $to_date) {
 
                 $query->whereBetween('created_at', [
                     Carbon::parse($from_date)->startOfDay(),
@@ -210,6 +209,9 @@ class ReportController extends Controller
     {
         $version = 1;
         $post    = $request->input();
+        if ($post['report_type'] == 'download_md_sdoc') {
+            return  $this->mdSDRecord($post);
+        }
         $ship_id = $post['ship_id'];
         $logo    = public_path('assets/images/logo.png');
 
