@@ -60,6 +60,7 @@
 
                         <td>{{$loop->iteration}}</td>
                         <td>{{$value['name']}}</td>
+                        <td>{{$value['rank']}}</td>
                         <td>
                             @if($value['position'] == 'incharge')
                             Overall-incharge (Captain)
