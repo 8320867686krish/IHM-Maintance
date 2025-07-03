@@ -24,7 +24,7 @@
                 Ships (SR/CONF 45),Guidelines for the Preparation of Inventory of Hazardous Material(MEPC Res. 269(68)) </li>
             <li>EU Regulation on Ship Recycling (EU-SRR No. 1257/2013)</li>
             <li>2023 GUIDELINES FOR THE DEVELOPMENT OF THE INVENTORY OF HAZARDOUS MATERIALS , resolution MEPC.379(80)</li>
-            <li>EMSA’s Best Practice Guidance on the Inventory of Hazardous Materials/li>
+            <li>EMSA’s Best Practice Guidance on the Inventory of Hazardous Materials</li>
         </ul>
     </div>
 </div>

@@ -311,7 +311,7 @@ class ReportController extends Controller
         $html    = view('main-report.abbreviation', compact('hazmats'))->render();
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
 
-        $sectionText = '3 Initial IHM Part1 Summary Report';
+        $sectionText = '3. Initial IHM Part1 Summary Report';
         $html = view('main-report.ihmpart1', compact('sectionText', 'projectDetail'))->render();
         $mpdf->AddPage('P');
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
@@ -415,7 +415,7 @@ class ReportController extends Controller
                 }
             }
         }
-        $sectionText = '4 IHM Maintance Report';
+        $sectionText = '4. IHM Maintance Report';
         $mpdf->AddPage('P');
         $html = view('main-report.ihmpartMaintance1', compact('sectionText', 'projectDetail', 'from_date', 'to_date', 'till_today'))->render();
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
