@@ -500,7 +500,7 @@ class ReportController extends Controller
             ->get();
         $html = view('main-report.trainingRecored', compact('exam', 'brifingHistory'))->render();
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
-        $mdnoresults = PoOrderItemsHazmats::with(['makeModel:hazmat'])
+        $mdnoresults = PoOrderItemsHazmats::with(['makeModel.   hazmat'])
             ->where('ship_id', $ship_id)
             ->whereNotNull('doc1')
             ->when($till_today == 0 && $from_date && $to_date, function ($query) use ($from_date, $to_date) {
