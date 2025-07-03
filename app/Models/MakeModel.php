@@ -32,7 +32,9 @@ class MakeModel extends Model
         "telephone_number",
         "fax_number",
         "email_address",
-        "sdoc_id_no"
+        "sdoc_id_no",
+        "md_qty",
+        "md_unit"
     ];
 
     protected $hidden = ['created_at', 'updated_at'];

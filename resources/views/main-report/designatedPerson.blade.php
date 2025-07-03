@@ -108,8 +108,8 @@
                         <td>{{$loop->iteration}}</td>
                         <td>{{$value['maintained_by']}}</td>
                        
-                        <td>{{@$value['date_from'] ?? ''}}</td>
-                        <td>{{@$value['date_till'] ?? ''}}</td>
+                        <td>{{@$value['date_from'] ?? '-'}}</td>
+                        <td>{{@$value['date_till'] ?? '-'}}</td>
                          <td>{{$value['attachment_name']}}</td>
                         <td>
                             <a href="{{ asset('uploads/previousattachment/' . $value['attachment']) }}" target="_blank">

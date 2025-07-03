@@ -325,9 +325,10 @@
                                         <th width="5%">Sr.No</th>
                                         <th width="18%">Maintained By</th>
 
-                                        <th>Attachment Name</th>
+                                       
                                         <th width="15%">Date From</th>
                                         <th width="15%">Date Till</th>
+                                         <th>Attachment Name</th>
                                         <th width="15%">Action</th>
                                     </tr>
                                 </thead>

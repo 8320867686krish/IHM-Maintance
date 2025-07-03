@@ -135,6 +135,22 @@
                                 </div>
                             </div>
 
+                             <div class="col-sm-6 col-md-6 mt-3">
+                                <div class="form-group">
+                                    <label for="part">Qty <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="md_qty" name="md_qty" value="{{ old('md_qty', $model->md_qty ?? '') }}" autocomplete="off" onchange="removeInvalidClass(this)">
+                                    <div class="invalid-feedback error" id="partError"></div>
+                                </div>
+                            </div>
+
+                             <div class="col-sm-6 col-md-6 mt-3">
+                                <div class="form-group">
+                                    <label for="part">Unit <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="md_unit" name="md_unit" value="{{ old('md_unit', $model->md_unit ?? '') }}" autocomplete="off" onchange="removeInvalidClass(this)">
+                                    <div class="invalid-feedback error" id="partError"></div>
+                                </div>
+                            </div>
+
                            
                         </div>
                         <hr/>
