@@ -111,14 +111,14 @@
                     <tr>
                         <td colspan="2" class="img-cell">
                             @if($check->check->close_image)
-                            <img src="{{ $check->check->close_image }}" alt="Close Image">
+                            <img src="{{ $check->check->close_image }}" alt="Close Image" height="300px" width="300px">
                             @else
                             <span>No image available</span>
                             @endif
                         </td>
                         <td colspan="2" class="img-cell">
                             @if($check->check->away_image)
-                            <img src="{{ $check->check->away_image }}" alt="Away Image">
+                            <img src="{{ $check->check->away_image }}" alt="Away Image" height="300px" width="300px">
                             @else
                             <span>No image available</span>
                             @endif
