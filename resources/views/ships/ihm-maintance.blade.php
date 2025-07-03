@@ -64,7 +64,7 @@
                     </div>
                 </div>
             </div>
-              <div class="card">
+            <div class="card">
                 <div class="card-header" id="headingmacrew">
                     <h5 class="mb-0">
                         <button class="btn btn-link collapsed d-flex justify-content-between w-100" data-toggle="collapse" data-target="#collapsemacrew" aria-expanded="false" aria-controls="collapsemacrew">
@@ -76,7 +76,7 @@
                 </div>
                 <div id="collapsemacrew" class="collapse" aria-labelledby="headingmacrew" data-parent="#accordion">
                     <div class="card-body mb-4">
-                    <button class="btn btn-primary float-right mb-4" type="button" id="startBrifing">Start Briefing
+                        <button class="btn btn-primary float-right mb-4" type="button" id="startBrifing">Start Briefing
                         </button>
                         <div class="table-responsive">
                             <table class="table table-striped table-bordered first">
@@ -99,7 +99,7 @@
                 </div>
             </div>
 
-           
+
             <div class="card">
                 <div class="card-header" id="OnbaordTraining">
                     <h5 class="mb-0">
@@ -144,7 +144,7 @@
                 </div>
             </div>
 
-             <div class="card">
+            <div class="card">
                 <div class="card-header" id="soreDpRecoreds">
                     <h5 class="mb-0">
                         <button class="btn btn-link collapsed d-flex justify-content-between w-100" data-toggle="collapse" data-target="#sordp" aria-expanded="false" aria-controls="soreDpRecoreds">
@@ -187,7 +187,7 @@
                     </div>
                 </div>
             </div>
-          
+
 
             <div class="card">
                 <div class="card-header" id="headingma3">
@@ -325,10 +325,10 @@
                                         <th width="5%">Sr.No</th>
                                         <th width="18%">Maintained By</th>
 
-                                       
+
                                         <th width="15%">Date From</th>
                                         <th width="15%">Date Till</th>
-                                         <th>Attachment Name</th>
+                                        <th>Attachment Name</th>
                                         <th width="15%">Action</th>
                                     </tr>
                                 </thead>
@@ -342,7 +342,7 @@
             </div>
 
 
-          
+
 
 
 
@@ -366,14 +366,14 @@
 <script src="{{ asset('assets/js/training.js') }}"></script>
 
 <script>
-   document.addEventListener("DOMContentLoaded", function() {
-    let fileInput = document.getElementById('excel_file');
-    if (fileInput) {
-        fileInput.addEventListener('change', function() {
-            document.getElementById('uploadForm').submit();
-        });
-    }
-});
+    document.addEventListener("DOMContentLoaded", function() {
+        let fileInput = document.getElementById('excel_file');
+        if (fileInput) {
+            fileInput.addEventListener('change', function() {
+                document.getElementById('uploadForm').submit();
+            });
+        }
+    });
 
 
     function updateToDate() {
@@ -444,9 +444,16 @@
 
     //     });
     // });
-     $('#generatePdfForm').submit(function(event) {
+    $('#generatePdfForm').submit(function(event) {
         event.preventDefault(); // Stop normal form submission
+        let fromDate = $('#from_date').val();
+        let toDate = $('#to_date').val();
+        let tillToday = $('#till_today').is(':checked');
 
+        if (!fromDate && !toDate && !tillToday) {
+            errorMsg("Please select at least one date or check 'Till Today");
+            return false;
+        }
         $(".bg-overlay").show();
         let ship_id = "{{$ship_id}}";
 
@@ -496,7 +503,7 @@
             }
         });
     });
-     $('#generateMdForm').submit(function(event) {
+    $('#generateMdForm').submit(function(event) {
         $(".bg-overlay").show();
         var ship_id = "{{$ship_id}}";
         event.preventDefault(); // Prevent default form submission

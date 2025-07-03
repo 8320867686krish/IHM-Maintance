@@ -153,7 +153,14 @@
     });
     $('#generatePdfForm').submit(function(event) {
         event.preventDefault(); // Stop normal form submission
+        let fromDate = $('#from_date').val();
+        let toDate = $('#to_date').val();
+        let tillToday = $('#till_today').is(':checked');
 
+        if (!fromDate && !toDate && !tillToday) {
+            errorMsg("Please select at least one date or check 'Till Today");
+            return false;
+        }
         $(".bg-overlay").show();
         let ship_id = "{{$ship_id}}";
 
