@@ -15,21 +15,27 @@
         margin-bottom: 40px;
         border-collapse: collapse;
         margin-top: 20px;
+        table-layout: fixed; /* Ensures equal column widths */
     }
-
-
 
     .section-1-1 th,
     .section-1-1 td {
-        font-size: 18x;
-        /* Exact font size for TD elements */
+        font-size: 18px;
         vertical-align: top;
         color: #000;
+        padding: 8px;
     }
 
     .section-1-1 .img-cell {
         vertical-align: middle;
         text-align: center;
+    }
+
+    .section-1-1 .img-cell img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin: 0 auto;
     }
 
     .section-1-1 .img-cell span {
@@ -103,31 +109,22 @@
                         <td colspan="2" width="50%"><strong>CheckPoint Image 2:</strong></td>
                     </tr>
                     <tr>
-                        <td colspan="2" width="50%" class="img-cell">
+                        <td colspan="2" class="img-cell">
                             @if($check->check->close_image)
-                            <img src="{{ $check->check->close_image }}"
-                                alt="Close Image"
-                                width="320" height="300"
-                                style="display: block; margin: 0 auto;">
+                            <img src="{{ $check->check->close_image }}" alt="Close Image">
                             @else
                             <span>No image available</span>
                             @endif
                         </td>
-
-
-                        <td colspan="2" width="50%" class="img-cell">
+                        <td colspan="2" class="img-cell">
                             @if($check->check->away_image)
-                            <img src="{{ $check->check->away_image }}"
-                                alt="Close Image"
-                                width="320" height="300"
-                                style="display: block; margin: 0 auto;">
+                            <img src="{{ $check->check->away_image }}" alt="Away Image">
                             @else
                             <span>No image available</span>
                             @endif
                         </td>
-
-
                     </tr>
+
                 </tbody>
             </table>
         </div>
