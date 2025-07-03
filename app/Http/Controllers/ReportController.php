@@ -529,17 +529,7 @@ class ReportController extends Controller
         $html = view('main-report.sdoc-recoreds', compact('sdocresults'))->render();
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
 
-        $counts = poOrderItem::select('type_category', DB::raw('COUNT(*) as total'))
-            ->when($till_today == 0 && $from_date && $to_date, function ($query) use ($from_date, $to_date) {
-                $query->whereBetween('created_at', [
-                    Carbon::parse($from_date)->startOfDay(),
-                    Carbon::parse($to_date)->endOfDay(),
-                ]);
-            })
-            ->groupBy('type_category')
-            ->pluck('total', 'type_category');
-        $html = view('main-report.POHistory', compact('counts'))->render();
-        $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
+       
 
         $safeProjectNo = str_replace('/', '_', $projectDetail['report_number']);
 
