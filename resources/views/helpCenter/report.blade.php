@@ -22,7 +22,7 @@
                                 </h5>
                             </div>
                             <div id="po-records" class="collapse" aria-labelledby="headinginitial1" data-parent="#accordion">
-                                <div class="card-body mb-4">
+                                <div class="card-body">
                                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mb-4">
                                         <a href="{{url('generate-IHM-sticker/'.$ship_id)}}"><button class="btn btn-primary float-right ml-2 mb-4">Generate IHM Sticker </button></a>
                                         <a href="{{url('summeryReport/'.$ship_id)}}"><button class="btn btn-primary float-right mb-4">Summary Report</button></a>
