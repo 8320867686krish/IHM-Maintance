@@ -33,7 +33,7 @@
                     <td>{{$mdno->makeModel->md_no}}</td>
                     <td>{{$mdno->company_name}}</td>
                     <td>{{$mdno->equipment}},{{$mdno->model}},{{$mdno->model}}</td>
-                    <td>{{$mdno->hazmat_names}}</td>
+                    <td>{{$mdno->makeModel->hazmat->name}}</td>
                     <td>{{$mdno->makeModel->md_qty}}</td>
                     <td>{{$mdno->makeModel->md_unit}}</td>
                 </tr>
