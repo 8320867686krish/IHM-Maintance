@@ -59,45 +59,45 @@
                     <tr>
 
 
-                        <td><strong>Check Point ID</strong></td>
-                        <td>{{ $check->check->name }}</td>
+                        <td width="20%"><strong>Check Point ID</strong></td>
+                        <td width="30%">{{ $check->check->name }}</td>
 
-                        <td><strong>Check Point Type</strong></td>
-                        <td>{{ $check->check->type }}</td>
+                        <td width="20%"><strong>Check Point Type</strong></td>
+                        <td  width="30%">{{ $check->check->type }}</td>
 
 
-
-                    </tr>
-                    <tr>
-                        <td><strong>Hazmat Status</strong></td>
-                        <td>{{ $check->hazmat_type ?? '' }}</td>
-
-                        <td><strong>Hazmat</strong></td>
-                        <td>{{ $check->hazmat->name ?? '' }}</td>
 
                     </tr>
                     <tr>
-                        <td><strong>Hazmat Table</strong></td>
-                        <td>{{ $check->hazmat->table_type }}</td>
+                        <td width="20%"><strong>Hazmat Status</strong></td>
+                        <td width="30%">{{ $check->hazmat_type ?? '' }}</td>
 
-                        <td><strong>Name Of Equipment & Machinery</strong></td>
-                        <td>{{ $check->name_of_paint }}</td>
+                        <td width="20%"><strong>Hazmat</strong></td>
+                        <td width="30%">{{ $check->hazmat->name ?? '' }}</td>
+
+                    </tr>
+                    <tr>
+                        <td width="20%"><strong>Hazmat Table</strong></td>
+                        <td width="30%">{{ $check->hazmat->table_type }}</td>
+
+                        <td width="20%"><strong>Name Of Equipment & Machinery</strong></td>
+                        <td width="30%">{{ $check->name_of_paint }}</td>
                     </tr>
                     <tr>
 
-                        <td><strong>Location</strong></td>
-                        <td>{{ $check->location }}</td>
+                        <td width="20%"><strong>Location</strong></td>
+                        <td width="30%">{{ $check->location }}</td>
 
-                        <td><strong>Parts Where Used</strong></td>
-                        <td>{{ $check->parts_where_used }}</td>
+                        <td width="20%"><strong>Parts Where Used</strong></td>
+                        <td width="30%">{{ $check->parts_where_used }}</td>
                     </tr>
                     <tr>
 
-                        <td><strong>Quantity</strong></td>
-                        <td>{{ $check->qty }}</td>
+                        <td width="20%"><strong>Quantity</strong></td>
+                        <td width="30%">{{ $check->qty }}</td>
 
-                        <td><strong>Unit</strong></td>
-                        <td>{{ $check->unit }}</td>
+                        <td  width="20%"><strong>Unit</strong></td>
+                        <td width="30%">{{ $check->unit }}</td>
                     </tr>
 
 
@@ -109,14 +109,14 @@
                         <td colspan="2" width="50%"><strong>CheckPoint Image 2:</strong></td>
                     </tr>
                     <tr>
-                        <td colspan="2" class="img-cell">
+                        <td colspan="2" class="img-cell" width="50%">
                             @if($check->check->close_image)
                             <img src="{{ $check->check->close_image }}" alt="Close Image" height="300px" width="300px">
                             @else
                             <span>No image available</span>
                             @endif
                         </td>
-                        <td colspan="2" class="img-cell">
+                        <td colspan="2" class="img-cell" width="50%">
                             @if($check->check->away_image)
                             <img src="{{ $check->check->away_image }}" alt="Away Image" height="300px" width="300px">
                             @else
