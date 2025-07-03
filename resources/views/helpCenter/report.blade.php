@@ -69,7 +69,7 @@
                                 </h5>
                             </div>
                             <div id="traing-records" class="collapse" aria-labelledby="TrainingRecoreds" data-parent="#accordion">
-                                <div class="card-body mb-4">
+                                <div class="card-body">
                                     <x-previous-i-hm-amended :checkHazmatIHMPart="$checkHazmatIHMPart" :type="'i-1'"></x-previous-i-hm-amended>
                                     <div class=" mb-2 mt-2">
                                         <x-previous-i-hm-amended :checkHazmatIHMPart="$checkHazmatIHMPart" :type="'i-2'"></x-previous-i-hm-amended>
