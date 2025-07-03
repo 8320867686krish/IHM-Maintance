@@ -121,7 +121,7 @@
 
                         </div>
 
-                        <div class="col-12">
+                        <div class="col-12 mt-4 mb-4">
                             <div class="form-group">
                                 <button class="btn btn-primary float-right mb-3 ml-2" type="submit" id="genratereportbtn" data-action="report">Download</button>
 
