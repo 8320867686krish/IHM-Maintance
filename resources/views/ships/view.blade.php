@@ -141,6 +141,8 @@
                         <h5>MD & SD Recort Report</h5>
                         <form id="generateMdForm" action="{{route('md&sd')}}" method="POST">
                             @csrf
+                            <input type="hidden" id="report_type" name="report_type" value="">
+
                             <span class="dashboard-spinner spinner-sm" id="spinShowMd" style="display: none;  position: absolute;top: 50%;left: 35%;transform: translate(-50%, -50%);z-index:999999"></span>
                             <div class="row">
                                 <div class="form-group col-4 mb-3">
@@ -164,7 +166,14 @@
                                 </div>
                                 <div class="col-12">
                                     <div class="form-group">
-                                        <button class="btn btn-primary float-right mb-3" type="submit" id="downloadMdSd">Download MD & SDOC</button>
+                                     
+                                        <button class="btn btn-primary float-right mb-3 ml-2" type="submit" id="genratereportbtn" data-action="report">Download</button>
+
+                                        <button class="btn btn-primary float-right mb-3 ml-2" type="submit" id="downloadMdSd" data-action="download_md_sdoc">Download MD&SDOC</button>
+
+                                        <a href="{{ url('poorder-history-export/'.$ship->id) }}" target="_blank">
+                                            <button class="btn btn-primary float-right mb-3" type="button">Download PO History</button>
+                                        </a>
                                     </div>
                                 </div>
 

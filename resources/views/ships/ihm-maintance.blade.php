@@ -385,17 +385,81 @@
             toDate.value = ""; // Reset 'To Date' if already selected before
         }
     }
-    $('#generatePdfForm').submit(function(event) {
+    let clickedAction = ''; // Track which button was clicked
+
+    $('#generatePdfForm button[type="submit"]').on('click', function() {
+        clickedAction = $(this).data('action');
+        $('#report_type').val(clickedAction); // Set hidden input
+    });
+    // $('#generatePdfForm').submit(function(event) {
+    //     $(".bg-overlay").show();
+    //     var ship_id = "{{$ship_id}}";
+    //     event.preventDefault(); // Prevent default form submission
+    //     let $submitButton = $('#genratereportbtn');
+    //     let originalText = $submitButton.html();
+    //     $('#spinShow').show();
+    //     $submitButton.text('Wait...');
+    //     $submitButton.prop('disabled', true);
+    //     let formData = new FormData(this);
+    //     formData.append('ship_id', ship_id); // Add action to formData
+
+    //     $.ajax({
+    //         url: $(this).attr('action'),
+    //         type: 'POST',
+    //         data: formData,
+    //         contentType: false,
+    //         processData: false,
+    //         xhrFields: {
+    //             responseType: 'blob' // Important
+    //         },
+    //         success: function(response, status, xhr) {
+    //             let fileName = xhr.getResponseHeader('X-File-Name');
+    //             $(".bg-overlay").hide();
+    //             if (!fileName) {
+    //                 console.log("dd");
+    //                 fileName = projectId + '.pdf';
+    //             }
+    //             let blob = new Blob([response], {
+    //                 type: 'application/pdf'
+    //             });
+    //             let url = URL.createObjectURL(blob);
+    //             let a = document.createElement('a');
+    //             a.href = url;
+    //             a.download = fileName; // Set the file name
+    //             document.body.appendChild(a);
+    //             a.click();
+    //             document.body.removeChild(a);
+    //             $('#spinShow').hide();
+    //             $submitButton.text(originalText);
+    //             $submitButton.prop('disabled', false);
+    //             URL.revokeObjectURL(url);
+    //         },
+    //         error: function(xhr, status, error) {
+    //             console.error('Error:', error);
+    //             // Handle errors or show an error message
+    //             $('#spinShow').hide();
+    //             $submitButton.text(originalText);
+    //             $submitButton.prop('disabled', false);
+    //         }
+
+    //     });
+    // });
+     $('#generatePdfForm').submit(function(event) {
+        event.preventDefault(); // Stop normal form submission
+
         $(".bg-overlay").show();
-        var ship_id = "{{$ship_id}}";
-        event.preventDefault(); // Prevent default form submission
-        let $submitButton = $('#genratereportbtn');
+        let ship_id = "{{$ship_id}}";
+
+        const reportType = $('#report_type').val(); // Get action type
+        let $submitButton = $('#generatePdfForm button[data-action="' + reportType + '"]');
         let originalText = $submitButton.html();
+
         $('#spinShow').show();
-        $submitButton.text('Wait...');
-        $submitButton.prop('disabled', true);
+        $submitButton.text('Wait...').prop('disabled', true);
+
         let formData = new FormData(this);
-        formData.append('ship_id', ship_id); // Add action to formData
+        formData.append('ship_id', ship_id);
+        formData.append('report_type', reportType);
 
         $.ajax({
             url: $(this).attr('action'),
@@ -404,38 +468,32 @@
             contentType: false,
             processData: false,
             xhrFields: {
-                responseType: 'blob' // Important
+                responseType: 'blob'
             },
             success: function(response, status, xhr) {
-                let fileName = xhr.getResponseHeader('X-File-Name');
-                $(".bg-overlay").hide();
-                if (!fileName) {
-                    console.log("dd");
-                    fileName = projectId + '.pdf';
-                }
+                let fileName = xhr.getResponseHeader('X-File-Name') || reportType + '.pdf';
                 let blob = new Blob([response], {
                     type: 'application/pdf'
                 });
                 let url = URL.createObjectURL(blob);
                 let a = document.createElement('a');
                 a.href = url;
-                a.download = fileName; // Set the file name
+                a.download = fileName;
                 document.body.appendChild(a);
                 a.click();
                 document.body.removeChild(a);
-                $('#spinShow').hide();
-                $submitButton.text(originalText);
-                $submitButton.prop('disabled', false);
+
                 URL.revokeObjectURL(url);
+                $('#spinShow').hide();
+                $submitButton.text(originalText).prop('disabled', false);
+                $(".bg-overlay").hide();
             },
             error: function(xhr, status, error) {
                 console.error('Error:', error);
-                // Handle errors or show an error message
                 $('#spinShow').hide();
-                $submitButton.text(originalText);
-                $submitButton.prop('disabled', false);
+                $submitButton.text(originalText).prop('disabled', false);
+                $(".bg-overlay").hide();
             }
-
         });
     });
      $('#generateMdForm').submit(function(event) {
