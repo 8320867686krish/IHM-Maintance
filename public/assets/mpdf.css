@@ -127,12 +127,7 @@ body {
 
 }
 
-    .section-1-1 th{
-        font-size: 16px;
-        vertical-align: top;
-        color: #000;
-        padding: 8px;
-    }
+  
 .setFont{
     font-size:14px;
 }
@@ -190,6 +185,7 @@ th {
 
 .section-1-1 table th {
     background-color: #4C94D8;
+       font-size: 14px;
 }
 
 .displayed {
