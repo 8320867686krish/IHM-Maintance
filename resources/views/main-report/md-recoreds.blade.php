@@ -38,9 +38,9 @@
                         {{$mdno->makeModel->md_no}}
                         @endif
                     </td>
-                    <td>{{$mdno->makeModel->company_name}}</td>
+                    <td>{{$mdno->makeModel->coumpany_name}}</td>
                     <td>{{$mdno->makeModel->equipment}},{{$mdno->makeModel->model}},{{$mdno->makeModel->model}}</td>
-                    @if($mdno->makeModel->hazmat->name == 'Not Contained ')
+                    @if($mdno->makeModel->hazmat->name == 'Not Contained')
                     <td>{{$mdno->makeModel->hazmat->name}}</td>
                     @else
                     <td>    {{$mdno->makeModel->hazmat->name}},{{$mdno->hazmat_type}}</td>
