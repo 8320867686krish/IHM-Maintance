@@ -19,7 +19,25 @@ trait PdfGenerator
         file_put_contents($filePath, $mainContentPdf);
         return $filePath;
     }
-
+    public function settextforDiagram()
+    {
+        $html = `<table width="100%" style="border-collapse: collapse; margin-bottom: 5px;">
+                    <tr>
+                        <td style="font-size:14px;"><strong>3.1 Location Diagram of Contained HazMat & PCHM.</strong></td>
+                        <td align="right">
+                            <table style="border-collapse: collapse;">
+                                <tr>
+                                    <td style="width: 12px; height: 12px; background-color: #003299; border: 1px solid #003299;"></td>
+                                    <td style="font-size: 12px; color: #003299; padding-left: 5px; padding-right: 15px;">Sample</td>
+                                    <td style="width: 12px; height: 12px; background-color: #990033; border: 1px solid #990033;"></td>
+                                    <td style="font-size: 12px; color: #990033; padding-left: 5px;">Visual</td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>`;
+            return $html;
+    }
     public function drawDigarm($decks)
     {
         $i = 1;

@@ -372,23 +372,7 @@ class ReportController extends Controller
                     if ($key == 0) {
                         if ($key == 0) {
                             if ($key == 0) {
-                              $mpdf->WriteHTML('
-    <table width="100%" style="border-collapse: collapse; margin-bottom: 5px;">
-        <tr>
-            <td style="font-size:14px;"><strong>3.1 Location Diagram of Contained HazMat & PCHM.</strong></td>
-            <td align="right">
-                <table style="border-collapse: collapse;">
-                    <tr>
-                        <td style="width: 15px; height: 15px; background-color: #003299; border: 1px solid #003299;"></td>
-                        <td style="font-size: 14px; color: #003299; padding-left: 5px; padding-right: 15px;">Sample</td>
-                        <td style="width: 15px; height: 15px; background-color: #990033; border: 1px solid #990033;"></td>
-                        <td style="font-size: 14px; color: #990033; padding-left: 5px;">Visual</td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-    </table>
-');
+                              $mpdf->WriteHTML($this->settextforDiagram());
 
 
                             }
