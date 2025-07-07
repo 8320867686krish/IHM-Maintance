@@ -96,6 +96,8 @@
             <div class="card-body">
                 <form id="generatePdfForm" action="{{route('report')}}">
                     @csrf
+                    <input type="hidden" id="report_type" name="report_type" value="">
+
                     <span class="dashboard-spinner spinner-sm" id="spinShow" style="display: none;  position: absolute;top: 50%;left: 35%;transform: translate(-50%, -50%);z-index:999999"></span>
                     <div class="row">
 
