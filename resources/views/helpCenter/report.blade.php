@@ -150,68 +150,77 @@
         clickedAction = $(this).data('action');
         $('#report_type').val(clickedAction); // Set hidden input
     });
-    $('#generatePdfForm').submit(function(event) {
-        event.preventDefault();
+$('#generatePdfForm').submit(function(event) {
+    event.preventDefault();
 
-        let fromDate = $('#from_date').val();
-        let toDate = $('#to_date').val();
-        let tillToday = $('#till_today').is(':checked');
+    let fromDate = $('#from_date').val();
+    let toDate = $('#to_date').val();
+    let tillToday = $('#till_today').is(':checked');
 
-        if (!fromDate && !toDate && !tillToday) {
-            errorMsg("Please select at least one date or check 'Till Today'");
-            return false;
-        }
+    if (!fromDate && !toDate && !tillToday) {
+        errorMsg("Please select at least one date or check 'Till Today'");
+        return false;
+    }
 
-        $(".bg-overlay").show();
-        let ship_id = "{{$ship_id}}";
-        const reportType = $('#report_type').val(); // "report", "download_md_sdoc", or maybe "excel"
-        let $submitButton = $('#generatePdfForm button[data-action="' + reportType + '"]');
-        let originalText = $submitButton.html();
+    $(".bg-overlay").show();
+    let ship_id = "{{$ship_id}}";
+    const reportType = $('#report_type').val(); // "report", "download_md_sdoc", or "po_history"
+    let $submitButton = $('#generatePdfForm button[data-action="' + reportType + '"]');
+    let originalText = $submitButton.html();
 
-        $('#spinShow').show();
-        $submitButton.text('Wait...').prop('disabled', true);
+    $('#spinShow').show();
+    $submitButton.text('Wait...').prop('disabled', true);
 
-        let formData = new FormData(this);
-        formData.append('ship_id', ship_id);
-        formData.append('report_type', reportType);
+    let formData = new FormData(this);
+    formData.append('ship_id', ship_id);
+    formData.append('report_type', reportType);
 
-        $.ajax({
-            url: $(this).attr('action'),
-            type: 'POST',
-            data: formData,
-            contentType: false,
-            processData: false,
-            xhrFields: {
-                responseType: 'blob'
-            },
-            success: function(response, status, xhr) {
-                let contentType = xhr.getResponseHeader("Content-Type");
-                let extension = contentType.includes("excel") ? ".xlsx" : ".pdf";
-                let fileName = xhr.getResponseHeader('X-File-Name') || reportType + extension;
-
-                let blob = new Blob([response], {
-                    type: contentType
-                });
-                let url = URL.createObjectURL(blob);
-                let a = document.createElement('a');
-                a.href = url;
-                a.download = fileName;
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
-
-                $('#spinShow').hide();
-                $submitButton.text(originalText).prop('disabled', false);
-                $(".bg-overlay").hide();
-            },
-            error: function(xhr, status, error) {
-                console.error('Error:', error);
-                $('#spinShow').hide();
-                $submitButton.text(originalText).prop('disabled', false);
-                $(".bg-overlay").hide();
+    $.ajax({
+        url: $(this).attr('action'),
+        type: 'POST',
+        data: formData,
+        contentType: false,
+        processData: false,
+        xhrFields: {
+            responseType: 'blob' // Needed for binary files (PDF/Excel)
+        },
+        success: function(response, status, xhr) {
+            const disposition = xhr.getResponseHeader('Content-Disposition');
+            let filename = "download";
+            if (disposition && disposition.indexOf('attachment') !== -1) {
+                let filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+                let matches = filenameRegex.exec(disposition);
+                if (matches != null && matches[1]) {
+                    filename = matches[1].replace(/['"]/g, '');
+                }
+            } else {
+                // fallback based on report_type
+                filename = reportType === 'po_history' ? 'po-history.xlsx' : 'report.pdf';
             }
-        });
+
+            const contentType = xhr.getResponseHeader("Content-Type");
+            const blob = new Blob([response], { type: contentType });
+
+            const link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(link.href);
+
+            $('#spinShow').hide();
+            $submitButton.text(originalText).prop('disabled', false);
+            $(".bg-overlay").hide();
+        },
+        error: function(xhr, status, error) {
+            console.error('Download failed:', error);
+            $('#spinShow').hide();
+            $submitButton.text(originalText).prop('disabled', false);
+            $(".bg-overlay").hide();
+        }
     });
+});
+
 </script>
 @endpush
