@@ -28,9 +28,9 @@ trait PdfGenerator
                         <table style="border-collapse: collapse;">
                             <tr>
                                 <td style="width: 25px; height: 10px; background-color: #003299; border: 1px solid #003299;"></td>
-                                <td style="font-size: 12px; color: #003299; padding-left: 5px; padding-right: 15px;">Sample</td>
+                                <td style="font-size: 12px; color: #003299; padding-left: 5px; padding-right: 15px;">Sample Check</td>
                                 <td style="width: 25px; height: 10px; background-color: #990033; border: 1px solid #990033;"></td>
-                                <td style="font-size: 12px; color: #990033; padding-left: 5px;">Visual</td>
+                                <td style="font-size: 12px; color: #990033; padding-left: 5px;">Visual Check</td>
                             </tr>
                         </table>
                     </td>
