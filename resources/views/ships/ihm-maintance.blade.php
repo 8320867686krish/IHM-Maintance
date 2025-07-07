@@ -444,7 +444,7 @@
 
     //     });
     // });
-  $('#generatePdfForm').submit(function(event) {
+$('#generatePdfForm').submit(function(event) {
     event.preventDefault();
 
     let fromDate = $('#from_date').val();
