@@ -373,18 +373,20 @@ class ReportController extends Controller
                         if ($key == 0) {
                             if ($key == 0) {
                                 $mpdf->WriteHTML('
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-            <h5 style="font-size:14px; margin: 0;">3.1 Location Diagram of Contained HazMat & PCHM.</h5>
-            <div style="display: flex; gap: 5px;">
-                <div style="width: 40px; height: 20px; background-color: #003299; color: white; font-size: 10px; text-align: center; line-height: 20px; border-radius: 3px;">
-                    Sample
-                </div>
-                <div style="width: 40px; height: 20px; background-color: #990033; color: white; font-size: 10px; text-align: center; line-height: 20px; border-radius: 3px;">
-                    Visual
-                </div>
-            </div>
-        </div>
-    ');
+                                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                                        <h5 style="font-size:14px; margin: 0;">3.1 Location Diagram of Contained HazMat & PCHM.</h5>
+                                        <div style="display: flex; align-items: center; gap: 10px;">
+                                            <div style="display: flex; align-items: center; gap: 5px;">
+                                                <div style="width: 15px; height: 15px; background-color: #003299; border-radius: 2px;"></div>
+                                                <span style="font-size: 10px;">Sample</span>
+                                            </div>
+                                            <div style="display: flex; align-items: center; gap: 5px;">
+                                                <div style="width: 15px; height: 15px; background-color: #990033; border-radius: 2px;"></div>
+                                                <span style="font-size: 10px;">Visual</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ');
                             }
                         }
                     }
