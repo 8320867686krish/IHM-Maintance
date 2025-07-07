@@ -327,8 +327,7 @@ class ReportController extends Controller
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
         $configration = configration::first();
         $titleHtml = '<h2 style="text-align:center;font-size:14px">3. ThreshHold Value</h2>';
-        $thresh_hold = asset('uploads/configration/'.$configration['thresh_hold']);
-        $filePaththresh_holdsum = public_path('uploads/configration/') . $configration['makeModel'];
+        $thresh_hold = public_path('uploads/configration/') . $configration['thresh_hold'];
         $this->mergePdfAttachment($thresh_hold, $titleHtml, $mpdf);
         $sectionText = '4. Initial IHM Part1 Summary Report';
         $html = view('main-report.ihmpart1', compact('sectionText', 'projectDetail'))->render();
