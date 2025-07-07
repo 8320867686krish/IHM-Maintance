@@ -33,7 +33,7 @@
                     <td>{{$sdoc->makeModel->sdoc_no}}</td>
                     <td>{{$sdoc->makeModel->issuer_name}}</td>
                     <td>{{$sdoc->makeModel->sdoc_objects}}</td>
-                    <td>{{$sdoc->hazmat_names}}</td>
+                    <td>{{$sdoc->makeModel->coumpany_name}}</td>
                 </tr>
                 @endforeach
                 @endif
