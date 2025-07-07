@@ -1,6 +1,6 @@
 @foreach($summary as $value)
         <tr class="new-summary" data-id="{{$value['id']}}}">
-            <td>{{$value['id']}}</td>
+            <td>{{$loop->iteration}}</td>
             <td>{{$value['title']}}</td>
             <td>{{$value['version']}}</td>
 
