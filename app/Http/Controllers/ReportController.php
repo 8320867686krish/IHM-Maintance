@@ -379,10 +379,10 @@ class ReportController extends Controller
             <td align="right">
                 <table style="border-collapse: collapse;">
                     <tr>
-                        <td style="width: 15px; height: 15px; background-color: #003299; border: 1px solid #000;"></td>
-                        <td style="font-size: 10px; color: #003299; padding-left: 5px; padding-right: 15px;">Sample</td>
-                        <td style="width: 15px; height: 15px; background-color: #990033; border: 1px solid #000;"></td>
-                        <td style="font-size: 10px; color: #990033; padding-left: 5px;">Visual</td>
+                        <td style="width: 15px; height: 15px; background-color: #003299; border: 1px solid #003299;"></td>
+                        <td style="font-size: 14px; color: #003299; padding-left: 5px; padding-right: 15px;">Sample</td>
+                        <td style="width: 15px; height: 15px; background-color: #990033; border: 1px solid #990033;"></td>
+                        <td style="font-size: 14px; color: #990033; padding-left: 5px;">Visual</td>
                     </tr>
                 </table>
             </td>
