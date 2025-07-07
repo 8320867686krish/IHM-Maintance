@@ -444,129 +444,77 @@
 
     //     });
     // });
-    $('#generatePdfForm').submit(function(event) {
-        event.preventDefault(); // Stop normal form submission
-        let fromDate = $('#from_date').val();
-        let toDate = $('#to_date').val();
-        let tillToday = $('#till_today').is(':checked');
+  $('#generatePdfForm').submit(function(event) {
+    event.preventDefault();
 
-        if (!fromDate && !toDate && !tillToday) {
-            errorMsg("Please select at least one date or check 'Till Today");
-            return false;
-        }
-        $(".bg-overlay").show();
-        let ship_id = "{{$ship_id}}";
+    let fromDate = $('#from_date').val();
+    let toDate = $('#to_date').val();
+    let tillToday = $('#till_today').is(':checked');
 
-        const reportType = $('#report_type').val(); // Get action type
-        let $submitButton = $('#generatePdfForm button[data-action="' + reportType + '"]');
-        let originalText = $submitButton.html();
+    if (!fromDate && !toDate && !tillToday) {
+        errorMsg("Please select at least one date or check 'Till Today'");
+        return false;
+    }
 
-        $('#spinShow').show();
-        $submitButton.text('Wait...').prop('disabled', true);
+    $(".bg-overlay").show();
+    let ship_id = "{{$ship_id}}";
+    const reportType = $('#report_type').val(); // "report", "download_md_sdoc", or "po_history"
+    let $submitButton = $('#generatePdfForm button[data-action="' + reportType + '"]');
+    let originalText = $submitButton.html();
 
-        let formData = new FormData(this);
-        formData.append('ship_id', ship_id);
-        formData.append('report_type', reportType);
+    $('#spinShow').show();
+    $submitButton.text('Wait...').prop('disabled', true);
 
-        $.ajax({
-            url: $(this).attr('action'),
-            type: 'POST',
-            data: formData,
-            contentType: false,
-            processData: false,
-            xhrFields: {
-                responseType: 'blob'
-            },
-            success: function(response, status, xhr) {
-                let fileName = xhr.getResponseHeader('X-File-Name') || reportType + '.pdf';
-                let blob = new Blob([response], {
-                    type: 'application/pdf'
-                });
-                let url = URL.createObjectURL(blob);
-                let a = document.createElement('a');
-                a.href = url;
-                a.download = fileName;
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
+    let formData = new FormData(this);
+    formData.append('ship_id', ship_id);
+    formData.append('report_type', reportType);
 
-                URL.revokeObjectURL(url);
-                $('#spinShow').hide();
-                $submitButton.text(originalText).prop('disabled', false);
-                $(".bg-overlay").hide();
-            },
-            error: function(xhr, status, error) {
-                console.error('Error:', error);
-                $('#spinShow').hide();
-                $submitButton.text(originalText).prop('disabled', false);
-                $(".bg-overlay").hide();
-            }
-        });
-    });
-    $('#generateMdForm').submit(function(event) {
-        $(".bg-overlay").show();
-        var ship_id = "{{$ship_id}}";
-        event.preventDefault(); // Prevent default form submission
-        let $submitButton = $('#downloadMdSd');
-
-        let originalText = $submitButton.html();
-
-
-        // Show loading spinner and disable the submit button
-        $('#spinShowMd').show();
-        $submitButton.text('Wait...');
-        $submitButton.prop('disabled', true);
-
-        let formData = new FormData(this);
-        formData.append('ship_id', ship_id); // Add action to formData
-
-        $.ajax({
-            url: $(this).attr('action'),
-            type: 'POST',
-            data: formData,
-            contentType: false,
-            processData: false,
-            xhrFields: {
-                responseType: 'blob' // Important
-            },
-            success: function(response, status, xhr) {
-                let fileName = xhr.getResponseHeader('X-File-Name');
-                $(".bg-overlay").hide();
-                if (!fileName) {
-                    console.log("dd");
-                    fileName = projectId + '.pdf';
+    $.ajax({
+        url: $(this).attr('action'),
+        type: 'POST',
+        data: formData,
+        contentType: false,
+        processData: false,
+        xhrFields: {
+            responseType: 'blob' // Needed for binary files (PDF/Excel)
+        },
+        success: function(response, status, xhr) {
+            const disposition = xhr.getResponseHeader('Content-Disposition');
+            let filename = "download";
+            if (disposition && disposition.indexOf('attachment') !== -1) {
+                let filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+                let matches = filenameRegex.exec(disposition);
+                if (matches != null && matches[1]) {
+                    filename = matches[1].replace(/['"]/g, '');
                 }
-                // Create a Blob from the response
-                let blob = new Blob([response], {
-                    type: 'application/pdf'
-                });
-                let url = URL.createObjectURL(blob);
-
-                // Create a link element and trigger a download
-                let a = document.createElement('a');
-                a.href = url;
-                a.download = fileName; // Set the file name
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-
-                // Hide loading spinner and re-enable the submit button
-                $('#spinShowMd').hide();
-                $submitButton.text(originalText);
-                $submitButton.prop('disabled', false);
-
-                // Revoke the object URL after the download
-                URL.revokeObjectURL(url);
-            },
-            error: function(xhr, status, error) {
-                console.error('Error:', error);
-                // Handle errors or show an error message
-                $('#spinShowMd').hide();
-                $submitButton.text(originalText);
-                $submitButton.prop('disabled', false);
+            } else {
+                // fallback based on report_type
+                filename = reportType === 'po_history' ? 'po-history.xlsx' : 'report.pdf';
             }
 
-        });
+            const contentType = xhr.getResponseHeader("Content-Type");
+            const blob = new Blob([response], { type: contentType });
+
+            const link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(link.href);
+
+            $('#spinShow').hide();
+            $submitButton.text(originalText).prop('disabled', false);
+            $(".bg-overlay").hide();
+        },
+        error: function(xhr, status, error) {
+            console.error('Download failed:', error);
+            $('#spinShow').hide();
+            $submitButton.text(originalText).prop('disabled', false);
+            $(".bg-overlay").hide();
+        }
     });
+});
+   
 </script>
 @endpush

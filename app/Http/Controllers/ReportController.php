@@ -209,29 +209,34 @@ class ReportController extends Controller
     {
 
         $post    = $request->input();
-          $ship_id = $post['ship_id'];
-         $projectDetail  = Ship::with('client.hazmatCompaniesId')->find($ship_id);
-        if ($post['report_type'] == 'po_history') {
-            $safeProjectNo = str_replace('/', '_', $projectDetail['report_number']);
-            $fileName = "po-history" . $safeProjectNo . '.xlsx';
-            // Return as streamed download with headers for AJAX blob handling
-                return Excel::download(new POHistoryExport($ship_id), $fileName, \Maatwebsite\Excel\Excel::XLSX);
+        $ship_id = $post['ship_id'];
+        $from_date  = $post['from_date'];
+        $to_date     = $post['to_date'];
 
-        }
-        if ($post['report_type'] == 'download_md_sdoc') {
-            return  $this->mdSDRecord($post);
-        }
-      
-        $logo    = public_path('assets/images/logo.png');
 
-        $date           = date('y-m-d');
-        $from_date      = $post['from_date'];
-        $to_date        = $post['to_date'];
-       
+
+        $projectDetail  = Ship::with('client.hazmatCompaniesId')->find($ship_id);
         $shipDetail     = $projectDetail;
         $is_report_logo = $projectDetail['client']['is_report_logo'];
         $till_today = $request->has('till_today') ? 1 : 0;
         $version = $projectDetail['current_ihm_version'];
+        if ($post['report_type'] == 'po_history') {
+            $safeProjectNo = str_replace('/', '_', $projectDetail['report_number']);
+            $fileName = "po-history" . $safeProjectNo . '.xlsx';
+            // Return as streamed download with headers for AJAX blob handling
+            return Excel::download(
+                new POHistoryExport($ship_id, $from_date, $to_date, $till_today),
+                $fileName,
+                \Maatwebsite\Excel\Excel::XLSX
+            );
+        }
+        if ($post['report_type'] == 'download_md_sdoc') {
+            return  $this->mdSDRecord($post);
+        }
+
+        $logo    = public_path('assets/images/logo.png');
+
+        $date           = date('y-m-d');
 
         if ($is_report_logo == 0) {
             $image = $projectDetail['client']['hazmatCompaniesId']['logo'];

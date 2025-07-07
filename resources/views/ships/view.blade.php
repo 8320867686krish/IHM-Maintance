@@ -127,9 +127,8 @@
 
                                 <button class="btn btn-primary float-right mb-3 ml-2" type="submit" id="downloadMdSd" data-action="download_md_sdoc">Download MD&SDOC</button>
 
-                                <a href="{{ url('poorder-history-export/'.$ship->id) }}" target="_blank">
-                                    <button class="btn btn-primary float-right mb-3" type="button">Download PO History</button>
-                                </a>
+                                <button class="btn btn-primary float-right mb-3 ml-2" type="submit" id="downloadMdSd" data-action="po_history">Download PO History</button>
+
                             </div>
                         </div>
                     </div>
