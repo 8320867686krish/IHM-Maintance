@@ -372,7 +372,8 @@ class ReportController extends Controller
                     if ($key == 0) {
                         if ($key == 0) {
                             if ($key == 0) {
-                              $mpdf->WriteHTML($this->settextforDiagram());
+                                $htmlcode = $this->settextforDiagram();
+                              $mpdf->WriteHTML($htmlcode);
 
 
                             }
