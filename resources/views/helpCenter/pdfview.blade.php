@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
+<link rel="stylesheet" href="{{ asset('assets/vendor/summernote/css/summernote-bs4.css')}}">
 
 @if($showurl)
-<link rel="stylesheet" href="{{ asset('assets/vendor/summernote/css/summernote-bs4.css')}}">
 
 <div class="container-fluid dashboard-content">
     <x-page-header title="Portal User Guide"></x-page-header>
