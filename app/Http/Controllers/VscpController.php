@@ -312,8 +312,8 @@ class VscpController extends Controller
         $insert = partManuel::updateOrCreate(['id' => $inputData['id']], $inputData);
 
         $partMenual = partManuel::where('ship_id', $inputData['ship_id'])->get();
-
-        $htmllist = view('components.part-manual-list', compact('partMenual'))->render();
+        $start = 2;
+        $htmllist = view('components.part-manual-list', compact('partMenual','start'))->render();
 
         return response()->json(["isStatus" => true, "message" => "Attachment  save successfully", "html" => $htmllist]);
     }
