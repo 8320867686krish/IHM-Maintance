@@ -33,7 +33,7 @@
                     <td>{{$mdno->makeModel->md_date}}</td>
                     <td>
                         @if( $model->makeModel->document1)
-                        <a href="{{$model->makeModel->document1['path']}}" target="_blank">{{$mdno->makeModel->md_no}}</a>
+                        <a href="{{$mdno->makeModel->document1['path']}}" target="_blank">{{$mdno->makeModel->md_no}}</a>
                         @else
                         {{$mdno->makeModel->md_no}}
                         @endif
