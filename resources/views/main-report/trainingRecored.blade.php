@@ -81,6 +81,8 @@
                     <a href="{{ asset('uploads/brifing_document/' . $historyValue['brifing_document']) }}" title="Download" download>
                         {{$historyValue['brifing_document']}}
                     </a>
+                    @else
+                    <a>showing</a>
                     @endif
 
                 </tr>

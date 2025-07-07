@@ -2,7 +2,7 @@
     <div class="section-1-1">
         <h2> 5. Responsible Parties For IHM Maintance: </h2>
         <div style="padding-top:20px;padding-bottom:20px;">
-            <h3>5.1 Designated Person's(DP) On Shore</h3>
+            <h3>5.1 Designated Person/s(DP) On Shore</h3>
             <table>
                 <thead>
                     <tr>
@@ -41,7 +41,7 @@
 
 
         <div style="padding-top:20px;padding-bottom:20px;">
-            <h3>5.2 Responsible Person's On Board</h3>
+            <h3>5.2 Responsible Person/s On Board</h3>
             <table>
                 <thead>
                     <tr>
