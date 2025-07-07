@@ -370,7 +370,23 @@ class ReportController extends Controller
 
                     $mpdf->AddPage($html['ori']);
                     if ($key == 0) {
-                        $mpdf->WriteHTML('<h5 style="font-size:14px">3.1 Location Diagram of Contained HazMat & PCHM.</h5>');
+                        if ($key == 0) {
+                            if ($key == 0) {
+                                $mpdf->WriteHTML('
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h5 style="font-size:14px; margin: 0;">3.1 Location Diagram of Contained HazMat & PCHM.</h5>
+            <div style="display: flex; gap: 5px;">
+                <div style="width: 40px; height: 20px; background-color: #003299; color: white; font-size: 10px; text-align: center; line-height: 20px; border-radius: 3px;">
+                    Sample
+                </div>
+                <div style="width: 40px; height: 20px; background-color: #990033; color: white; font-size: 10px; text-align: center; line-height: 20px; border-radius: 3px;">
+                    Visual
+                </div>
+            </div>
+        </div>
+    ');
+                            }
+                        }
                     }
                     $mpdf->WriteHTML('<h5 style="font-size:14px;">Area: ' . $value['name'] . '</h5>');
 
@@ -529,7 +545,7 @@ class ReportController extends Controller
         $html = view('main-report.sdoc-recoreds', compact('sdocresults'))->render();
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
 
-       
+
 
         $safeProjectNo = str_replace('/', '_', $projectDetail['report_number']);
 
