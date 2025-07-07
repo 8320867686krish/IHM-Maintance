@@ -21,7 +21,7 @@ trait PdfGenerator
     }
     public function settextforDiagram()
     {
-        $html = `<table width="100%" style="border-collapse: collapse; margin-bottom: 5px;">
+        $html = '<table width="100%" style="border-collapse: collapse; margin-bottom: 5px;">
                     <tr>
                         <td style="font-size:14px;"><strong>3.1 Location Diagram of Contained HazMat & PCHM.</strong></td>
                         <td align="right">
@@ -35,7 +35,7 @@ trait PdfGenerator
                             </table>
                         </td>
                     </tr>
-                </table>`;
+                </table>';
             return $html;
     }
     public function drawDigarm($decks)
