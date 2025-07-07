@@ -31,10 +31,10 @@
                     <td>{{$loop->iteration}}</td>
                     <td>{{$sdoc->makeModel->sdoc_date}}</td>
                      <td>
-                        @if( $mdno->makeModel->document2)
-                        <a href="{{$mdno->makeModel->document2['path']}}" target="_blank">{{$mdno->makeModel->sdoc_no}}</a>
+                        @if( $sdoc->makeModel->document2)
+                        <a href="{{$sdoc->makeModel->document2['path']}}" target="_blank">{{$sdoc->makeModel->sdoc_no}}</a>
                         @else
-                        {{$mdno->makeModel->sdoc_no}}
+                        {{$sdoc->makeModel->sdoc_no}}
                         @endif
                     </td>
                     <td>{{$sdoc->makeModel->issuer_name}}</td>
