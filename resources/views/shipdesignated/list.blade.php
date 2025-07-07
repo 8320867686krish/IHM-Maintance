@@ -37,7 +37,7 @@
                                 <tr>
                                     <th>SR No</th>
                                     <th>Name</th>
-                                    <th>Rank</th>
+                                    <th>Designation</th>
                                     <th>Start Date</th>
                                     <th>End Date</th>
                                     <th>Action</th>
