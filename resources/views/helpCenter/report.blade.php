@@ -50,7 +50,7 @@
                                                         </a>
                                                     </td>
                                                 </tr>
-                                                <x-part-manual-list :partMenual="$partMenual"  :start="2" ></x-part-manual-list>
+                                                <x-part-manual-list :partMenual="$partMenual" :start="2"></x-part-manual-list>
                                             </tbody>
 
                                         </table>
@@ -110,10 +110,9 @@
                                                     <button class="btn btn-primary float-right mb-3 ml-2" type="submit" id="genratereportbtn" data-action="report">Download</button>
 
                                                     <button class="btn btn-primary float-right mb-3 ml-2" type="submit" id="downloadMdSd" data-action="download_md_sdoc">Download MD&SDOC</button>
+                                                    <button class="btn btn-primary float-right mb-3 ml-2" type="submit" id="downloadMdSd" data-action="po_history">Download PO History</button>
 
-                                                    <a href="{{ url('poorder-history-export/'.$ship->id) }}" target="_blank">
-                                                        <button class="btn btn-primary float-right mb-3" type="button">Download PO History</button>
-                                                    </a>
+                                                   
                                                 </div>
                                             </div>
                                         </div>
@@ -152,19 +151,20 @@
         $('#report_type').val(clickedAction); // Set hidden input
     });
     $('#generatePdfForm').submit(function(event) {
-        event.preventDefault(); // Stop normal form submission
+        event.preventDefault();
+
         let fromDate = $('#from_date').val();
         let toDate = $('#to_date').val();
         let tillToday = $('#till_today').is(':checked');
 
         if (!fromDate && !toDate && !tillToday) {
-            errorMsg("Please select at least one date or check 'Till Today");
+            errorMsg("Please select at least one date or check 'Till Today'");
             return false;
         }
+
         $(".bg-overlay").show();
         let ship_id = "{{$ship_id}}";
-
-        const reportType = $('#report_type').val(); // Get action type
+        const reportType = $('#report_type').val(); // "report", "download_md_sdoc", or maybe "excel"
         let $submitButton = $('#generatePdfForm button[data-action="' + reportType + '"]');
         let originalText = $submitButton.html();
 
@@ -185,9 +185,12 @@
                 responseType: 'blob'
             },
             success: function(response, status, xhr) {
-                let fileName = xhr.getResponseHeader('X-File-Name') || reportType + '.pdf';
+                let contentType = xhr.getResponseHeader("Content-Type");
+                let extension = contentType.includes("excel") ? ".xlsx" : ".pdf";
+                let fileName = xhr.getResponseHeader('X-File-Name') || reportType + extension;
+
                 let blob = new Blob([response], {
-                    type: 'application/pdf'
+                    type: contentType
                 });
                 let url = URL.createObjectURL(blob);
                 let a = document.createElement('a');
@@ -196,8 +199,8 @@
                 document.body.appendChild(a);
                 a.click();
                 document.body.removeChild(a);
-
                 URL.revokeObjectURL(url);
+
                 $('#spinShow').hide();
                 $submitButton.text(originalText).prop('disabled', false);
                 $(".bg-overlay").hide();

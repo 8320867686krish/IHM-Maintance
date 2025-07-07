@@ -209,16 +209,25 @@ class ReportController extends Controller
     {
 
         $post    = $request->input();
+          $ship_id = $post['ship_id'];
+         $projectDetail  = Ship::with('client.hazmatCompaniesId')->find($ship_id);
+        if ($post['report_type'] == 'po_history') {
+            $safeProjectNo = str_replace('/', '_', $projectDetail['report_number']);
+            $fileName = "po-history" . $safeProjectNo . '.xlsx';
+            // Return as streamed download with headers for AJAX blob handling
+                return Excel::download(new POHistoryExport, $fileName, \Maatwebsite\Excel\Excel::XLSX);
+
+        }
         if ($post['report_type'] == 'download_md_sdoc') {
             return  $this->mdSDRecord($post);
         }
-        $ship_id = $post['ship_id'];
+      
         $logo    = public_path('assets/images/logo.png');
 
         $date           = date('y-m-d');
         $from_date      = $post['from_date'];
         $to_date        = $post['to_date'];
-        $projectDetail  = Ship::with('client.hazmatCompaniesId')->find($ship_id);
+       
         $shipDetail     = $projectDetail;
         $is_report_logo = $projectDetail['client']['is_report_logo'];
         $till_today = $request->has('till_today') ? 1 : 0;
@@ -372,10 +381,8 @@ class ReportController extends Controller
                     if ($key == 0) {
                         if ($key == 0) {
                             if ($key == 0) {
-                             $htmlcode = $this->settextforDiagram('3.1');
-                              $mpdf->WriteHTML($htmlcode);
-
-
+                                $htmlcode = $this->settextforDiagram('3.1');
+                                $mpdf->WriteHTML($htmlcode);
                             }
                         }
                     }
@@ -643,13 +650,8 @@ class ReportController extends Controller
             ->header('Content-Disposition', 'attachment; filename="qr_codes_' . $ship["ship_name"] . '.pdf"');
     }
 
-    protected function mergeImageToPdf($imagePath, $title, $mpdf, $page = null)
-    {
-        $mpdf->AddPage($page);
-        $mpdf->WriteHTML('<h1>' . $title . '</h1>');
-        $mpdf->Image($imagePath, 0, 20, $mpdf->w, null, 'png', '', true, false);
-    }
-    protected function mergePdf($filePath, $title, $mpdf, $page = null)
+
+    protected function mergePdfdiff($filePath, $title, $mpdf, $page = null)
     {
         $mpdf->setSourceFile($filePath);
         $pageCount = $mpdf->setSourceFile($filePath);
