@@ -15,7 +15,7 @@ return new class extends Migration
             //
                
         $table->string('thresh_hold')->nullable();
-          $table->string('refrence_form')->nullable();
+          $table->longText('refrence_form')->nullable();
         });
     }
 
