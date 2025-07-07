@@ -86,6 +86,7 @@
                                         <th>Number Of Attendance</th>
                                         <th>Briefing Date</th>
                                         <th>Briefing By</th>
+                                        <hh>Document</hh>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
