@@ -31,10 +31,20 @@
                 <tr>
                     <td>{{$loop->iteration}}</td>
                     <td>{{$mdno->makeModel->md_date}}</td>
-                    <td>{{$mdno->makeModel->md_no}}</td>
-                    <td>{{$mdno->company_name}}</td>
+                    <td>
+                        @if( $model->makeModel->document1)
+                        <a href="{{$model->makeModel->document1['path']}}" target="_blank">{{$mdno->makeModel->md_no}}</a>
+                        @else
+                        {{$mdno->makeModel->md_no}}
+                        @endif
+                    </td>
+                    <td>{{$mdno->makeModel->company_name}}</td>
                     <td>{{$mdno->makeModel->equipment}},{{$mdno->makeModel->model}},{{$mdno->makeModel->model}}</td>
+                    @if($mdno->makeModel->hazmat->name == 'Not Contained ')
                     <td>{{$mdno->makeModel->hazmat->name}}</td>
+                    @else
+                    <td>    {{$mdno->makeModel->hazmat->name}},{{$mdno->hazmat_type}}</td>
+                    @endif
                     <td>{{$mdno->makeModel->md_qty}}</td>
                     <td>{{$mdno->makeModel->md_unit}}</td>
                 </tr>
