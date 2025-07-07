@@ -19,11 +19,11 @@ trait PdfGenerator
         file_put_contents($filePath, $mainContentPdf);
         return $filePath;
     }
-    public function settextforDiagram()
+    public function settextforDiagram($index)
     {
         $html = '<table width="100%" style="border-collapse: collapse; margin-bottom: 5px;">
                 <tr>
-                    <td style="font-size:14px;"><strong>3.1 Location Diagram of Contained HazMat & PCHM.</strong></td>
+                    <td style="font-size:14px;"><strong>'.$index.' Location Diagram of Contained HazMat & PCHM.</strong></td>
                     <td align="right">
                         <table style="border-collapse: collapse;">
                             <tr>

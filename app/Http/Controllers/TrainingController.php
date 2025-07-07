@@ -396,7 +396,8 @@ class TrainingController extends Controller
                         for ($i = 1; $i <= $pageCount; $i++) {
                             $mpdf->AddPage($html['ori']);
                             if ($key == 0) {
-                                $mpdf->WriteHTML('<h3 style="font-size:14px">2.1 Location Diagram of Contained HazMat & PCHM.</h3>');
+                             $htmlcode = $this->settextforDiagram('2.1');
+                              $mpdf->WriteHTML($htmlcode);
                             }
                             $mpdf->WriteHTML('<h5 style="font-size:14px;">Area: ' . $value['name'] . '</h5>');
                             $templateId = $mpdf->importPage($i);
