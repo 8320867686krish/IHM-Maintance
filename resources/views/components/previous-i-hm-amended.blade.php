@@ -45,7 +45,7 @@ return $item['ihm_table_type'] == $type;
             @if($filteredData->isNotEmpty())
             @foreach($filteredData as $value)
             <tr>
-                <td>{{$value['id']}}</td>
+                <td>{{$loop->iteration}}</td>
                 <td>{{$value['ihm_machinery_equipment']}}</td>
                
                 <td>{{$value['ihm_location']}}</td>

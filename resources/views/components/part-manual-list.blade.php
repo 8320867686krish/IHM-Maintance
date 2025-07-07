@@ -1,7 +1,7 @@
 
-        @foreach($partMenual as $value)
+        @foreach($partMenual as $index=>$value)
         <tr class="new-part-mnual" data-id="{{$value['id']}}}">
-            <td>{{$value['id']}}</td>
+             <td>{{ $start + $index }}</td>
             <td>{{$value['title']}}</td>
 
             <td><a href="{{$value['document']}}" download target="_blank">{{ $value->getAttributes()['document'] }}</a></td>

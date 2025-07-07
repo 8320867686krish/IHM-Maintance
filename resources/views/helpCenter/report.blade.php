@@ -50,7 +50,7 @@
                                                         </a>
                                                     </td>
                                                 </tr>
-                                                <x-part-manual-list :partMenual="$partMenual"></x-part-manual-list>
+                                                <x-part-manual-list :partMenual="$partMenual"  :start="2" ></x-part-manual-list>
                                             </tbody>
 
                                         </table>
