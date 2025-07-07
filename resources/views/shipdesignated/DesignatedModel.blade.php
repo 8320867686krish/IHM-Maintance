@@ -25,7 +25,11 @@
                         </div>
                         <div class="col-12 col-md-12 col-lg-12 mb-2">
                             <div class="form-group">
+                                 @if(@$currentUserRoleLevel == 6)
                                 <label for="name">Rank <span class="text-danger">*</span></label>
+                                @else
+                                 <label for="name">Desgnation <span class="text-danger">*</span></label>
+                                @endif
                                 <input type="text" id="rank" name="rank" class="form-control">
                                 <div class="invalid-feedback error" id="rankError"></div>
 

@@ -20,7 +20,7 @@
 
                         <td>{{$loop->iteration}}</td>
                         <td>{{$value['name']}}</td>
-                        <td>{{$value['position']}}</td>
+                        <td>{{$value['rank']}}</td>
                         <td>{{$value['sign_on_date']}}</td>
                         <td>{{$value['sign_off_date']}}</td>
                     </tr>
