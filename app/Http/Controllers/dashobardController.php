@@ -154,6 +154,13 @@ class dashobardController extends Controller
             $image = $this->upload($request, 'hazmat_company', 'uploads/configration');
             $post['hazmat_company'] =  $image;
         }
+        if ($request->has('thresh_hold')) {
+            if (@$configration && @$configration->thresh_hold) {
+                $oldImagePath = $this->deleteImage('uploads/configration/', $configration->thresh_hold);
+            }
+            $image = $this->upload($request, 'thresh_hold', 'uploads/configration');
+            $post['thresh_hold'] =  $image;
+        }
         $configration = configration::updateOrCreate(['id' => $request->input('id')], $post);
 
         return response()->json(['isStatus' => true, 'message' => 'save successfully']);

@@ -1,6 +1,6 @@
 <div class="container ">
     <!-- Section 1.1 -->
-    <h4>3.1. Inventory of Hazardous Materials (IHM) Part-1 </h4>
+    <h4>4.1. Inventory of Hazardous Materials (IHM) Part-1 </h4>
     <div class="section-1-1">
         <h5 style="text-align: center;">
             Part-1

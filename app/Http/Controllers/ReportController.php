@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Exports\POHistoryExport;
 use App\Models\Brifing;
 use App\Models\CheckHazmat;
+use App\Models\configration;
 use App\Models\Deck;
 use App\Models\DesignatedPersionShip;
 use App\Models\Exam;
@@ -324,8 +325,11 @@ class ReportController extends Controller
         $hazmats = Hazmat::get();
         $html    = view('main-report.abbreviation', compact('hazmats'))->render();
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
-
-        $sectionText = '3. Initial IHM Part1 Summary Report';
+        $configration = configration::first();
+         $titleHtml = '<h2 style="text-align:center;font-size:14px">3. ThreshHold Value</h2>';
+         $thresh_hold = asset('uploads/configration/'.$configration['thresh_hold']);
+        $this->mergePdfAttachment($thresh_hold, $titleHtml, $mpdf);
+        $sectionText = '4. Initial IHM Part1 Summary Report';
         $html = view('main-report.ihmpart1', compact('sectionText', 'projectDetail'))->render();
         $mpdf->AddPage('P');
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
@@ -386,7 +390,7 @@ class ReportController extends Controller
                     if ($key == 0) {
                         if ($key == 0) {
                             if ($key == 0) {
-                                $htmlcode = $this->settextforDiagram('3.1');
+                                $htmlcode = $this->settextforDiagram('4.2');
                                 $mpdf->WriteHTML($htmlcode);
                             }
                         }
@@ -434,7 +438,7 @@ class ReportController extends Controller
                 }
             }
         }
-        $sectionText = '4. IHM Maintance Report';
+        $sectionText = '5. IHM Maintance Report';
         $mpdf->AddPage('P');
         $html = view('main-report.ihmpartMaintance1', compact('sectionText', 'projectDetail', 'from_date', 'to_date', 'till_today'))->render();
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);

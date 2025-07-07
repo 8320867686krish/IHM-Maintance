@@ -74,6 +74,22 @@
                                 <div class="invalid-feedback error" id="hazmat_companyError"></div>
                             </div>
                         </div>
+                          <div class="col-sm-12 col-md-6 col-lg-4">
+                                <div class="form-group mb-3">
+                                    <label for="client_email">Thresh Hold<span class="text-danger">*</span></label>
+                                    <input type="file"
+                                        class="form-control mb-2 @error('thresh_hold') is-invalid @enderror"
+                                        id="thresh_hold" name="thresh_hold"
+                                      
+                                        placeholder="Client Email..." autocomplete="off"
+                                        onchange="removeInvalidClass(this)">
+                                        @if(@$configration['thresh_hold'])
+                                        <a href="{{asset('uploads/configration/'.$configration['thresh_hold'])}}" target="_blank">View Attachment</a>
+
+                                        @endif
+                                    <div class="invalid-feedback error" id="hazmat_companyError"></div>
+                                </div>
+                            </div>
                     </div>
 
 
@@ -85,7 +101,7 @@
                         <div class="col-sm-12 col-md-6">
                             <div class="form-group mb-3">
                                 <button class="btn btn-primary float-right formSubmitBtn"
-                                    type="submit">{!! $button ?? 'Add' !!}</button>
+                                    type="submit">{!! $button ?? 'Save' !!}</button>
                             </div>
                         </div>
                     </div>

@@ -15,6 +15,8 @@ class configration extends Model
         'training_material',
         'briefing_material',
         'sms_extract',
-        'operation_manual'
+        'operation_manual',
+        'thresh_hold',
+        'refrence_form'
     ];
 }

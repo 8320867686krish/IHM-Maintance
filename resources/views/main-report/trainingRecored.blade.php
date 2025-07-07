@@ -1,8 +1,8 @@
 <div class="container next">
     <div class="section-1-1">
-     <h2>6. Record of Periodic IHM Awareness Training</h2>
+     <h2>7. Record of Periodic IHM Awareness Training</h2>
 
-        <h3>6.1 OnBoard Training Records </h3>
+        <h3>7.1 OnBoard Training Records </h3>
         <table>
             <thead>
                 <tr>
@@ -49,7 +49,7 @@
         </table>
 
 
-        <h3> 6.2 Ship Staff Brifing </h3>
+        <h3> 7.2 Ship Staff Brifing </h3>
         <table>
             <thead>
                 <tr>
