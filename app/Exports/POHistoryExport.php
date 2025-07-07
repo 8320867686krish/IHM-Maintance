@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Exports;
 
 use App\Models\poOrder;
@@ -16,29 +17,30 @@ class POHistoryExport implements FromCollection, WithHeadings
     public function collection()
     {
         return PoOrder::with('poOrderItems')
-        ->where('ship_id', $this->shipId)
-        ->get()->flatMap(function ($po) {
-            return $po->poOrderItems->map(function ($item) use ($po) {
-                return [
-                    $po->po_no,
-                    $po->po_date,
-                    $po->machinery,
-                    $po->make_model,
-                    $po->supplier_name,
-                    $po->address,
-                    $po->contact_person,
-                    $po->phone,
-                    $po->email,
-                    $po->onboard_reciving_date,
-                    $po->delivery_location,
-                    $item->description,
-                    $item->impa_no ?? '',
-                    $item->part_no,
-                    $item->qty,
-                    $item->unit,
-                ];
+            ->where('ship_id', $this->shipId)
+            ->get()->flatMap(function ($po) {
+                return $po->poOrderItems->map(function ($item) use ($po) {
+                    return [
+                        $po->po_no,
+                        $po->po_date,
+                        $po->machinery,
+                        $po->make_model,
+                        $item->description,
+                        $item->impa_no ?? '',
+                        $item->part_no,
+                        $item->qty,
+                        $item->unit,
+                        $po->supplier_name,
+                        $po->address,
+                        $po->contact_person,
+                        $po->phone,
+                        $po->email,
+                        $po->onboard_reciving_date,
+                        $po->delivery_location,
+
+                    ];
+                });
             });
-        });
     }
 
     public function headings(): array
@@ -48,6 +50,11 @@ class POHistoryExport implements FromCollection, WithHeadings
             'PO Date',
             'Machinery',
             'Make Model',
+            'Description',
+            'IMPA NO.(if available)',
+            'Part No',
+            'Qty',
+            'Unit',
             'Supplier Name',
             'Supplier Address',
             'Supplier Contact Person',
@@ -55,12 +62,7 @@ class POHistoryExport implements FromCollection, WithHeadings
             'Supplier Email',
             'Onboard Receiving Date',
             'Delivery Location',
-            'Description',
-            'IMPA NO.(if available)',
-            'Part No',
-            'Qty',
-            'Unit'
+
         ];
     }
 }
-?>
