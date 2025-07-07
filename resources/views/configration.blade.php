@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
+<link rel="stylesheet" href="{{ asset('assets/vendor/summernote/css/summernote-bs4.css')}}">
+
 <div class="container-fluid dashboard-content">
 
     <div class="row">
@@ -78,6 +80,11 @@
                                     <div class="invalid-feedback error" id="hazmat_companyError"></div>
                                 </div>
                             </div>
+                            <div class="col-sm-12 col-md-12 col-lg-12">
+                                <label>Reports Prepared with refrence from</label>
+                                <textarea class="form-control" id="summernote" name="refrence_form" rows="6"></textarea>
+                            </div>
+
                         </div>
 
 
@@ -102,10 +109,23 @@
 @endsection
 
 @push('js')
+<script src="{{ asset('assets/vendor/summernote/js/summernote-bs4.js') }}"></script>
+
 <script>
+    var refrence_form = `{!! str_replace('`', '\\`', $configration['refrence_form']) !!}`;
+
+
     $(document).ready(function() {
+        $('#summernote').summernote({
+            height: 300,
+            lineHeights: ['0.5', '1.0', '1.2', '1.5', '2.0'],
+            codemirror: {
+                theme: 'monokai'
+            }
+        });
 
-
+        $('#summernote').summernote('code', refrence_form);
+    
         $('#configrationForm').submit(function(e) {
             e.preventDefault();
 

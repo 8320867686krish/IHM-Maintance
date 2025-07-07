@@ -304,8 +304,9 @@ class ReportController extends Controller
 
         $mpdf->WriteHTML($stylesheet, \Mpdf\HTMLParserMode::HEADER_CSS);
         $shipImagePath = public_path('uploads/ship/orignal/' . $projectDetail['orignal_image']);
+        $configration = configration::first();
 
-        $html = view('main-report.cover', compact('projectDetail', 'shipImagePath', 'from_date', 'to_date', 'till_today'))->render();
+        $html = view('main-report.cover', compact('projectDetail', 'shipImagePath', 'from_date', 'to_date', 'till_today','configration'))->render();
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
 
         $mpdf->TOCpagebreakByArray([
@@ -325,7 +326,6 @@ class ReportController extends Controller
         $hazmats = Hazmat::get();
         $html    = view('main-report.abbreviation', compact('hazmats'))->render();
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
-        $configration = configration::first();
         $titleHtml = '<h2 style="text-align:center;font-size:14px">3. ThreshHold Value</h2>';
         $thresh_hold = public_path('uploads/configration/') . $configration['thresh_hold'];
         $this->mergePdfAttachment($thresh_hold, $titleHtml, $mpdf);
