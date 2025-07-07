@@ -68,6 +68,7 @@
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
+                    <td>&nbsp;</td>
 
                 </tr>
                 @else
@@ -78,11 +79,11 @@
                     <td>{{$historyValue->brifing_date}}</td>
                     <td>{{$historyValue['DesignatedPersonDetail']['name']}}</td>
                     @if($historyValue->brifing_document)
-                    <a href="{{ asset('uploads/brifing_document/' . $historyValue['brifing_document']) }}" title="Download" download>
+                    <td><a href="{{ asset('uploads/brifing_document/' . $historyValue['brifing_document']) }}" title="Download" download>
                         {{$historyValue['brifing_document']}}
-                    </a>
+                    </a></td>
                     @else
-                    <a>showing</a>
+                    <td>-</td>
                     @endif
 
                 </tr>
