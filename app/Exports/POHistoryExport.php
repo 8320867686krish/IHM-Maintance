@@ -7,9 +7,17 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 
 class POHistoryExport implements FromCollection, WithHeadings
 {
+    protected $shipId;
+
+    public function __construct($shipId)
+    {
+        $this->shipId = $shipId;
+    }
     public function collection()
     {
-        return PoOrder::with('poOrderItems')->get()->flatMap(function ($po) {
+        return PoOrder::with('poOrderItems')
+        ->where('ship_id', $this->shipId)
+        ->get()->flatMap(function ($po) {
             return $po->poOrderItems->map(function ($item) use ($po) {
                 return [
                     $po->po_no,

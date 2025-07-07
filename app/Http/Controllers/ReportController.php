@@ -215,7 +215,7 @@ class ReportController extends Controller
             $safeProjectNo = str_replace('/', '_', $projectDetail['report_number']);
             $fileName = "po-history" . $safeProjectNo . '.xlsx';
             // Return as streamed download with headers for AJAX blob handling
-                return Excel::download(new POHistoryExport, $fileName, \Maatwebsite\Excel\Excel::XLSX);
+                return Excel::download(new POHistoryExport($ship_id), $fileName, \Maatwebsite\Excel\Excel::XLSX);
 
         }
         if ($post['report_type'] == 'download_md_sdoc') {
