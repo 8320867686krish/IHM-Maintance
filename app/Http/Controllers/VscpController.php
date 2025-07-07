@@ -329,7 +329,11 @@ class VscpController extends Controller
             }
             $oldImagePath = $this->deleteImage($path, basename($partMenualData->document));
             $partMenualData->delete();
-            return response()->json(["isStatus" => true, "message" => "Deck deleted successfully"]);
+            $partMenual = partManuel::where('ship_id', $shipId )->get();
+            $start = 2;
+            $htmllist = view('components.part-manual-list', compact('partMenual','start'))->render();
+
+            return response()->json(["isStatus" => true, "message" => "Deck deleted successfully",'html'=>$htmllist]);
         } catch (\Throwable $th) {
             return response()->json(["isStatus" => false, 'error' => $th->getMessage()], 500);
         }
@@ -369,7 +373,10 @@ class VscpController extends Controller
             }
             $oldImagePath = $this->deleteImage($path, basename($summaryData->document));
             $summaryData->delete();
-            return response()->json(["isStatus" => true, "message" => "Deck deleted successfully"]);
+            $summary = Summary::where('ship_id', $shipId)->get();
+            $html = view('components.summary-list', compact('summary'))->render();
+
+            return response()->json(["isStatus" => true, "message" => "Deleted successfully",'html'=>$html]);
         } catch (\Throwable $th) {
             return response()->json(["isStatus" => false, 'error' => $th->getMessage()], 500);
         }

@@ -213,7 +213,18 @@ $(document).on("click", ".summarybtn", function (e) {
     confirmDeleteWithElseIf(deleteUrl, confirmMsg, 'delete', function (response) {
         // Success callback
         if (response.isStatus) {
-            $(this).closest('.new-part-mnual').remove();
+            $("#summeryList").DataTable().destroy();
+
+                // Update table content
+                $("#summeryList tbody").html(response.html);
+
+                // summeryList DataTable
+                $("#summeryList").DataTable({
+                    lengthChange: false, // Add your options here
+                    responsive: true,
+                    order: [[0, "desc"]],
+                });
+
 
         }
     });

@@ -53,7 +53,7 @@
                         <a href="#" class="btn btn-primary float-right addSummary mb-3 ml-2" title="Add">Add</a>
                         @endcan
                         <div class="table-responsive">
-                            <table class="table table-striped table-bordered first">
+                            <table class="table table-striped table-bordered first" id="summeryList">
                                 <thead>
                                     <tr>
                                         <th width="15%">SR NO</th>

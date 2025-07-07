@@ -85,7 +85,10 @@ $(document).on("click", ".deletepartMenualbtn", function (e) {
     confirmDeleteWithElseIf(deleteUrl, confirmMsg, 'delete', function (response) {
         // Success callback
         if (response.isStatus) {
-            $(this).closest('.new-part-mnual').remove();
+               $(".partmanullist tr:not(:first)").remove(); // Remove all rows except the first
+$(".partmanullist").append(response.html);   // Append new dynamic rows after static
+                // summeryList DataTable
+               
        
         }
     });
