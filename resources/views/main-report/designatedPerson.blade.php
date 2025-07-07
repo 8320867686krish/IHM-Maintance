@@ -63,7 +63,7 @@
                         <td>{{$value['rank']}}</td>
                         <td>
                             @if($value['position'] == 'incharge')
-                            Overall-incharge (Captain)
+                            Overall-incharge
                             @else
                             Responsible Person
                             @endif
@@ -87,7 +87,7 @@
             </table>
         </div>
         <div style="padding-top:20px;padding-bottom:20px;">
-            <h3>5.3 Hazmat Company Records</h3>
+            <h3>5.3 Designated Hazmat Company Records</h3>
             <table>
                 <thead>
                     <tr>
