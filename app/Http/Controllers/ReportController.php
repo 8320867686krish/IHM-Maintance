@@ -326,7 +326,7 @@ class ReportController extends Controller
         $hazmats = Hazmat::get();
         $html    = view('main-report.abbreviation', compact('hazmats'))->render();
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
-        $titleHtml = '<h2 style="text-align:center;font-size:14px">3. ThreshHold Value</h2>';
+        $titleHtml = '<h2 style="font-size:16px">3. ThreshHold Value</h2>';
         $thresh_hold = public_path('uploads/configration/') . $configration['thresh_hold'];
         $this->mergePdfAttachment($thresh_hold, $titleHtml, $mpdf);
         $sectionText = '4. Initial IHM Part1 Summary Report';
