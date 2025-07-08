@@ -107,9 +107,9 @@
 
                                             <div class="col-12">
                                                 <div class="form-group">
-                                                    <button class="btn btn-primary float-right mb-3 ml-2" type="submit" id="genratereportbtn" data-action="report">Download</button>
+                                                    <button class="btn btn-primary float-right mb-3 ml-2" type="submit" id="genratereportbtn" data-action="report">Download IHMM Report</button>
 
-                                                    <button class="btn btn-primary float-right mb-3 ml-2" type="submit" id="downloadMdSd" data-action="download_md_sdoc">Download MD&SDOC</button>
+                                                    <button class="btn btn-primary float-right mb-3 ml-2" type="submit" id="downloadMdSd" data-action="download_md_sdoc">Download MD-SDOC</button>
                                                     <button class="btn btn-primary float-right mb-3 ml-2" type="submit" id="downloadMdSd" data-action="po_history">Download PO History</button>
 
                                                    

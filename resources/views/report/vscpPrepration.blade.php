@@ -47,7 +47,7 @@
 
 <div class="section-1-1">
 
-    <h4 style="padding-top:20px;text-align:center">List Of Checks For {{ $name }}</h4>
+    <h4 style="padding-top:20px;text-align:center">CheckPoint Details</h4>
     @foreach($checks as $index=>$check)
     @if($index !== 0)
     <div style="page-break-before: always; padding-top: 40px;">
@@ -70,7 +70,7 @@
                     </tr>
                     <tr>
                         <td width="20%"><strong>Hazmat Status</strong></td>
-                        <td width="30%">{{ $check->hazmat_type ?? '' }}</td>
+                        <td width="30%"><span style="color:red">{{ $check->hazmat_type ?? '' }}</span></td>
 
                         <td width="20%"><strong>Hazmat</strong></td>
                         <td width="30%">{{ $check->hazmat->name ?? '' }}</td>
