@@ -353,7 +353,13 @@
 																</div>
 
 																@else
-																<div class="col-4 mb-2">
+																<div class="col-2 mb-2">
+																	<div class="form-group input-label-group">
+																		<input type="date" name="hazmats[{{$value['hazmat_id']}}][ihm_last_date]" id="ihm_last_date{{$value['hazmat_id']}}" class="form-control" placeHolder="Last Date" value="{{$value['ihm_last_date']}}">
+																		<label>Previous Date</label>
+																	</div>
+																</div>
+																<div class="col-2 mb-2">
 																	<div class="form-group input-label-group">
 																		<input type="number" name="hazmats[{{$value['hazmat_id']}}][ihm_previous_qty]" id="ihm_previous_qty{{$value['hazmat_id']}}" class="form-control" placeHolder="" value="{{$value['ihm_previous_qty']}}">
 																		<label>Previous Quantity</label>
@@ -361,38 +367,34 @@
 																	</div>
 																</div>
 
-																<div class="col-4 mb-2">
+																<div class="col-3 mb-2">
 																	<div class="form-group input-label-group">
 																		<input type="text" name="hazmats[{{$value['hazmat_id']}}][ihm_previous_unit]" id="ihm_previous_unit{{$value['hazmat_id']}}" class="form-control" placeHolder="" value="{{$value['ihm_previous_unit']}}">
-																		<label>Unit</label>
+																		<label>Previous Unit</label>
 																	</div>
 																</div>
 																<div class="col-3 mb-2">
 																	<div class="form-group input-label-group">
-																		<input type="date" name="hazmats[{{$value['hazmat_id']}}][ihm_last_date]" id="ihm_last_date{{$value['hazmat_id']}}" class="form-control" placeHolder="Last Date" value="{{$value['ihm_last_date']}}">
-																		<label>Unit</label>
+																		<input type="date" name="hazmats[{{$value['hazmat_id']}}][ihm_date]" id="ihm_date{{$value['hazmat_id']}}" class="form-control" placeHolder="" value="{{$value['ihm_date']}}">
+																		<label>Current Date</label>
 																	</div>
 																</div>
 																<div class="col-3 mb-2">
 																	<div class="form-group input-label-group">
 																		<input type="number" name="hazmats[{{$value['hazmat_id']}}][ihm_qty]" id="ihm_qty{{$value['hazmat_id']}}" class="form-control" placeHolder="" value="{{$value['ihm_qty']}}">
-																		<label>Next Quantity</label>
+																		<label>Current Quantity</label>
 																	</div>
 																</div>
 
 																<div class="col-3 mb-2">
 																	<div class="form-group input-label-group">
 																		<input type="text" name="hazmats[{{$value['hazmat_id']}}][ihm_unit]" id="ihm_unit{{$value['hazmat_id']}}" class="form-control" placeHolder="" value="{{$value['ihm_unit']}}">
+																		<label>Current Unit</label>
 
 
 																	</div>
 																</div>
-																<div class="col-3 mb-2">
-																	<div class="form-group input-label-group">
-																		<input type="date" name="hazmats[{{$value['hazmat_id']}}][ihm_date]" id="ihm_date{{$value['hazmat_id']}}" class="form-control" placeHolder="" value="{{$value['ihm_date']}}">
-																		<label>Next Date</label>
-																	</div>
-																</div>
+																
 																@endif
 																<div class="col-12 mb-2">
 																	<div class="form-group input-label-group">

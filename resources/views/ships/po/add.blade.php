@@ -22,9 +22,9 @@
                             <div class="col-12 text-center">
                                 <label class="mr-2">Status: </label>
                                 <select class="form-control-lg" name="postatus">
-                                    <option value="PO Created">Po Created</option>
-                                    <option value="Communication In Progress">Communication In Progress</option>
-                                    <option value="Completed">Completed</option>
+                                        <option value="PO Created" {{ $poData->postatus == 'PO Created' ? 'selected' : '' }}>PO Created</option>
+                                        <option value="Communication In Progress" {{ $poData->postatus == 'Communication In Progress' ? 'selected' : '' }}>Communication In Progress</option>
+                                        <option value="Completed" {{ $poData->postatus == 'Completed' ? 'selected' : '' }}>Completed</option>
 
                                 </select>
                             </div>
@@ -213,7 +213,7 @@
                                         <option value="Non relevant" {{ $item->type_category === 'Non relevant' ? 'selected' : '' }}>Non relevant</option>
 
                                     </select>
-                                                                            <div id="items_{{$item->id}}_type_categoryError" class="invalid-feedback error"></div>
+                                    <div id="items_{{$item->id}}_type_categoryError" class="invalid-feedback error"></div>
 
                                 </div>
                                 <div class="form-group col-1 mb-3">

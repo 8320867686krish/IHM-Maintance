@@ -177,7 +177,7 @@ $(document).ready(function () {
             success: function (response) {
                 if (response.isStatus) {
                     successMsg(response.message);
-                    location.reload();
+                  //  location.reload();
                 } else {
                     errorMsg(response.message);
                 }
@@ -349,7 +349,7 @@ $('#suspected_hazmat').on('changed.bs.select', function (e, clickedIndex, isSele
         let tableType = tableTypeData.split('-');
         if (!isSelected) {
             selectedHazmatsIds.push(selectedValue);
-
+            $(`#id${selectedValue}`).remove();
             $(`#main${selectedValue}`).remove();
         } else {
             selectedHazmatsIds = selectedHazmatsIds.filter((val) => val !== selectedValue);
@@ -886,29 +886,31 @@ function tableBFiled(divValue) {
      <div class="col-2 mb-2">
                        <div class="form-group input-label-group">
                        <input type="date" name="hazmats[${divValue}][ihm_last_date]" id="ihm_last_date${divValue}" class="form-control" placeHolder="">
-                       <label for="">Last Date</label>
+                       <label for="">Previous Date</label>
 
                        </div>
        </div>
-         <div class="col-2 mb-2">
-                       <div class="form-group input-label-group">
-                       <input type="date" name="hazmats[${divValue}][ihm_date]" id="ihm_date${divValue}" class="form-control" placeHolder="">
-                        <label for="">Previous Date</label>
-                       </div>
-       </div>
-    <div class="col-3 mb-2">
+        <div class="col-2 mb-2">
                        <div class="form-group  input-label-group">
                        <input type="number" name="hazmats[${divValue}][ihm_previous_qty]" id="ihm_previous_qty${divValue}" class="form-control" placeHolder="">
                        <label for="">Previous Quantity</label>
                        </div>
        </div>
-
-       <div class="col-3 mb-2">
+        <div class="col-3 mb-2">
                        <div class="form-group input-label-group">
                        <input type="text" name="hazmats[${divValue}][ihm_previous_unit]" id="ihm_previous_unit${divValue}" class="form-control" placeHolder="">
-                         <label for="">Unit</label>
+                         <label for="">Previous Unit</label>
                        </div>
        </div>
+         <div class="col-3 mb-2">
+                       <div class="form-group input-label-group">
+                       <input type="date" name="hazmats[${divValue}][ihm_date]" id="ihm_date${divValue}" class="form-control" placeHolder="">
+                        <label for="">Current Date</label>
+                       </div>
+       </div>
+   
+
+      
        
        <div class="col-3 mb-2">
                        <div class="form-group input-label-group">
