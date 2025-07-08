@@ -54,7 +54,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <x-designated-person-list :designatePerson="$designatePerson" type='incharge'></x-designated-person-list>
+                            <x-designated-person-list :designatePerson="$designatePerson" type='incharge' :start="1"></x-designated-person-list>
                         </tbody>
                     </table>
                 </div>
@@ -75,7 +75,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                        <x-designated-person-list :designatePerson="$designatePerson" type='responsible'></x-designated-person-list>
+                        <x-designated-person-list :designatePerson="$designatePerson" type='responsible' :start="1"></x-designated-person-list>
 
                         </tbody>
                     </table>

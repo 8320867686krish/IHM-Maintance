@@ -1,12 +1,16 @@
+
 @if($designatePerson->isEmpty() || !$designatePerson->contains('position', $type))
     <tr>
         <td colspan="7" class="text-center">No Recored Found</td>
     </tr>
 @else
+@php $i = $start; @endphp
+
 @foreach($designatePerson as $value)
 @if($value['position'] == $type)
 <tr>
-    <td>{{$loop->iteration}}</td>
+    <td>{{ $i++ }}</td>
+
     <td>{{$value->name}}</td>
     <td>{{$value->rank}}</td>
     @if($type != 'SuperDp')

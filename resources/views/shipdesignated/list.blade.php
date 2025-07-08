@@ -44,7 +44,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <x-designated-person-list :designatePerson="$designatePerson" type='SuperDp'></x-designated-person-list>
+                                <x-designated-person-list :designatePerson="$designatePerson" type='SuperDp' :start="1"></x-designated-person-list>
 
                             </tbody>
                         </table>
