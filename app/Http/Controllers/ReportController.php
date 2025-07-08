@@ -326,7 +326,7 @@ class ReportController extends Controller
         $hazmats = Hazmat::get();
         $html    = view('main-report.abbreviation', compact('hazmats'))->render();
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
-        $titleHtml = '<h2 style="font-size:16px">3. ThreshHold Value</h2>';
+        $titleHtml = '<h2 style="font-size:16px">3. Threshold Values</h2>';
         $thresh_hold = public_path('uploads/configration/') . $configration['thresh_hold'];
         $this->mergePdfAttachment($thresh_hold, $titleHtml, $mpdf);
         $sectionText = '4. Initial IHM Part1 Summary Report';
@@ -432,7 +432,7 @@ class ReportController extends Controller
             foreach ($summary as $sumvalue) {
                 $filePathsum = public_path('uploads/shipsVscp') . "/" . $ship_id . "/partmanual/" . basename($sumvalue['document']);
                 if (file_exists($filePathsum) && @$sumvalue['document']) {
-                    $titleHtml = '<h4 style="text-align:center;font-size:12pt">' . $index . '. ' . $sumvalue['title'] . '</h4>';
+                    $titleHtml = '<h4 style="text-align:center;font-size:12pt">Attachment ' . $index . '. ' . $sumvalue['title'] . '</h4>';
                     $this->mergePdfAttachment($filePathsum, $titleHtml, $mpdf);
                     $index++;
                 }

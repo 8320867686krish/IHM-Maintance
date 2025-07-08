@@ -5,7 +5,7 @@
             <thead>
                 <tr>
                   
-                    <th>SR NO</th>
+                    <th>Sr No</th>
                     <th>Number Of Attendance</th>
                     <th>Briefing Date</th>
                     <th>Briefing By</th>
