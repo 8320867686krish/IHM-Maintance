@@ -30,7 +30,7 @@
                 @foreach($mdnoresults as $mdno)
                 <tr>
                     <td>{{$loop->iteration}}</td>
-                    <td>{{$mdno->makeModel->md_date ? ''}}</td>
+                    <td>{{ $mdno->makeModel->md_date ?? '' }}</td>
                     <td>
                         @if( $mdno->makeModel->document1)
                         <a href="{{$mdno->makeModel->document1['path']}}" target="_blank">{{$mdno->makeModel->md_no}}</a>
@@ -38,7 +38,7 @@
                         {{$mdno->makeModel->md_no}}
                         @endif
                     </td>
-                    <td>{{$mdno->makeModel->coumpany_name}}</td>
+                    <td>{{$mdno->makeModel->coumpany_name ?? ''}}</td>
                     <td>{{$mdno->makeModel->equipment}},{{$mdno->makeModel->model}},{{$mdno->makeModel->model}}</td>
                     @if($mdno->makeModel->hazmat->name == 'Not Contained')
                     <td>{{$mdno->makeModel->hazmat->name}}</td>
