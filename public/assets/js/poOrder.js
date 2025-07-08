@@ -177,7 +177,7 @@ $(document).ready(function () {
             success: function (response) {
                 if (response.isStatus) {
                     successMsg(response.message);
-                  //  location.reload();
+                    //  location.reload();
                 } else {
                     errorMsg(response.message);
                 }
@@ -839,13 +839,20 @@ $("#showTableTypeDiv").on("change", ".cloneTableTypeDiv input[type=checkbox].isI
        
        `}
        
-       <div class="col-12 mb-2">
+<div class="${tableValue === 'A' ? 'col-10' : 'col-12'} mb-2">
                        <div class="form-group input-label-group">
                        <input type="text" name="hazmats[${divValue}][ihm_remarks]" id="remarks${divValue}" class="form-control" placeHolder="">
                         <label for="">Remarks</label>
 
                        </div>
        </div>
+       ${tableValue === 'A' ? `
+<div class="col-2 mb-2">
+    <div class="form-group input-label-group">
+        <input type="date" name="hazmats[${divValue}][as_of_date]" id="as_of_date${divValue}" class="form-control" placeHolder="">
+        <label for="">As of Date</label>
+    </div>
+</div>` : ''}
       
    </div>`
         $(ihmupdetedDetails).insertBefore(`.removeItem${divValue}`).fadeIn('slow');

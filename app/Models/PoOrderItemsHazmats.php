@@ -47,7 +47,8 @@ class PoOrderItemsHazmats extends Model
         'doc2',
         'removal_quantity',
         'removal_unit',
-        'removal_remarks'
+        'removal_remarks',
+        'as_of_date'
     ];
     protected $attributes = [
         'previous_hazmat_type' => null, // Add this as a transient attribute

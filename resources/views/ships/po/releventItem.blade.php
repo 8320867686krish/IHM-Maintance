@@ -300,6 +300,7 @@
 															@endif
 															@if($value->isIHMUpdated == 'yes' && $value->isArrived == 'yes')
 															<div class="row col-12 mb-2 ihmItemDetails{{$value['hazmat_id']}}">
+
 																<div class="col-4 mb-2">
 																	<div class="form-group input-label-group">
 																		<select name="hazmats[{{$value['hazmat_id']}}][ihm_table_type]" id="ihm_table_type{{$value['hazmat_id']}}" class="form-control">
@@ -325,7 +326,7 @@
 																</div>
 																<div class="col-4 mb-2">
 																	<div class="form-group input-label-group">
-																		<input type="text" name="hazmats[{{$value['hazmat_id']}}][ihm_machinery_equipment]" id="ihm_machinery_equipment{{$value['hazmat_id']}}" class="form-control" placeholder="Machinery/Equipment" value="{{$value->ihm_machinery_equipment}}">
+																		<input type="text" name="hazmats[{{$value['hazmat_id']}}][ihm_machinery_equipment]" id="ihm_machinery_equipment{{$value['hazmat_id']}}" class="form-control" placeholder="" value="{{$value->ihm_machinery_equipment}}">
 																		<label>Machinery</label>
 
 																	</div>
@@ -346,7 +347,7 @@
 																</div>
 																<div class="col-2 mb-2">
 																	<div class="form-group input-label-group">
-																		<input type="text" name="hazmats[{{$value['hazmat_id']}}][ihm_unit]" id="ihm_unit{{$value['hazmat_id']}}" class="form-control" placeholder="" value="{{$value->ihm_machinery_equipment}}" value="{{$value->ihm_unit}}">
+																		<input type="text" name="hazmats[{{$value['hazmat_id']}}][ihm_unit]" id="ihm_unit{{$value['hazmat_id']}}" class="form-control" placeholder="" value="{{$value->ihm_unit}}">
 																		<label>Unit</label>
 
 																	</div>
@@ -394,14 +395,26 @@
 
 																	</div>
 																</div>
-																
+
 																@endif
-																<div class="col-12 mb-2">
+																@php
+																$remarksColClass = ($hazmetTable == 'A') ? 'col-10' : 'col-12';
+																@endphp
+
+																<div class="{{ $remarksColClass }} mb-2">
 																	<div class="form-group input-label-group">
-																		<input type="text" name="hazmats[{{$value['hazmat_id']}}][ihm_remarks]" id="remarks{{$value['hazmat_id']}}" class="form-control" placeholder="" value="{{$value->ihm_remarks}}">
+																		<input type="text" name="hazmats[{{ $value['hazmat_id'] }}][ihm_remarks]" id="remarks{{ $value['hazmat_id'] }}" class="form-control" placeholder="" value="{{ $value->ihm_remarks }}">
 																		<label>Remarks</label>
 																	</div>
 																</div>
+																@if($hazmetTable == 'A')
+																<div class="col-2 mb-2">
+																	<div class="form-group input-label-group">
+																		<input type="date" name="hazmats[{{$value['hazmat_id']}}][as_of_date]" id="as_of_date{{$value['hazmat_id']}}" class="form-control" placeholder="" value="{{$value->as_of_date}}">
+																		<label>As of date</label>
+																	</div>
+																</div>
+																@endif
 															</div>
 
 															@endif
