@@ -27,7 +27,7 @@
                                         <a href="{{url('generate-IHM-sticker/'.$ship_id)}}"><button class="btn btn-primary float-right ml-2 mb-4">Generate IHM Sticker </button></a>
                                         <a href="{{url('summeryReport/'.$ship_id)}}"><button class="btn btn-primary float-right mb-4">Summary Report</button></a>
                                     </div>
-                                    <div class="table-responsive">
+                                    <div class="table-responsive mb-4">
                                         <h5> Supplement to IHM Part</h5>
                                         <table class="table table-striped table-bordered first">
                                             <thead>
@@ -61,14 +61,14 @@
                         <div class="card">
                             <div class="card-header" id="TrainingRecoreds">
                                 <h5 class="mb-0">
-                                    <button class="btn btn-link collapsed d-flex justify-content-between w-100" data-toggle="collapse" data-target="#traing-records" aria-expanded="false" aria-controls="soreDpRecoreds">
-                                        <h5> Records of IHM Maintance</h5>
+                                    <button class="btn btn-link collapsed d-flex justify-content-between w-100" data-toggle="collapse" data-target="#training-records" aria-expanded="false" aria-controls="training-records">
+                                         Records of IHM Maintance
                                         <span class="fas fa-angle-down mr-3"></span>
 
                                     </button>
                                 </h5>
                             </div>
-                            <div id="traing-records" class="collapse" aria-labelledby="TrainingRecoreds" data-parent="#accordion">
+                            <div id="training-records" class="collapse" aria-labelledby="headinginitial2" data-parent="#accordion">
                                 <div class="card-body">
                                     <x-previous-i-hm-amended :checkHazmatIHMPart="$checkHazmatIHMPart" :type="'i-1'"></x-previous-i-hm-amended>
                                     <div class=" mb-2 mt-2">
@@ -121,6 +121,8 @@
                                 </div>
                             </div>
                         </div>
+                     
+                     
 
                     </div>
                 </div>
@@ -145,7 +147,11 @@
 @push('js')
 <script>
     let clickedAction = ''; // Track which button was clicked
-
+$(document).on('click', '#viewRemarks', function (e) {
+    var remarks = $(this).attr('data-remarks');
+    $(".remrksText").text(remarks)
+    $("#remarksModel").modal('show');
+});
     $('#generatePdfForm button[type="submit"]').on('click', function() {
         clickedAction = $(this).data('action');
         $('#report_type').val(clickedAction); // Set hidden input

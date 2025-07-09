@@ -424,7 +424,7 @@ class ReportController extends Controller
         $gaplan =  public_path('shipsVscp/' . $ga_plan_pdf);
         $index = 1;
         if (file_exists($gaplan)) {
-            $titleHtml = '<h4 style="text-align:center;font-size:12pt;">' . $index . '. GA PLAN</h4>';
+            $titleHtml = '<h4 style="text-align:center;font-size:12pt;">Attachment ' . $index . '. GA PLAN</h4>';
             $this->mergePdfAsImages($gaplan, $titleHtml, $mpdf);
             $index++;
         }
