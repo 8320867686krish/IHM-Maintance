@@ -35,11 +35,7 @@ $(document).on("click", ".downloadReport", function (e) {
             }
 
             // If filename not found, do not proceed
-            if (!filename) {
-                alert("File could not be downloaded. Filename not found in response.");
-                $submitButton.text(originalText).prop('disabled', false);
-                return;
-            }
+            
 
             const contentType = xhr.getResponseHeader("Content-Type");
             const blob = new Blob([response], { type: contentType });
