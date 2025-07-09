@@ -8,17 +8,69 @@ $(document).on("click", ".startAmended", function () {
     $("#unlockModal").modal('show')
 
 });
-$(document).on("click", ".downloadReport", function () {
-    var isOpen = $("#amededmodel").val();
-    if(isOpen == 1){
-        $("#unlockModal").modal('hide')
+$(document).on("click", ".downloadReport", function (e) {
+    e.preventDefault();
+    const $submitButton = $(this);
+    const originalText = $submitButton.text();
 
-        $("#amendedModal").modal('show');
+    // Disable the button and show "Please wait..."
+    $submitButton.text("wait...").prop("disabled", true);
 
-    }else{
-        $("#unlockModal").modal('hide');
+    const href = $submitButton.attr("href");
+    $.ajax({
+        url: href,
+        type: 'GET',
+        xhrFields: {
+            responseType: 'blob' // Needed for binary files (PDF/Excel)
+        },
+        success: function (response, status, xhr) {
+            const disposition = xhr.getResponseHeader('Content-Disposition');
+            let filename = null;
 
-    }
+            if (disposition && disposition.indexOf('attachment') !== -1) {
+                const matches = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/.exec(disposition);
+                if (matches != null && matches[1]) {
+                    filename = matches[1].replace(/['"]/g, '');
+                }
+            }
+
+            // If filename not found, do not proceed
+            if (!filename) {
+                alert("File could not be downloaded. Filename not found in response.");
+                $submitButton.text(originalText).prop('disabled', false);
+                return;
+            }
+
+            const contentType = xhr.getResponseHeader("Content-Type");
+            const blob = new Blob([response], { type: contentType });
+
+            const link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(link.href);
+
+            $submitButton.text(originalText).prop('disabled', false);
+
+            const isOpen = $("#amededmodel").val();
+            if (isOpen == 1) {
+                $("#unlockModal").modal('hide');
+                $("#amendedModal").modal('show');
+            } else {
+                $("#unlockModal").modal('hide');
+            }
+        },
+
+        error: function (xhr, status, error) {
+            console.error('Download failed:', error);
+            $('#spinShow').hide();
+            $submitButton.text(originalText).prop('disabled', false);
+            $(".bg-overlay").hide();
+        }
+    });
+
 });
 
 $('.switch-input').change(function () {
@@ -36,7 +88,7 @@ $('.switch-input').change(function () {
 
         $("#unlockModal").modal('show')
     }
-    if(isChecked ==1){
+    if (isChecked == 1) {
         confirmChangeStatus(message, function () {
             $.ajax({
                 url: unlockurl,
@@ -58,7 +110,7 @@ $('.switch-input').change(function () {
         }, function () {
             $checkbox.prop('checked', initialState); // Revert checkbox state if cancelled
         });
-    }else{
+    } else {
         $.ajax({
             url: unlockurl,
             method: "POST",
@@ -69,7 +121,7 @@ $('.switch-input').change(function () {
             },
         });
     }
-   
+
 });
 function confirmChangeStatus(message, confirmCallback, cancelCallback) {
     swal({
@@ -215,15 +267,15 @@ $(document).on("click", ".summarybtn", function (e) {
         if (response.isStatus) {
             $("#summeryList").DataTable().destroy();
 
-                // Update table content
-                $("#summeryList tbody").html(response.html);
+            // Update table content
+            $("#summeryList tbody").html(response.html);
 
-                // summeryList DataTable
-                $("#summeryList").DataTable({
-                    lengthChange: false, // Add your options here
-                    responsive: true,
-                    order: [[0, "desc"]],
-                });
+            // summeryList DataTable
+            $("#summeryList").DataTable({
+                lengthChange: false, // Add your options here
+                responsive: true,
+                order: [[0, "desc"]],
+            });
 
 
         }

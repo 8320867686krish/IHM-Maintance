@@ -12,8 +12,8 @@
         <p class="remrksText">before unlock plese download summery report.</p>
       </div>
       <div class="modal-footer">
-            
-                <a type="button" class="btn btn-primary downloadReport" href="{{url('summeryReport/'.$ship_id)}}" download  target="_self">Download</a>
+            <button type="button" class="btn btn-primary downloadReport" data-url="{{ url('summeryReport/' . $ship_id) }}">Download</button>
+
             </div>
       
     </div>

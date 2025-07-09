@@ -100,7 +100,7 @@
             <table style="page-break-inside:avoid">
                 <thead>
                     <tr>
-                        <th>SR No</th>
+                        <th>No</th>
                         <th>Name of structural element</th>
                         <th>Location</th>
                         <th>Materials(classification in appendix 1) </th>

@@ -7,7 +7,7 @@
         <table>
             <thead>
                 <tr>
-                    <th>SR NO</th>
+                    <th>NO</th>
                     <th width="25%">Designated Person</th>
                     <th width="25%">Designation</th>
                     <th>Date of Joining</th>
@@ -54,11 +54,11 @@
         <table>
             <thead>
                 <tr>
-                    <th>SR NO</th>
-                    <th>Number Of Attendance</th>
+                    <th>NO</th>
+                    <th>Number Of Attendees</th>
                     <th>Briefing Date</th>
                     <th>Briefed By</th>
-                    <th>AttachMent</th>
+                    <th>Attachment</th>
 
                 </tr>
             </thead>

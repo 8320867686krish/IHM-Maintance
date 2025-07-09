@@ -4,7 +4,7 @@
         <table>
             <thead>
                 <tr>
-                    <th>SR NO</th>
+                    <th>NO</th>
                     <th>Issue Date</th>
                     <th>SDoC No.</th>
 

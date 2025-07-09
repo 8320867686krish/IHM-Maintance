@@ -314,7 +314,7 @@ class VscpController extends Controller
 
         $partMenual = partManuel::where('ship_id', $inputData['ship_id'])->get();
         $start = 2;
-        $htmllist = view('components.part-manual-list', compact('partMenual','start'))->render();
+        $htmllist = view('components.part-manual-list', compact('partMenual', 'start'))->render();
 
         return response()->json(["isStatus" => true, "message" => "Attachment  save successfully", "html" => $htmllist]);
     }
@@ -330,11 +330,11 @@ class VscpController extends Controller
             }
             $oldImagePath = $this->deleteImage($path, basename($partMenualData->document));
             $partMenualData->delete();
-            $partMenual = partManuel::where('ship_id', $shipId )->get();
+            $partMenual = partManuel::where('ship_id', $shipId)->get();
             $start = 2;
-            $htmllist = view('components.part-manual-list', compact('partMenual','start'))->render();
+            $htmllist = view('components.part-manual-list', compact('partMenual', 'start'))->render();
 
-            return response()->json(["isStatus" => true, "message" => "Deck deleted successfully",'html'=>$htmllist]);
+            return response()->json(["isStatus" => true, "message" => "Deck deleted successfully", 'html' => $htmllist]);
         } catch (\Throwable $th) {
             return response()->json(["isStatus" => false, 'error' => $th->getMessage()], 500);
         }
@@ -377,7 +377,7 @@ class VscpController extends Controller
             $summary = Summary::where('ship_id', $shipId)->get();
             $html = view('components.summary-list', compact('summary'))->render();
 
-            return response()->json(["isStatus" => true, "message" => "Deleted successfully",'html'=>$html]);
+            return response()->json(["isStatus" => true, "message" => "Deleted successfully", 'html' => $html]);
         } catch (\Throwable $th) {
             return response()->json(["isStatus" => false, 'error' => $th->getMessage()], 500);
         }
@@ -548,9 +548,8 @@ class VscpController extends Controller
 
             $filePath = public_path('pdf/' . $fileName); // Adjust the directory and file name as needed
             $mpdf->Output($filePath, \Mpdf\Output\Destination::FILE);
-            $response = response()->download($filePath, $fileName)->deleteFileAfterSend(true);
-            $response->headers->set('X-File-Name', $fileName);
-            return $response;
+        return response()->download($filePath, $fileName)->deleteFileAfterSend(true);
+
         } catch (\Mpdf\MpdfException $e) {
             echo $e->getMessage();
         }

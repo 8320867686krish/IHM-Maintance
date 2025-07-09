@@ -6,7 +6,7 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Sr No</th>
+                        <th>No</th>
                         <th>Name</th>
                         <th>Designation</th>
                         <th>Stat/Sign On Date</th>
@@ -45,7 +45,7 @@
             <table>
                 <thead>
                     <tr>
-                        <th>SR No</th>
+                        <th>No</th>
                         <th width="25%">Name</th>
                         <th>Rank</th>
                         <th width="25%">Designation</th>
