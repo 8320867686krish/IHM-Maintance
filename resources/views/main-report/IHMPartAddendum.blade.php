@@ -50,7 +50,7 @@
                             {{ $value->ihm_previous_qty }}{{ $value->ihm_previous_unit }},
                             As of {{ \Carbon\Carbon::parse($value->ihm_date)->format('d M Y') }}
                             {{ $value->ihm_qty }}{{ $value->ihm_unit }},
-                            {{ $value->ihm_remarks }}
+                            {{ $value->ihm_remarks }} remove:{{$value->isRemove}}
                         </td>
 
                         @endif
@@ -117,7 +117,7 @@
                             {{ $value->ihm_previous_qty }}{{ $value->ihm_previous_unit }},
                             As of {{ \Carbon\Carbon::parse($value->ihm_date)->format('d M Y') }}
                             {{ $value->ihm_qty }}{{ $value->ihm_unit }},
-                            {{ $value->ihm_remarks }}
+                            {{ $value->ihm_remarks }} remove:{{$value->isRemove}}
                         </td>
 
                         @endif
@@ -183,7 +183,7 @@
                             {{ $value->ihm_previous_qty }}{{ $value->ihm_previous_unit }},
                             As of {{ \Carbon\Carbon::parse($value->ihm_date)->format('d M Y') }}
                             {{ $value->ihm_qty }}{{ $value->ihm_unit }},
-                            {{ $value->ihm_remarks }}
+                            {{ $value->ihm_remarks }} remove:{{$value->isRemove}}
                         </td>
 
                         @endif
