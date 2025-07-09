@@ -42,7 +42,7 @@
                         @if($table_type == 'A')
                         <td>As A{{ $value->remarks }}</td>
                         @else
-                        <td> As b{{ $value->remarks }}</td>
+                        <td>On {{$value->ihm_last_date}} {{$value->ihm_previous_qty}}{{$value->ihm_previous_unit}},As Of {{$value->ihm_date}}  {{$value->ihm_date}} {{$value->ihm_qty}}{{$value->ihm_unit}},{{ $value->remarks }}</td>
                         @endif
                         
                     </tr>
@@ -98,7 +98,7 @@
                         @if($table_type == 'A')
                         <td>As A{{ $value->remarks }}</td>
                         @else
-                        <td> As b{{ $value->remarks }}</td>
+                        <td>On {{$value->ihm_last_date}} {{$value->ihm_previous_qty}}{{$value->ihm_previous_unit}},As Of {{$value->ihm_date}}  {{$value->ihm_date}} {{$value->ihm_qty}}{{$value->ihm_unit}},{{ $value->remarks }}</td>
                         @endif
                     </tr>
                     @endforeach
@@ -153,7 +153,7 @@
                         @if($table_type == 'A')
                         <td>As A{{ $value->remarks }}</td>
                         @else
-                        <td> As b{{ $value->remarks }}</td>
+                        <td>On {{$value->ihm_last_date}} {{$value->ihm_previous_qty}}{{$value->ihm_previous_unit}},As Of {{$value->ihm_date}}  {{$value->ihm_date}} {{$value->ihm_qty}}{{$value->ihm_unit}},{{ $value->remarks }}</td>
                         @endif
                     </tr>
                     @endforeach
