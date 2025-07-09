@@ -48,7 +48,7 @@ return $item['ihm_table_type'] == $type;
                 <td>{{$loop->iteration}}</td>
                 <td>{{$value['ihm_machinery_equipment']}}</td>
                
-                <td>{{$value['ihm_location']}}</td>
+                <td>{{$value['ihm_location'] ?? '--'}}</td>
                 <td>{{$value->hazmat->name}}</td>
                 @if($type == 'i-2' || $type == 'i-3')
                 <td>{{$value->ihm_parts}}</td>
@@ -57,8 +57,8 @@ return $item['ihm_table_type'] == $type;
                 <td>{{$value->ihm_unit}}</td>
                 <td>
                     @if(strlen($value['ihm_remarks']) > 35)
-                    {{ \Illuminate\Support\Str::limit($value['remarks'], 50) }}
-                    <a title="view" href="javascript:;" id="viewRemarks" data-remarks="{{$value['remarks']}}" style="color:blue">..more</a>
+                    {{ \Illuminate\Support\Str::limit($value['ihm_remarks'], 50) }}
+                    <a title="view" href="javascript:;" id="viewRemarks" data-remarks="{{$value['ihm_remarks']}}" style="color:blue">..more</a>
                     @else
                     {{ $value['ihm_remarks'] }}
                     @endif
