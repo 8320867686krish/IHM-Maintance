@@ -50,7 +50,7 @@
                             {{ $value->ihm_previous_qty }}{{ $value->ihm_previous_unit }},
                             As of {{ \Carbon\Carbon::parse($value->ihm_date)->format('d M Y') }}
                             {{ $value->ihm_qty }}{{ $value->ihm_unit }},
-                            {{ $value->ihm_remarks }} remove:{{$value->isRemove}}
+                            {{ $value->ihm_remarks }}
                             @if ($value->isRemove == 'yes')
                             <span style="color: #555555;">
                             On
@@ -128,7 +128,7 @@
                             {{ $value->ihm_previous_qty }}{{ $value->ihm_previous_unit }},
                             As of {{ \Carbon\Carbon::parse($value->ihm_date)->format('d M Y') }}
                             {{ $value->ihm_qty }}{{ $value->ihm_unit }},
-                            {{ $value->ihm_remarks }} remove:{{$value->isRemove}}
+                            {{ $value->ihm_remarks }}
                             @if ($value->isRemove == 'yes')
                             <span style="color: #555555;">
                             On
