@@ -37,14 +37,24 @@
                         <td>{{ $value->ihm_qty }}</td>
                         <td>{{ $value->unit }}</td>
                         @php
-                        $table_type = substr($value->hazmat->table_type ?? '', 0, 1)  
+                        $table_type = substr($value->hazmat->table_type ?? '', 0, 1)
                         @endphp
                         @if($table_type == 'A')
-                        <td>As A{{ $value->ihm_remarks }}</td>
-                        @else
-                        <td>On {{$value->ihm_last_date}} {{$value->ihm_previous_qty}}{{$value->ihm_previous_unit}},As Of {{$value->ihm_date}} {{$value->ihm_qty}}{{$value->ihm_unit}},{{ $value->ihm_remarks }}</td>
+                        <td>
+                            As of {{ \Carbon\Carbon::parse($value->as_of_date)->format('d M Y') }}
+                            {{ $value->ihm_qty }}{{ $value->ihm_unit }},
+                            {{ $value->ihm_remarks }}
+                        </td> @else
+                        <td>
+                            On {{ \Carbon\Carbon::parse($value->ihm_last_date)->format('d M Y') }}
+                            {{ $value->ihm_previous_qty }}{{ $value->ihm_previous_unit }},
+                            As of {{ \Carbon\Carbon::parse($value->ihm_date)->format('d M Y') }}
+                            {{ $value->ihm_qty }}{{ $value->ihm_unit }},
+                            {{ $value->ihm_remarks }}
+                        </td>
+
                         @endif
-                        
+
                     </tr>
                     @endforeach
                     @endif
@@ -93,12 +103,23 @@
                         <td>{{ $value->ihm_qty }}</td>
                         <td>{{ $value->unit }}</td>
                         @php
-                        $table_type = substr($value->hazmat->table_type ?? '', 0, 1)  
+                        $table_type = substr($value->hazmat->table_type ?? '', 0, 1)
                         @endphp
                         @if($table_type == 'A')
-                        <td>As A{{ $value->remarks }}</td>
+                        <td>
+                            As of {{ \Carbon\Carbon::parse($value->as_of_date)->format('d M Y') }}
+                            {{ $value->ihm_qty }}{{ $value->ihm_unit }},
+                            {{ $value->ihm_remarks }}
+                        </td>
                         @else
-                         <td>On {{$value->ihm_last_date}} {{$value->ihm_previous_qty}}{{$value->ihm_previous_unit}},As Of {{$value->ihm_date}} {{$value->ihm_qty}}{{$value->ihm_unit}},{{ $value->ihm_remarks }}</td>
+                        <td>
+                            On {{ \Carbon\Carbon::parse($value->ihm_last_date)->format('d M Y') }}
+                            {{ $value->ihm_previous_qty }}{{ $value->ihm_previous_unit }},
+                            As of {{ \Carbon\Carbon::parse($value->ihm_date)->format('d M Y') }}
+                            {{ $value->ihm_qty }}{{ $value->ihm_unit }},
+                            {{ $value->ihm_remarks }}
+                        </td>
+
                         @endif
                     </tr>
                     @endforeach
@@ -148,12 +169,23 @@
                         <td>{{ $value->ihm_qty }}</td>
                         <td>{{ $value->unit }}</td>
                         @php
-                        $table_type = substr($value->hazmat->table_type ?? '', 0, 1)  
+                        $table_type = substr($value->hazmat->table_type ?? '', 0, 1)
                         @endphp
                         @if($table_type == 'A')
-                        <td>As A{{ $value->remarks }}</td>
+                        <td>
+                            As of {{ \Carbon\Carbon::parse($value->as_of_date)->format('d M Y') }}
+                            {{ $value->ihm_qty }}{{ $value->ihm_unit }},
+                            {{ $value->ihm_remarks }}
+                        </td>
                         @else
-                        <td>On {{$value->ihm_last_date}} {{$value->ihm_previous_qty}}{{$value->ihm_previous_unit}},As Of {{$value->ihm_date}} {{$value->ihm_qty}}{{$value->ihm_unit}},{{ $value->ihm_remarks }}</td>
+                        <td>
+                            On {{ \Carbon\Carbon::parse($value->ihm_last_date)->format('d M Y') }}
+                            {{ $value->ihm_previous_qty }}{{ $value->ihm_previous_unit }},
+                            As of {{ \Carbon\Carbon::parse($value->ihm_date)->format('d M Y') }}
+                            {{ $value->ihm_qty }}{{ $value->ihm_unit }},
+                            {{ $value->ihm_remarks }}
+                        </td>
+
                         @endif
                     </tr>
                     @endforeach
