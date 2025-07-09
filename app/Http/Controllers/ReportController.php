@@ -176,7 +176,8 @@ class ReportController extends Controller
                     $filePathsum = public_path('images/modelDocument/') . $mdvalue['makeModel']['document1']['name'];
                     if ($mdvalue['makeModel']['document1']) {
                         $titleHtml = '<h4 style="text-align:center;font-size:13px;font-weight:bold">' . $mdvalue['makeModel']['md_no'] . '</h4>';
-                        $this->mergePdf($filePathsum, $titleHtml, $mpdf);
+                        $this->mergePdfAttachment($filePathsum, $titleHtml, $mpdf);
+
                     }
                 }
             }
