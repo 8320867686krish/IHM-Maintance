@@ -30,7 +30,7 @@ class MakeModelContoller extends Controller
      */
     public function create()
     {
-        $hazmat = Hazmat::get(['id', 'name']);
+        $hazmat = Hazmat::orderBy('id', 'desc')->get(['id', 'name']);
 
         return view('makeModel.makeModelAdd', ['hazmats'=>$hazmat, 'button' => 'Save', 'head_title' => 'Add']);
     }
@@ -84,7 +84,7 @@ class MakeModelContoller extends Controller
      */
     public function edit(string $id)
     {
-        $hazmat = Hazmat::get(['id', 'name']);
+        $hazmat = Hazmat::orderBy('id', 'desc')->get(['id', 'name']);
 
         $model = MakeModel::find($id);
 

@@ -30,7 +30,8 @@ class VscpController extends Controller
     {
         $ship = Ship::with('decks')->find($ship_id);
         $checks = Check::with('hazmats.hazmat')->where('ship_id', $ship_id)->get();
-        $hazmats = Hazmat::get(['id', 'name', 'table_type']);
+        $hazmats = Hazmat::orderBy('id', 'desc')->get(['id', 'name', 'table_type']);
+
         return view('ships.vscp.index', compact('ship', 'ship_id', 'checks', 'hazmats', 'amended'));
     }
     public function uploadGaPlan(Request $request)
