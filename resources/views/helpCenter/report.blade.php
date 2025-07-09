@@ -150,7 +150,6 @@
 <script>
     let clickedAction = ''; // Track which button was clicked
 $(document).on('click', '#viewRemarks', function (e) {
-    alert("vvvv");
     var remarks = $(this).attr('data-remarks');
     $(".remrksText").text(remarks)
     $("#remarksModel").modal('show');
