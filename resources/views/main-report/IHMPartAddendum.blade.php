@@ -36,7 +36,15 @@
                         <td>{{ $value->hazmat->name ?? '' }}</td>
                         <td>{{ $value->ihm_qty }}</td>
                         <td>{{ $value->unit }}</td>
-                        <td>{{ $value->remarks }}</td>
+                        @php
+                        $table_type = substr($value->hazmat->table_type ?? '', 0, 1)  
+                        @endphp
+                        @if($table_type == 'A')
+                        <td>As A{{ $value->remarks }}</td>
+                        @else
+                        <td> As b{{ $value->remarks }}</td>
+                        @endif
+                        
                     </tr>
                     @endforeach
                     @endif
@@ -84,7 +92,14 @@
 
                         <td>{{ $value->ihm_qty }}</td>
                         <td>{{ $value->unit }}</td>
-                        <td>{{ $value->remarks }}</td>
+                        @php
+                        $table_type = substr($value->hazmat->table_type ?? '', 0, 1)  
+                        @endphp
+                        @if($table_type == 'A')
+                        <td>As A{{ $value->remarks }}</td>
+                        @else
+                        <td> As b{{ $value->remarks }}</td>
+                        @endif
                     </tr>
                     @endforeach
                     @endif
@@ -132,7 +147,14 @@
                         <td>{{ $value->ihm_parts ?? '' }}</td>
                         <td>{{ $value->ihm_qty }}</td>
                         <td>{{ $value->unit }}</td>
-                        <td>{{ $value->remarks }}</td>
+                        @php
+                        $table_type = substr($value->hazmat->table_type ?? '', 0, 1)  
+                        @endphp
+                        @if($table_type == 'A')
+                        <td>As A{{ $value->remarks }}</td>
+                        @else
+                        <td> As b{{ $value->remarks }}</td>
+                        @endif
                     </tr>
                     @endforeach
                     @endif
