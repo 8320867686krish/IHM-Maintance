@@ -51,6 +51,17 @@
                             As of {{ \Carbon\Carbon::parse($value->ihm_date)->format('d M Y') }}
                             {{ $value->ihm_qty }}{{ $value->ihm_unit }},
                             {{ $value->ihm_remarks }} remove:{{$value->isRemove}}
+                            @if ($value->isRemove == 'yes')
+                            <span style="color: #555555;">
+                            On
+                            @if (!empty($value->removal_date))
+                            {{ \Carbon\Carbon::parse($value->removal_date)->format('d M Y') }}
+                            @endif
+                            @if (!empty($value->removal_remarks))
+                            , {{ $value->removal_remarks }}
+                            @endif
+                            </span>
+                            @endif
                         </td>
 
                         @endif
@@ -118,6 +129,17 @@
                             As of {{ \Carbon\Carbon::parse($value->ihm_date)->format('d M Y') }}
                             {{ $value->ihm_qty }}{{ $value->ihm_unit }},
                             {{ $value->ihm_remarks }} remove:{{$value->isRemove}}
+                            @if ($value->isRemove == 'yes')
+                            <span style="color: #555555;">
+                            On
+                            @if (!empty($value->removal_date))
+                            {{ \Carbon\Carbon::parse($value->removal_date)->format('d M Y') }}
+                            @endif
+                            @if (!empty($value->removal_remarks))
+                            , {{ $value->removal_remarks }}
+                            @endif
+                            </span>
+                            @endif
                         </td>
 
                         @endif
@@ -183,7 +205,18 @@
                             {{ $value->ihm_previous_qty }}{{ $value->ihm_previous_unit }},
                             As of {{ \Carbon\Carbon::parse($value->ihm_date)->format('d M Y') }}
                             {{ $value->ihm_qty }}{{ $value->ihm_unit }},
-                            {{ $value->ihm_remarks }} remove:{{$value->isRemove}}
+                            {{ $value->ihm_remarks }}
+                            @if ($value->isRemove == 'yes')
+                            <span style="color: #555555;">
+                            On
+                            @if (!empty($value->removal_date))
+                            {{ \Carbon\Carbon::parse($value->removal_date)->format('d M Y') }}
+                            @endif
+                            @if (!empty($value->removal_remarks))
+                            , {{ $value->removal_remarks }}
+                            @endif
+                            </span>
+                            @endif
                         </td>
 
                         @endif
