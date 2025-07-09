@@ -551,6 +551,7 @@ class ReportController extends Controller
             ->get();
         $html = view('main-report.sdoc-recoreds', compact('sdocresults'))->render();
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
+        $mpdf->WriteHTML('<div style="position:absolute;bottom:100px;"><table width="100%"><tr><td style="text-align:center">... End of the IHM Report...</td></tr></table></div>');
 
 
 
