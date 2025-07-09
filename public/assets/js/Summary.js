@@ -16,7 +16,7 @@ $(document).on("click", ".downloadReport", function (e) {
     // Disable the button and show "Please wait..."
     $submitButton.text("wait...").prop("disabled", true);
 
-    const href = $submitButton.attr("href");
+    const href = $submitButton.attr("data-url");
     $.ajax({
         url: href,
         type: 'GET',
