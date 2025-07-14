@@ -34,7 +34,9 @@ class MakeModel extends Model
         "email_address",
         "sdoc_id_no",
         "md_qty",
-        "md_unit"
+        "md_unit",
+        "above_threshold_value",
+        "threshold_values"
     ];
 
     protected $hidden = ['created_at', 'updated_at'];

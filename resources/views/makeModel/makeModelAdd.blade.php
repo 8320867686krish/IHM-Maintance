@@ -151,6 +151,25 @@
                                 </div>
                             </div>
 
+                             <div class="col-sm-6 col-md-6 mt-3">
+                                <div class="form-group">
+                                    <label for="part">As Above Threshold Value? <span class="text-danger">*</span></label>
+                                    <select class="form-controll" name="above_threshold_value" id="above_threshold_value">
+                                        <option value="1">Yes</option>
+                                        <option value="0">No</option>
+                                    </select>
+                                    <div class="invalid-feedback error" id="partError"></div>
+                                </div>
+                            </div>
+
+                             <div class="col-sm-6 col-md-6 mt-3">
+                                <div class="form-group">
+                                    <label for="part">Threshold value <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="threshold_values" name="threshold_values" value="{{ old('threshold_values', $model->threshold_values ?? '') }}" autocomplete="off" onchange="removeInvalidClass(this)">
+                                    <div class="invalid-feedback error" id="partError"></div>
+                                </div>
+                            </div>
+
                            
                         </div>
                         <hr/>
