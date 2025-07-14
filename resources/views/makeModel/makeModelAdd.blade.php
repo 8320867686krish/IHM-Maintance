@@ -154,7 +154,7 @@
                              <div class="col-sm-6 col-md-6 mt-3">
                                 <div class="form-group">
                                     <label for="part">As Above Threshold Value? <span class="text-danger">*</span></label>
-                                    <select class="form-controll" name="above_threshold_value" id="above_threshold_value">
+                                    <select class="form-control" name="above_threshold_value" id="above_threshold_value">
                                         <option value="1">Yes</option>
                                         <option value="0">No</option>
                                     </select>
