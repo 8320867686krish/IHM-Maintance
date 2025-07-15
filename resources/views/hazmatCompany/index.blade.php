@@ -23,7 +23,7 @@
                 </h5>
                 <div class="card-body mb-4">
                     <div>
-                        <table class="table table-striped table-bordered first" id="HazmatCompany">
+                        <table class="table table-striped table-bordered first table-responsive" id="HazmatCompany">
                             <thead>
                                 <tr>
                                     <th width="10%">Sr.No</th>

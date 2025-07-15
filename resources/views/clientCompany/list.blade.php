@@ -27,7 +27,7 @@
                 </h4>
                 <div class="card-body mb-4">
                     <div>
-                        <table class="table table-striped table-bordered first">
+                        <table class="table table-striped table-bordered first table-responsive">
                             <thead>
                                 <tr>
                                     <th width="5%">Sr.No</th>
