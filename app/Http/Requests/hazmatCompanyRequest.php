@@ -37,7 +37,7 @@ class hazmatCompanyRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'name.required' => 'Please enter a name.',
+            'name.required' => 'Please enter a company name.',
             'name.unique' => 'This hazmatCompany already exists.',
             'email.required' => 'Please enter a email.',
             'email.unique' => 'The email already exists.',
