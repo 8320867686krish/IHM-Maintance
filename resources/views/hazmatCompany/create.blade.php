@@ -21,7 +21,7 @@
                                         id="name" name="name" placeholder=" "
                                         value="{{ old('name', $hazmatCompany->name ?? '') }}"
                                         onchange="removeInvalidClass(this)">
-                                    <label for="name">Name</label>
+                                    <label for="name">Company Name</label>
                                     <div class="invalid-feedback error" id="nameError"></div>
                                 </div>
                             </div>
