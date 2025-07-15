@@ -98,8 +98,9 @@
                         </div>
                         <div class="col-sm-12 col-md-4">
                             <div class="form-group input-label-group">
-                                <label for="password">Password <span class="text-danger">*</span></label>
 <input type="password" class="form-control " id="password" name="password" value="" placeholder="" autocomplete="off" onchange="removeInvalidClass(this)">
+                                <label for="password">Password <span class="text-danger">*</span></label>
+
                                 <div class="invalid-feedback error" id="passwordError"></div>
                             </div>
                         </div>
