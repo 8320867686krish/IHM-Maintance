@@ -82,13 +82,7 @@
 
             confirmDelete(deleteUrl, confirmMsg, function(response) {
                 // Success callback
-                $("#HazmatCompany").DataTable().destroy();
-
-                 $("#HazmatCompany").DataTable({
-                    lengthChange: false, // Add your options here
-                    responsive: true,
-                    order: [[0, "desc"]],
-                });
+                $deleteButton.closest('.hazmatCompanyRowTr').remove();
             }, function(response) {
                 // Error callback (optional)
                 console.log("Failed to delete: " + response.message);
