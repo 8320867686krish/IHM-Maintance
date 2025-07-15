@@ -23,7 +23,7 @@
                 </h5>
                 <div class="card-body mb-4">
                     <div>
-                        <table class="table table-striped table-bordered first">
+                        <table class="table table-striped table-bordered first" id="HazmatCompany">
                             <thead>
                                 <tr>
                                     <th width="10%">Sr.No</th>
@@ -82,7 +82,11 @@
 
             confirmDelete(deleteUrl, confirmMsg, function(response) {
                 // Success callback
-                $deleteButton.closest('.hazmatCompanyRowTr').remove();
+                 $("#HazmatCompany").DataTable({
+                    lengthChange: false, // Add your options here
+                    responsive: true,
+                    order: [[0, "desc"]],
+                });
             }, function(response) {
                 // Error callback (optional)
                 console.log("Failed to delete: " + response.message);
