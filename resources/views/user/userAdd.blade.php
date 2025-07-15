@@ -96,14 +96,22 @@
                                 <div class="invalid-feedback error" id="emailError"></div>
                             </div>
                         </div>
-                        <div class="col-sm-12 col-md-4">
-                            <div class="form-group input-label-group">
-<input type="password" class="form-control " id="password" name="password" value="" placeholder="" autocomplete="off" onchange="removeInvalidClass(this)">
-                                <label for="password">Password <span class="text-danger">*</span></label>
+                         <div class="col-sm-12 col-md-4">
+                                <div class="form-group input-label-group">
+                                    <input type="password" class="form-control @error('password') is-invalid @enderror"
+                                        id="password" name="password" value="{{ old('password') }}"
+                                        placeholder="" autocomplete="off"
+                                        onchange="removeInvalidClass(this)">
+                                    <label for="password">Password
+                                        @if (!isset($user->id))
+                                        <span class="text-danger">*</span>
+                                        @endif
+                                    </label>
 
-                                <div class="invalid-feedback error" id="passwordError"></div>
-                            </div>
-                        </div>
+                                    <div class="invalid-feedback error" id="passwordError"></div>
+                                </div>
+                         </div>
+                       
                         <div class="col-sm-12 col-md-4">
                             <div class="form-group input-label-group mb-1">
 
