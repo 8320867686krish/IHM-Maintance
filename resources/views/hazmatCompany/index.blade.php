@@ -82,6 +82,8 @@
 
             confirmDelete(deleteUrl, confirmMsg, function(response) {
                 // Success callback
+                $("#HazmatCompany").DataTable().destroy();
+
                  $("#HazmatCompany").DataTable({
                     lengthChange: false, // Add your options here
                     responsive: true,
