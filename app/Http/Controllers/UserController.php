@@ -39,7 +39,12 @@ class UserController extends Controller
                     $query->where('level', '>', $role_id)->orderBy('level', 'asc');
                 })->where('hazmat_companies_id', $user->hazmat_companies_id)->get();
             } else {
-                $users = User::with('hazmatCompaniesId')->get();
+                $users = User::with('hazmatCompaniesId')
+                    ->whereHas('roles', function ($query) {
+                        $query->whereIn('level', [3, 4]);
+                    })
+                    ->where('hazmat_companies_id', $user->hazmat_companies_id)
+                    ->get();
             }
 
 
