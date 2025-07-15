@@ -38,12 +38,12 @@ class hazmatCompanyRequest extends FormRequest
     {
         return [
             'name.required' => 'Please enter a company name.',
-            'name.unique' => 'This hazmatCompany already exists.',
+            'name.unique' => 'This hazmat Company already exists.',
             'email.required' => 'Please enter a email.',
             'email.unique' => 'The email already exists.',
             'password.required' => 'Please enter a password.',
-            'training_material.required' => 'Please choose trainingMaterial.',
-            'briefing_plan.required' => 'Please choose Briefing Plan.',
+            'training_material.required' => 'Please choose training material.',
+            'briefing_plan.required' => 'Please choose briefing plan.',
 
         ];
     }
