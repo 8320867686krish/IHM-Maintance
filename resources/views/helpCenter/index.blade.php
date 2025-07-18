@@ -185,11 +185,14 @@
     $(document).ready(function() {
         var currentUserRoleLevel = "{{$currentUserRoleLevel}}";
         console.log(currentUserRoleLevel);
-        if (currentUserRoleLevel == 5 || currentUserRoleLevel == 6) {
-            CKEDITOR.replace('mytextarea', {
+        // if (currentUserRoleLevel == 5 || currentUserRoleLevel == 6) {
+        //     CKEDITOR.replace('mytextarea', {
+        //         versionCheck: false,
+        //     });
+        // }
+         CKEDITOR.replace('mytextarea', {
                 versionCheck: false,
             });
-        }
         CKEDITOR.replace('mytextareasuperadmin', {
             versionCheck: false,
         });
