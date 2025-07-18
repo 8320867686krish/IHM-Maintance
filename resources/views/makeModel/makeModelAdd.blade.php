@@ -156,8 +156,8 @@
                                     <label for="part">As Above Threshold Value? <span class="text-danger">*</span></label>
                                   <select class="form-control" name="above_threshold_value" id="above_threshold_value">
     <option value="">Please Select</option>
-    <option value="1" {{ $model->above_threshold_value === 1 ? 'selected' : '' }}>Yes</option>
-    <option value="0" {{ $model->above_threshold_value === 0 ? 'selected' : '' }}>No</option>
+    <option value="1" {{ @$model->above_threshold_value === 1 ? 'selected' : '' }}>Yes</option>
+    <option value="0" {{ @$model->above_threshold_value === 0 ? 'selected' : '' }}>No</option>
 </select>
                                     <div class="invalid-feedback error" id="partError"></div>
                                 </div>
