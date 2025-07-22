@@ -42,12 +42,14 @@ class POOrderController extends Controller
         }
         $backurl = "ship/view" . "/" . $ship_id . "#po-records";
         $poData = poOrder::with('poOrderItems', 'emailHistory')->find($po_order_id);
-        $filteredEmailHistory = @$poData->emailHistory->filter(function ($history) {
-            return $history->history_type == 'ship';
+        $filteredEmailHistory = optional($poData->emailHistory)->filter(function ($history) {
+            return $history->history_type === 'ship';
         });
-        $filteredEmailHVendoristory = @$poData->emailHistory->filter(function ($history) {
-            return $history->history_type == 'vendor';
+        $filteredEmailHVendoristory = optional($poData->emailHistory)->filter(function ($history) {
+            return $history->history_type === 'vendor';
         });
+
+
         return view('ships.po.add', compact('head_title', 'ship_id', 'poData', 'backurl', 'client_name', 'currentUserRoleLevel', 'filteredEmailHVendoristory', 'filteredEmailHistory'));
     }
 
@@ -83,18 +85,18 @@ class POOrderController extends Controller
     }
     public function viewReleventItem($poiteam_id)
     {
-            $user = Auth::user();
+        $user = Auth::user();
         $poItem = poOrderItem::with(['poOrder:id,po_no', 'poOrderItemsHazmets.hazmat', 'poOrderItemsHazmets.makeModel', 'poOrderItemsHazmets'])->find($poiteam_id);
         $currentUserRoleLevel = $user->roles->first()->level;
 
-            $equipmentsQuery = MakeModel::selectRaw('MIN(id) as id, equipment')
-                ->groupBy('equipment');
+        $equipmentsQuery = MakeModel::selectRaw('MIN(id) as id, equipment')
+            ->groupBy('equipment');
 
-            if ($currentUserRoleLevel != 1) {
-                $equipmentsQuery->where('hazmat_companies_id', $user->hazmat_companies_id);
-            }
-              $equipments = $equipmentsQuery->get();
-     
+        if ($currentUserRoleLevel != 1) {
+            $equipmentsQuery->where('hazmat_companies_id', $user->hazmat_companies_id);
+        }
+        $equipments = $equipmentsQuery->get();
+
         $backurl = 'ships/po-order/add/' . $poItem['ship_id'] . "/" . $poItem['po_order_id'];
         $table_type = Hazmat::select('table_type')->distinct()->pluck('table_type');
         $hazmats = [];
