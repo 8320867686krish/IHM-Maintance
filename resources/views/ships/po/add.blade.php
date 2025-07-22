@@ -22,9 +22,9 @@
                             <div class="col-12 text-center">
                                 <label class="mr-2">Status: </label>
                                 <select class="form-control-lg" name="postatus">
-                                        <option value="PO Created" {{ $poData->postatus == 'PO Created' ? 'selected' : '' }}>PO Created</option>
-                                        <option value="Communication In Progress" {{ $poData->postatus == 'Communication In Progress' ? 'selected' : '' }}>Communication In Progress</option>
-                                        <option value="Completed" {{ $poData->postatus == 'Completed' ? 'selected' : '' }}>Completed</option>
+                                        <option value="PO Created" {{ @$poData->postatus == 'PO Created' ? 'selected' : '' }}>PO Created</option>
+                                        <option value="Communication In Progress" {{ @$poData->postatus == 'Communication In Progress' ? 'selected' : '' }}>Communication In Progress</option>
+                                        <option value="Completed" {{ @$poData->postatus == 'Completed' ? 'selected' : '' }}>Completed</option>
 
                                 </select>
                             </div>
