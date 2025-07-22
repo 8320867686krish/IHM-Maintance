@@ -42,10 +42,10 @@ class POOrderController extends Controller
         }
         $backurl = "ship/view" . "/" . $ship_id . "#po-records";
         $poData = poOrder::with('poOrderItems', 'emailHistory')->find($po_order_id);
-        $filteredEmailHistory = $poData->emailHistory->filter(function ($history) {
+        $filteredEmailHistory = @$poData->emailHistory->filter(function ($history) {
             return $history->history_type == 'ship';
         });
-        $filteredEmailHVendoristory = $poData->emailHistory->filter(function ($history) {
+        $filteredEmailHVendoristory = @$poData->emailHistory->filter(function ($history) {
             return $history->history_type == 'vendor';
         });
         return view('ships.po.add', compact('head_title', 'ship_id', 'poData', 'backurl', 'client_name', 'currentUserRoleLevel', 'filteredEmailHVendoristory', 'filteredEmailHistory'));
