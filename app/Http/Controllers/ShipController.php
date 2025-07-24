@@ -387,7 +387,7 @@ class ShipController extends Controller
         $designatedPerson = $trainingRecoreds->filter(function ($record) {
             return $record->designatedPersonDetail->position !== 'SuperDp';
         });
-
+        dd($designatedPerson);
         $dpsore = $trainingRecoreds->filter(function ($record) {
             return $record->designatedPersonDetail->position === 'SuperDp';
         });
