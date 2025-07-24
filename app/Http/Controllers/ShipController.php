@@ -157,14 +157,15 @@ class ShipController extends Controller
                     $shipData = Ship::find($inputData['id']);
                     if ($shipData && $shipData->ship_image) {
                         $oldImagePath = $this->deleteImage('uploads/ship/', $shipData->ship_image);
+                       
                     }
-                    if ($shipData && $shipData->orignal_image) {
-                        $orignalImage = $this->deleteImage('uploads/ship/orignal/', $shipData->orignal_image);
-                    }
+                     if ($shipData && $shipData->orignal_image) {
+                         $orignalImage = $this->deleteImage('uploads/ship/orignal/', $shipData->orignal_image);
+                     }
                 }
                 $imageFile = $request->file('ship_image');
                 $imageName = time() . '.' . $imageFile->getClientOriginalExtension();
-
+               
 
 
                 $targetSize = 372;
@@ -383,17 +384,9 @@ class ShipController extends Controller
 
 
         // Separate results in PHP
-        // $designatedPerson = $trainingRecoreds->filter(function ($record) {
-        //     return $record->designatedPersonDetail->position !== 'SuperDp';
-        // });
         $designatedPerson = $trainingRecoreds->filter(function ($record) {
             return $record->designatedPersonDetail->position !== 'SuperDp';
-        })->map(function ($record) {
-            return [
-                'id' => $record->designatedPersonDetail->id,
-                'name' => $record->designatedPersonDetail->name,
-            ];
-        })->values()->toArray();
+        });
         $dpsore = $trainingRecoreds->filter(function ($record) {
             return $record->designatedPersonDetail->position === 'SuperDp';
         });

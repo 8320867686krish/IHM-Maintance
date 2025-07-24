@@ -12,7 +12,7 @@
                     enctype="multipart/form-data">
                     @csrf
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 row">
-                    <input type="hidden" id="id" name="id">
+                        <input type="hidden" id="id" name="id">
 
                         <div class="col-12 col-md-12 col-lg-12 mb-2">
                             <div class="form-group">
@@ -36,10 +36,15 @@
                                 <label for="name">Briefing By</label>
                                 <select class="form-control  @error('designated_people_id') is-invalid @enderror" name="designated_people_id" id="designated_people_id">
                                     <option value="">Select Designated Person</option>
-                                    @if(@$designatedPerson)
-                                        @foreach($designatedPerson as $value)
-                                            <option value="{{$value['id']}}">{{$value['name']}}</option>
-                                        @endforeach
+                                    @if(!empty($designatedPerson))
+                                    @foreach($designatedPerson as $value)
+                                    @php
+                                    // If it's a model with relationship
+                                    $id = isset($value->designatedPersonDetail) ? $value->designatedPersonDetail->id : (is_array($value) ? $value['id'] : $value->id);
+                                    $name = isset($value->designatedPersonDetail) ? $value->designatedPersonDetail->name : (is_array($value) ? $value['name'] : $value->name);
+                                    @endphp
+                                    <option value="{{ $id }}">{{ $name }}</option>
+                                    @endforeach
                                     @endif
 
                                 </select>
