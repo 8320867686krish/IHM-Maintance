@@ -106,7 +106,7 @@ console.log(formData);
             error: function (xhr, status, error) {
                 let errors = xhr.responseJSON.errors;
                 if (xhr.status === 419) { // CSRF Token Mismatch
-                    location.reload();
+                   // location.reload();
                 }
                 if (errors) {
                     $.each(errors, function (field, messages) {
