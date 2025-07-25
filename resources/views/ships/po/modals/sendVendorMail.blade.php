@@ -35,7 +35,7 @@
                            </div>
                         <div class="col-12 col-md-12 col-lg-12 mb-2">
                             <div class="form-group">
-                                <label for="name">Attachments <span class="text-danger">*</span></label>
+                                <label for="name">Attachments666 <span class="text-danger">*</span></label>
                                 <input type="file" id="attachments" name="attachments[]" multiple class="form-control">
                               
                                 <div class="invalid-feedback error" id="attachmentsError"></div>
