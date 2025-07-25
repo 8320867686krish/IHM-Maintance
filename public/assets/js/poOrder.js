@@ -82,9 +82,8 @@ $(document).ready(function () {
     });
     $("#sendEmail").on('click', function (e) {
         e.preventDefault();
-        let formData = new FormData($("#sendEmail#sendEmailForm")[0]);
-        alert("fff");
-console.log(formData);
+        let formData = new FormData($("#sendEmailForm")[0]);
+
         $.ajax({
             url: $("#sendEmailForm").attr('action'),
             type: 'POST',
@@ -97,7 +96,7 @@ console.log(formData);
                     let form = document.getElementById('sendEmailForm');
                     form.reset()
                     $('#sendVendorMail').modal('hide');
-                    //location.reload();
+                    location.reload();
 
                 } else {
                     errorMsg(response.message);
@@ -106,7 +105,7 @@ console.log(formData);
             error: function (xhr, status, error) {
                 let errors = xhr.responseJSON.errors;
                 if (xhr.status === 419) { // CSRF Token Mismatch
-                   // location.reload();
+                    location.reload();
                 }
                 if (errors) {
                     $.each(errors, function (field, messages) {
