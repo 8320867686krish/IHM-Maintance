@@ -97,7 +97,7 @@ console.log(formData);
                     let form = document.getElementById('sendEmailForm');
                     form.reset()
                     $('#sendVendorMail').modal('hide');
-                    location.reload();
+                    //location.reload();
 
                 } else {
                     errorMsg(response.message);
