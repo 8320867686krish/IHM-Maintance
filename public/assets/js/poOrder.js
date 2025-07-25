@@ -83,7 +83,8 @@ $(document).ready(function () {
     $("#sendEmail").on('click', function (e) {
         e.preventDefault();
         let formData = new FormData($("#sendEmail#sendEmailForm")[0]);
-
+        alert("fff");
+console.log(formData);
         $.ajax({
             url: $("#sendEmailForm").attr('action'),
             type: 'POST',
